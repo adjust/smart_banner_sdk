@@ -6,7 +6,7 @@ Adjust SmartBanner SDK development repository
 
 The Adjust SDK is licensed under the MIT License.
 
-Copyright (c) 2020 Adjust GmbH, https://www.adjust.com
+Copyright (c) 2022 Adjust GmbH, https://www.adjust.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

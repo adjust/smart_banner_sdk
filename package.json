@@ -1,0 +1,54 @@
+{
+  "name": "@adjustcom/adjust-smart-banner",
+  "version": "0.0.1",
+  "description": "Adjust Smart Banner SDK",
+  "main": "dist/adjust-sb-lates.js",
+  "scripts": {
+    "build:sdk": "webpack --config webpack.config.js",
+    "build:snippet": "terser -d ./src/snippet.js -o ./dist/sdk.snippet.min.js -c -m",
+    "build": "npm-run-all build:sdk build:snippet",
+    "start": "webpack serve --hot --mode development --config webpack.config.js",
+    "lint": "eslint ./src",
+    "test": "TZ=UTC jest",
+    "test:all": "npm-run-all test lint",
+    "prepublishOnly": "npm run test:all"
+  },
+  "files": [
+    "dist/adjust-sb-latest.d.ts",
+    "dist/adjust-sb-latest.js",
+    "dist/adjust-sb-latest.min.js",
+    "CHANGELOG.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adjust/smart_banner_sdk_dev.git"
+  },
+  "author": "Adjust GmbH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adjust/smart_banner_sdk_dev/issues"
+  },
+  "homepage": "https://github.com/adjust/smart_banner_sdk_dev#readme",
+  "devDependencies": {
+    "@types/jest": "^29.2.3",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "css-loader": "^6.7.2",
+    "eslint": "^8.29.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "jest-localstorage-mock": "^2.4.22",
+    "npm-run-all": "^4.1.5",
+    "sass": "^1.56.2",
+    "sass-loader": "^13.2.0",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.6",
+    "ts-jest": "^29.0.3",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.3",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
+    "webpack-dev-server": "^4.11.1"
+  }
+}
