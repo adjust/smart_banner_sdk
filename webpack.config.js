@@ -9,8 +9,8 @@ const namespace = 'adjust_smart_banner'
 module.exports = () => ({
   mode: 'production',
   entry: {
-    'adjust-sb-latest': path.resolve(__dirname, 'src/sdk/smart-banner.ts'),
-    'adjust-sb-latest.min': path.resolve(__dirname, 'src/sdk/smart-banner.ts')
+    'adjust-sb-latest': path.resolve(__dirname, 'src/main.ts'),
+    'adjust-sb-latest.min': path.resolve(__dirname, 'src/main.ts')
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
