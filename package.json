@@ -5,7 +5,7 @@
   "main": "dist/adjust-sb-lates.js",
   "scripts": {
     "build:sdk": "webpack --config webpack.config.js",
-    "build:snippet": "terser -d ./src/snippet.js -o ./dist/sdk.snippet.min.js -c -m",
+    "build:snippet": "terser ./src/loading-snippet.js -o ./dist/sdk.loading-snippet.min.js -c -m",
     "build": "npm-run-all build:sdk build:snippet",
     "start": "webpack serve --hot --mode development --config webpack.config.js",
     "lint": "eslint ./src",
