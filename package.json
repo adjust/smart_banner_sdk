@@ -7,6 +7,7 @@
     "build:sdk": "webpack --config webpack.config.js",
     "build:snippet": "terser ./src/loading-snippet.js -o ./dist/sdk.loading-snippet.min.js -c -m",
     "build": "npm-run-all build:sdk build:snippet",
+    "clean": "rm -rf ./dist/*",
     "start": "webpack serve --hot --mode development --config webpack.config.js",
     "lint": "eslint ./src",
     "test": "TZ=UTC jest --config ./test/jest.config.ts",
