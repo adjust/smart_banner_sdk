@@ -4,9 +4,8 @@ import { Storage, StorageFactory } from './storage/factory';
 import { fetchSmartBannerData, SmartBannerData } from './api';
 import { SmartBannerView } from './view/smart-banner-view';
 import { Network } from './network/network';
-import { XhrNetwork } from './network/xhr-network';
-import { NetworkWithUrlStrategy } from './network/url-startegy-network';
 import { DataResidency } from './network/url-strategy/data-residency';
+import { NetworkFactory } from './network/network-factory';
 
 type Callback = () => any;
 
@@ -31,8 +30,8 @@ export class SmartBanner {
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
 
-    const config = dataResidency ? { dataResidency } : {};
-    this.network = network || new NetworkWithUrlStrategy(new XhrNetwork(), { urlStrategyConfig: config });
+    const urlStrategyConfig = dataResidency ? { dataResidency } : {};
+    this.network = network || NetworkFactory.create({urlStrategyParameters: {urlStrategyConfig}});
 
     this.storage = StorageFactory.createStorage();
 
