@@ -1,5 +1,5 @@
 import { Logger } from './logger';
-import { getDeviceOS } from './detect-os';
+import { getDeviceOS } from './utils/detect-os';
 import { Storage, StorageFactory } from './storage/factory';
 import { fetchSmartBannerData, SmartBannerData } from './api';
 import { SmartBannerView } from './view/smart-banner-view';

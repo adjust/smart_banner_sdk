@@ -1,5 +1,5 @@
-import {Logger} from '../../src/logger';
-import { DeviceOS } from '../../src/detect-os';
+import { Logger } from '../../src/logger';
+import { DeviceOS } from '../../src/utils/detect-os';
 import { fetchSmartBannerData, Position } from '../../src/api';
 import { Network } from '../../src/network/network';
 

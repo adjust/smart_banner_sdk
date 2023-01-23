@@ -36,7 +36,7 @@ export class AdjustSmartBannerSDK {
     if (this.smartBanner) {
       this.smartBanner.show();
     } else {
-      Logger.error('You should initilise Smart Banner first');
+      Logger.error('Can\'t show banner, you should initilise Smart Banner first');
     }
   }
 }

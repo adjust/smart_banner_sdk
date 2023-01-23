@@ -1,5 +1,5 @@
 import { Utils } from '@test-utils';
-import { getDeviceOS, DeviceOS } from '../src/detect-os';
+import { getDeviceOS, DeviceOS } from '../../src/utils/detect-os';
 
 describe('Returns recognizable device OS', () => {
   afterAll(() => {
