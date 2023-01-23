@@ -28,7 +28,7 @@ export class AdjustSmartBannerSDK {
     if (this.smartBanner) {
       this.smartBanner.hide();
     } else {
-      Logger.error('You should initilise Smart Banner first');
+      Logger.error('Can\'t hide banner, you should initilise Smart Banner first');
     }
   }
 

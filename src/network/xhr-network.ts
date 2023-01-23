@@ -1,6 +1,6 @@
 import { Globals } from '../globals';
 import { Network } from './network';
-import { parseJson } from '../utilities';
+import { parseJson } from '../utils/json';
 import { NetworkError, NoConnectionError } from './errors';
 
 type Primitive = string | number | boolean

@@ -1,5 +1,5 @@
 import { Logger } from './logger';
-import { DeviceOS } from './detect-os';
+import { DeviceOS } from './utils/detect-os';
 import { Network } from './network/network';
 
 export enum Position {
