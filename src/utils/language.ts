@@ -2,8 +2,9 @@ export function getLanguage(): string {
   let languageTag = null;
 
   if (navigator) {
-    languageTag = (navigator.languages?.at(0) || navigator.language).split('-')[0];
+    const language = (Array.isArray(navigator.languages) && navigator.languages.length > 0) ? navigator.languages[0] : navigator.language;
+    languageTag = language.split('-')[0];
   }
 
-  return languageTag || 'en'
+  return languageTag || 'en';
 }
