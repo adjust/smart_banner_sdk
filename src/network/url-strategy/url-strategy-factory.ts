@@ -18,23 +18,23 @@ export type UrlStrategyConfig = {
   urlStrategy?: BlockedUrlBypass.Strategy;
 }
 
-export namespace UrlStrategyFactory {
-  const incorrectOptionIgnoredMessage = (higherPriority: string, lowerPriority: string) => {
+export class UrlStrategyFactory {
+  static readonly incorrectOptionIgnoredMessage = (higherPriority: string, lowerPriority: string) => {
     Logger.warn(`Both ${higherPriority} and ${lowerPriority} are set in config, ${lowerPriority} will be ignored`);
   };
 
-  export function create(config: UrlStrategyConfig): UrlStrategy {
+  static create(config: UrlStrategyConfig): UrlStrategy {
     const { customUrl, dataResidency, urlStrategy } = config;
 
     if (customUrl) {
       if (dataResidency || urlStrategy) {
-        incorrectOptionIgnoredMessage('customUrl', dataResidency ? 'dataResidency' : 'urlStrategy');
+        this.incorrectOptionIgnoredMessage('customUrl', dataResidency ? 'dataResidency' : 'urlStrategy');
       }
 
       return new UrlStrategy(CustomUrl.preferredUrlsGetter(customUrl));
     } else if (dataResidency) {
       if (urlStrategy) {
-        incorrectOptionIgnoredMessage('dataResidency', 'urlStrategy');
+        this.incorrectOptionIgnoredMessage('dataResidency', 'urlStrategy');
       }
 
       return new UrlStrategy(DataResidency.preferredUrlsGetter(dataResidency));

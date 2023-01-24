@@ -1,12 +1,12 @@
 import { Utils } from '@test-utils';
 import { Logger } from '../src/logger';
 import * as Api from '../src/api';
-import * as DetectOS from '../src/detect-os';
+import * as DetectOS from '../src/utils/detect-os';
 import { StorageFactory } from '../src/storage/factory';
 import { LocalStorage } from '../src/storage/local-storage';
 import { SmartBanner } from '../src/smart-banner';
 
-//jest.mock('../src/logger');
+jest.mock('../src/logger');
 
 jest.useFakeTimers();
 

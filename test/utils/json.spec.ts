@@ -1,4 +1,4 @@
-import { parseJson } from '../src/utilities';
+import { parseJson } from '../../src/utils/json';
 
 describe('Utilities tests', () => {
   describe('parseJson', () => {
