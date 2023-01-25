@@ -1,25 +1,23 @@
 import { parseJson } from '../../src/utils/json';
 
-describe('Utilities tests', () => {
-  describe('parseJson', () => {
+describe('JSON utilities', () => {
 
-    it('returns parsed object for valid JSON string', () => {
-      const expectedObj = {key: 'value'};
-      const stringToParse = '{"key": "value"}';
+  it('returns parsed object for valid JSON string', () => {
+    const expectedObj = { key: 'value' };
+    const stringToParse = '{"key": "value"}';
 
-      expect(parseJson(stringToParse)).toEqual(expectedObj);
-    });
+    expect(parseJson(stringToParse)).toEqual(expectedObj);
+  });
 
-    it('returns null for invalid JSON string', () => {
-      const stringToParse = '{"key": "value}';
+  it('returns null for invalid JSON string', () => {
+    const stringToParse = '{"key": "value}';
 
-      expect(parseJson(stringToParse)).toBeNull();
-    });
+    expect(parseJson(stringToParse)).toBeNull();
+  });
 
-    it('returns null for no parameter or empty one passed', () => {
-      expect(parseJson(null)).toBeNull();
-      expect(parseJson(undefined)).toBeNull();
-      expect(parseJson('')).toBeNull();
-    });
+  it('returns null for no parameter or empty one passed', () => {
+    expect(parseJson(null)).toBeNull();
+    expect(parseJson(undefined)).toBeNull();
+    expect(parseJson('')).toBeNull();
   });
 });
