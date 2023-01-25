@@ -39,4 +39,12 @@ export class AdjustSmartBannerSDK {
       Logger.error('Can\'t show banner, you should initialise Smart Banner first');
     }
   }
+
+  static setLanguage(lang: string) {
+    if (this.smartBanner) {
+      this.smartBanner.setLanguage(lang);
+    } else {
+      Logger.error('Can\'t set locale, you should initilise Smart Banner first');
+    }
+  }
 }
