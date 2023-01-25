@@ -1,15 +1,9 @@
-import { Utils } from '@test-utils';
 import { getDeviceOS, DeviceOS } from '../../src/utils/detect-os';
 
 describe('Returns recognizable device OS', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
-
-  function mockUserAgent(userAgent: string) {
-    Utils.setGlobalProp(global.navigator, 'userAgent');
-    jest.spyOn(global.navigator, 'userAgent', 'get').mockReturnValue(userAgent);
-  }
 
   const testSet: [string, DeviceOS | undefined][] = [
     [
@@ -36,7 +30,7 @@ describe('Returns recognizable device OS', () => {
 
 
   test.each(testSet)('getDeviceOS() for %s returns %s', (userAgent: string, expected: DeviceOS | undefined) => {
-    mockUserAgent(userAgent);
+    jest.spyOn(global.navigator, 'userAgent', 'get').mockReturnValue(userAgent);
     expect(getDeviceOS()).toEqual(expected);
   });
 
