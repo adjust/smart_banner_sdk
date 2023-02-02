@@ -6,7 +6,7 @@ export type SnakeToCamelCase<S extends string | number | symbol> =
 export type SnakeToCamelCaseObjectKeys<T extends Record<string, any>> = { [K in keyof T as SnakeToCamelCase<K>]: T[K] }
 
 /**
- * Transforms a string from snake_case, kebab-case to camelCase.
+ * Transforms a string from snake_case or kebab-case to camelCase.
  * @param text 
  * @returns 
  */
@@ -16,7 +16,7 @@ export function stringToCamelCase(text: string): string {
 }
 
 /**
- * Transfroms object keys from snake_case to to camelCase. Does NOT transform nested objects.
+ * Transfroms object keys from snake_case or kebab-case to camelCase. Does NOT transform nested objects.
  * @param obj 
  * @returns a new object with keys in camelCase
  */

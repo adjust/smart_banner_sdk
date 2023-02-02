@@ -5,7 +5,7 @@ import { BlockedUrlBypass } from '../../../src/network/url-strategy/blocked-url-
 import { CustomUrl } from '../../../src/network/url-strategy/custom-url';
 import { DataResidency } from '../../../src/network/url-strategy/data-residency';
 
-jest.mock('../../../src/logger')
+jest.mock('../../../src/logger');
 
 describe('UrlStrategyFactory', () => {
   const urlStrategyConstructorMock = jest.fn();
@@ -38,7 +38,7 @@ describe('UrlStrategyFactory', () => {
     DataResidency.EU,
     DataResidency.TR,
     DataResidency.US
-  ]
+  ];
 
   it.each(regions)('creates DataResidency if dataResidency is set in config', (region: DataResidency.Region) => {
     UrlStrategyFactory.create({ dataResidency: region });
@@ -50,7 +50,7 @@ describe('UrlStrategyFactory', () => {
   const strategies: Array<BlockedUrlBypass.Strategy> = [
     BlockedUrlBypass.China,
     BlockedUrlBypass.China
-  ]
+  ];
 
   it.each(strategies)('creates BlockedUrlBypass if urlStrategy is set in config', (strategy: BlockedUrlBypass.Strategy) => {
     UrlStrategyFactory.create({ urlStrategy: strategy });

@@ -2,30 +2,30 @@
  * For a detailed explanation regarding each configuration property, visit:
  * https://jestjs.io/docs/configuration
  */
-import type { JestConfigWithTsJest } from "ts-jest";
+import type { JestConfigWithTsJest } from 'ts-jest';
 
 const config: JestConfigWithTsJest = {
   clearMocks: true,
   coveragePathIgnorePatterns: [
-    "/node_modules/",
-    "<rootDir>/_setup/utils.ts"
+    '/node_modules/',
+    '<rootDir>/_setup/utils.ts'
   ],
-  coverageProvider: "v8",
+  coverageProvider: 'v8',
   coverageReporters: [
-    "text",
+    'text',
   ],
   globals: {
-    __ADJUST_SB__NAMESPACE: "adjust-sdk",
-    __ADJUST_SB__SDK_VERSION: "TEST"
+    __ADJUST_SB__NAMESPACE: 'adjust-sdk',
+    __ADJUST_SB__SDK_VERSION: 'TEST'
   },
   moduleNameMapper: {
-    "\.(css|scss)$": "<rootDir>/_mocks/style.ts",
-    "@test-utils": "<rootDir>/_setup/utils.ts"
+    '.(css|scss)$': '<rootDir>/_mocks/style.ts',
+    '@test-utils': '<rootDir>/_setup/utils.ts'
   },
-  preset: "ts-jest",
+  preset: 'ts-jest',
   transform: {
-    "^.+\\.tsx?$": [
-      "ts-jest",
+    '^.+\\.tsx?$': [
+      'ts-jest',
       {
         tsconfig: {
           esModuleInterop: true,
@@ -34,11 +34,11 @@ const config: JestConfigWithTsJest = {
     ],
   },
   setupFiles: [
-    "jest-localstorage-mock"
+    'jest-localstorage-mock'
   ],
-  testEnvironment: "jsdom",
+  testEnvironment: 'jsdom',
   testMatch: [
-    "**/?(*.)+(spec|test).{js,ts}"
+    '**/?(*.)+(spec|test).{js,ts}'
   ],
 };
 
