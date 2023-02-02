@@ -1,23 +1,19 @@
 import { Logger } from '../../src/logger';
 import { DeviceOS } from '../../src/utils/detect-os';
-import { fetchSmartBannerData, Position } from '../../src/api';
+import { fetchSmartBannerData, SmartBannerData } from '../../src/api';
 import { Network } from '../../src/network/network';
+import { snakeToCamelCase } from '../../src/utils/snake-to-camel-case';
+
+import * as dataMock from '../../src/mockData/smart_banners.json';
 
 jest.mock('../../src/logger');
 
 describe('Smart banner API tests', () => {
   describe('fetchSmartBannerData', () => {
-    const webToken = 'abc123';
+    const webToken = 'p6o2pnb1zkzk';
     const platform = DeviceOS.iOS;
 
-    const serverResponseMock = {
-      platform: 'ios',
-      position: 'bottom',
-      tracker_token: 'none',
-      title: 'Run App Name',
-      description: 'You can run or install App Name',
-      button_label: 'Go!'
-    };
+    const serverResponseMock = dataMock['app_token=p6o2pnb1zkzk&platform=ios'];
 
     const testNetwork: Network = {
       endpoint: 'test-endpoint',
@@ -30,6 +26,7 @@ describe('Smart banner API tests', () => {
       jest.spyOn(Logger, 'error');
 
       requestSpy = jest.spyOn(testNetwork, 'request');
+      requestSpy.mockResolvedValue(serverResponseMock);
     });
 
     afterEach(() => {
@@ -37,36 +34,35 @@ describe('Smart banner API tests', () => {
     });
 
     it('returns data when request is succesfull', async () => {
+      expect.assertions(1 + serverResponseMock.length);
+
+      let smartBannerData = await fetchSmartBannerData(webToken, platform, testNetwork);
+
+      expect(smartBannerData).not.toBeNull();
+
+      smartBannerData = smartBannerData!;
+
+      for (let i = 0; i < smartBannerData.length; i++) {
+        const expected = snakeToCamelCase(serverResponseMock[i]);
+        expect(smartBannerData[i]).toMatchObject(expected);
+      }
+    });
+
+    it('caches data', async () => {
       expect.assertions(2);
-      requestSpy.mockResolvedValueOnce([serverResponseMock]);
 
       const smartBannerData = await fetchSmartBannerData(webToken, platform, testNetwork);
 
       expect(smartBannerData).not.toBeNull();
-      expect(smartBannerData).toEqual({
-        appId: '',
-        appName: '',
-        position: Position.Bottom,
-        header: serverResponseMock.title,
-        description: serverResponseMock.description,
-        buttonText: serverResponseMock.button_label,
-        trackerToken: serverResponseMock.tracker_token,
-        dismissInterval: 24 * 60 * 60 * 1000, // 1 day in millis before show banner next time
-      });
+
+      await fetchSmartBannerData(webToken, platform, testNetwork);
+
+      expect(requestSpy).toBeCalledTimes(1);
     });
 
     it('returns null when no banners for platform', async () => {
       expect.assertions(1);
-      requestSpy.mockResolvedValueOnce([{ ...serverResponseMock, platform: 'android' }]);
-
-      const smartBannerData = await fetchSmartBannerData(webToken, platform, testNetwork);
-
-      expect(smartBannerData).toBeNull();
-    });
-
-    it('returns null when response invalid', async () => {
-      expect.assertions(1);
-      requestSpy.mockResolvedValueOnce([{ ...serverResponseMock, title: '' }]);
+      requestSpy.mockResolvedValueOnce([]);
 
       const smartBannerData = await fetchSmartBannerData(webToken, platform, testNetwork);
 
