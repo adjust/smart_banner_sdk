@@ -20,7 +20,7 @@ export class SmartBannerView {
     this.banner = document.createElement('div');
     this.banner.setAttribute('class', styles.bannerContainer);
 
-    const positionStyle = bannerData.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
+    /*const positionStyle = bannerData.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
     const query = bannerData.deeplinkPath ? `?deeplink=${encodeURIComponent(bannerData.deeplinkPath)}` : '';
     const href = `${endpoint}/${bannerData.trackerToken}${query}`;
     this.banner.innerHTML = render(positionStyle, bannerData.header, bannerData.description, bannerData.buttonText, href);
@@ -41,7 +41,7 @@ export class SmartBannerView {
 
     if (appIconImage && appIconPlaceholder) {
       new AppIcon(bannerData, appIconImage, appIconPlaceholder);
-    }
+    }*/
 
     return this.banner;
   }
