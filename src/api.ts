@@ -1,6 +1,7 @@
 import { Logger } from './logger';
 import { DeviceOS } from './utils/detect-os';
 import { Network } from './network/network';
+import { snakeToCamelCase, SnakeToCamelCaseObjectKeys } from './utils/snake-to-camel-case';
 
 export enum Position {
   Top = 'top',
@@ -51,37 +52,29 @@ interface SmartBannerResponseData {
   display_rule: string | null;
 }
 
-/**
- * Ensures response contains general info: title, description, button_label and tracker_token and converts response
- * to SmartBannerData
- */
-function validate(response: Partial<SmartBannerResponse>): SmartBannerData | null {
-  const { title, description, button_label, tracker_token } = response;
+export type SmartBannerData = SnakeToCamelCaseObjectKeys<SmartBannerResponseData>
 
-  if (title && description && button_label && tracker_token) {
-    return {
-      appId: response.app?.default_store_app_id || '',
-      appName: response.app?.name || '',
-      position: response.position || Position.Bottom,
-      imageUrl: response.image_url,
-      header: title,
-      description: description,
-      buttonText: button_label,
-      trackerToken: tracker_token,
-      deeplinkPath: response.deeplink_path,
-      dismissInterval: 24 * 60 * 60 * 1000, // 1 day in millis before show banner next time
-    };
+function transformData(data: SmartBannerResponseData[]): SmartBannerData[] | null {
+  const banners: Array<SmartBannerData> = [];
+
+  for (const item of data) {
+    const banner: SmartBannerData = snakeToCamelCase<SmartBannerResponseData>(item);
+    banners.push(banner);
   }
 
-  return null;
+  if (banners.length < 1) {
+    return null;
+  }
+
+  return banners;
 }
 
-export function fetchSmartBannerData(token: string, deviceOs: DeviceOS, network: Network): Promise<SmartBannerResponseData[] | null> {
+export function fetchSmartBannerData(token: string, deviceOs: DeviceOS, network: Network): Promise<SmartBannerData[] | null> {
   const path = '/smart_banner';
 
   return network.request<SmartBannerResponseData[]>(path, { 'app_token': token, 'platform': deviceOs })
     .then(banners => {
-      return banners;
+      return transformData(banners);
     })
     .catch(error => {
       Logger.error('Network error occurred during loading Smart Banner: ' + JSON.stringify(error));
