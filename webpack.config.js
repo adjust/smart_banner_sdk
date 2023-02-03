@@ -4,7 +4,9 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const webpack = require('webpack');
 const packageJson = require('./package.json');
 
-const namespace = 'adjust_smart_banner'
+const namespace = 'adjust_smart_banner';
+
+const fakeData = require('./fake-server/smart_banners.json');
 
 module.exports = () => ({
   mode: 'production',
@@ -55,5 +57,37 @@ module.exports = () => ({
         { loader: 'sass-loader' }
       ]
     }]
-  }
-})
+  },
+  devServer: {
+    setupMiddlewares: (middlewares, devServer) => {
+      if (!devServer) {
+        throw new Error('webpack-dev-server is not defined');
+      }
+
+      middlewares.push({
+        name: 'data-request-interceptor',
+        path: '/smart_banners/v1/',
+        middleware: (req, res) => {
+
+          if (req.query) {
+            const app_token = req.query.app_token;
+            if (!app_token) {
+              res.send('You should provide app_token');
+              return;
+            }
+
+            const platform = req.query.platform;
+            if (platform) {
+              res.send(fakeData[platform]);
+              return;
+            }
+          }
+
+          res.send('No data found');
+        },
+      });
+
+      return middlewares;
+    },
+  },
+});
