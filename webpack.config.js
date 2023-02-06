@@ -6,8 +6,6 @@ const packageJson = require('./package.json');
 
 const namespace = 'adjust_smart_banner';
 
-const fakeData = require('./fake-server/smart_banners.json');
-
 module.exports = () => ({
   mode: 'production',
   entry: {
@@ -65,7 +63,7 @@ module.exports = () => ({
       }
 
       middlewares.push({
-        name: 'data-request-interceptor',
+        name: 'fake-data-provider',
         path: '/smart_banners/v1/',
         middleware: (req, res) => {
 
@@ -77,7 +75,14 @@ module.exports = () => ({
             }
 
             const platform = req.query.platform;
-            if (platform) {
+            if (!platform) {
+              res.send('You should provide platform');
+              return;
+            }
+
+            const fakeData = require('./fake-server/smart_banners.json');
+
+            if (fakeData[platform]) {
               res.send(fakeData[platform]);
               return;
             }
