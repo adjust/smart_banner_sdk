@@ -41,7 +41,7 @@ describe('SmartBannerRepository', () => {
 
     expect(fetchedData).toStrictEqual(data)
     expect(testApi.retrieve).toBeCalled()
-    expect(testCache.setItem).toBeCalled()
+    expect(testCache.setItem).toBeCalledWith('app-token-1', data)
   })
 
   it('returns data from cache', async () => {
