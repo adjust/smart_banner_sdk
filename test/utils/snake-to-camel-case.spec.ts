@@ -15,7 +15,7 @@ describe('snake_case to camelCase', () => {
 
     it('does not fail on empty string', () => {
       expect(stringToCamelCase('')).toBe('');
-    })
+    });
   });
 
   describe('Object keys to camelCase', () => {
@@ -26,7 +26,7 @@ describe('snake_case to camelCase', () => {
         first_name: 'Liz',
         last_Name: 'Lemon',
         year_of_birth: 1970,
-      }
+      };
 
       const result: SnakeToCamelCaseObjectKeys<typeof input> = {
         snakeCase: true,
@@ -34,10 +34,10 @@ describe('snake_case to camelCase', () => {
         firstName: 'Liz',
         lastName: 'Lemon',
         yearOfBirth: 1970,
-      }
+      };
 
-      expect(snakeToCamelCase(input)).toEqual(result)
-    })
+      expect(snakeToCamelCase(input)).toEqual(result);
+    });
 
     it('does not transform nested objects', () => {
       const input = {
@@ -45,17 +45,17 @@ describe('snake_case to camelCase', () => {
         additional_data: {
           nested_key: 'value'
         }
-      }
+      };
 
       const result: SnakeToCamelCaseObjectKeys<typeof input> = {
         snakeCase: true,
         additionalData: {
           nested_key: 'value'
         }
-      }
+      };
 
-      expect(snakeToCamelCase(input)).toEqual(result)
-    })
-  })
+      expect(snakeToCamelCase(input)).toEqual(result);
+    });
+  });
 
 });
