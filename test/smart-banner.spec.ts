@@ -1,8 +1,7 @@
-import { Utils } from '@test-utils';
 import { Logger } from '../src/logger';
-import { StorageFactory } from '../src/storage/factory';
-import { LocalStorage } from '../src/storage/local-storage';
 import { SmartBanner } from '../src/smart-banner';
+import { LocalStorage } from '../src/storage/local-storage';
+import { StorageFactory } from '../src/storage/storage-factory';
 
 jest.mock('../src/logger');
 
@@ -73,7 +72,7 @@ describe('Smart Banner tests', () => {
     });
 
     describe('Called when initialisation finished', () => {
-      
+
     });
   });
 

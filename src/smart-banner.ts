@@ -4,7 +4,7 @@ import { Logger } from './logger';
 import { Network } from './network/network';
 import { NetworkFactory } from './network/network-factory';
 import { DataResidency } from './network/url-strategy/data-residency';
-import { Storage, StorageFactory } from './storage/factory';
+import { Storage, StorageFactory } from './storage/storage-factory';
 import { DeviceOS, getDeviceOS } from './utils/detect-os';
 import { getLanguage } from './utils/language';
 import { SmartBannerView } from './view/smart-banner-view';
