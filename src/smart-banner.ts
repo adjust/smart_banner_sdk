@@ -1,17 +1,20 @@
+import { Context, SmartBannerApi, SmartBannerData } from './data/api';
+import { SmartBannerRepository } from './data/repositories/smart-banner-repository';
 import { Logger } from './logger';
-import { getDeviceOS } from './utils/detect-os';
-import { getLanguage } from './utils/language';
-import { Storage, StorageFactory } from './storage/factory';
-import { fetchSmartBannerData, SmartBannerData } from './api';
-import { SmartBannerView } from './view/smart-banner-view';
 import { Network } from './network/network';
-import { DataResidency } from './network/url-strategy/data-residency';
 import { NetworkFactory } from './network/network-factory';
+import { DataResidency } from './network/url-strategy/data-residency';
+import { Storage, StorageFactory } from './storage/storage-factory';
+import { DeviceOS } from './utils/detect-os';
+import { getLanguage } from './utils/language';
+import { SmartBannerView } from './view/smart-banner-view';
 
 type Callback = () => any;
 
+export type AppToken = { [k in DeviceOS]?: string } | string;
+
 export interface SmartBannerOptions {
-  webToken: string;
+  appToken: AppToken;
   dataResidency?: DataResidency.Region;
   language?: string;
   onCreated?: Callback;
@@ -22,33 +25,36 @@ export class SmartBanner {
   private readonly STORAGE_KEY_DISMISSED = 'closed';
   private network: Network;
   private storage: Storage;
-  private timer: ReturnType<typeof setTimeout> | null = null;
-  private dataFetchPromise: Promise<SmartBannerData | null> | null = null;
-  private view: SmartBannerView | null = null;
+  private repository: SmartBannerRepository;
   private language: string;
   private onCreated?: Callback;
   private onDismissed?: Callback;
+  private timer: ReturnType<typeof setTimeout> | null = null;
+  private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
+  private view: SmartBannerView | null = null;
 
-  constructor({ webToken, dataResidency, language, onCreated, onDismissed }: SmartBannerOptions, network?: Network) {
+  constructor(
+    appToken: string,
+    { dataResidency, language, onCreated, onDismissed }: SmartBannerOptions,
+    private deviceOs: DeviceOS,
+    network?: Network) {
+
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
 
     const urlStrategyConfig = dataResidency ? { dataResidency } : {};
-    this.network = network || NetworkFactory.create({urlStrategyParameters: {urlStrategyConfig}});
+    this.network = network || NetworkFactory.create({ urlStrategyParameters: { urlStrategyConfig } });
 
     this.storage = StorageFactory.createStorage();
 
+    this.repository = new SmartBannerRepository(new SmartBannerApi(this.deviceOs, this.network));
+
     this.language = language || getLanguage();
 
-    this.init(webToken);
+    this.init(appToken);
   }
 
-  /**
-   * Initiate Smart Banner
-   *
-   * @param webToken token used to get data from backend
-   */
-  private init(webToken: string) {
+  private init(appToken: string) {
     if (this.view) {
       Logger.error('Smart Banner is created already');
       return;
@@ -59,26 +65,24 @@ export class SmartBanner {
       return;
     }
 
-    const deviceOs = getDeviceOS();
-    if (!deviceOs) {
-      Logger.log('This platform is not one of the targeting ones, Smart Banner will not be shown');
-      return;
-    }
+    Logger.log('Fetching Smart banners');
 
-    this.dataFetchPromise = fetchSmartBannerData(webToken, deviceOs, this.network);
+    this.dataFetchPromise = this.repository.fetch(appToken);
 
-    this.dataFetchPromise.then(bannerData => {
+    this.dataFetchPromise.then(bannersList => {
       this.dataFetchPromise = null;
 
-      if (!bannerData) {
-        Logger.log(`No Smart Banners for ${deviceOs} platform found`);
+      if (!bannersList) {
+        Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
         return;
       }
 
-      const whenToShow = this.getDateToShowAgain(bannerData.dismissInterval);
+      // TODO: get needed banner based on page URL and othre conditions
+
+      /*const whenToShow = this.getDateToShowAgain(bannerData.dismissInterval);
       if (Date.now() < whenToShow) {
         Logger.log('Smart Banner was dismissed');
-        this.scheduleCreation(webToken, whenToShow);
+        this.scheduleCreation(token, whenToShow);
         return;
       }
 
@@ -86,7 +90,7 @@ export class SmartBanner {
 
       this.view = new SmartBannerView(
         bannerData,
-        () => this.dismiss(webToken, bannerData.dismissInterval),
+        () => this.dismiss(appToken, bannerData.dismissInterval),
         this.network.endpoint
       );
 
@@ -94,7 +98,7 @@ export class SmartBanner {
 
       if (this.onCreated) {
         this.onCreated();
-      }
+      }*/
     });
   }
 
@@ -114,12 +118,12 @@ export class SmartBanner {
   /**
    * Schedules next Smart Banner show and removes banner from DOM
    */
-  private dismiss(webToken: string, dismissInterval: number) {
+  private dismiss(appToken: string, dismissInterval: number) {
     Logger.log('Smart Banner dismissed');
 
     this.storage.setItem(this.STORAGE_KEY_DISMISSED, Date.now());
     const whenToShow = this.getDateToShowAgain(dismissInterval);
-    this.scheduleCreation(webToken, whenToShow);
+    this.scheduleCreation(appToken, whenToShow);
 
     this.destroy();
 
@@ -131,7 +135,7 @@ export class SmartBanner {
   /**
    * Sets a timeout to schedule next Smart Banner show
    */
-  private scheduleCreation(webToken: string, when: number) {
+  private scheduleCreation(appToken: string, when: number) {
     if (this.timer) {
       Logger.log('Clearing previously scheduled creation of Smart Banner');
       clearTimeout(this.timer);
@@ -142,7 +146,7 @@ export class SmartBanner {
     this.timer = setTimeout(
       () => {
         this.timer = null;
-        this.init(webToken);
+        this.init(appToken);
       },
       delay);
 
@@ -197,5 +201,9 @@ export class SmartBanner {
   setLanguage(language: string): void {
     this.language = language;
     // TODO: change language in view
+  }
+
+  setContext(context: Context): void {
+
   }
 }

@@ -12,8 +12,8 @@ describe('Detecting browser language', () => {
     jest.spyOn(global.navigator, 'languages', 'get').mockReturnValue(languages);
     jest.spyOn(global.navigator, 'language', 'get').mockReturnValue(language);
 
-    expect(getLanguage()).toBe(expected)
-  })
+    expect(getLanguage()).toBe(expected);
+  });
 
   test.each([
     {languages: [], language: 'fr', expected: 'fr'},
@@ -22,8 +22,8 @@ describe('Detecting browser language', () => {
     jest.spyOn(global.navigator, 'languages', 'get').mockReturnValue(languages as any);
     jest.spyOn(global.navigator, 'language', 'get').mockReturnValue(language);
 
-    expect(getLanguage()).toBe(expected)
-  })
+    expect(getLanguage()).toBe(expected);
+  });
 
   test.each([
     {languages: [], language: undefined},
@@ -32,6 +32,6 @@ describe('Detecting browser language', () => {
     jest.spyOn(global.navigator, 'languages', 'get').mockReturnValue(languages as any);
     jest.spyOn(global.navigator, 'language', 'get').mockReturnValue(language as any);
 
-    expect(getLanguage()).toBe('en')
-  })
-})
+    expect(getLanguage()).toBe('en');
+  });
+});

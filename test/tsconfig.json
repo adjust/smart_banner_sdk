@@ -6,6 +6,7 @@
       "@test-utils": [
         "_setup/utils.ts"
       ],
-    }
+    },
+    "resolveJsonModule": true,
   }
 }
