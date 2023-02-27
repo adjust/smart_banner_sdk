@@ -1,9 +1,9 @@
-import { InMemoryStorage } from '../../src/storage/in-memory-storage';
-import { LocalStorage } from '../../src/storage/local-storage';
-import { StorageFactory } from '../../src/storage/storage-factory';
+import { InMemoryStorage } from '@sdk/storage/in-memory-storage';
+import { LocalStorage } from '@sdk/storage/local-storage';
+import { StorageFactory } from '@sdk/storage/storage-factory';
 
-jest.mock('../../src/storage/local-storage');
-jest.mock('../../src/storage/in-memory-storage');
+jest.mock('@sdk/storage/local-storage');
+jest.mock('@sdk/storage/in-memory-storage');
 
 describe('StorageFactory', () => {
 

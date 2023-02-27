@@ -1,5 +1,5 @@
-import { DataResidency } from '../../../src/network/url-strategy/data-residency';
-import { BaseUrlsMap } from '../../../src/network/url-strategy/url-strategy';
+import { DataResidency } from '@sdk/network/url-strategy/data-residency';
+import { BaseUrlsMap } from '@sdk/network/url-strategy/url-strategy';
 
 describe('DataResidency', () => {
 

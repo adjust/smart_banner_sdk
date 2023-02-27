@@ -1,0 +1,26 @@
+{
+  "name": "@adjustcom/sb-sdk",
+  "version": "0.0.1",
+  "description": "Adjust Smart Banner SDK",
+  "scripts": {
+    "build:sdk": "webpack --config ./webpack.config.js",
+    "build:snippet": "terser ./loading-snippet.js -o dist/sdk.loading-snippet.min.js -c -m",
+    "build": "npm-run-all build:sdk build:snippet"
+  },
+  "main": "dist/adjust-sb-latest.js",
+  "files": [
+    "dist/adjust-sb-latest.js",
+    "dist/adjust-sb-latest.min.js",
+    "CHANGELOG.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adjust/smart_banner_sdk_dev.git"
+  },
+  "author": "Adjust GmbH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adjust/smart_banner_sdk_dev/issues"
+  },
+  "homepage": "https://github.com/adjust/smart_banner_sdk_dev#readme"
+}

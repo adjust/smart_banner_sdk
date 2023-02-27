@@ -1,4 +1,4 @@
-import { CustomUrl } from '../../../src/network/url-strategy/custom-url';
+import { CustomUrl } from '@sdk/network/url-strategy/custom-url';
 
 describe('CustomUrl', () => {
   it('returns urls map with custom url', () => {

@@ -77,7 +77,8 @@ export class SmartBanner {
         return;
       }
 
-      // TODO: get needed banner based on page URL and othre conditions
+      // TODO: get needed banner based on page URL and other conditions
+
 
       /*const whenToShow = this.getDateToShowAgain(bannerData.dismissInterval);
       if (Date.now() < whenToShow) {

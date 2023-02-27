@@ -1,8 +1,8 @@
-import { SmartBannerData } from '../../../src/data/api';
-import { AsyncDataSource } from '../../../src/data/data-source';
-import { SmartBannerRepository } from '../../../src/data/repositories/smart-banner-repository';
-import { InMemoryStorage } from '../../../src/storage/in-memory-storage';
-import { Storage } from '../../../src/storage/storage';
+import { SmartBannerData } from '@sdk/data/api';
+import { AsyncDataSource } from '@sdk/data/data-source';
+import { SmartBannerRepository } from '@sdk/data/repositories/smart-banner-repository';
+import { InMemoryStorage } from '@sdk/storage/in-memory-storage';
+import { Storage } from '@sdk/storage/storage';
 
 describe('SmartBannerRepository', () => {
 
