@@ -11,6 +11,7 @@
     "prepublishOnly": "npm-run-all lint test"
   },
   "main": "sdk/dist/smart-banner-sdk.js",
+  "types": "sdk/dist/smart-banner-sdk.d.ts",
   "files": [
     "sdk/dist/smart-banner-sdk.js",
     "sdk/dist/smart-banner-sdk.min.js",

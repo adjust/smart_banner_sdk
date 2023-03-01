@@ -14,6 +14,7 @@ function flattenAppToken(appToken: AppToken, deviceOs: DeviceOS): string | undef
 
 /**
  * A main SDK class to access public methods
+ * @public
  */
 export class AdjustSmartBanner {
   private static smartBanner: SmartBanner | undefined;
