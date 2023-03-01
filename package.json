@@ -1,5 +1,5 @@
 {
-  "name": "@adjustcom/smart-banner-sdk",
+  "name": "@adjustcom/smart-banner-sdk-monorepo",
   "version": "0.0.1",
   "description": "Adjust Smart Banner SDK",
   "scripts": {
@@ -10,9 +10,10 @@
     "test": "TZ=UTC jest --config ./test/jest.config.ts",
     "prepublishOnly": "npm-run-all lint test"
   },
+  "main": "sdk/dist/smart-banner-sdk.js",
   "files": [
-    "sdk/dist/adjust-sb-latest.js",
-    "sdk/dist/adjust-sb-latest.min.js",
+    "sdk/dist/smart-banner-sdk.js",
+    "sdk/dist/smart-banner-sdk.min.js",
     "CHANGELOG.md"
   ],
   "repository": {
