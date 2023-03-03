@@ -6,8 +6,8 @@ import { DataResidency } from './data-residency';
 
 export type UrlStrategyConfig = {
   customUrl: string;
-  urlStrategy?: never;
   dataResidency?: never;
+  urlStrategy?: never;
 } | {
   customUrl?: never;
   dataResidency: DataResidency.Region;

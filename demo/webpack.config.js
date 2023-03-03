@@ -1,7 +1,9 @@
 const path = require('path');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-module.exports = () => ({
+const devPort = 8080;
+
+module.exports = (env, args) => ({
   mode: 'production',
   entry: ['./src/demo.ts'],
   output: {
@@ -45,6 +47,7 @@ module.exports = () => ({
       }]
   },
   devServer: {
+    port: env.devPort || devPort,
     historyApiFallback: {
       rewrites: [
         { from: /./, to: '/demo' },
@@ -57,7 +60,7 @@ module.exports = () => ({
 
       middlewares.push({
         name: 'fake-data-provider',
-        path: '/smart_banners/v1/',
+        path: '/smart_banner',
         middleware: (req, res) => {
 
           if (req.query) {
@@ -73,7 +76,7 @@ module.exports = () => ({
               return;
             }
 
-            const fakeData = require('./fake-data/smart_banners.json');
+            const fakeData = require('./../fake-data/smart_banners.json');
 
             if (fakeData[platform]) {
               res.send(fakeData[platform]);
