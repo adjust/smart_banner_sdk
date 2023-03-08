@@ -1,0 +1,25 @@
+@import 'assets/colors.scss';
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+
+  h1 {
+    font-size: 28px;
+    margin: 0 16px;
+    margin-left: auto;
+  }
+
+  line-height: 42px;
+  text-align: center;
+  background-color: $blue-400;
+  color: white;
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+}
