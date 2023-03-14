@@ -52,6 +52,12 @@ module.exports = (env, args) => ({
           { loader: 'sass-loader' }
         ]
       }, {
+        test: /\.html$/i,
+        loader: "html-loader",
+        options: {
+          esModule: false,
+        },
+      }, {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         use: 'svg-inline-loader'
       }]
