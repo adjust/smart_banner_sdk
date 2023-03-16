@@ -3,6 +3,7 @@ import html from './app-token.html';
 import styles from './app-token.module.scss';
 
 export interface AppTokenProps {
+  value?: AppToken,
   onChange: (tokens: AppToken) => void;
 }
 
@@ -39,6 +40,10 @@ export function AppToken(props: AppTokenProps) {
   const inputTokenHandler = (wrapper: HTMLElement) => {
     const input = wrapper.querySelector('#multi-platform-token') as HTMLInputElement;
     input.addEventListener('change', () => props.onChange(input.value));
+
+    if (typeof props.value === 'string') {
+      input.value = props.value
+    }
   };
 
   const createMultipleTokensInput = (wrapper: HTMLElement) => {
