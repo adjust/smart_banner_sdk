@@ -1,4 +1,4 @@
-import { Button } from '../button';
+import { MenuIconButton } from '../button';
 import { MainMenu, MenuItem } from '../main-menu';
 import styles from './styles.module.scss';
 
@@ -17,7 +17,7 @@ export function Header(props: HeaderProps) {
     const mainMenu = createMenu();
 
     header.appendChild(
-      Button({
+      MenuIconButton({
         label: 'Menu',
         onClick: () => { mainMenu.open(); }
       }).render()

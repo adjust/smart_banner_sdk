@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from './button';
 import cross from 'assets/cross.svg';
 import hamburger from 'assets/hamburger.svg';
-import styles from './icon-button.styles.module.scss';
+import styles from './styles.module.scss';
 
 export interface IconButtonProps extends ButtonProps {
   iconSrc: string;
@@ -31,6 +31,8 @@ export function IconButton(props: IconButtonProps) {
       btnLabel.className = styles.label;
       btnLabel.innerText = label;
       button.appendChild(btnLabel);
+    } else {
+      button.className += ' ' + styles['no-labeled'];
     }
 
     return button;
@@ -39,7 +41,7 @@ export function IconButton(props: IconButtonProps) {
   return { render };
 }
 
-export function MenuIconButton(props: ButtonProps) {
+export function MenuIconButton(props: Omit<IconButtonProps, 'iconSrc'>) {
   const render = () => {
     return IconButton({ iconSrc: hamburger, ...props }).render();
   };
@@ -47,7 +49,7 @@ export function MenuIconButton(props: ButtonProps) {
   return { render };
 }
 
-export function CloseIconButton(props: ButtonProps) {
+export function CloseIconButton(props: Omit<IconButtonProps, 'iconSrc'>) {
   const render = () => {
     return IconButton({ iconSrc: cross, ...props }).render();
   };

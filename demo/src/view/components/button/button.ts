@@ -1,4 +1,4 @@
-import styles from './button.styles.module.scss';
+import styles from './styles.module.scss';
 
 export interface ButtonProps {
   label?: string;

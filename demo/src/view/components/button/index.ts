@@ -1,8 +1,9 @@
 import { Button } from './button';
-import { IconButton, MenuIconButton } from './icon-button';
+import { IconButton, MenuIconButton, CloseIconButton } from './icon-button';
 
 export {
   Button,
   IconButton,
-  MenuIconButton
+  MenuIconButton,
+  CloseIconButton
 };
