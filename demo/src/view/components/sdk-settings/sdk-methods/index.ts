@@ -13,9 +13,9 @@ export function SdkMethods(props: SdkMethodsProps) {
     wrapper.className = 'flex-row ' + styles['buttons-container'];
 
     wrapper.append(
-      Button({ label: 'init', clickHandler: props.onInit }).render(),
-      Button({ label: 'hide', clickHandler: props.onHide }).render(),
-      Button({ label: 'show', clickHandler: props.onShow }).render()
+      Button({ label: 'init', onClick: props.onInit }).render(),
+      Button({ label: 'hide', onClick: props.onHide }).render(),
+      Button({ label: 'show', onClick: props.onShow }).render()
     );
 
     return wrapper;

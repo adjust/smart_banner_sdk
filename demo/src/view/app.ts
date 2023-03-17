@@ -5,7 +5,7 @@ export function App() {
   const render = () => {
     const elements: HTMLElement[] = [];
 
-    elements.push(Header().render());
+    elements.push(Header({ fixed: true }).render());
     elements.push(Content().render());
 
     return elements;

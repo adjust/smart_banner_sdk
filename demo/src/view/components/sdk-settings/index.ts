@@ -15,8 +15,8 @@ export interface SdkSettingsProps {
 }
 
 export function SdkSettings(props: SdkSettingsProps = {}) {
-  let config = props.sdkSettings ?? defaultSdkSettings;
-  const sdkConfig = new Observable(config)
+  const config = props.sdkSettings ?? defaultSdkSettings;
+  const sdkConfig = new Observable(config);
 
   const render = () => {
     const wrapper = document.createElement('div');
@@ -43,15 +43,15 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
       value: sdkConfig.value.appToken,
       onChange: tokens => {
         if (typeof tokens === 'string') {
-          sdkConfig.value = { ...sdkConfig.value, appToken: tokens }
+          sdkConfig.value = { ...sdkConfig.value, appToken: tokens };
         } else {
           let oldTokens = sdkConfig.value.appToken;
 
           if (typeof oldTokens === 'string') {
-            oldTokens = {}
+            oldTokens = {};
           }
 
-          sdkConfig.value = { ...sdkConfig.value, appToken: { ...oldTokens, ...tokens } }
+          sdkConfig.value = { ...sdkConfig.value, appToken: { ...oldTokens, ...tokens } };
         }
       }
     }).render());
@@ -75,7 +75,7 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
       onChange: value => console.log(value)
     }).render());
 
-    root.append(leftColumn, rightColumn)
+    root.append(leftColumn, rightColumn);
 
     return root;
   };
@@ -88,7 +88,7 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
 
     const settingsPreview = SettingsPreview({ innerCode: stringifyExample() });
 
-    sdkConfig.observe(v => settingsPreview.update({ innerCode: stringifyExample() }))
+    sdkConfig.observe(v => settingsPreview.update({ innerCode: stringifyExample() }));
 
     root.append(
       settingsPreview.render(),

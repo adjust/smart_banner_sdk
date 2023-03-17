@@ -42,7 +42,7 @@ export function AppToken(props: AppTokenProps) {
     input.addEventListener('change', () => props.onChange(input.value));
 
     if (typeof props.value === 'string') {
-      input.value = props.value
+      input.value = props.value;
     }
   };
 

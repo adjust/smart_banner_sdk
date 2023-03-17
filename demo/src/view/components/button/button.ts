@@ -2,7 +2,7 @@ import styles from './button.styles.module.scss';
 
 export interface ButtonProps {
   label?: string;
-  clickHandler?: () => void;
+  onClick?: () => void;
   variant?: 'primary' | 'secondary'
 }
 
@@ -21,8 +21,8 @@ export function Button(props: ButtonProps) {
       button.innerText = props.label;
     }
 
-    if (props.clickHandler) {
-      button.addEventListener('click', props.clickHandler);
+    if (props.onClick) {
+      button.addEventListener('click', props.onClick);
     }
 
     return button;

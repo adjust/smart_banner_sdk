@@ -15,7 +15,7 @@ export function Language(props: LanguageProps) {
     input.addEventListener('change', () => { props.onChange(input.value); });
 
     if (props.value) {
-      input.value = props.value
+      input.value = props.value;
     }
 
     return wrapper;

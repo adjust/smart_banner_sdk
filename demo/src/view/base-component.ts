@@ -1,9 +1,7 @@
-export interface Component<TProps> {
+export interface StaticComponent<TProps> {
   render: () => HTMLElement;
-  update: (props: TProps) => void;
 }
 
-export abstract class StaticComponent<TProps> implements Component<TProps> {
-  abstract render: () => HTMLElement;
-  public update(props: TProps) { };
+export interface Component<TProps> extends StaticComponent<TProps> {
+  update: (props: TProps) => void;
 }
