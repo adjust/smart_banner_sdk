@@ -29,9 +29,15 @@
     }
   }
 
-  &>* {
+  .menu-item {
     line-height: 40px;
     white-space: nowrap;
+    border-bottom: rgba(255, 255, 255, 0.6) solid 1px;
+    transition: border 0.1s;
+
+    &:hover {
+      border-bottom: rgba(255, 255, 255, 0.9) solid 1px;
+    }
   }
 }
 

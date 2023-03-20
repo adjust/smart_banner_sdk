@@ -1,6 +1,5 @@
 import { MenuItem, MenuItemComponent, MenuItemProps } from './menu-item';
 import { CloseIconButton } from '../button';
-import cross from 'assets/cross.svg';
 import styles from './styles.module.scss';
 
 export interface MenuProps {
@@ -25,12 +24,12 @@ export function MainMenu(props: MenuProps) {
     menuHeader.appendChild(CloseIconButton({
       onClick: close,
       iconSize: '16px'
-    }).render())
+    }).render());
 
     menu.append(menuHeader);
 
     for (const it of props.menuItems) {
-      menu.appendChild(it.render())
+      menu.appendChild(it.render());
     }
 
     root.append(menu);
