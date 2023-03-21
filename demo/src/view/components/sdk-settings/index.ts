@@ -10,6 +10,9 @@ import { SdkMethods } from './sdk-methods';
 import { defaultSdkSettings } from 'demo/src/data/defaultSdkSettings';
 import styles from './styles.module.scss';
 
+// TODO it's too 'deep' for this dependency, need to move it somewhere to App level or something like that
+import { AdjustSmartBanner } from '@adjustcom/smart-banner-sdk';
+
 export interface SdkSettingsProps {
   sdkSettings?: InitialisationOptions
 }
@@ -93,9 +96,9 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
     root.append(
       settingsPreview.render(),
       SdkMethods({
-        onInit: () => console.log('init smart banner'),
-        onHide: () => console.log('hide smart banner'),
-        onShow: () => console.log('show smart banner')
+        onInit: () => AdjustSmartBanner.init(sdkConfig.value),
+        onHide: () => AdjustSmartBanner.hide(),
+        onShow: () => AdjustSmartBanner.show()
       }).render()
     );
 
