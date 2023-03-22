@@ -6,7 +6,7 @@ import { SmartBannerViewData } from '../../view/types';
  * 
  * @returns A new object containing render options and localized labels and images
  */
-export function convertSmartBannerDataForView(banner: SmartBannerData, locale?: string): SmartBannerViewData {
+export function convertSmartBannerDataForView(banner: SmartBannerData, locale?: string | null): SmartBannerViewData {
   const { id, isPreviousAttributionPriority, name, dismissalPeriod, trackerUrl, localizations, displayRule, defaultLanguage,
     ...renderData } = banner;
 

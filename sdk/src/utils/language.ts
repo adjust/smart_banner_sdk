@@ -1,10 +1,13 @@
-export function getLanguage(): string {
+export function getLanguage(): string | null {
   let languageTag = null;
 
   if (navigator) {
-    const language = (Array.isArray(navigator.languages) && navigator.languages.length > 0) ? navigator.languages[0] : navigator.language || '';
-    languageTag = language.split('-')[0];
+    languageTag = ((Array.isArray(navigator.languages) && navigator.languages.length > 0) ? navigator.languages[0] : navigator.language || '').split('-')[0];
+
+    if (languageTag.length < 2) {
+      languageTag = null;
+    }
   }
 
-  return languageTag || 'en';
+  return languageTag || null;
 }
