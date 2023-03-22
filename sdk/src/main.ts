@@ -33,7 +33,7 @@ export class AdjustSmartBanner {
 
     const deviceOs = getDeviceOS();
     if (!deviceOs) {
-      Logger.log('This platform is not one of the targeting ones, Smart banner will not be shown');
+      Logger.info('This platform is not one of the targeting ones, Smart banner will not be shown');
       return;
     }
     Logger.log('Detected platform: ' + deviceOs);
