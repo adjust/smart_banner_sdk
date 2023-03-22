@@ -1,0 +1,44 @@
+@import 'assets/colors.scss';
+
+.sdk-settings {
+  margin: 16px;
+  border-radius: 12px;
+  background-color: $blue-200;
+  display: flex;
+  overflow: hidden;
+}
+
+.sdk-settings-wrapper {
+  padding: 12px 24px;
+  flex: 2;
+  display: flex;
+  flex-direction: row;
+  max-width: 600px;
+
+  .settings-column {
+    margin-left: 16px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &>* {
+      margin-top: 12px;
+    }
+  }
+
+  @media (max-width:800px) {
+    display: block;
+
+    .settings-column {
+      margin-left: 0;
+    }
+  }
+}
+
+.preview {
+  padding: 16px;
+  background-color: $blue-600;
+  color: $blue-100;
+  flex: 1;
+}

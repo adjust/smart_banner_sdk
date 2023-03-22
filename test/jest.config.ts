@@ -16,11 +16,13 @@ const config: JestConfigWithTsJest = {
   ],
   globals: {
     __ADJUST_SB__NAMESPACE: 'adjust-sdk',
-    __ADJUST_SB__SDK_VERSION: 'TEST'
+    __ADJUST_SB__SDK_VERSION: 'TEST',
+    _DEV_MODE_: true,
+    _DEV_ENDPOINT_: ''
   },
   moduleNameMapper: {
     '.(css|scss)$': '<rootDir>/_mocks/style.ts',
-    '@test-utils': '<rootDir>/_setup/utils.ts'
+    '@sdk/(.*)$': '<rootDir>/../sdk/src/$1'
   },
   preset: 'ts-jest',
   transform: {

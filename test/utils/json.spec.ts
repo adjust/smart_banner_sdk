@@ -1,4 +1,4 @@
-import { parseJson } from '../../src/utils/json';
+import { parseJson } from '@sdk/utils/json';
 
 describe('JSON utilities', () => {
 

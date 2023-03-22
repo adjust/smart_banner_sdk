@@ -1,0 +1,28 @@
+@import 'assets/colors.scss';
+
+$indent: 12px;
+
+ul {
+  padding-inline-start: $indent;
+}
+
+:global {
+  .settings-row {
+    margin-top: 12px;
+  }
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+
+  .platform-name {
+    flex: 1 1 0;
+  }
+
+  .platform-name+input {
+    margin-left: - $indent;
+  }
+}

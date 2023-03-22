@@ -2,7 +2,11 @@ import { Logger, LogLevel } from './logger';
 import { AppToken, SmartBanner, SmartBannerOptions } from './smart-banner';
 import { DeviceOS, getDeviceOS } from './utils/detect-os';
 
-type InitialisationOptions = SmartBannerOptions & { logLevel?: LogLevel };
+/** @public */
+export { AppToken, DeviceOS, LogLevel, SmartBannerOptions };
+
+/** @public */
+export type InitialisationOptions = SmartBannerOptions & { logLevel?: LogLevel };
 
 function flattenAppToken(appToken: AppToken, deviceOs: DeviceOS): string | undefined {
   if (typeof appToken === 'string') {
@@ -14,11 +18,14 @@ function flattenAppToken(appToken: AppToken, deviceOs: DeviceOS): string | undef
 
 /**
  * A main SDK class to access public methods
+ * @public
  */
-export class AdjustSmartBannerSDK {
-  private static smartBanner: SmartBanner | null = null;
+export class AdjustSmartBanner {
+  private static smartBanner: SmartBanner | undefined;
 
   static init({ logLevel = 'error', ...restOptions }: InitialisationOptions) {
+    Logger.setLogLevel(logLevel);
+
     if (!restOptions.appToken) {
       Logger.error('Can not initialise Smart Banner, you should provide appToken');
       return;
@@ -38,8 +45,6 @@ export class AdjustSmartBannerSDK {
     }
 
     if (!this.smartBanner) {
-      Logger.setLogLevel(logLevel);
-
       this.smartBanner = new SmartBanner(appToken, restOptions, deviceOs);
     } else {
       Logger.error('Smart Banner is initialised already');

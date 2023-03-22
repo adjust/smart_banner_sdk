@@ -8,6 +8,8 @@ import { Storage, StorageFactory } from './storage/storage-factory';
 import { DeviceOS } from './utils/detect-os';
 import { getLanguage } from './utils/language';
 import { SmartBannerView } from './view/smart-banner-view';
+import { Globals } from './globals';
+import { UrlStrategyConfig } from './network/url-strategy/url-strategy-factory';
 
 type Callback = () => any;
 
@@ -37,17 +39,27 @@ export class SmartBanner {
     appToken: string,
     { dataResidency, language, onCreated, onDismissed }: SmartBannerOptions,
     private deviceOs: DeviceOS,
-    network?: Network) {
+    network?: Network
+  ) {
 
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
 
-    const urlStrategyConfig = dataResidency ? { dataResidency } : {};
+    let urlStrategyConfig: UrlStrategyConfig = {};
+    if (dataResidency) {
+      urlStrategyConfig = { dataResidency };
+    } else if (Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_) {
+      // remove from production code
+      // TODO: should customUrl be exposed in SDK options to simplify this?
+      urlStrategyConfig = { customUrl: Globals._DEV_ENDPOINT_ };
+    }
+
     this.network = network || NetworkFactory.create({ urlStrategyParameters: { urlStrategyConfig } });
 
     this.storage = StorageFactory.createStorage();
 
-    this.repository = new SmartBannerRepository(new SmartBannerApi(this.deviceOs, this.network));
+    const networkApi = new SmartBannerApi(this.deviceOs, this.network);
+    this.repository = new SmartBannerRepository(networkApi);
 
     this.language = language || getLanguage();
 
@@ -77,7 +89,8 @@ export class SmartBanner {
         return;
       }
 
-      // TODO: get needed banner based on page URL and othre conditions
+      // TODO: get needed banner based on page URL and other conditions
+
 
       /*const whenToShow = this.getDateToShowAgain(bannerData.dismissInterval);
       if (Date.now() < whenToShow) {

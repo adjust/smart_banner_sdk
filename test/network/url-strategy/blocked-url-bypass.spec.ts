@@ -1,5 +1,5 @@
-import { BlockedUrlBypass } from '../../../src/network/url-strategy/blocked-url-bypass';
-import { BaseUrlsMap } from '../../../src/network/url-strategy/url-strategy';
+import { BlockedUrlBypass } from '@sdk/network/url-strategy/blocked-url-bypass';
+import { BaseUrlsMap } from '@sdk/network/url-strategy/url-strategy';
 
 describe('BlockedUrlBypass', () => {
   const testEndpoints: Record<BlockedUrlBypass.Strategy, BaseUrlsMap> = {
