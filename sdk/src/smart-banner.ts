@@ -128,87 +128,46 @@ export class SmartBanner {
     }
   }
 
-  /**
-   * Schedules next Smart Banner show and removes banner from DOM
-   */
-  private dismiss(appToken: string, dismissInterval: number) {
-    Logger.log('Smart Banner dismissed');
-
-    this.storage.setItem(this.STORAGE_KEY_DISMISSED, Date.now());
-    const whenToShow = this.getDateToShowAgain(dismissInterval);
-    this.scheduleCreation(appToken, whenToShow);
-
-    this.destroy();
-
-    if (this.onDismissed) {
-      this.onDismissed();
-    }
-  }
-
-  /**
-   * Sets a timeout to schedule next Smart Banner show
-   */
-  private scheduleCreation(appToken: string, when: number) {
-    if (this.timer) {
-      Logger.log('Clearing previously scheduled creation of Smart Banner');
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
-
-    const delay = when - Date.now();
-    this.timer = setTimeout(
-      () => {
-        this.timer = null;
-        this.init(appToken);
-      },
-      delay);
-
-    Logger.log('Smart Banner creation scheduled on ' + new Date(when));
-  }
-
-  /**
-   * Returns date when Smart Banner should be shown again
-   */
-  private getDateToShowAgain(dismissInterval: number): number {
-    const dismissedDate = this.storage.getItem(this.STORAGE_KEY_DISMISSED);
-
-    if (!dismissedDate || typeof dismissedDate !== 'number') {
-      return Date.now();
-    }
-
-    return dismissedDate + dismissInterval;
-  }
-
-  /**
-   * Shows or hides Smart Banner view
-   */
-  private changeVisibility(action: 'show' | 'hide') {
+  show(): void {
     if (this.view) {
-      this.view[action]();
+      this.view.show();
       return;
     }
 
     if (this.dataFetchPromise) {
-      Logger.log(`Smart Banner will be ${action === 'show' ? 'shown' : 'hidden'} after initialisation finished`);
+      Logger.log('Smart Banner will be shown after initialisation finished');
 
       this.dataFetchPromise
         .then(() => {
-          Logger.log(`Initialisation finished, ${action} Smart Banner now`);
-          this[action]();
+          Logger.log('Initialisation finished, show Smart Banner now');
+          this.show();
         });
 
       return;
     }
 
-    Logger.error(`There is no Smart Banner to ${action}, have you called initialisation?`);
-  }
-
-  show(): void {
-    this.changeVisibility('show');
+    Logger.error('There is no Smart Banner to show, have you called initialisation?');
   }
 
   hide(): void {
-    this.changeVisibility('hide');
+    if (this.view) {
+      this.view.hide();
+      return;
+    }
+
+    if (this.dataFetchPromise) {
+      Logger.log('Smart Banner will be hidden after initialisation finished');
+
+      this.dataFetchPromise
+        .then(() => {
+          Logger.log('Initialisation finished, hide Smart Banner now');
+          this.hide();
+        });
+
+      return;
+    }
+
+    Logger.error('There is no Smart Banner to hide, have you called initialisation?');
   }
 
   setLanguage(language: string): void {
