@@ -10,6 +10,7 @@ import { SmartBannerView } from '../view/smart-banner-view';
 import { Globals } from '../globals';
 import { UrlStrategyConfig } from '../network/url-strategy/url-strategy-factory';
 import { DismissHandler } from './dismiss-handler';
+import { BannersSelector } from './banners-filter/banner-selector';
 
 type Callback = () => any;
 
@@ -27,6 +28,7 @@ export class SmartBanner {
   private network: Network;
   private repository: SmartBannerRepository;
   private dismissHandler: DismissHandler;
+  private bannersSelector: BannersSelector;
   private language: string;
   private onCreated?: Callback;
   private onDismissed?: Callback;
@@ -40,6 +42,7 @@ export class SmartBanner {
     network?: Network
   ) {
     this.dismissHandler = new DismissHandler();
+    this.bannersSelector = new BannersSelector(this.dismissHandler);
 
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
@@ -109,8 +112,7 @@ export class SmartBanner {
         return;
       }
 
-      // TODO: get needed banner based on page URL and other conditions
-      const matchingBanner = { banner: bannersList[0], dismissed: false }
+      const matchingBanner = this.bannersSelector.get(bannersList, window.location.href);
 
       if (!matchingBanner) {
         Logger.log(`No Smart Banners for ${window.location.href} page found`);
@@ -121,15 +123,13 @@ export class SmartBanner {
       if (!dismissed) {
         this.createBanner(banner);
       } else {
-        this.dismissHandler.schedule(banner, () => this.createBanner(banner))
+        this.dismissHandler.schedule(banner, () => this.createBanner(banner));
       }
     });
   }
 
   private dismiss(banner: SmartBannerData) {
     this.dismissHandler.dismiss(banner);
-
-    // TODO: schedule show of next banner
 
     this.destroy();
 
