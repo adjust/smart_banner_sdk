@@ -1,5 +1,5 @@
-import { Logger, LogLevel } from './logger';
-import { AppToken, SmartBanner, SmartBannerOptions } from './smart-banner';
+import { Logger, LogLevel } from './utils/logger';
+import { AppToken, SmartBanner, SmartBannerOptions } from './domain/smart-banner';
 import { DeviceOS, getDeviceOS } from './utils/detect-os';
 
 /** @public */
