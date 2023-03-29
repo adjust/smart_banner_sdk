@@ -3,7 +3,7 @@ import { NetworkWithUrlStrategy } from '@sdk/network/url-startegy-network';
 import { UrlStrategy } from '@sdk/network/url-strategy/url-strategy';
 import { UrlStrategyFactory } from '@sdk/network/url-strategy/url-strategy-factory';
 
-jest.mock('@sdk/logger');
+jest.mock('@sdk/utils/logger');
 
 describe('NetworkWithUrlStrategy', () => {
 

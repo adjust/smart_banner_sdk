@@ -1,12 +1,12 @@
 import { SmartBannerApi } from '@sdk/data/api';
-import { Logger } from '@sdk/logger';
+import { Logger } from '@sdk/utils/logger';
 import { Network } from '@sdk/network/network';
 import { DeviceOS } from '@sdk/utils/detect-os';
 import { snakeToCamelCase } from '@sdk/utils/snake-to-camel-case';
 
 import * as dataMock from '../../fake-data/smart_banners.json';
 
-jest.mock('@sdk/logger');
+jest.mock('@sdk/utils/logger');
 
 describe('Smart banner API tests', () => {
 

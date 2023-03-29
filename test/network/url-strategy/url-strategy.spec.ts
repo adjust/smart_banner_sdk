@@ -1,8 +1,8 @@
-import { Logger } from '@sdk/logger';
+import { Logger } from '@sdk/utils/logger';
 import { NoConnectionError } from '@sdk/network/errors';
 import { BaseUrlsMap, UrlStrategy } from '@sdk/network/url-strategy/url-strategy';
 
-jest.mock('@sdk/logger');
+jest.mock('@sdk/utils/logger');
 
 describe('UrlStrategy', () => {
   const urls: BaseUrlsMap[] = [{
