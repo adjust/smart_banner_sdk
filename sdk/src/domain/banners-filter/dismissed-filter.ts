@@ -4,12 +4,12 @@ import { DismissHandler } from '../dismiss-handler';
 export class DismissedFilter {
   constructor(private dismissHandler: DismissHandler) { }
 
-  public getShowDate(banner: SmartBannerData) {
+  private getShowDate(banner: SmartBannerData) {
     return this.dismissHandler.getDateToShowAgain(banner);
   }
 
   public filter(banners: SmartBannerData[]): SmartBannerData[] {
-    return banners.filter(this.dismissHandler.isDismissed);
+    return banners.filter(banner => !this.dismissHandler.isDismissed(banner));
   }
 
   public sort(banners: SmartBannerData[]): SmartBannerData[] {
