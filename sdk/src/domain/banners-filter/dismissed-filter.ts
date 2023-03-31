@@ -12,6 +12,10 @@ export class DismissedFilter {
     return banners.filter(banner => !this.dismissHandler.isDismissed(banner));
   }
 
+  public getDismissed(banners: SmartBannerData[]): SmartBannerData[] {
+    return banners.filter(banner => this.dismissHandler.isDismissed(banner));
+  }
+
   public sort(banners: SmartBannerData[]): SmartBannerData[] {
     return banners.sort((a, b) => {
       return this.getShowDate(a) - this.getShowDate(b);
