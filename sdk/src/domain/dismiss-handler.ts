@@ -28,7 +28,7 @@ export class DismissHandler {
     this.storage.setItem(banner.id, Date.now());
   }
 
-  public schedule(banner: SmartBannerData, showBannerCallback: () => void) {
+  public schedule(banner: SmartBannerData, showBannerCallback: () => void, delay?: number) {
     if (this.timer) {
       Logger.log('Clearing previously scheduled creation of Smart Banner');
       clearTimeout(this.timer);
@@ -37,14 +37,13 @@ export class DismissHandler {
 
     const when = this.getDateToShowAgain(banner);
 
-    const delay = when - Date.now();
     this.timer = setTimeout(
       () => {
         this.timer = null;
         this.storage.removeItem(banner.id);
         showBannerCallback();
       },
-      delay);
+      delay || when - Date.now());
 
     Logger.log(`Smart Banner creation scheduled on ${new Date(when)}`);
   }
