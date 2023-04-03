@@ -3,9 +3,11 @@ import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
 import { DismissHandler } from '@sdk/domain/dismiss-handler';
 import { BannerSelector, NO_DELAY } from '@sdk/domain/banners-filter/banner-selector';
 
+import 'jest-extended';
+
 describe('BannersSelector tests', () => {
   const url = 'some-url';
-  const dismissalPeriod = 600
+  const dismissalPeriod = 600;
 
   /** region Test 'banners' */
 
@@ -52,8 +54,6 @@ describe('BannersSelector tests', () => {
     const actual = bannerSelector.next(banners, url);
 
     expect(actual).not.toBeNull();
-    // FIXME: there is an issue with ts-jest + jest-extended setup, declarations for additional matchers missing
-    // @ts-ignore
     expect(actual?.banner).toBeOneOf(expectedBanners);
     expect(actual?.schedule).toBe(expectedDateToShow);
   });
@@ -67,7 +67,6 @@ describe('BannersSelector tests', () => {
     const actual = bannerSelector.next(banners, url);
 
     expect(actual).not.toBeNull();
-    // @ts-ignore
     expect(actual?.banner).toBeOneOf(expectedBanners);
     expect(actual?.schedule).toBe(expectedDateToShow);
   });
@@ -81,7 +80,6 @@ describe('BannersSelector tests', () => {
     const actual = bannerSelector.next(banners, url);
 
     expect(actual).not.toBeNull();
-    // @ts-ignore
     expect(actual?.banner).toBeOneOf(expectedBanners);
     expect(actual?.schedule).toBe(expectedDateToShow);
   });
@@ -95,7 +93,6 @@ describe('BannersSelector tests', () => {
     const actual = bannerSelector.next(banners, url);
 
     expect(actual).not.toBeNull();
-    // @ts-ignore
     expect(actual?.banner).toBeOneOf(expectedBanners);
     expect(actual?.schedule).toBe(expectedDateToShow);
   });
