@@ -7,7 +7,7 @@ import { LogLevel } from './log-level';
 import { Context } from './context';
 import { SettingsPreview } from './settings-preview';
 import { SdkMethods } from './sdk-methods';
-import { defaultSdkSettings } from 'demo/src/data/defaultSdkSettings';
+import { defaultSdkSettings } from 'demo/src/data/default-sdk-settings';
 import styles from './styles.module.scss';
 
 // TODO it's too 'deep' for this dependency, need to move it somewhere to App level or something like that
