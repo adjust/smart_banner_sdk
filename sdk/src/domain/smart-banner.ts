@@ -83,10 +83,12 @@ export class SmartBanner {
     Logger.log('Creating Smart Banner');
 
     this.view = new SmartBannerView(
+      document.body,
       bannerData,
-      () => this.dismiss(bannerData),
-      this.network.endpoint
+      '',
+      () => this.dismiss(bannerData)
     );
+    this.view.render();
 
     Logger.log('Smart Banner created');
 
