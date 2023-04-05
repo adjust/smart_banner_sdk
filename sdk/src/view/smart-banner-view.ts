@@ -1,5 +1,7 @@
-import { SmartBannerData, Position } from '../data/api';
+import { Position } from '../data/api';
+import { SmartBannerViewData } from './types';
 import { BannerBody } from './banner-body';
+
 import styles from './styles.module.scss';
 
 export class SmartBannerView {
@@ -7,7 +9,7 @@ export class SmartBannerView {
   private wrapper: HTMLElement;
   private bannerBody: BannerBody;
 
-  constructor(private parent: HTMLElement, private banner: SmartBannerData, href: string, onDismiss: () => void) {
+  constructor(private parent: HTMLElement, private banner: SmartBannerViewData, href: string, onDismiss: () => void) {
     this.root = document.createElement('div');
     this.wrapper = document.createElement('div');
     this.bannerBody = new BannerBody(banner, href, onDismiss);
