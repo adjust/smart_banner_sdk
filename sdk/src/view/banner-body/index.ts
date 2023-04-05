@@ -13,22 +13,30 @@ export class BannerBody {
   constructor(private banner: SmartBannerViewData, href: string, onDismiss: () => void) {
     this.dismissButton = new DismissButton(onDismiss);
     this.appIcon = new AppIcon(banner);
-    this.actionButton = new ActionButton(banner.buttonLabel, href);
+    this.actionButton = new ActionButton(banner, href);
   }
 
   private renderTitle() {
-    // TODO: set color from data
     const title = document.createElement('h4');
     title.className = styles['banner-text'];
     title.innerText = this.banner.title;
+
+    if (this.banner.titleColor) {
+      title.style.color = this.banner.titleColor;
+    }
+
     return title;
   }
 
   private renderDescription() {
-    // TODO: set color from data
     const description = document.createElement('p');
     description.className = styles['banner-text'];
     description.innerText = this.banner.description;
+
+    if (this.banner.descriptionColor) {
+      description.style.color = this.banner.descriptionColor;
+    }
+
     return description;
   }
 
@@ -53,6 +61,10 @@ export class BannerBody {
   public render(root: HTMLElement) {
     const bannerBody = document.createElement('div');
     bannerBody.className = styles['banner-body'];
+
+    if (this.banner.backgoundColor) {
+      bannerBody.style.backgroundColor = this.banner.backgoundColor;
+    }
 
     bannerBody.appendChild(this.renderInnerElements());
 
