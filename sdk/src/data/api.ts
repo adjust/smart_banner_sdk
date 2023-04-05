@@ -15,15 +15,19 @@ export enum BannerSize {
   Large = 'large'
 }
 
-export interface Context {
-  [key: string]: string;
+interface Context {
+  domain?: string;
+  tracker?: string;
+  campaign?: string;
+  adgroup?: string;
+  deeplink?: string;
 }
 
 interface Localization {
   title: string;
   description: string;
-  icon_url: string;
   button_label: string;
+  icon_url: string;
   context: Context;
 }
 
