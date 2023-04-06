@@ -20,7 +20,7 @@ interface Context {
   tracker?: string;
   campaign?: string;
   adgroup?: string;
-  deeplink?: string;
+  deeplink?: string | null;
 }
 
 interface Localization {
@@ -33,28 +33,29 @@ interface Localization {
 
 interface SmartBannerResponseData {
   id: string;
+  name: string;
+  display_rule: string | null;
   is_previous_attribution_priority: boolean;
   position: Position;
-  name: string;
+  size: BannerSize;
+  dismissal_period: number;
+  icon_url: string;
   title: string;
   title_color?: string;
   description: string;
   description_color?: string;
-  icon_url: string;
   button_label: string;
   button_color?: string;
   background_color?: string;
-  background_url?: string;
-  dismissal_period: number;
+  background_image_url?: string,
+  default_language: string,
   tracker_url: {
     template: string;
     context: Context;
   };
-  size: BannerSize;
   localizations: {
     [key: string]: Localization;
   };
-  display_rule: string | null;
 }
 
 export type SmartBannerData = SnakeToCamelCaseObjectKeys<SmartBannerResponseData>
