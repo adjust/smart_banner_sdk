@@ -54,7 +54,7 @@ module.exports = (env, args) => ({
           loader: 'css-loader',
           options: {
             modules: {
-              localIdentName: 'adjust-sb_[name]__[hash:base64:5]',
+              localIdentName: 'adjust-sb_[local]__[hash:base64:5]',
             }
           },
         },
