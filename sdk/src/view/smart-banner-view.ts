@@ -1,4 +1,4 @@
-import { Position } from '../data/api';
+import { Position } from '../data/types';
 import { SmartBannerViewData } from './types';
 import { BannerBody } from './banner-body';
 

@@ -1,4 +1,4 @@
-import { SmartBannerData } from '../../data/api';
+import { SmartBannerData } from '../../data/types';
 import { DisplayRule } from './display-rule';
 import { DismissedFilter } from './dismissed-filter';
 import { DismissHandler } from '../dismiss-handler';
