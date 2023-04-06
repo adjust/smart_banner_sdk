@@ -62,8 +62,8 @@ export class BannerBody {
     const bannerBody = document.createElement('div');
     bannerBody.className = styles['banner-body'];
 
-    if (this.banner.backgoundColor) {
-      bannerBody.style.backgroundColor = this.banner.backgoundColor;
+    if (this.banner.backgroundColor) {
+      bannerBody.style.backgroundColor = this.banner.backgroundColor;
     }
 
     bannerBody.appendChild(this.renderInnerElements());

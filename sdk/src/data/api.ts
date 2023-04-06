@@ -43,8 +43,8 @@ interface SmartBannerResponseData {
   icon_url: string;
   button_label: string;
   button_color?: string;
-  backgound_color?: string;
-  backgound_url?: string;
+  background_color?: string;
+  background_url?: string;
   dismissal_period: number;
   tracker_url: {
     template: string;
