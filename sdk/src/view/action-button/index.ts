@@ -15,7 +15,7 @@ export class ActionButton {
     this.link.href = this.href;
 
     if (this.banner.buttonColor) {
-      // TODO: buttonColor is a color of what? Text? Button itself?
+      // TODO: is buttonColor a color of what? Text? Button border? Background?
     }
 
     root.appendChild(this.link);
