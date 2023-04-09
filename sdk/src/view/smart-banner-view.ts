@@ -36,7 +36,7 @@ export class SmartBannerView {
   }
 
   public hide() {
-    this.root.hidden = false;
+    this.root.hidden = true;
   }
 
   public destroy() {
