@@ -1,11 +1,11 @@
 import { SmartBannerData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
-import { convertDataToViewData } from '../data/converters/view-data-converter';
-import { Logger } from '../utils/logger';
+import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
 import { NetworkFactory } from '../network/network-factory';
 import { DataResidency } from '../network/url-strategy/data-residency';
+import { Logger } from '../utils/logger';
 import { DeviceOS } from '../utils/detect-os';
 import { getLanguage } from '../utils/language';
 import { SmartBannerView } from '../view/smart-banner-view';
@@ -86,7 +86,7 @@ export class SmartBanner {
 
     this.view = new SmartBannerView(
       document.body,
-      convertDataToViewData(bannerData, this.language),
+      convertSmartBannerDataForView(bannerData, this.language),
       '',
       () => this.dismiss(bannerData)
     );
