@@ -1,4 +1,4 @@
-import { SnakeToCamelCaseObjectKeys } from '../utils/snake-to-camel-case';
+import { SnakeCaseKeysToCamelCase } from '../utils/snake-to-camel-case';
 
 export enum Position {
   Top = 'top',
@@ -19,7 +19,7 @@ export interface Context {
   deeplink?: string | null;
 }
 
-interface Localization {
+interface LocalizationData {
   title: string;
   description: string;
   button_label: string;
@@ -50,8 +50,10 @@ export interface SmartBannerResponseData {
     context: Context;
   };
   localizations: {
-    [key: string]: Localization;
+    [key: string]: LocalizationData;
   };
 }
 
-export type SmartBannerData = SnakeToCamelCaseObjectKeys<SmartBannerResponseData>
+export type Localization = SnakeCaseKeysToCamelCase<LocalizationData>
+
+export type SmartBannerData = SnakeCaseKeysToCamelCase<SmartBannerResponseData>
