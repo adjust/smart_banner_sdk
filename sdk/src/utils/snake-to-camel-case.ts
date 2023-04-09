@@ -3,7 +3,10 @@ export type SnakeToCamelCase<S extends string | number | symbol> =
   `${T}${Capitalize<SnakeToCamelCase<U>>}` :
   S
 
-export type SnakeToCamelCaseObjectKeys<T extends Record<string, any>> = { [K in keyof T as SnakeToCamelCase<K>]: T[K] }
+export type SnakeCaseKeysToCamelCase<T extends object> = {
+  [K in keyof T as SnakeToCamelCase<K>]: T[K] extends object ? SnakeCaseKeysToCamelCase<T[K]> : T[K]
+}
+
 
 /**
  * Transforms a string from snake_case or kebab-case to camelCase.
@@ -16,15 +19,19 @@ export function stringToCamelCase(text: string): string {
 }
 
 /**
- * Transfroms object keys from snake_case or kebab-case to camelCase. Does NOT transform nested objects.
- * @param obj 
+ * Transfroms recursively object keys from snake_case or kebab-case to camelCase.
+ * @param obj an object to be transformed
  * @returns a new object with keys in camelCase
  */
-export function snakeToCamelCase<T extends Record<string, any>>(obj: T): SnakeToCamelCaseObjectKeys<T> {
+export function snakeToCamelCase<T extends Record<string, any>>(obj: T): SnakeCaseKeysToCamelCase<T> {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+    return obj;
+  }
+
   const entries = Object.entries(obj);
   const mappedEntries = entries.map(
-    ([k, v]) => [`${stringToCamelCase(k)}`, v]
+    ([k, v]) => [`${stringToCamelCase(k)}`, snakeToCamelCase(v)]
   );
 
-  return Object.fromEntries(mappedEntries) as SnakeToCamelCaseObjectKeys<T>;
+  return Object.fromEntries(mappedEntries) as SnakeCaseKeysToCamelCase<T>;
 }
