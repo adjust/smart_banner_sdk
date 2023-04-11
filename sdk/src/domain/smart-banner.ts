@@ -1,9 +1,11 @@
-import { Context, SmartBannerApi, SmartBannerData } from '../data/api';
+import { SmartBannerData } from '../data/types';
+import { SmartBannerApi } from '../data/api';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
-import { Logger } from '../utils/logger';
+import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
 import { NetworkFactory } from '../network/network-factory';
 import { DataResidency } from '../network/url-strategy/data-residency';
+import { Logger } from '../utils/logger';
 import { DeviceOS } from '../utils/detect-os';
 import { getLanguage } from '../utils/language';
 import { SmartBannerView } from '../view/smart-banner-view';
@@ -83,10 +85,12 @@ export class SmartBanner {
     Logger.log('Creating Smart Banner');
 
     this.view = new SmartBannerView(
-      bannerData,
-      () => this.dismiss(bannerData),
-      this.network.endpoint
+      document.body,
+      convertSmartBannerDataForView(bannerData, this.language),
+      '',
+      () => this.dismiss(bannerData)
     );
+    this.view.render();
 
     Logger.log('Smart Banner created');
 
@@ -151,7 +155,7 @@ export class SmartBanner {
     }
   }
 
-  // TODO: should check if page url changed and select another banner if needed
+  // TODO: should check if page url changed and select another banner if needed, not just change visibility
   show(): void {
     if (this.view) {
       this.view.show();
@@ -199,7 +203,7 @@ export class SmartBanner {
     // TODO: change language in view
   }
 
-  setContext(context: Context): void {
+  setContext(context: Record<string, string>): void {
 
   }
 }

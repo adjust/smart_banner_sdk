@@ -1,5 +1,5 @@
 import { Repository } from './repository';
-import { SmartBannerData } from '../api';
+import { SmartBannerData } from '../types';
 import { AsyncDataSource } from '../data-source';
 import { InMemoryStorage } from '../storage/in-memory-storage';
 import { Storage } from '../storage/storage';

@@ -39,7 +39,7 @@ module.exports = (env, args) => ({
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.scss']
   },
   module: {
     rules: [{
@@ -54,7 +54,7 @@ module.exports = (env, args) => ({
           loader: 'css-loader',
           options: {
             modules: {
-              localIdentName: 'adjust-sb_[local]-[name]__[hash:base64:5]',
+              localIdentName: 'adjust-sb_[local]__[hash:base64:5]',
             }
           },
         },

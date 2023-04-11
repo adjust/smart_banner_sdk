@@ -92,15 +92,15 @@ module.exports = (env, args) => ({
               return;
             }
 
-            const fakeData = require('./../fake-data/smart_banners.json');
+            const fakeData = require(`./../fake-data/smart_banners.json`);
 
-            if (fakeData[platform]) {
-              res.send(fakeData[platform]);
+            if (!fakeData) {
+              res.send('No data found');
               return;
             }
-          }
 
-          res.send('No data found');
+            res.send(fakeData);
+          }
         },
       });
 

@@ -1,77 +1,45 @@
-import styles from '../assets/styles.module.scss';
-import render from '../assets/template';
-import { Position, SmartBannerData } from '../data/api';
-import { AppIcon } from './app-icon';
+import { Position } from '../data/types';
+import { SmartBannerViewData } from './types';
+import { BannerBody } from './banner-body';
+
+import styles from './styles.module.scss';
 
 export class SmartBannerView {
-  private parent: HTMLElement = document.body;
-  private banner: HTMLElement;
-  private dismissButton: Element | null = null;
+  private root: HTMLElement;
+  private wrapper: HTMLElement;
+  private bannerBody: BannerBody;
 
-  private onDismiss: (() => void);
-
-  constructor(data: SmartBannerData, onDismiss: () => void, endpoint: string) {
-    this.onDismiss = onDismiss;
-
-    this.banner = this.render(data, endpoint);
+  constructor(private parent: HTMLElement, private banner: SmartBannerViewData, href: string, onDismiss: () => void) {
+    this.root = document.createElement('div');
+    this.wrapper = document.createElement('div');
+    this.bannerBody = new BannerBody(banner, href, onDismiss);
   }
 
-  private render(bannerData: SmartBannerData, endpoint: string): HTMLElement {
-    this.banner = document.createElement('div');
-    this.banner.setAttribute('class', styles.bannerContainer);
+  public render() {
+    const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
+    this.root.className = `${styles.banner} ${positionStyle}`;
 
-    /*const positionStyle = bannerData.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
-    const query = bannerData.deeplinkPath ? `?deeplink=${encodeURIComponent(bannerData.deeplinkPath)}` : '';
-    const href = `${endpoint}/${bannerData.trackerToken}${query}`;
-    this.banner.innerHTML = render(positionStyle, bannerData.header, bannerData.description, bannerData.buttonText, href);
+    this.wrapper.className = styles['banner-placeholder'];
+    this.wrapper.appendChild(this.root);
 
-    if (bannerData.position === Position.Top) {
-      this.parent.insertBefore(this.banner, this.parent.firstChild);
+    this.bannerBody.render(this.root);
+
+    if (this.banner.position === Position.Top) {
+      this.parent.insertBefore(this.wrapper, this.parent.firstChild);
     } else {
-      this.parent.appendChild(this.banner);
+      this.parent.appendChild(this.wrapper);
     }
-
-    this.dismissButton = this.getElemByClass(styles.dismiss);
-    if (this.dismissButton) {
-      this.dismissButton.addEventListener('click', this.onDismiss);
-    }
-
-    const appIconPlaceholder = this.getElemByClass<HTMLElement>(styles.placeholder);
-    const appIconImage = this.getElemByClass<HTMLImageElement>(styles.image);
-
-    if (appIconImage && appIconPlaceholder) {
-      new AppIcon(bannerData, appIconImage, appIconPlaceholder);
-    }*/
-
-    return this.banner;
   }
 
   public show() {
-    this.banner.hidden = false;
+    this.root.hidden = false;
   }
 
   public hide() {
-    this.banner.hidden = true;
+    this.root.hidden = true;
   }
 
   public destroy() {
-    this.removeDismissButtonHandler();
-    this.banner.remove();
-  }
-
-  private removeDismissButtonHandler() {
-    if (this.dismissButton && this.onDismiss) {
-      this.dismissButton.removeEventListener('click', this.onDismiss);
-      this.dismissButton = null;
-    }
-  }
-
-  private getElemByClass<T extends Element>(classNames: string): T | null {
-    if (this.banner) {
-      const elements = this.banner.getElementsByClassName(classNames);
-      return elements.length > 0 ? elements[0] as T : null;
-    }
-
-    return null;
+    this.bannerBody.destroy();
   }
 }

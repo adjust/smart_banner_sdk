@@ -1,4 +1,4 @@
-import { snakeToCamelCase, SnakeToCamelCaseObjectKeys, stringToCamelCase } from '@sdk/utils/snake-to-camel-case';
+import { snakeToCamelCase, SnakeCaseKeysToCamelCase, stringToCamelCase } from '@sdk/utils/snake-to-camel-case';
 
 describe('snake_case to camelCase', () => {
   describe('String to camelCase', () => {
@@ -20,41 +20,59 @@ describe('snake_case to camelCase', () => {
 
   describe('Object keys to camelCase', () => {
     it('transforms object keys', () => {
-      const input = {
+      const testing = {
         snake_case: true,
         person_id: 'some_id',
         first_name: 'Liz',
         last_Name: 'Lemon',
         year_of_birth: 1970,
+        key_for_null: null,
+        empty_value: ''
       };
 
-      const result: SnakeToCamelCaseObjectKeys<typeof input> = {
+      const expected: SnakeCaseKeysToCamelCase<typeof testing> = {
         snakeCase: true,
         personId: 'some_id',
         firstName: 'Liz',
         lastName: 'Lemon',
         yearOfBirth: 1970,
+        keyForNull: null,
+        emptyValue: '',
       };
 
-      expect(snakeToCamelCase(input)).toEqual(result);
+      expect(snakeToCamelCase(testing)).toEqual(expected);
     });
 
-    it('does not transform nested objects', () => {
-      const input = {
+    it('does transform nested objects', () => {
+      const testing = {
         snake_case: true,
         additional_data: {
           nested_key: 'value'
-        }
+        },
+        deeply_nested: {
+          nested_key: {
+            more_layers: ['one', 'two'],
+            key_for_null: null,
+            empty_value: ''
+          }
+        },
       };
 
-      const result: SnakeToCamelCaseObjectKeys<typeof input> = {
+      const expected: SnakeCaseKeysToCamelCase<typeof testing> = {
         snakeCase: true,
         additionalData: {
-          nested_key: 'value'
-        }
+          nestedKey: 'value'
+        },
+        deeplyNested: {
+          nestedKey: {
+            moreLayers: ['one', 'two'],
+            keyForNull: null,
+            emptyValue: '',
+          }
+        },
       };
 
-      expect(snakeToCamelCase(input)).toEqual(result);
+      expect(snakeToCamelCase(testing)).toEqual(expected);
     });
   });
 

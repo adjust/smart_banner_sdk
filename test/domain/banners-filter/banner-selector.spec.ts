@@ -1,4 +1,4 @@
-import { SmartBannerData } from '@sdk/data/api';
+import { SmartBannerData } from '@sdk/data/types';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
 import { DismissHandler } from '@sdk/domain/dismiss-handler';
 import { BannerSelector, NO_DELAY } from '@sdk/domain/banners-filter/banner-selector';
@@ -9,7 +9,7 @@ describe('BannersSelector tests', () => {
   const url = 'some-url';
   const dismissalPeriod = 600;
 
-  /** region Test 'banners' */
+  //#region Set of test 'banners'
 
   // Banners matching display_rule 
   const banner1 = { id: 'banner-1', dismissalPeriod, displayRule: url } as SmartBannerData;
@@ -26,7 +26,7 @@ describe('BannersSelector tests', () => {
   // Not matching banner
   const nonSuitableBanner = { id: 'non-suitable', dismissalPeriod, displayRule: 'other-url' } as SmartBannerData;
 
-  /** endregion */
+  //#endregion
 
   // TODO: for possible future refactor: doesn it make sense to inject dismiss date to banner data?
   const longAgoDismissedDate = Date.now() - dismissalPeriod - 100;

@@ -1,4 +1,4 @@
-import { SmartBannerData } from '@sdk/data/api';
+import { SmartBannerData } from '@sdk/data/types';
 import { AsyncDataSource } from '@sdk/data/data-source';
 import { SmartBannerRepository } from '@sdk/data/repositories/smart-banner-repository';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
