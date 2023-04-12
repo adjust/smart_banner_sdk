@@ -58,4 +58,5 @@ export type Localization = SnakeCaseKeysToCamelCase<LocalizationData>
 
 export type SmartBannerData = SnakeCaseKeysToCamelCase<SmartBannerResponseData>
 
-export type UserContext = { deeplink?: string } & Record<string, string>
+export type UserContext = Record<string, string>
+export type UserTrackerData = { deeplink?: string, context?: UserContext }
