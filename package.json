@@ -5,7 +5,9 @@
   "scripts": {
     "build": "npm run build --workspace=sdk",
     "clean": "rm -rf ./sdk/dist/ ./demo/dist/",
-    "start": "npm run build-dev --workspace=sdk -- --env devPort=8787 && npm run start --workspace=demo -- --env devPort=8787",
+    "start": "run-p build-sdk-dev run-demo",
+    "build-sdk-dev": "npm run build-dev --workspace=sdk -- --env devPort=8787 --watch",
+    "run-demo": "npm run start --workspace=demo -- --env devPort=8787",
     "lint": "eslint ./sdk/src ./test ./demo/src --fix",
     "test": "TZ=UTC jest --config ./test/jest.config.ts",
     "prepublishOnly": "npm-run-all lint test"
