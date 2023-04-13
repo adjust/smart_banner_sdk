@@ -24,7 +24,7 @@ export type AppToken = { [k in DeviceOS]?: string } | string;
 /** @public */
 export interface SmartBannerOptions {
   appToken: AppToken;
-  dataResidency?: DataResidency.Region;
+  dataResidency?: DataResidencyRegion;
   deeplink?: string;
   context?: UserContext;
   language?: string;
@@ -97,7 +97,7 @@ export class SmartBanner {
   private createBanner(bannerData: SmartBannerData) {
     Logger.log('Creating Smart Banner');
 
-    const trackerData = convertSmartBannerToTracker(bannerData, this.network.endpoint);
+    const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint);
     const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.userTrackerData);
 
     this.view = new SmartBannerView(
