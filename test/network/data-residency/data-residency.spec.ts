@@ -30,6 +30,6 @@ describe('DataResidency', () => {
   it.each(regions)('returns urls map depending on region', (region: DataResidency.Region) => {
     const dataResidency = new DataResidency(region, testEndpoints);
 
-    expect(dataResidency.endpoint).toEqual(testEndpoints[region].app)
+    expect(dataResidency.endpoint).toEqual(testEndpoints[region].app);
   });
 });

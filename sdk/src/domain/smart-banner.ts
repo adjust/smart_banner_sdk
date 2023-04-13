@@ -4,7 +4,7 @@ import { SmartBannerRepository } from '../data/repositories/smart-banner-reposit
 import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
 import { NetworkConfig, NetworkFactory } from '../network/network-factory';
-import { DataResidency } from '../network/data-residency/data-residency';
+import { DataResidencyRegion } from '../network/data-residency/data-residency';
 import { Logger } from '../utils/logger';
 import { DeviceOS } from '../utils/detect-os';
 import { getLanguage } from '../utils/language';
@@ -13,13 +13,16 @@ import { Globals } from '../globals';
 import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
 
-type Callback = () => any;
+/** @public */
+export type Callback = () => any;
 
+/** @public */
 export type AppToken = { [k in DeviceOS]?: string } | string;
 
+/** @public */
 export interface SmartBannerOptions {
   appToken: AppToken;
-  dataResidency?: DataResidency.Region;
+  dataResidency?: DataResidencyRegion;
   language?: string;
   onCreated?: Callback;
   onDismissed?: Callback;

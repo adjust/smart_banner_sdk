@@ -13,7 +13,7 @@ describe('NetworkWithDataResidency', () => {
   };
 
   const dataResidencyMock = new DataResidency('EU', { 'EU': baseUrls, 'US': baseUrls, 'TR': baseUrls, });
-  let dataResidencySpy: jest.SpyInstance
+  let dataResidencySpy: jest.SpyInstance;
 
   const networkMock: Network = {
     trackerEndpoint: '', // not used in tests
@@ -24,8 +24,8 @@ describe('NetworkWithDataResidency', () => {
     beforeAll(() => {
       jest.spyOn(networkMock, 'request');
 
-      dataResidencySpy = jest.spyOn(dataResidencyMock, 'endpoint', 'get')
-      dataResidencySpy.mockImplementation(() => baseUrls.app)
+      dataResidencySpy = jest.spyOn(dataResidencyMock, 'endpoint', 'get');
+      dataResidencySpy.mockImplementation(() => baseUrls.app);
     });
 
     afterEach(() => {
@@ -49,7 +49,7 @@ describe('NetworkWithDataResidency', () => {
   describe('endpoint property', () => {
     beforeAll(() => {
       jest.spyOn(networkMock, 'request');
-      jest.spyOn(dataResidencyMock, 'endpoint', 'get').mockImplementation(() => baseUrls.app)
+      jest.spyOn(dataResidencyMock, 'endpoint', 'get').mockImplementation(() => baseUrls.app);
     });
 
     afterEach(() => {
@@ -59,7 +59,7 @@ describe('NetworkWithDataResidency', () => {
     it('returns default endpoint before the first request', () => {
       const network = new NetworkWithDataResidency(networkMock, dataResidencyMock);
 
-      expect(network.trackerEndpoint).toBe(baseUrls.app)
+      expect(network.trackerEndpoint).toBe(baseUrls.app);
     });
   });
 });

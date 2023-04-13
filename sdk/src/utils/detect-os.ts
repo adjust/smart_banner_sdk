@@ -1,5 +1,6 @@
 /**
  * Operation systems
+ * @public
  */
 export enum DeviceOS {
   Android = 'android',
@@ -18,7 +19,7 @@ export function getDeviceOS(): DeviceOS | undefined {
     return undefined;
   }
 
-  if(/ipad|iphone|ipod/.test(userAgent)) {
+  if (/ipad|iphone|ipod/.test(userAgent)) {
     return DeviceOS.iOS;
   }
 
