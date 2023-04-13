@@ -1,5 +1,5 @@
-import { SmartBannerData, SmartBannerResponseData } from "../types";
-import { snakeToCamelCase } from "../../utils/snake-to-camel-case";
+import { SmartBannerData, SmartBannerResponseData } from '../types';
+import { snakeToCamelCase } from '../../utils/snake-to-camel-case';
 
 export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): SmartBannerData[] | null {
   const banners: Array<SmartBannerData> = [];

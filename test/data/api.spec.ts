@@ -17,7 +17,7 @@ describe('Smart banner API tests', () => {
     const serverResponseMock = dataMock;
 
     const testNetwork: Network = {
-      endpoint: 'test-endpoint',
+      trackerEndpoint: '', // not used in tests
       request: jest.fn()
     };
 

@@ -16,7 +16,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
       context: {}
     },
     dismissalPeriod: 1
-  }
+  };
 
   const viewData = {
     title: 'my title',
@@ -62,7 +62,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   it('converts data with custom locale', () => {
     const result = convertSmartBannerDataForView(banner, 'ru');
 
-    const expected = { ...viewData, ...localizations.ru }
+    const expected = { ...viewData, ...localizations.ru };
 
     expect(result).toEqual(expected);
   });

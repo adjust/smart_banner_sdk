@@ -1,3 +1,4 @@
+/** @public */
 export type LogLevel = 'none' | 'verbose' | 'info' | 'warning' | 'error'
 
 export class Logger {
