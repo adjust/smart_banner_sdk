@@ -28,10 +28,10 @@ describe('Detecting browser language', () => {
   test.each([
     { languages: [], language: undefined },
     { languages: undefined, language: '' },
-  ])('returns default language if unable to read Navigator.languages nor Navigator.language', ({ languages, language }) => {
+  ])('returns `null` if unable to read Navigator.languages nor Navigator.language', ({ languages, language }) => {
     jest.spyOn(global.navigator, 'languages', 'get').mockReturnValue(languages as any);
     jest.spyOn(global.navigator, 'language', 'get').mockReturnValue(language as any);
 
-    expect(getLanguage()).toBe('en');
+    expect(getLanguage()).toBe(null);
   });
 });

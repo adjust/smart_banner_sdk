@@ -33,14 +33,6 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   };
 
   const localizations = {
-    de: {
-      title: 'mein Titel',
-      description: 'meine Beschreibung',
-      buttonLabel: 'anklicken',
-      context: {
-        adgroup: 'de'
-      }
-    } as Localization,
     ru: {
       title: 'мой заголовок',
       description: 'мое описание',

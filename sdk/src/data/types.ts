@@ -57,3 +57,6 @@ export interface SmartBannerResponseData {
 export type Localization = SnakeCaseKeysToCamelCase<LocalizationData>
 
 export type SmartBannerData = SnakeCaseKeysToCamelCase<SmartBannerResponseData>
+
+export type UserContext = Record<string, string>
+export type UserTrackerData = { deeplink?: string, context?: UserContext }

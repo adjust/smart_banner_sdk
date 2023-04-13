@@ -1,6 +1,7 @@
-import { SmartBannerData } from '../data/types';
+import { SmartBannerData, UserContext, UserTrackerData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
+import { convertSmartBannerToTracker } from '../data/converters/smart-banner-to-tracker-data';
 import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
 import { NetworkConfig, NetworkFactory } from '../network/network-factory';
@@ -12,6 +13,7 @@ import { SmartBannerView } from '../view/smart-banner-view';
 import { Globals } from '../globals';
 import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
+import { buildSmartBannerUrl } from './tracker-builder';
 
 /** @public */
 export type Callback = () => any;
@@ -23,6 +25,8 @@ export type AppToken = { [k in DeviceOS]?: string } | string;
 export interface SmartBannerOptions {
   appToken: AppToken;
   dataResidency?: DataResidencyRegion;
+  deeplink?: string;
+  context?: UserContext;
   language?: string;
   onCreated?: Callback;
   onDismissed?: Callback;
@@ -33,15 +37,17 @@ export class SmartBanner {
   private repository: SmartBannerRepository;
   private dismissHandler: DismissHandler;
   private bannersSelector: BannerSelector;
-  private language: string;
+  private language: string | null;
+  private userTrackerData: UserTrackerData = {};
   private onCreated?: Callback;
   private onDismissed?: Callback;
   private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
   private view: SmartBannerView | null = null;
+  private url: string = window.location.href;
 
   constructor(
     appToken: string,
-    { dataResidency, language, onCreated, onDismissed }: SmartBannerOptions,
+    { dataResidency, language, deeplink, context, onCreated, onDismissed }: SmartBannerOptions,
     private deviceOs: DeviceOS,
     network?: Network
   ) {
@@ -63,6 +69,14 @@ export class SmartBanner {
 
     this.language = language || getLanguage();
 
+    if (deeplink) {
+      this.userTrackerData.deeplink = deeplink;
+    }
+
+    if (context) {
+      this.userTrackerData.context = context;
+    }
+
     this.init(appToken);
   }
 
@@ -83,10 +97,13 @@ export class SmartBanner {
   private createBanner(bannerData: SmartBannerData) {
     Logger.log('Creating Smart Banner');
 
+    const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint);
+    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.userTrackerData);
+
     this.view = new SmartBannerView(
       document.body,
       convertSmartBannerDataForView(bannerData, this.language),
-      '',
+      trackerUrl,
       () => this.dismiss(bannerData)
     );
     this.view.render();
@@ -115,10 +132,10 @@ export class SmartBanner {
         return;
       }
 
-      const matchingBanner = this.bannersSelector.next(bannersList, window.location.href);
+      const matchingBanner = this.bannersSelector.next(bannersList, this.url);
 
       if (!matchingBanner) {
-        Logger.log(`No Smart Banners for ${window.location.href} page found`);
+        Logger.log(`No Smart Banners for ${this.url} page found`);
         return;
       }
 
@@ -156,6 +173,8 @@ export class SmartBanner {
 
   // TODO: should check if page url changed and select another banner if needed, not just change visibility
   show(): void {
+    this.url = window.location.href;
+
     if (this.view) {
       this.view.show();
       return;
@@ -200,9 +219,16 @@ export class SmartBanner {
   setLanguage(language: string): void {
     this.language = language;
     // TODO: change language in view
+    // TODO: update banner URL
   }
 
-  setContext(context: Record<string, string>): void {
+  setContext(context: UserContext): void {
+    this.userTrackerData.context = context;
+    // TODO: update banner URL
+  }
 
+  setDeeplink(deeplink: string): void {
+    this.userTrackerData.deeplink = deeplink;
+    // TODO: update banner URL
   }
 }
