@@ -1,5 +1,5 @@
-import { DataResidency } from '@sdk/network/url-strategy/data-residency';
-import { BaseUrlsMap } from '@sdk/network/url-strategy/url-strategy';
+import { DataResidency } from '@sdk/network/data-residency/data-residency';
+import { BaseUrlsMap } from '@sdk/network/data-residency/endpoints';
 
 describe('DataResidency', () => {
 
@@ -27,14 +27,9 @@ describe('DataResidency', () => {
     DataResidency.US
   ];
 
-  it.each(regions)('returns urls map depending on region', (dataResidency: DataResidency.Region) => {
-    const resultingFn = DataResidency.preferredUrlsGetter(dataResidency, testEndpoints);
+  it.each(regions)('returns urls map depending on region', (region: DataResidency.Region) => {
+    const dataResidency = new DataResidency(region, testEndpoints);
 
-    expect(resultingFn).toEqual(expect.any(Function));
-
-    const baseUrlsMap = resultingFn();
-
-    expect(baseUrlsMap.length).toEqual(1);
-    expect(baseUrlsMap[0]).toEqual(testEndpoints[dataResidency]);
+    expect(dataResidency.endpoint).toEqual(testEndpoints[region].app)
   });
 });
