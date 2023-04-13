@@ -16,7 +16,7 @@ describe('NetworkWithUrlStrategy', () => {
   const urlStrategyMock = new UrlStrategy(() => [baseUrls]);
 
   const networkMock: Network = {
-    endpoint: '',
+    trackerEndpoint: '', // not used in tests
     request: (path: string, params?: Record<string, string | number | boolean>) => Promise.resolve('all good') as any
   };
 
@@ -32,7 +32,7 @@ describe('NetworkWithUrlStrategy', () => {
     });
 
     it('could be instantiated with provided UrlStrategy', () => {
-      const network = new NetworkWithUrlStrategy(networkMock, { urlStrategy: urlStrategyMock });
+      const network = new NetworkWithUrlStrategy(networkMock, { instance: urlStrategyMock });
 
       expect(UrlStrategyFactory.create).not.toHaveBeenCalled();
       expect(network).toBeInstanceOf(NetworkWithUrlStrategy);
@@ -40,7 +40,7 @@ describe('NetworkWithUrlStrategy', () => {
 
     it('could be instantiated with UrlStrategyConfig', () => {
       const urlStrategyConfig = {};
-      const network = new NetworkWithUrlStrategy(networkMock, { urlStrategyConfig });
+      const network = new NetworkWithUrlStrategy(networkMock, { config: urlStrategyConfig });
 
       expect(UrlStrategyFactory.create).toHaveBeenCalledWith(urlStrategyConfig);
       expect(network).toBeInstanceOf(NetworkWithUrlStrategy);
@@ -60,7 +60,7 @@ describe('NetworkWithUrlStrategy', () => {
     it('sends request with inner Network instance and uses UrlStrategy retries', async () => {
       expect.assertions(3);
 
-      const network = new NetworkWithUrlStrategy(networkMock, { urlStrategy: urlStrategyMock });
+      const network = new NetworkWithUrlStrategy(networkMock, { instance: urlStrategyMock });
       const result = await network.request('/whatever', { foo: 'bar', n: 42 });
 
       expect(result).toEqual('all good');
@@ -82,13 +82,13 @@ describe('NetworkWithUrlStrategy', () => {
     const defaultEndpoint = 'https://app.adjust.com';
 
     it('returns default endpoint before the first request', () => {
-      const network = new NetworkWithUrlStrategy(networkMock, { urlStrategy: urlStrategyMock });
+      const network = new NetworkWithUrlStrategy(networkMock, { instance: urlStrategyMock });
 
       expect(network.endpoint).toEqual(defaultEndpoint);
     });
 
     it('returns last endpoint after successful request', async () => {
-      const network = new NetworkWithUrlStrategy(networkMock, { urlStrategy: urlStrategyMock });
+      const network = new NetworkWithUrlStrategy(networkMock, { instance: urlStrategyMock });
 
       await network.request('/whatever');
 
@@ -96,7 +96,7 @@ describe('NetworkWithUrlStrategy', () => {
     });
 
     it('returns default endpoint after failed request', async () => {
-      const network = new NetworkWithUrlStrategy(networkMock, { urlStrategy: urlStrategyMock });
+      const network = new NetworkWithUrlStrategy(networkMock, { instance: urlStrategyMock });
       jest.spyOn(networkMock, 'request').mockRejectedValueOnce('Error!');
 
       try {

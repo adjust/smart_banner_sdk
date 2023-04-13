@@ -1,17 +1,17 @@
 export interface Network {
-  endpoint: string;
+  trackerEndpoint: string;
   request: <T>(path: string, params?: Record<string, string | number | boolean>) => Promise<T>;
 }
 
 export class NetworkDecorator implements Network {
   constructor(protected network: Network) { }
 
-  public get endpoint(): string {
-    return this.network.endpoint;
+  public get trackerEndpoint(): string {
+    return this.network.trackerEndpoint;
   }
 
-  public set endpoint(value: string) {
-    this.network.endpoint = value;
+  public set trackerEndpoint(value: string) {
+    this.network.trackerEndpoint = value;
   }
 
   request<T>(path: string, params?: Record<string, string | number | boolean>): Promise<T> {

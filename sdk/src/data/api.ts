@@ -1,4 +1,4 @@
-import { SmartBannerResponseData, SmartBannerData } from './types'
+import { SmartBannerResponseData, SmartBannerData } from './types';
 import { AsyncDataSource } from './data-source';
 import { convertResponseToSmartBanners } from './converters/response-to-smart-banners';
 import { DeviceOS } from '../utils/detect-os';

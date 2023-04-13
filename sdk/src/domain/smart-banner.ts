@@ -3,14 +3,13 @@ import { SmartBannerApi } from '../data/api';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
 import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
-import { NetworkFactory } from '../network/network-factory';
+import { NetworkConfig, NetworkFactory } from '../network/network-factory';
 import { DataResidency } from '../network/url-strategy/data-residency';
 import { Logger } from '../utils/logger';
 import { DeviceOS } from '../utils/detect-os';
 import { getLanguage } from '../utils/language';
 import { SmartBannerView } from '../view/smart-banner-view';
 import { Globals } from '../globals';
-import { UrlStrategyConfig } from '../network/url-strategy/url-strategy-factory';
 import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
 
@@ -49,15 +48,12 @@ export class SmartBanner {
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
 
-    let urlStrategyConfig: UrlStrategyConfig = {};
-    if (dataResidency) {
-      urlStrategyConfig = { dataResidency };
-    } else if (Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_) {
-      // remove from production code
-      urlStrategyConfig = { customUrl: Globals._DEV_ENDPOINT_ };
-    }
+    const networkConfig: NetworkConfig = {
+      dataEndpoint: Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_ ? Globals._DEV_ENDPOINT_ : undefined,
+      urlStrategy: dataResidency ? { config: { dataResidency } } : { config: {} }
+    };
 
-    this.network = network || NetworkFactory.create({ urlStrategyParameters: { urlStrategyConfig } });
+    this.network = network || NetworkFactory.create(networkConfig);
 
     const networkApi = new SmartBannerApi(this.deviceOs, this.network);
     this.repository = new SmartBannerRepository(networkApi);
