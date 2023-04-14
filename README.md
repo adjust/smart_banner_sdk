@@ -20,7 +20,7 @@ The recommended way to install the SDK is npm:
 npm install @adjustcom/smart-banner-sdk --save
 ```
 
-But it's also available to loaded the SDK through CDN and then access it through global `AdjustSmartBanner`.
+But the sdk is also available through CDN and then access it through global `AdjustSmartBanner`.
 
 To <a id="loading-snippet">load Smart Banner SDK through CDN</a> paste the following snippet into the `<head>` tag:
 ```html
@@ -102,7 +102,7 @@ The following values are accepted:
 
 <a id="init-language">**language**</a> `string`
 
-See [Localisation](#localisation).
+You can instruct the sdk what localisation it should use to display the banner. For further information see [Localisation](#localisation).
 
 Example:
 ```js
@@ -113,8 +113,9 @@ AdjustSmartBanner.init({
 ```
 
 <a id="init-deeplink">**deeplink**</a> `string`
+<a id="init-context">**context**</a> `string`
 
-See [Dynamic deeplinks](#dynamic-deeplinks).
+This options allow you to specify where you user land in your app when they click on banner. For further information see [Dynamic deeplinks](#dynamic-deeplinks).
 
 ```js
 AdjustSmartBanner.init({
@@ -122,10 +123,6 @@ AdjustSmartBanner.init({
     "deeplink": "myapp://promotion/"
 })
 ```
-
-<a id="init-context">**context**</a> `string`
-
-See [Dynamic deeplinks](#dynamic-deeplinks).
 
 ```js
 AdjustSmartBanner.init({
@@ -182,6 +179,12 @@ AdjustSmartBanner.show();
 ``` 
 
 ## <a id="localisation">Localisation</a>
+
+For better user expirience you could localise your smart banners. Smart Banner SDK reads language used in browser, and if there is such localisation of banner, the banner will be displayed in proper language. But default choice might be not the best one, most likely you know better what language your user prefers. In this case you can instruct the sdk what language it should use.
+
+There are two ways to set preferred language
+ - pass it as [an option](#init-language) to `AdjustSmartBanner.init`
+ - call `setLanguage` setter as shown below:
 
 ```js
 AdjustSmartBanner.setLanguage();
