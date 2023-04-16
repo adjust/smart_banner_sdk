@@ -10,7 +10,7 @@ TBD: what is this and why?
 * [Initialization](#initialization)
 * [Hide and show](#hide-and-show)
 * [Localisation](#localisation)
-* [Dynamic deeplinks](#dynamic-deeplinks)
+* [Deeplinks](#dynamic-deeplinks)
 * [License](#license)
 
 ## <a id="installation">Installation</a>
@@ -48,7 +48,7 @@ Here is the full list of available parameters for the `init` method:
 
 ### Mandatory params
 
-<a id="app-token">**appToken**</a> `string | object`
+#### <a id="init-app-token">**appToken**</a> `string | object`
 
 Depending on what apps you have in your space you provide one or multiple app tokens.
 
@@ -71,7 +71,7 @@ AdjustSmartBanner.init({
 
 ### Optional params
 
-<a id="log-level">**logLevel**</a> `string`
+#### <a id="init-log-level">**logLevel**</a> `string`
 
 By default this param is set to `error`. Possible values are `none`, `error`, `warning`, `info`, `verbose`. We highly recommend that you use `verbose` when testing in order to see precise logs and to make sure integration is done properly.
 Here are more details about each log level:
@@ -81,7 +81,7 @@ Here are more details about each log level:
 - `error` - will print only error message
 - `none` - won't print anything
 
-<a id="init-data-residency">**dataResidency**</a> `string`
+#### <a id="init-data-residency">**dataResidency**</a> `string`
 
 The data residency feature allows you to choose the country in which Adjust stores your data. This is useful if you are operating in a country with strict privacy requirements. When you set up data residency, Adjust stores your data in a data center located in the region your have chosen.
 
@@ -89,7 +89,7 @@ To set your country of data residency, pass a `dataResidency` argument in your `
 
 ```js
 AdjustSmartBanner.init({
-  "appToken": "YOUR_APP_TOKEN",
+  // other initialisation parameters including mandatory ones
   "dataResidency": "EU"
 })
 ```
@@ -100,23 +100,24 @@ The following values are accepted:
 - `TR` – sets the data residency region to Turkey.
 - `US` – sets the data residency region to the USA.
 
-<a id="init-language">**language**</a> `string`
+#### <a id="init-language">**language**</a> `string`
 
 You can instruct the sdk what localisation it should use to display the banner. For further information see [Localisation](#localisation).
 
 Example:
 ```js
 AdjustSmartBanner.init({
-   // other initialisation parameters including mandatory ones
-    "language": "fr"
+  // other initialisation parameters including mandatory ones
+  "language": "fr"
 })
 ```
 
-<a id="init-deeplink">**deeplink**</a> `string`
-<a id="init-context">**context**</a> `string`
+#### <a id="init-deeplink">**deeplink**</a> `string`
+#### <a id="init-context">**context**</a> `string`
 
-This options allow you to specify where you user land in your app when they click on banner. For further information see [Dynamic deeplinks](#dynamic-deeplinks).
+This options allow you to specify where you user land in your app when they click on banner. For further information see [Deeplinks](#dynamic-deeplinks).
 
+Example:
 ```js
 AdjustSmartBanner.init({
    // other initialisation parameters including mandatory ones
@@ -134,7 +135,7 @@ AdjustSmartBanner.init({
 })
 ```
 
-<a id="init-oncreated">**onCreated**</a> `function`
+#### <a id="init-oncreated">**onCreated**</a> `function`
 
 A function to be called after banner displayed.
 
@@ -145,7 +146,7 @@ AdjustSmartBanner.init({
 })
 ```
 
-<a id="init-ondismissed">**onDismissed**</a> `function`
+#### <a id="init-ondismissed">**onDismissed**</a> `function`
 
 A function to be called when dismiss button of the banner was clicked.
 
@@ -160,7 +161,7 @@ AdjustSmartBanner.init({
 
 It's possible to hide smart banner after initialisation and show it again when needed.
 
-<a id="hide">**hide**</a>
+#### <a id="hide">**hide**</a>
 
 Hides smart banner. Note: this function does not remove the banner from the DOM.
 
@@ -168,11 +169,11 @@ Hides smart banner. Note: this function does not remove the banner from the DOM.
 AdjustSmartBanner.hide();
 ``` 
 
-<a id="show">**show**</a>
+#### <a id="show">**show**</a>
 
-This will show smart banner.
+Shows smart banner.
 
-**Important**: if your web application is a single page application (SPA) you should call this method after navigation happen and current URL changed to force the SDK read the updated URL in order to allow SDK properly find suitable banners for current page and use fresh GET parameters when it builds a tracker link with a [dynamic deeplink](#dynamic-deeplinks).
+**Important**: if your web application is a single page application (SPA) you should call this method after navigation happen and current page URL changed. This forces the SDK read the updated URL of the page in order to SDK properly find suitable banners for the current page or use updated GET parameters when it builds a tracker link with a [dynamic deeplink](#dynamic-deeplinks).
 
 ```js
 AdjustSmartBanner.show();
@@ -190,13 +191,38 @@ There are two ways to set preferred language
 AdjustSmartBanner.setLanguage();
 ``` 
 
-## <a id="dynamic-deeplinks">Dynamic deeplinks</a>
-```js
-AdjustSmartBanner.setCustomContext({deeplink, context});
-``` 
-<a id="dynamic-deeplinks-deeplink">**deeplink**</a> `string`
+## <a id="dynamic-deeplinks">Deeplinks</a>
 
-<a id="dynamic-deeplinks-context">**context**</a> `object`
+Deeplink is a link which allows to direct user to a certain events or pages in your mobile application, offering a seamless user experience.
+Smart banner sdk supports plain string deeplinks and deeplinks templates which contain placeholders to be filled out by the sdk using provided deeplink context or GET parameters of the page.
+
+There are two ways to set a deeplink:
+ - pass it as a [deeplink option](#init-deeplink) to `AdjustSmartBanner.init`
+ - call `setDeeplinkContext` setter as shown below
+
+There are two ways to provide context to interpolate deeplink template:
+ - pass it as a [context option](#init-context) to `AdjustSmartBanner.init`
+ - call `setDeeplinkContext` setter as shown below
+ - use GET parameters
+
+ ### <a id="deeplink-context-setter">**Setting deeplink and deeplink context**</a>
+
+The `setDeeplinkContext` setter accepts `deeplink` and `context` options.
+
+#### <a id="dynamic-deeplinks-deeplink">**deeplink**</a> `string`
+
+A deeplink itself or a deeplink template.
+
+TBD
+
+#### <a id="dynamic-deeplinks-context">**context**</a> `object`
+TBD
+
+Everything said about the `deeplink` and `context` options of `setDeeplinkContext` setter is the same for of the same names options of `init` method.
+
+### <a id="deeplink-context-url-params">**Using GET parameters as context**</a>
+
+TBD
 
 ## <a id="license">License</a>
 
