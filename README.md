@@ -52,14 +52,14 @@ Here is the full list of available parameters for the `init` method:
 
 Depending on what apps you have in your space you provide one or multiple app tokens.
 
-For single app pass its app token to initialise the SDK:
+For multiplatform app pass its app token to initialise the SDK:
 ```js
 AdjustSmartBanner.init({
     "appToken": "APP_TOKEN",
 })
 ```
 
-For multiple apps pass app tokens for each platform:
+For single-platform apps pass app tokens for each platform:
 ```js
 AdjustSmartBanner.init({
     "appToken": {
@@ -115,7 +115,7 @@ AdjustSmartBanner.init({
 #### <a id="init-deeplink">**deeplink**</a> `string`
 #### <a id="init-context">**context**</a> `string`
 
-This options allow you to specify where you user land in your app when they click on banner. For further information see [Deeplinks](#dynamic-deeplinks).
+These parameters allow you to specify where your user land in your app when they click on banner. For further information see [Deeplinks](#dynamic-deeplinks).
 
 Example:
 ```js
@@ -173,7 +173,7 @@ AdjustSmartBanner.hide();
 
 Shows smart banner.
 
-**Important**: if your web application is a single page application (SPA) you should call this method after navigation happen and current page URL changed. This forces the SDK read the updated URL of the page in order to SDK properly find suitable banners for the current page or use updated GET parameters when it builds a tracker link with a [dynamic deeplink](#dynamic-deeplinks).
+**Important**: If your web application is a single page application (SPA) you should call this method after navigation happens and current page URL changes. This forces the SDK to read the updated URL of the page and the SDK can find suitable banners for the current page or use updated GET parameters when it builds a tracker link with a [dynamic deeplink](#dynamic-deeplinks).
 
 ```js
 AdjustSmartBanner.show();
@@ -181,10 +181,10 @@ AdjustSmartBanner.show();
 
 ## <a id="localisation">Localisation</a>
 
-For better user expirience you could localise your smart banners. Smart Banner SDK reads language used in browser, and if there is such localisation of banner, the banner will be displayed in proper language. But default choice might be not the best one, most likely you know better what language your user prefers. In this case you can instruct the sdk what language it should use.
+For better user experience you could localise your smart banners. Smart Banner SDK reads language used in browser, and if there is such localisation of banner, the banner will be displayed in proper language. But default choice might be not the best one, most likely you know better what language your user prefers. In this case you can instruct the sdk what language it should use.
 
 There are two ways to set preferred language
- - pass it as [an option](#init-language) to `AdjustSmartBanner.init`
+ - pass it as [a parameter](#init-language) to `AdjustSmartBanner.init`
  - call `setLanguage` setter as shown below:
 
 ```js
@@ -199,17 +199,17 @@ Deeplink is a link which allows to direct user to a certain events or pages in y
 Smart banner sdk supports plain string deeplinks and deeplinks templates which contain placeholders to be filled out by the sdk using provided deeplink context or GET parameters of the page.
 
 There are two ways to set a deeplink:
- - pass it as a [deeplink option](#init-deeplink) to `AdjustSmartBanner.init`
+ - pass it as a [deeplink parameter](#init-deeplink) to `AdjustSmartBanner.init`
  - call `setDeeplinkContext` setter as shown below
 
 There are ways to provide context to interpolate deeplink template:
- - pass it as a [context option](#init-context) to `AdjustSmartBanner.init`
+ - pass it as a [context parameter](#init-context) to `AdjustSmartBanner.init`
  - call `setDeeplinkContext` setter as shown below
  - [use GET parameters](#deeplink-context-url-params)
 
  ### <a id="deeplink-context-setter">**Setting deeplink and deeplink context**</a>
 
-The `setDeeplinkContext` accepts `deeplink` and `context` options.
+The `setDeeplinkContext` accepts `deeplink` and `context` parameters.
 
 #### <a id="dynamic-deeplinks-deeplink">**deeplink**</a> `string`
 
@@ -265,7 +265,7 @@ AdjustSmartBanner.setDeeplinkContext({
 // Resulting deeplink is "myapp://products/jeans?product=&promo="
 ```
 
-Note: everything said about the `deeplink` and `context` options of `setDeeplinkContext` setter is the same for of the same names options of `init` method.
+Note: everything said about the `deeplink` and `context` parameters of `setDeeplinkContext` setter is the same for of the same names parameters of `init` method.
 
 ### <a id="deeplink-context-url-params">**Using GET parameters as context**</a>
 
@@ -285,7 +285,7 @@ AdjustSmartBanner.setDeeplinkContext({
 // Then resulting deeplink is "myapp://products/jeans?product=cool-jeans&promo=spring_10"
 ```
 
-**Important**: if your web app is a single page applications (SPA) you should to call `AdjustSmartBanner.show()` after page address changed since the sdk itself is unable to track navigation events and retrieve an updated URL.
+**Important**: if your web app is a single page applications (SPA) you should call `AdjustSmartBanner.show()` after page address changed since the sdk itself is unable to track navigation events and retrieve an updated URL.
 
 **Important**: the `context` passed to the sdk is a prior choice to fill in placeholders, and GET parameters with the same keys are ignored in favor of the `context`.
 
