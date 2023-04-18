@@ -35,7 +35,7 @@ module.exports = (env, args) => ({
       __ADJUST_SB__NAMESPACE: JSON.stringify(namespace),
       __ADJUST_SB__SDK_VERSION: JSON.stringify(packageJson.version),
       _DEV_MODE_: JSON.stringify(args.mode === 'development'),
-      _DEV_ENDPOINT_: JSON.stringify(`http://${env.devEndpoint}:${env.devPort || devPort}`)
+      _DEV_ENDPOINT_: env.devEndpoint ? JSON.stringify(`http://${env.devEndpoint}:${env.devPort || devPort}`) : undefined
     }),
   ],
   resolve: {
