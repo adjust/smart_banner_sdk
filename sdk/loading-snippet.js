@@ -25,7 +25,7 @@
   window,
   document,
   'script',
-  'https://cdn.adjust.com/adjust-sb-latest.min.js',
+  'https://cdn.adjust.com/adjust-smart-banner-latest.min.js',
   'AdjustSmartBanner',
   [
     'init',

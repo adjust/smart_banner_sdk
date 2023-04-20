@@ -75,4 +75,12 @@ export class AdjustSmartBanner {
       Logger.error('Can\'t set locale, you should initilise Smart Banner first');
     }
   }
+
+  static setDeeplinkContext(congif: { deeplink?: string, context?: Record<string, string> }): void {
+    if (this.smartBanner) {
+      this.smartBanner.setDeeplinkContext(congif);
+    } else {
+      Logger.error('Can\'t set deeplink context, you should initilise Smart Banner first');
+    }
+  }
 }
