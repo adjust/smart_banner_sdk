@@ -26,16 +26,16 @@ function buildDeeplink(data: TrackerData, pageUrl: string, userTrackerData: User
 function encodeContext(context: Record<string, string | null>) {
   return Object.keys(context)
     .map((key: string) => {
-      const value = context[key]
+      const value = context[key];
       if (!value) {
-        return { [key]: '' }
+        return { [key]: '' };
       }
 
-      return { [key]: encodeURIComponent(value) }
+      return { [key]: encodeURIComponent(value) };
     })
     .reduce((acc, current) => {
-      return { ...acc, ...current }
-    }, {})
+      return { ...acc, ...current };
+    }, {});
 }
 
 export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, userTrackerData: UserTrackerData | null) {
@@ -49,7 +49,7 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, userTrac
     template += template.indexOf('?') < 0 ? '?deeplink={deeplink}' : '&deeplink={deeplink}';
   }
 
-  let context: Record<string, string | null> = {
+  const context: Record<string, string | null> = {
     ...data.context,
     ...customTrackerData.context,
     deeplink

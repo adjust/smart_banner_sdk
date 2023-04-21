@@ -5,7 +5,6 @@ import { convertSmartBannerToTracker } from '../data/converters/smart-banner-to-
 import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
 import { NetworkConfig, NetworkFactory } from '../network/network-factory';
-import { DataResidencyRegion } from '../network/data-residency/data-residency';
 import { Logger } from '../utils/logger';
 import { DeviceOS } from '../utils/detect-os';
 import { getLanguage } from '../utils/language';
@@ -14,23 +13,7 @@ import { Globals } from '../globals';
 import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
 import { buildSmartBannerUrl } from './tracker-builder';
-
-/** @public */
-export type Callback = () => any;
-
-/** @public */
-export type AppToken = { [k in DeviceOS]?: string } | string;
-
-/** @public */
-export interface SmartBannerOptions {
-  appToken: AppToken;
-  dataResidency?: DataResidencyRegion;
-  deeplink?: string;
-  context?: UserContext;
-  language?: string;
-  onCreated?: Callback;
-  onDismissed?: Callback;
-}
+import { Callback, SmartBannerOptions } from '../types';
 
 export class SmartBanner {
   private network: Network;
