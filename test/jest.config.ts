@@ -32,6 +32,9 @@ const config: JestConfigWithTsJest = {
         tsconfig: {
           esModuleInterop: true,
         },
+        diagnostics: {
+          ignoreCodes: ['2307']
+        },
       },
     ],
   },
