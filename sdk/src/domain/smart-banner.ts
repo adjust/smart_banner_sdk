@@ -1,4 +1,4 @@
-import { SmartBannerData, UserContext, UserTrackerData } from '../data/types';
+import { SmartBannerData, UserTrackerData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
 import { convertSmartBannerToTracker } from '../data/converters/smart-banner-to-tracker-data';
