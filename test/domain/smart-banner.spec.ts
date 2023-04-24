@@ -11,25 +11,10 @@ const storage = new LocalStorage;
 jest.spyOn(StorageFactory, 'createStorage').mockImplementation(() => storage);
 
 describe('Smart Banner tests', () => {
-  throw new Error('SDK instance tests are not implemented yet!');
-
-  let smartBanner: SmartBanner;
-
-  beforeAll(() => {
-    jest.spyOn(document, 'createElement');
-    jest.spyOn(Logger, 'log');
-    jest.spyOn(Logger, 'error');
-    jest.spyOn(global, 'setTimeout');
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe('Initialisation', () => {
     describe('Picks app_token based on parameters and device OS', () => {
       it('the only app_token', () => {
-        // TODO: check that fetch was called with proper argumets
+
       });
 
       it('several app_tokens', () => {
@@ -37,17 +22,13 @@ describe('Smart Banner tests', () => {
       });
     });
 
-    describe('Picks banner localisation', () => {
-      it('reads browser language', () => {
-
-      });
-
-      it('gets preferred language in parameters', () => {
+    describe('Accepts banner localisation', () => {
+      it('accepts preferred language in parameters and uses it in view', () => {
 
       });
     });
 
-    describe('Sets and preserves deeplink context', () => {
+    describe('Sets and preserves deeplink and context', () => {
 
     });
 
@@ -56,7 +37,7 @@ describe('Smart Banner tests', () => {
     });
   });
 
-  describe('Visibility changing methods', () => {
+  describe('Change visibility', () => {
     describe('Called before initialisation', () => {
       it('attempt to call hide() logs an error message', () => {
 
