@@ -62,27 +62,6 @@ export class SmartBanner {
     this.init(appToken);
   }
 
-  private createBanner(bannerData: SmartBannerData) {
-    Logger.log('Creating Smart Banner');
-
-    const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint, this.language);
-    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customTrackerData);
-
-    this.view = new SmartBannerView(
-      document.body,
-      convertSmartBannerDataForView(bannerData, this.language),
-      trackerUrl,
-      () => this.dismiss(bannerData)
-    );
-    this.view.render();
-
-    Logger.log('Smart Banner created');
-
-    if (this.onCreated) {
-      this.onCreated();
-    }
-  }
-
   private init(appToken: string) {
     Logger.log('Fetching Smart banners');
 
@@ -105,11 +84,28 @@ export class SmartBanner {
 
       const { banner, schedule } = matchingBanner;
       if (schedule <= 0) {
-        this.createBanner(banner);
+        this.createView(banner);
       } else {
-        this.dismissHandler.schedule(banner, () => this.createBanner(banner), schedule);
+        this.dismissHandler.schedule(banner, () => this.createView(banner), schedule);
       }
     });
+  }
+
+  private createView(bannerData: SmartBannerData) {
+    Logger.log('Creating Smart Banner');
+
+    const renderData = convertSmartBannerDataForView(bannerData, this.language);
+    const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint, this.language);
+    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customTrackerData);
+
+    this.view = new SmartBannerView(renderData, trackerUrl, () => this.dismiss(bannerData));
+    this.view.render(document.body);
+
+    Logger.log('Smart Banner created');
+
+    if (this.onCreated) {
+      this.onCreated();
+    }
   }
 
   private dismiss(banner: SmartBannerData) {
