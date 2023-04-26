@@ -31,8 +31,7 @@ export class SmartBanner {
   constructor(
     appToken: string,
     { dataResidency, language, deeplink, context, onCreated, onDismissed }: SmartBannerOptions,
-    private deviceOs: DeviceOS,
-    network?: Network
+    private deviceOs: DeviceOS
   ) {
     this.dismissHandler = new DismissHandler();
     this.bannersSelector = new BannerSelector(this.dismissHandler);
@@ -45,7 +44,7 @@ export class SmartBanner {
       dataResidencyRegion: dataResidency
     };
 
-    this.network = network || NetworkFactory.create(networkConfig);
+    this.network = NetworkFactory.create(networkConfig);
 
     const networkApi = new SmartBannerApi(this.deviceOs, this.network);
     this.repository = new SmartBannerRepository(networkApi);
