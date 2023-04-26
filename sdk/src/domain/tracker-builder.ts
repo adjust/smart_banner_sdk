@@ -38,7 +38,7 @@ function encodeContext(context: Record<string, string | null>) {
     }, {});
 }
 
-export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, userTrackerData: UserTrackerData | null) {
+export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, userTrackerData: UserTrackerData = {}) {
   const customTrackerData = userTrackerData || {};
 
   const deeplink = buildDeeplink(data, pageUrl, customTrackerData);
