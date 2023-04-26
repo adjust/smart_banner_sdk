@@ -6,4 +6,4 @@ export const Utils = {
   },
 };
 
-global.Utils = Utils;
+globalThis.Utils = Utils;
