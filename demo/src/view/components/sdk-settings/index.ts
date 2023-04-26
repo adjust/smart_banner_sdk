@@ -91,7 +91,7 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
 
     const settingsPreview = SettingsPreview({ innerCode: stringifyExample() });
 
-    sdkConfig.observe(v => settingsPreview.update({ innerCode: stringifyExample() }));
+    sdkConfig.observe(_ => settingsPreview.update({ innerCode: stringifyExample() }));
 
     root.append(
       settingsPreview.render(),

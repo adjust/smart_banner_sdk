@@ -1,4 +1,4 @@
-export interface StaticComponent<TProps> {
+export interface StaticComponent<_TProps> {
   render: () => HTMLElement;
 }
 

@@ -10,10 +10,10 @@ export class BannerBody {
   private appIcon: AppIcon;
   private actionButton: ActionButton;
 
-  constructor(private banner: SmartBannerViewData, href: string, onDismiss: () => void) {
+  constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
     this.dismissButton = new DismissButton(onDismiss);
     this.appIcon = new AppIcon(banner);
-    this.actionButton = new ActionButton(banner, href);
+    this.actionButton = new ActionButton(banner, trackerUrl);
   }
 
   private renderTitle() {
