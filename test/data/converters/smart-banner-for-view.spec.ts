@@ -32,16 +32,19 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
     iconUrl: 'https://www.apptrace.com/api/app/1386566985/artwork_url_small',
   };
 
-  const localizations = {
-    ru: {
-      title: 'мой заголовок',
-      description: 'мое описание',
-      buttonLabel: 'нажми',
-      context: {
-        adgroup: 'ru'
-      }
-    } as Localization
+  const localizedContext = {
+    context: {
+      adgroup: 'ru'
+    }
   };
+
+  const translations = {
+    title: 'мой заголовок',
+    description: 'мое описание',
+    buttonLabel: 'нажми',
+  };
+
+  const localizations = { ru: { ...translations, ...localizedContext } as Localization };
 
   const banner = { ...rest, ...viewData, localizations } as SmartBannerData;
 
@@ -54,7 +57,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   it('converts data with custom locale', () => {
     const result = convertSmartBannerDataForView(banner, 'ru');
 
-    const expected = { ...viewData, ...localizations.ru };
+    const expected = { ...viewData, ...translations };
 
     expect(result).toEqual(expected);
   });
