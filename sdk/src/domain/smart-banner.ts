@@ -29,7 +29,7 @@ export class SmartBanner {
   private url: string = window.location.href;
 
   constructor(
-    appToken: string,
+    private appToken: string,
     { dataResidency, language, deeplink, context, onCreated, onDismissed }: SmartBannerOptions,
     private deviceOs: DeviceOS
   ) {
@@ -59,40 +59,51 @@ export class SmartBanner {
       this.customTrackerData.context = context;
     }
 
-    this.init(appToken);
+    this.init();
   }
 
-  private init(appToken: string) {
+  private init() {
+    this.getMatchingBanner()
+      .then(matchingBanner => {
+        if (!matchingBanner) {
+          return;
+        }
+
+        const { banner, schedule } = matchingBanner;
+        if (schedule <= 0) {
+          this.createView(banner);
+        } else {
+          this.dismissHandler.schedule(banner, () => this.createView(banner), schedule);
+        }
+      });
+  }
+
+  private getMatchingBanner(): Promise<{ banner: SmartBannerData, schedule: number } | null> {
     Logger.log('Fetching Smart banners');
 
-    this.dataFetchPromise = this.repository.fetch(appToken);
+    this.dataFetchPromise = this.repository.fetch(this.appToken);
 
-    this.dataFetchPromise.then(bannersList => {
+    return this.dataFetchPromise.then(bannersList => {
       this.dataFetchPromise = null;
 
       if (!bannersList) {
         Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
-        return;
+        return null;
       }
 
       const matchingBanner = this.bannersSelector.next(bannersList, this.url);
 
       if (!matchingBanner) {
         Logger.log(`No Smart Banners for ${this.url} page found`);
-        return;
+        return null;
       }
 
-      const { banner, schedule } = matchingBanner;
-      if (schedule <= 0) {
-        this.createView(banner);
-      } else {
-        this.dismissHandler.schedule(banner, () => this.createView(banner), schedule);
-      }
+      return matchingBanner;
     });
   }
 
   private createView(bannerData: SmartBannerData) {
-    Logger.log('Creating Smart Banner');
+    Logger.info(`Render banner: ${bannerData.name}`);
 
     const renderData = convertSmartBannerDataForView(bannerData, this.language);
     const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint, this.language);
@@ -101,7 +112,7 @@ export class SmartBanner {
     this.view = new SmartBannerView(renderData, trackerUrl, () => this.dismiss(bannerData));
     this.view.render(document.body);
 
-    Logger.log('Smart Banner created');
+    Logger.log('Smart Banner rendered');
 
     if (this.onCreated) {
       this.onCreated();
@@ -131,45 +142,35 @@ export class SmartBanner {
     }
   }
 
-  // TODO: should check if page url changed and select another banner if needed, not just change visibility
-  show(): void {
-    this.url = window.location.href;
-
+  private changeVisibility(action: 'show' | 'hide') {
     if (this.view) {
-      this.view.show();
+      this.view[action]();
+      let message = `${action} banner`
+      message = message.charAt(0).toUpperCase() + message.slice(1)
+      Logger.log(message)
       return;
     }
 
     if (this.dataFetchPromise) {
-      Logger.log('Smart Banner will be shown after initialisation finished');
+      Logger.log(`Fetching banners now, ${action} banner after fetch finished`);
 
       this.dataFetchPromise
         .then(() => {
-          Logger.log('Initialisation finished, show Smart Banner now');
-          this.show();
+          Logger.log(`Banners fetch finished, ${action} Smart Banner now`);
+          this.changeVisibility(action)
         });
 
       return;
     }
   }
 
+  // TODO: should check if page url changed and select another banner if needed, not just change visibility
+  show(): void {
+    this.changeVisibility('show');
+  }
+
   hide(): void {
-    if (this.view) {
-      this.view.hide();
-      return;
-    }
-
-    if (this.dataFetchPromise) {
-      Logger.log('Smart Banner will be hidden after initialisation finished');
-
-      this.dataFetchPromise
-        .then(() => {
-          Logger.log('Initialisation finished, hide Smart Banner now');
-          this.hide();
-        });
-
-      return;
-    }
+    this.changeVisibility('hide')
   }
 
   setLanguage(language: string): void {
