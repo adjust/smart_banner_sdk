@@ -80,8 +80,6 @@ export class SmartBanner {
   }
 
   private getMatchingBanner(): Promise<{ banner: SmartBannerData, schedule: number } | null> {
-    Logger.log('Fetching Smart banners');
-
     this.dataFetchPromise = this.repository.fetch(this.appToken);
 
     return this.dataFetchPromise.then(bannersList => {
@@ -120,7 +118,7 @@ export class SmartBanner {
     this.view = new SmartBannerView(renderData, trackerUrl, () => this.dismiss(bannerData));
     this.view.render(document.body);
 
-    Logger.log('Smart Banner rendered');
+    Logger.log('Smart banner rendered');
 
     if (this.onCreated) {
       this.onCreated();
@@ -152,18 +150,18 @@ export class SmartBanner {
     if (this.view) {
       this.view.destroy();
       this.view = null;
-      Logger.log('Smart Banner removed');
+      Logger.log('Smart banner removed');
     } else {
-      Logger.error('There is no Smart Banner to remove');
+      Logger.error('There is no Smart banner to remove');
     }
   }
 
   private changeVisibility(action: 'show' | 'hide') {
     if (this.view) {
       this.view[action]();
-      let message = `${action} banner`
-      message = message.charAt(0).toUpperCase() + message.slice(1)
-      Logger.log(message)
+      let message = `${action} banner`;
+      message = message.charAt(0).toUpperCase() + message.slice(1);
+      Logger.log(message);
       return;
     }
 
@@ -172,8 +170,8 @@ export class SmartBanner {
 
       this.dataFetchPromise
         .then(() => {
-          Logger.log(`Banners fetch finished, ${action} Smart Banner now`);
-          this.changeVisibility(action)
+          Logger.log(`Banners fetch finished, ${action} Smart banner now`);
+          this.changeVisibility(action);
         });
 
       return;
@@ -207,7 +205,7 @@ export class SmartBanner {
   }
 
   hide(): void {
-    this.changeVisibility('hide')
+    this.changeVisibility('hide');
   }
 
   setLanguage(language: string): void {

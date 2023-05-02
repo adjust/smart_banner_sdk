@@ -120,7 +120,7 @@ describe('Entry point tests', () => {
       it('logs an error message and prevents initialisation when no appToken in parameters', () => {
         AdjustSmartBanner.init({} as InitialisationOptions);
 
-        expect(Logger.error).toBeCalledWith('Can not initialise Smart Banner, you should provide appToken');
+        expect(Logger.error).toBeCalledWith('Can not initialise Smart Banner SDK, you should provide appToken');
         expect(SmartBannerModule.SmartBanner).not.toBeCalled();
       });
     });
@@ -153,7 +153,7 @@ describe('Entry point tests', () => {
         AdjustSmartBanner.init({ appToken: 'another-token' });
 
         expect(SmartBannerModule.SmartBanner).toBeCalledTimes(1);
-        expect(Logger.error).toBeCalledWith('Smart Banner is initialised already');
+        expect(Logger.error).toBeCalledWith('Smart Banner SDK is initialised already');
       });
     });
   });
@@ -173,7 +173,7 @@ describe('Entry point tests', () => {
           AdjustSmartBanner.show();
 
           expect(SmartBanner.show).not.toBeCalled();
-          expect(Logger.error).toBeCalledWith('Can\'t show banner, you should initialise Smart Banner first');
+          expect(Logger.error).toBeCalledWith('Can\'t show banner, you should initialise Smart Banner SDK first');
         });
       });
 
@@ -190,7 +190,7 @@ describe('Entry point tests', () => {
           AdjustSmartBanner.hide();
 
           expect(SmartBanner.hide).not.toBeCalled();
-          expect(Logger.error).toBeCalledWith('Can\'t hide banner, you should initialise Smart Banner first');
+          expect(Logger.error).toBeCalledWith('Can\'t hide banner, you should initialise Smart Banner SDK first');
         });
       });
     });
@@ -208,7 +208,7 @@ describe('Entry point tests', () => {
         AdjustSmartBanner.setLanguage('fr');
 
         expect(SmartBanner.setLanguage).not.toBeCalled();
-        expect(Logger.error).toBeCalledWith('Can\'t set locale, you should initilise Smart Banner first');
+        expect(Logger.error).toBeCalledWith('Can\'t set locale, you should initilise Smart Banner SDK first');
       });
     });
 
@@ -233,7 +233,7 @@ describe('Entry point tests', () => {
         });
 
         expect(SmartBanner.setDeeplinkContext).not.toBeCalled();
-        expect(Logger.error).toBeCalledWith('Can\'t set deeplink context, you should initilise Smart Banner first');
+        expect(Logger.error).toBeCalledWith('Can\'t set deeplink context, you should initilise Smart Banner SDK first');
       });
     });
   });

@@ -28,7 +28,7 @@ export class AdjustSmartBanner {
     Logger.setLogLevel(logLevel);
 
     if (!restOptions.appToken) {
-      Logger.error('Can not initialise Smart Banner, you should provide appToken');
+      Logger.error('Can not initialise Smart Banner SDK, you should provide appToken');
       return;
     }
 
@@ -48,7 +48,7 @@ export class AdjustSmartBanner {
     if (!this.smartBanner) {
       this.smartBanner = new SmartBanner(appToken, restOptions, deviceOs);
     } else {
-      Logger.error('Smart Banner is initialised already');
+      Logger.error('Smart Banner SDK is initialised already');
     }
   }
 
@@ -56,7 +56,7 @@ export class AdjustSmartBanner {
     if (this.smartBanner) {
       this.smartBanner.hide();
     } else {
-      Logger.error('Can\'t hide banner, you should initialise Smart Banner first');
+      Logger.error('Can\'t hide banner, you should initialise Smart Banner SDK first');
     }
   }
 
@@ -64,7 +64,7 @@ export class AdjustSmartBanner {
     if (this.smartBanner) {
       this.smartBanner.show();
     } else {
-      Logger.error('Can\'t show banner, you should initialise Smart Banner first');
+      Logger.error('Can\'t show banner, you should initialise Smart Banner SDK first');
     }
   }
 
@@ -72,7 +72,7 @@ export class AdjustSmartBanner {
     if (this.smartBanner) {
       this.smartBanner.setLanguage(lang);
     } else {
-      Logger.error('Can\'t set locale, you should initilise Smart Banner first');
+      Logger.error('Can\'t set locale, you should initilise Smart Banner SDK first');
     }
   }
 
@@ -80,7 +80,7 @@ export class AdjustSmartBanner {
     if (this.smartBanner) {
       this.smartBanner.setDeeplinkContext(congif);
     } else {
-      Logger.error('Can\'t set deeplink context, you should initilise Smart Banner first');
+      Logger.error('Can\'t set deeplink context, you should initilise Smart Banner SDK first');
     }
   }
 }
