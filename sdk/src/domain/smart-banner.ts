@@ -41,7 +41,7 @@ export class SmartBanner {
     this.onDismissed = onDismissed;
 
     const networkConfig: NetworkConfig = {
-      dataEndpoint: Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_ ? Globals._DEV_ENDPOINT_ : undefined,
+      dataEndpoint: (Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_) ? Globals._DEV_ENDPOINT_ : undefined,
       dataResidencyRegion: dataResidency
     };
 
