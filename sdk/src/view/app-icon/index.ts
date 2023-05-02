@@ -1,12 +1,10 @@
-import { SmartBannerViewData } from '../types';
-
 import styles from './styles.module.scss';
 
 export class AppIcon {
   private placeholder: HTMLElement;
   private image: HTMLImageElement;
 
-  constructor(private banner: SmartBannerViewData) {
+  constructor(private iconUrl: string, private appName: string) {
     this.placeholder = document.createElement('div');
     this.placeholder.className = styles.placeholder;
 
@@ -20,39 +18,38 @@ export class AppIcon {
 
     appIcon.append(this.placeholder, this.image);
 
-    const imageSources = this.getSources();
-    this.showImage(imageSources);
+    this.showImage();
 
     root.appendChild(appIcon);
   }
 
-  private getSources(): string[] {
-    const sourcesArray: string[] = [];
-
-    if (this.banner.iconUrl) {
-      sourcesArray.push(this.banner.iconUrl);
+  public update(iconUrl: string, appName: string) {
+    if (!this.needUpdate({ iconUrl, appName })) {
+      return;
     }
 
-    // There is no app_id nor bundle_id nor package_name in data for now
-    // sourcesArray.push(`https://www.apptrace.com/api/app/${banner.appId}/artwork_url_small`);
+    this.iconUrl = iconUrl;
+    this.appName = appName;
 
-    return sourcesArray;
+    this.showImage();
   }
 
-  private showImage(sources: string[]): Promise<void> {
-    const imageLoadingPromise = sources.reduce((acc: Promise<unknown>, url) => {
-      return acc.catch(() => this.loadImage(url, this.image));
-    }, Promise.reject());
+  private needUpdate(nextData: { iconUrl: string, appName: string }) {
+    return this.iconUrl !== nextData.iconUrl
+      || this.appName !== nextData.appName;
+  }
 
-    return imageLoadingPromise
+  private showImage(): Promise<void> {
+    return this.loadImage(this.iconUrl, this.image)
       .then(() => {
-        this.placeholder.remove();
+        this.image.style.display = '';
+        this.placeholder.style.display = 'none';
       })
       .catch(() => {
-        this.image.remove();
+        this.image.style.display = 'none';
+        this.placeholder.style.display = '';
 
-        // There is app_name in data for now
-        //placeholder.innerText = banner.appName.length ? banner.appName[0].toUpperCase() : '';
+        this.placeholder.innerText = this.appName.length ? this.appName[0].toUpperCase() : '';
       });
   }
 

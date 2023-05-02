@@ -9,35 +9,38 @@ export class BannerBody {
   private dismissButton: DismissButton;
   private appIcon: AppIcon;
   private actionButton: ActionButton;
+  private title: HTMLElement;
+  private description: HTMLElement;
 
   constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
     this.dismissButton = new DismissButton(onDismiss);
-    this.appIcon = new AppIcon(banner);
+    this.appIcon = new AppIcon(banner.iconUrl, ''); // There is app name in data for now
     this.actionButton = new ActionButton(banner, trackerUrl);
+
+    this.title = document.createElement('h4');
+    this.description = document.createElement('p');
   }
 
   private renderTitle() {
-    const title = document.createElement('h4');
-    title.className = styles['banner-text'];
-    title.innerText = this.banner.title;
+    this.title.className = styles['banner-text'];
+    this.title.innerText = this.banner.title;
 
     if (this.banner.titleColor) {
-      title.style.color = this.banner.titleColor;
+      this.title.style.color = this.banner.titleColor;
     }
 
-    return title;
+    return this.title;
   }
 
   private renderDescription() {
-    const description = document.createElement('p');
-    description.className = styles['banner-text'];
-    description.innerText = this.banner.description;
+    this.description.className = styles['banner-text'];
+    this.description.innerText = this.banner.description;
 
     if (this.banner.descriptionColor) {
-      description.style.color = this.banner.descriptionColor;
+      this.description.style.color = this.banner.descriptionColor;
     }
 
-    return description;
+    return this.description;
   }
 
   private renderInnerElements() {
@@ -71,8 +74,17 @@ export class BannerBody {
     root.appendChild(bannerBody);
   }
 
+  public update(banner: SmartBannerViewData, trackerUrl: string) {
+    this.banner = banner;
+
+    this.appIcon.update(banner.iconUrl, '');
+    this.actionButton.update(banner, trackerUrl);
+
+    this.title.innerText = this.banner.title;
+    this.description.innerText = this.banner.description;
+  }
+
   public destroy() {
     this.dismissButton.destroy();
-    // TODO: for future refactor: most likely it makes sence add destroy method for other components for interface consistency
   }
 }
