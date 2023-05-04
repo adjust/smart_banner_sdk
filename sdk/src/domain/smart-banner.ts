@@ -129,7 +129,7 @@ export class SmartBanner {
     }
   }
 
-  private updateView(view: SmartBannerView) {
+  private updateView() {
     return this.getMatchingBanner()
       .then((matchingBanner) => {
         if (!matchingBanner) {
@@ -139,14 +139,18 @@ export class SmartBanner {
         const { banner, schedule } = matchingBanner;
 
         if (schedule > 0) {
-          Logger.log('Smart banner was not created yet, the chosen language will be applied in creation');
+          // rescheduling banner creation with updated data
+          this.dismissHandler.schedule(banner, () => this.createView(banner), schedule);
           return;
         }
 
-        const { renderData, trackerUrl } = this.prepareDataForRender(banner);
-
-        Logger.log('Updating Smart banner');
-        view.update(renderData, trackerUrl);
+        if (this.view) {
+          const { renderData, trackerUrl } = this.prepareDataForRender(banner);
+          Logger.log('Updating Smart banner');
+          this.view.update(renderData, trackerUrl);
+        } else {
+          // TODO ? Is it possible? Should it be handled somehow?
+        }
       });
   }
 
@@ -215,23 +219,22 @@ export class SmartBanner {
   setLanguage(language: string): void {
     this.language = language;
 
-
-    if (!this.view) {
-      Logger.log('Smart banner was not created yet, the chosen language will be applied in creation');
+    if (this.gettingBannerPromise) {
+      Logger.log('Smart banner was not created yet, the chosen language will be applied within creation');
       return;
     }
 
-    this.updateView(this.view);
+    this.updateView();
   }
 
   setDeeplinkContext({ deeplink, context }: UserTrackerData): void {
     this.customTrackerData = { deeplink, context };
 
-    if (!this.view) {
-      Logger.log('Smart banner was not created yet, the chosen context will be applied in creation');
+    if (this.gettingBannerPromise) {
+      Logger.log('Smart banner was not created yet, the defined deeplink context will be applied within creation');
       return;
     }
 
-    this.updateView(this.view);
+    this.updateView();
   }
 }
