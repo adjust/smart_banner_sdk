@@ -30,7 +30,7 @@ export class DismissHandler {
 
   public schedule(banner: SmartBannerData, showBannerCallback: () => void, delay?: number) {
     if (this.timer) {
-      Logger.log('Clearing previously scheduled creation of Smart Banner');
+      Logger.log('Clearing previously scheduled creation of a Smart banner');
       clearTimeout(this.timer);
       this.timer = null;
     }
@@ -45,7 +45,7 @@ export class DismissHandler {
       },
       delay || when - Date.now());
 
-    Logger.info(`Smart Banner ${banner.name} creation scheduled on ${new Date(when)}`);
+    Logger.info(`Smart banner ${banner.name} creation scheduled on ${new Date(when)}`);
   }
 
 }

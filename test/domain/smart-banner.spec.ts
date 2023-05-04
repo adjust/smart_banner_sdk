@@ -14,6 +14,11 @@ jest.mock('@sdk/utils/logger');
 
 describe('Smart Banner tests', () => {
   const mockHref = 'http://mock/path';
+  const originalLocation = window.location
+  const locationMock = (href: string = mockHref) => ({
+    ...originalLocation,
+    href
+  })
 
   const regions = ['EU', 'TR', 'US'] as DataResidencyRegion[];
 
@@ -57,29 +62,20 @@ describe('Smart Banner tests', () => {
     }
   });
 
+  beforeAll(() => {
+    jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock());
+    jest.spyOn(NetworkFactory, 'create').mockImplementation(({ dataResidencyRegion }: NetworkConfig = {}) => networkMock(dataResidencyRegion));
+    jest.spyOn(DataToViewConverter, 'convertSmartBannerDataForView').mockImplementation((_, locale) => renderDataMock(locale));
+    jest.spyOn(DataToTrackerConverter, 'convertSmartBannerToTracker').mockImplementation((_, domain, locale) => trackerDataMock(domain, locale));
+    jest.spyOn(TrackerBuilder, 'buildSmartBannerUrl');
+    jest.spyOn(View, 'SmartBannerView').mockReturnValue(smartBannerViewMock);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('Initialisation and creation', () => {
-    beforeAll(() => {
-      const originalLocation = window.location;
-      jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
-        ...originalLocation,
-        href: mockHref,
-      }));
-
-      jest.spyOn(NetworkFactory, 'create').mockImplementation(({ dataResidencyRegion }: NetworkConfig = {}) => networkMock(dataResidencyRegion));
-      jest.spyOn(DataToViewConverter, 'convertSmartBannerDataForView').mockImplementation((_, locale) => renderDataMock(locale));
-      jest.spyOn(DataToTrackerConverter, 'convertSmartBannerToTracker').mockImplementation((_, domain, locale) => trackerDataMock(domain, locale));
-      jest.spyOn(TrackerBuilder, 'buildSmartBannerUrl');
-      jest.spyOn(View, 'SmartBannerView').mockReturnValue(smartBannerViewMock);
-    });
-
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
-    afterAll(() => {
-      jest.resetAllMocks();
-    });
-
     describe('Network creation', () => {
       beforeEach(() => {
         requestMock.mockResolvedValueOnce('all good'); // avoiding view creation and other things happen
@@ -206,7 +202,7 @@ describe('Smart Banner tests', () => {
       });
     });
 
-    describe('Custom deeplink context', () => {
+    /*describe('Custom deeplink context', () => {
       it('accepts and preserves custom deeplink context', () => {
 
       });
@@ -214,15 +210,15 @@ describe('Smart Banner tests', () => {
       it('creates view considering custom deeplink context', () => {
 
       });
-
-      it('', () => {
-
-      });
     });
 
     describe('Callbacks', () => {
       describe('onCreated', () => {
-        it('is being called after banner renderred', () => {
+        it('is being called after banner renderred for first time', () => {
+
+        });
+
+        it('is being called after banner re-renderred after URL changes', () => {
 
         });
 
@@ -248,38 +244,99 @@ describe('Smart Banner tests', () => {
       it.each([platforms])('fetches banners for a proper device OS using passed AppToken', () => {
         // expect called with proper platform and app token
       });
-    });
+    });*/
   });
 
   describe('Change visibility', () => {
     describe('Hide', () => {
-      it('hides view', () => {
+      it('hides view', async () => {
+        expect.assertions(2);
 
+        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
+        await Utils.flushPromises();
+
+        smartbanner.hide();
+
+        expect(Logger.log).toBeCalledWith('Hide banner')
+        expect(smartBannerViewMock.hide).toBeCalled();
       });
 
-      it('logs a message when view was not created yet and calls itself after view is created', () => {
+      it('logs a message when view was not created yet and hides after view is created', async () => {
+        expect.assertions(4);
 
+        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
+        smartbanner.hide();
+
+        expect(Logger.log).toBeCalledWith('Fetching banners now, hide banner after fetch finished')
+        expect(smartBannerViewMock.hide).not.toBeCalled();
+
+        await Utils.flushPromises();
+
+        expect(Logger.log).toBeCalledWith('Banners fetch finished, hide Smart banner now')
+        expect(smartBannerViewMock.hide).toBeCalled();
       });
     });
 
     describe('Show', () => {
-      it('rereads current URL, updates and shows view', () => {
+      it('shows view', async () => {
+        expect.assertions(2);
 
+        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
+        await Utils.flushPromises();
+
+        smartbanner.show();
+
+        expect(Logger.log).toBeCalledWith('Show banner')
+        expect(smartBannerViewMock.show).toBeCalled();
       });
 
-      it('logs a message when view was not created yet and calls itself after view is created', () => {
+      it('logs a message when view was not created yet and shows after view is created', async () => {
+        expect.assertions(4);
 
+        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
+        smartbanner.show();
+
+        expect(Logger.log).toBeCalledWith('Fetching banners now, show banner after fetch finished')
+        expect(smartBannerViewMock.show).not.toBeCalled();
+
+        await Utils.flushPromises();
+
+        expect(Logger.log).toBeCalledWith('Banners fetch finished, show Smart banner now')
+        expect(smartBannerViewMock.show).toBeCalled();
       });
+
+      it('re-reads current URL, destroys and re-creates the view', async () => {
+        expect.assertions(4);
+
+        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', deeplink: '{location}-location' }, defaultPlatform);
+        await Utils.flushPromises();
+
+        jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock('http://path?location=new'));
+
+        smartbanner.show();
+        await Utils.flushPromises();
+
+        const trackerLink = tracker(defaultDomain, defaultLocale) + '?deeplink=new-location'
+
+        expect(Logger.info).toBeCalledWith('Page address changed')
+        expect(smartBannerViewMock.destroy).toBeCalled()
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLocale), trackerLink, expect.any(Function));
+        expect(smartBannerViewMock.render).toBeCalled();
+      });
+
+      afterAll(() => {
+        jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock());
+      })
     });
-
-  });
-
-  /*describe('Deeplink context setting', () => {
 
   });
 
   describe('Language setting', () => {
 
-  });*/
+  });
+
+  describe('Deeplink context setting', () => {
+
+  });
 
 });
