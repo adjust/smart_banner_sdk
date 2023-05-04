@@ -14,11 +14,11 @@ jest.mock('@sdk/utils/logger');
 
 describe('Smart Banner tests', () => {
   const mockHref = 'http://mock/path';
-  const originalLocation = window.location
+  const originalLocation = window.location;
   const locationMock = (href: string = mockHref) => ({
     ...originalLocation,
     href
-  })
+  });
 
   const regions = ['EU', 'TR', 'US'] as DataResidencyRegion[];
 
@@ -38,7 +38,8 @@ describe('Smart Banner tests', () => {
     render: jest.fn(),
     destroy: jest.fn(),
     show: jest.fn(),
-    hide: jest.fn()
+    hide: jest.fn(),
+    update: jest.fn()
   } as any as View.SmartBannerView;
 
   const defaultLocale = serverResponseMock[0].default_language;
@@ -257,7 +258,7 @@ describe('Smart Banner tests', () => {
 
         smartbanner.hide();
 
-        expect(Logger.log).toBeCalledWith('Hide banner')
+        expect(Logger.log).toBeCalledWith('Hide banner');
         expect(smartBannerViewMock.hide).toBeCalled();
       });
 
@@ -267,12 +268,12 @@ describe('Smart Banner tests', () => {
         const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
         smartbanner.hide();
 
-        expect(Logger.log).toBeCalledWith('Fetching banners now, hide banner after fetch finished')
+        expect(Logger.log).toBeCalledWith('Fetching banners now, hide banner after fetch finished');
         expect(smartBannerViewMock.hide).not.toBeCalled();
 
         await Utils.flushPromises();
 
-        expect(Logger.log).toBeCalledWith('Banners fetch finished, hide Smart banner now')
+        expect(Logger.log).toBeCalledWith('Banners fetch finished, hide Smart banner now');
         expect(smartBannerViewMock.hide).toBeCalled();
       });
     });
@@ -286,7 +287,7 @@ describe('Smart Banner tests', () => {
 
         smartbanner.show();
 
-        expect(Logger.log).toBeCalledWith('Show banner')
+        expect(Logger.log).toBeCalledWith('Show banner');
         expect(smartBannerViewMock.show).toBeCalled();
       });
 
@@ -296,12 +297,12 @@ describe('Smart Banner tests', () => {
         const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
         smartbanner.show();
 
-        expect(Logger.log).toBeCalledWith('Fetching banners now, show banner after fetch finished')
+        expect(Logger.log).toBeCalledWith('Fetching banners now, show banner after fetch finished');
         expect(smartBannerViewMock.show).not.toBeCalled();
 
         await Utils.flushPromises();
 
-        expect(Logger.log).toBeCalledWith('Banners fetch finished, show Smart banner now')
+        expect(Logger.log).toBeCalledWith('Banners fetch finished, show Smart banner now');
         expect(smartBannerViewMock.show).toBeCalled();
       });
 
@@ -316,23 +317,99 @@ describe('Smart Banner tests', () => {
         smartbanner.show();
         await Utils.flushPromises();
 
-        const trackerLink = tracker(defaultDomain, defaultLocale) + '?deeplink=new-location'
+        const trackerLink = tracker(defaultDomain, defaultLocale) + '?deeplink=new-location';
 
-        expect(Logger.info).toBeCalledWith('Page address changed')
-        expect(smartBannerViewMock.destroy).toBeCalled()
+        expect(Logger.info).toBeCalledWith('Page address changed');
+        expect(smartBannerViewMock.destroy).toBeCalled();
         expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLocale), trackerLink, expect.any(Function));
         expect(smartBannerViewMock.render).toBeCalled();
       });
 
       afterAll(() => {
         jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock());
-      })
+      });
     });
 
   });
 
   describe('Language setting', () => {
+    describe('View exists', () => {
+      it.each([
+        { initLang: undefined, newLang: 'ru' },
+        { initLang: 'ru', newLang: 'de' },
+        { initLang: 'ru', newLang: 'en' }
+      ])('updates the view with localised strings', async ({ initLang, newLang }) => {
+        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token', language: initLang }, defaultPlatform);
+        await Utils.flushPromises();
 
+        smartBanner.setLanguage(newLang);
+        await Utils.flushPromises();
+
+        expect(smartBannerViewMock.update).toBeCalledWith(renderDataMock(newLang), tracker(defaultDomain, newLang));
+      });
+    });
+
+    describe('View creation scheduled', () => {
+      const testStartedAt = Date.now();
+      const bannerName = serverResponseMock[0].name;
+
+      beforeAll(() => {
+        localStorage.setItem('adjust-smart-banner.' + serverResponseMock[0].id, '' + testStartedAt);
+        jest.useFakeTimers();
+      });
+
+      afterAll(() => {
+        localStorage.removeItem('adjust-smart-banner.' + serverResponseMock[0].id);
+        jest.useRealTimers();
+      });
+
+      it('schedules a new creation of banner with updated data', async () => {
+        expect.assertions(6);
+
+        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, defaultPlatform);
+        await Utils.flushPromises();
+
+        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt + 600)}`);
+
+        smartBanner.setLanguage('ru');
+        await Utils.flushPromises();
+
+        expect(smartBannerViewMock.update).not.toBeCalled();
+        expect(Logger.log).toBeCalledWith('Clearing previously scheduled creation of a Smart banner');
+        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt + 600)}`);
+
+        jest.runOnlyPendingTimers();
+
+        expect(smartBannerViewMock.render).toBeCalled();
+        expect(Logger.info).lastCalledWith('Render banner: ' + bannerName);
+      });
+    });
+
+    describe('Initialisation is not finished yet', () => {
+      it('logs a message that language will be applied within initialisation', () => {
+        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, defaultPlatform);
+        smartBanner.setLanguage('ru');
+
+        expect(Logger.log).toBeCalledWith('Smart banner was not created yet, the chosen language will be applied within creation');
+        expect(smartBannerViewMock.update).not.toBeCalled();
+      });
+
+      it.each([
+        { initLang: undefined, newLang: 'ru' },
+        { initLang: 'ru', newLang: 'de' },
+        { initLang: 'ru', newLang: 'en' }
+      ])('applies the language within initialisation', async ({ initLang, newLang }) => {
+        expect.assertions(3);
+
+        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token', language: initLang }, defaultPlatform);
+        smartBanner.setLanguage(newLang);
+        await Utils.flushPromises();
+
+        expect(Logger.log).toBeCalledWith('Smart banner was not created yet, the chosen language will be applied within creation');
+        expect(smartBannerViewMock.update).not.toBeCalled();
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(newLang), tracker(defaultDomain, newLang), expect.any(Function));
+      });
+    });
   });
 
   describe('Deeplink context setting', () => {

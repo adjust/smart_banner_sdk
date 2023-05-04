@@ -111,14 +111,14 @@ describe('DismissHandler tests', () => {
     } as SmartBannerData;
 
     it('schedules next banner creation', () => {
-      dismissHandler.schedule(banner, jest.fn());
+      dismissHandler.schedule(banner, jest.fn(), Date.now() + banner.dismissalPeriod);
 
       expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), banner.dismissalPeriod);
     });
 
     it('calls banner creation function and removes a record from storage', () => {
       const bannerCreationCallback = jest.fn();
-      dismissHandler.schedule(banner, bannerCreationCallback);
+      dismissHandler.schedule(banner, bannerCreationCallback, Date.now() + banner.dismissalPeriod);
 
       jest.advanceTimersByTime(banner.dismissalPeriod);
 
@@ -130,8 +130,8 @@ describe('DismissHandler tests', () => {
       const fn1 = jest.fn();
       const fn2 = jest.fn();
 
-      dismissHandler.schedule(banner, fn1);
-      dismissHandler.schedule(banner, fn2);
+      dismissHandler.schedule(banner, fn1, Date.now() + banner.dismissalPeriod);
+      dismissHandler.schedule(banner, fn2, Date.now() + banner.dismissalPeriod);
 
       expect(setTimeout).toBeCalledTimes(2);
       expect(clearTimeout).toBeCalled();

@@ -25,6 +25,14 @@
         "context": {
           "adgroup": "ru"
         }
+      },
+      "de": {
+        "title": "Titel",
+        "description": "Beschreibung",
+        "button_label": "Knopf",
+        "context": {
+          "adgroup": "de"
+        }
       }
     },
     "tracker_url": {
