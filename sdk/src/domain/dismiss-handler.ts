@@ -13,9 +13,6 @@ export class DismissHandler {
   public getDateToShowAgain(banner: SmartBannerData): number {
     const dismissedDate = this.storage.getItem(banner.id);
 
-    // Jenkins test debug
-    console.warn(`Banner ${banner.id} dismissed at: ${dismissedDate}`)
-
     if (!dismissedDate || typeof dismissedDate !== 'number') {
       return Date.now();
     }

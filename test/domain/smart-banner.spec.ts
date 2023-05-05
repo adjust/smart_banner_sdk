@@ -2,6 +2,8 @@ import { Logger } from '@sdk/utils/logger';
 import { SmartBanner } from '@sdk/domain/smart-banner';
 import { DataResidencyRegion, DeviceOS } from '@sdk/main';
 import { NetworkConfig, NetworkFactory } from '@sdk/network/network-factory';
+import { StorageFactory } from '@sdk/data/storage/storage-factory';
+import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
 import * as DataToViewConverter from '@sdk/data/converters/smart-banner-for-view';
 import * as DataToTrackerConverter from '@sdk/data/converters/smart-banner-to-tracker-data';
 import * as TrackerBuilder from '@sdk/domain/tracker-builder';
@@ -66,6 +68,7 @@ describe('Smart Banner tests', () => {
 
   beforeAll(() => {
     jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock());
+    jest.spyOn(StorageFactory, 'createStorage').mockReturnValue(new InMemoryStorage());
     jest.spyOn(NetworkFactory, 'create').mockImplementation(({ dataResidencyRegion }: NetworkConfig = {}) => networkMock(dataResidencyRegion));
     jest.spyOn(DataToViewConverter, 'convertSmartBannerDataForView').mockImplementation((_, locale) => renderDataMock(locale));
     jest.spyOn(DataToTrackerConverter, 'convertSmartBannerToTracker').mockImplementation((_, domain, locale) => trackerDataMock(domain, locale));
@@ -213,7 +216,7 @@ describe('Smart Banner tests', () => {
         new SmartBanner('some-token', { appToken: 'some-token', deeplink: undefined, context: undefined }, defaultPlatform);
         await Utils.flushPromises();
 
-        const trackerUrl = tracker(defaultDomain, defaultLang)
+        const trackerUrl = tracker(defaultDomain, defaultLang);
 
         expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
         expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
@@ -227,7 +230,7 @@ describe('Smart Banner tests', () => {
         new SmartBanner('some-token', { appToken: 'some-token', context: { param: 'pam-param' } }, defaultPlatform);
         await Utils.flushPromises();
 
-        const trackerUrl = tracker(defaultDomain, defaultLang)
+        const trackerUrl = tracker(defaultDomain, defaultLang);
 
         expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
         expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
@@ -241,7 +244,7 @@ describe('Smart Banner tests', () => {
         new SmartBanner('some-token', { appToken: 'some-token', deeplink: 'some-deeplink' }, defaultPlatform);
         await Utils.flushPromises();
 
-        const trackerUrl = trackerWithDeeplink(defaultDomain, defaultLang, 'some-deeplink')
+        const trackerUrl = trackerWithDeeplink(defaultDomain, defaultLang, 'some-deeplink');
 
         expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
         expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
@@ -261,7 +264,7 @@ describe('Smart Banner tests', () => {
           defaultPlatform);
         await Utils.flushPromises();
 
-        const trackerUrl = trackerWithDeeplink(defaultDomain, defaultLang, 'some-deeplink%2Fparam%3Dpam-param')
+        const trackerUrl = trackerWithDeeplink(defaultDomain, defaultLang, 'some-deeplink%2Fparam%3Dpam-param');
 
         expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
         expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
@@ -282,7 +285,7 @@ describe('Smart Banner tests', () => {
           defaultPlatform);
         await Utils.flushPromises();
 
-        const trackerUrl = trackerWithDeeplink(defaultDomain, defaultLang, 'some-deeplink%2Fparam%3Dmeow-meow')
+        const trackerUrl = trackerWithDeeplink(defaultDomain, defaultLang, 'some-deeplink%2Fparam%3Dmeow-meow');
 
         expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
         expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
@@ -433,26 +436,23 @@ describe('Smart Banner tests', () => {
 
     describe('View creation scheduled', () => {
       const testStartedAt = Date.now();
-      const recordId = 'adjust-smart-banner.' + serverResponseMock[0].id
+      const recordId = serverResponseMock[0].id;
       const bannerName = serverResponseMock[0].name;
+      const storage = new InMemoryStorage();
 
       beforeAll(() => {
-        // Jenkins test debug
-        console.warn(`Write to LS {${recordId}: ${testStartedAt}}`)
-
-        localStorage.setItem(recordId, '' + testStartedAt);
+        storage.setItem(recordId, testStartedAt);
+        jest.spyOn(StorageFactory, 'createStorage').mockReturnValue(storage);
         jest.useFakeTimers();
       });
 
       afterAll(() => {
-        // Jenkins test debug
-        console.warn(`Remove${recordId} from LS`)
-
-        localStorage.removeItem(recordId);
+        storage.removeItem(recordId);
+        jest.spyOn(StorageFactory, 'createStorage').mockReturnValue(new InMemoryStorage());
         jest.useRealTimers();
       });
 
-      it('schedules a new creation of banner with updated data', async () => {
+      it('schedules a new creation of banner with updated language', async () => {
         expect.assertions(6);
 
         const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, defaultPlatform);
