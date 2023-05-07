@@ -86,7 +86,7 @@ describe('Smart Banner tests', () => {
         requestMock.mockResolvedValueOnce('all good'); // avoiding view creation and other things happen
       });
 
-      it.each(regions)('creates network with NetworkFactory using passed DataResidency region %s', dr => {
+      it.each(regions)('creates network with NetworkFactory using passed DataResidency region $dr', dr => {
         new SmartBanner('some-token', { appToken: 'some-token', dataResidency: dr }, defaultPlatform);
 
         expect(NetworkFactory.create).toBeCalledWith({ dataResidencyRegion: dr });
@@ -453,7 +453,7 @@ describe('Smart Banner tests', () => {
       });
 
       it('schedules a new creation of banner with updated language', async () => {
-        expect.assertions(6);
+        expect.assertions(7);
 
         const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, defaultPlatform);
         await Utils.flushPromises();
@@ -469,6 +469,7 @@ describe('Smart Banner tests', () => {
 
         jest.runOnlyPendingTimers();
 
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock('ru'), tracker(defaultDomain, 'ru'), expect.any(Function));
         expect(smartBannerViewMock.render).toBeCalled();
         expect(Logger.info).lastCalledWith('Render banner: ' + bannerName);
       });
@@ -502,7 +503,159 @@ describe('Smart Banner tests', () => {
   });
 
   describe('Deeplink context setting', () => {
+    const testSet = [
+      {
+        _action: 'sets custom deeplink',
+        initContext: undefined,
+        newContext: { deeplink: 'new-path' },
+        deeplink: encodeURIComponent('new-path')
+      },
+      {
+        _action: 'sets custom context',
+        initContext: { deeplink: 'some-path/param={param}' },
+        newContext: { context: { param: 'meow' } },
+        deeplink: encodeURIComponent('some-path/param=meow')
+      },
+      {
+        _action: 'cleans both deeplink and context',
+        initContext: { deeplink: 'some-path', context: { param: 'meow' } },
+        newContext: {},
+        deeplink: undefined
+      },
+      {
+        _action: 'sets a new deeplink',
+        initContext: { deeplink: 'some-path' },
+        newContext: { deeplink: 'new-path' },
+        deeplink: encodeURIComponent('new-path')
+      },
+      {
+        _action: 'sets a new context and preserves deeplink',
+        initContext: { deeplink: 'some-path/param={param}', context: { param: 'old' } },
+        newContext: { context: { param: 'new' } },
+        deeplink: encodeURIComponent('some-path/param=new')
+      },
+      {
+        _action: 'sets a new deeplink and preserves context',
+        initContext: { deeplink: 'some-path/param={param}', context: { param: 'old' } },
+        newContext: { deeplink: 'new-path/param={param}' },
+        deeplink: encodeURIComponent('new-path/param=old')
+      },
+      {
+        _action: 'sets both new deeplink and context',
+        initContext: { deeplink: 'some-path/param={param}', context: { param: 'old' } },
+        newContext: { deeplink: 'new-path/param={greet}', context: { greet: 'hi' } },
+        deeplink: encodeURIComponent('new-path/param=hi')
+      },
+    ]
 
+    describe('View exists', () => {
+      it.each(testSet)('$_action, updates the view with new tracker url', async ({ _action, initContext, newContext, deeplink }) => {
+        expect.assertions(1)
+
+        const smartBanner = new SmartBanner('some-token',
+          {
+            appToken: 'some-token',
+            deeplink: initContext?.deeplink,
+            context: initContext?.context
+          },
+          defaultPlatform);
+        await Utils.flushPromises();
+
+        smartBanner.setDeeplinkContext(newContext as any);
+        await Utils.flushPromises();
+
+        const trackerUrl = deeplink ?
+          trackerWithDeeplink(defaultDomain, defaultLang, deeplink) :
+          tracker(defaultDomain, defaultLang);
+
+        expect(smartBannerViewMock.update).toBeCalledWith(renderDataMock(defaultLang), trackerUrl);
+      });
+    });
+
+    describe('View creation scheduled', () => {
+      let startTime = Date.now();
+      const testStartedAt = () => startTime;
+      const bannerName = serverResponseMock[0].name;
+      const recordId = serverResponseMock[0].id;
+      const storage = new InMemoryStorage();
+
+      beforeEach(() => {
+        startTime = Date.now();
+        storage.setItem(recordId, testStartedAt());
+        jest.spyOn(StorageFactory, 'createStorage').mockReturnValue(storage);
+        jest.useFakeTimers();
+      });
+
+      afterEach(() => {
+        storage.removeItem(recordId);
+        jest.spyOn(StorageFactory, 'createStorage').mockReturnValue(new InMemoryStorage());
+        jest.useRealTimers();
+      });
+
+      it.each(testSet)('schedules a new creation of banner with updated deeplink context', async ({ initContext, newContext, deeplink }) => {
+        expect.assertions(7);
+
+        const smartBanner = new SmartBanner('some-token',
+          {
+            appToken: 'some-token',
+            deeplink: initContext?.deeplink,
+            context: initContext?.context
+          },
+          defaultPlatform);
+        await Utils.flushPromises();
+
+        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt() + 600)}`);
+
+        smartBanner.setDeeplinkContext(newContext as any);
+        await Utils.flushPromises();
+
+        expect(smartBannerViewMock.update).not.toBeCalled();
+        expect(Logger.log).toBeCalledWith('Clearing previously scheduled creation of a Smart banner');
+        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt() + 600)}`);
+
+        jest.runOnlyPendingTimers();
+
+        const trackerUrl = deeplink ?
+          trackerWithDeeplink(defaultDomain, defaultLang, deeplink) :
+          tracker(defaultDomain, defaultLang);
+
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+        expect(smartBannerViewMock.render).toBeCalled();
+        expect(Logger.info).lastCalledWith('Render banner: ' + bannerName);
+      });
+    });
+
+    describe('Initialisation is not finished yet', () => {
+      it('logs a message that deeplink context will be applied within initialisation', () => {
+        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, defaultPlatform);
+        smartBanner.setDeeplinkContext({ deeplink: 'my-deeplink' });
+
+        expect(Logger.log).toBeCalledWith('Smart banner was not created yet, the defined deeplink context will be applied within creation');
+        expect(smartBannerViewMock.update).not.toBeCalled();
+      });
+
+      it.each(testSet)('applies the deeplink context within initialisation', async ({ initContext, newContext, deeplink }) => {
+        expect.assertions(3);
+
+        const smartBanner = new SmartBanner('some-token',
+          {
+            appToken: 'some-token',
+            deeplink: initContext?.deeplink,
+            context: initContext?.context
+          },
+          defaultPlatform);
+        smartBanner.setDeeplinkContext(newContext as any);
+        await Utils.flushPromises();
+
+        const trackerUrl = deeplink ?
+          trackerWithDeeplink(defaultDomain, defaultLang, deeplink) :
+          tracker(defaultDomain, defaultLang);
+
+        expect(Logger.log).toBeCalledWith('Smart banner was not created yet, the defined deeplink context will be applied within creation');
+        expect(smartBannerViewMock.update).not.toBeCalled();
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+      });
+    });
   });
 
 });
