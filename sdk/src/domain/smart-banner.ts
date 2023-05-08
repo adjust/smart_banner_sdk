@@ -1,4 +1,4 @@
-import { SmartBannerData, UserContext } from '../data/types';
+import { SmartBannerData, UserContext, UserTrackerData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
 import { convertSmartBannerToTracker } from '../data/converters/smart-banner-to-tracker-data';
@@ -24,7 +24,9 @@ export type AppToken = { [k in DeviceOS]?: string } | string;
 /** @public */
 export interface SmartBannerOptions {
   appToken: AppToken;
-  dataResidency?: DataResidencyRegion;
+  dataResidency?: DataResidency.Region;
+  deeplink?: string;
+  context?: UserContext;
   language?: string;
   onCreated?: Callback;
   onDismissed?: Callback;
@@ -36,7 +38,7 @@ export class SmartBanner {
   private dismissHandler: DismissHandler;
   private bannersSelector: BannerSelector;
   private language: string | null;
-  private context: UserContext | null = null;
+  private userTrackerData: UserTrackerData = {};
   private onCreated?: Callback;
   private onDismissed?: Callback;
   private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
@@ -45,7 +47,7 @@ export class SmartBanner {
 
   constructor(
     appToken: string,
-    { dataResidency, language, context, onCreated, onDismissed }: SmartBannerOptions,
+    { dataResidency, language, deeplink, context, onCreated, onDismissed }: SmartBannerOptions,
     private deviceOs: DeviceOS,
     network?: Network
   ) {
@@ -67,7 +69,13 @@ export class SmartBanner {
 
     this.language = language || getLanguage();
 
-    this.context = context ?? null;
+    if (deeplink) {
+      this.userTrackerData.deeplink = deeplink;
+    }
+
+    if (context) {
+      this.userTrackerData.context = context;
+    }
 
     this.init(appToken);
   }
@@ -90,7 +98,7 @@ export class SmartBanner {
     Logger.log('Creating Smart Banner');
 
     const trackerData = convertSmartBannerToTracker(bannerData, this.network.endpoint);
-    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.context);
+    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.userTrackerData);
 
     this.view = new SmartBannerView(
       document.body,
@@ -215,7 +223,12 @@ export class SmartBanner {
   }
 
   setContext(context: UserContext): void {
-    this.context = context;
+    this.userTrackerData.context = context;
+    // TODO: update banner URL
+  }
+
+  setDeeplink(deeplink: string): void {
+    this.userTrackerData.deeplink = deeplink;
     // TODO: update banner URL
   }
 }
