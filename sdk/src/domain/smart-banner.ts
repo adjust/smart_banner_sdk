@@ -25,7 +25,7 @@ export class SmartBanner {
   private customTrackerData: UserTrackerData = {};
   private onCreated?: Callback;
   private onDismissed?: Callback;
-  private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
+  private gettingBannerPromise: Promise<{ banner: SmartBannerData, schedule: number } | null> | null = null;
   private view: SmartBannerView | null = null;
   private url: string = window.location.href;
 
@@ -80,27 +80,31 @@ export class SmartBanner {
   }
 
   private getMatchingBanner(): Promise<{ banner: SmartBannerData, schedule: number } | null> {
-    this.dataFetchPromise = this.repository.fetch(this.appToken);
+    this.gettingBannerPromise = this.repository.fetch(this.appToken)
+      .then(bannersList => {
+        if (!bannersList) {
+          Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
+          return null;
+        }
 
-    return this.dataFetchPromise.then(bannersList => {
-      this.dataFetchPromise = null;
+        const matchingBanner = this.bannersSelector.next(bannersList, this.url);
 
-      if (!bannersList) {
-        Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
-        return null;
-      }
+        this.gettingBannerPromise = null;
 
-      const matchingBanner = this.bannersSelector.next(bannersList, this.url);
+        if (!matchingBanner) {
+          Logger.log(`No Smart Banners for ${this.url} page found`);
+          return null;
+        }
 
-      if (!matchingBanner) {
-        Logger.log(`No Smart Banners for ${this.url} page found`);
-        return null;
-      }
+        return matchingBanner;
+      });
 
-      return matchingBanner;
-    });
+    return this.gettingBannerPromise;
   }
 
+  /**
+   * Returns localized render data and tracker URL
+   */
   private prepareDataForRender(bannerData: SmartBannerData): { renderData: SmartBannerViewData, trackerUrl: string } {
     const renderData = convertSmartBannerDataForView(bannerData, this.language);
 
@@ -165,10 +169,10 @@ export class SmartBanner {
       return;
     }
 
-    if (this.dataFetchPromise) {
+    if (this.gettingBannerPromise) {
       Logger.log(`Fetching banners now, ${action} banner after fetch finished`);
 
-      this.dataFetchPromise
+      this.gettingBannerPromise
         .then(() => {
           Logger.log(`Banners fetch finished, ${action} Smart banner now`);
           this.changeVisibility(action);
