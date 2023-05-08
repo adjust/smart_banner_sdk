@@ -34,8 +34,4 @@ describe('Detecting browser language', () => {
 
     expect(getLanguage()).toBe('en')
   })
-
-  it('returns default language if unable to read Navigator.languages nor Navigator.language', () => {
-
-  })
 })
