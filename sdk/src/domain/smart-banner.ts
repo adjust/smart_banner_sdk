@@ -63,20 +63,6 @@ export class SmartBanner {
     this.init(appToken);
   }
 
-  private isInitialised(): boolean {
-    if (this.view) {
-      Logger.error('Smart Banner is created already');
-      return true;
-    }
-
-    if (this.dataFetchPromise) {
-      Logger.error('Smart Banner is initialising already');
-      return true;
-    }
-
-    return false;
-  }
-
   private createBanner(bannerData: SmartBannerData) {
     Logger.log('Creating Smart Banner');
 
@@ -99,10 +85,6 @@ export class SmartBanner {
   }
 
   private init(appToken: string) {
-    if (this.isInitialised()) {
-      return;
-    }
-
     Logger.log('Fetching Smart banners');
 
     this.dataFetchPromise = this.repository.fetch(appToken);
@@ -174,8 +156,6 @@ export class SmartBanner {
 
       return;
     }
-
-    Logger.error('There is no Smart Banner to show, have you called initialisation?');
   }
 
   hide(): void {
@@ -195,8 +175,6 @@ export class SmartBanner {
 
       return;
     }
-
-    Logger.error('There is no Smart Banner to hide, have you called initialisation?');
   }
 
   setLanguage(language: string): void {
