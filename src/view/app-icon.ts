@@ -1,4 +1,4 @@
-import { SmartBannerData } from '../api';
+import { SmartBannerData } from '../data/api';
 
 //type AppIconData = Pick<SmartBannerData, 'appId' | 'appName' | 'imageUrl'>
 
