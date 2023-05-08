@@ -61,7 +61,14 @@ export function Header(props: HeaderProps) {
       }
     });
 
-    const mainMenu = MainMenu({ menuItems: [fixedHeaderMenuItem] });
+    const navigateMenuItem = MenuItem({
+      label: 'Change URL',
+      onClick: () => {
+        history.pushState({}, '', `/random-page-${Math.random()}`);
+      }
+    });
+
+    const mainMenu = MainMenu({ menuItems: [fixedHeaderMenuItem, navigateMenuItem] });
     const renderred = mainMenu.render();
     header.appendChild(renderred);
 

@@ -12,10 +12,17 @@ export class SmartBannerApi implements AsyncDataSource<string, SmartBannerData[]
   constructor(private platform: DeviceOS, private network: Network) { }
 
   public retrieve(token: string): Promise<SmartBannerData[] | null> {
+    Logger.log('Fetching Smart banners');
     const path = '/smart_banner';
 
     return this.network.request<SmartBannerResponseData[]>(path, { 'app_token': token, 'platform': this.platform })
-      .then(data => convertResponseToSmartBanners(data))
+      .then(data => {
+        const banners = convertResponseToSmartBanners(data);
+        if (banners) {
+          Logger.log('Smart banners fetched');
+        }
+        return banners;
+      })
       .catch(error => {
         Logger.error('Network error occurred during loading Smart Banner: ' + JSON.stringify(error));
         return null;

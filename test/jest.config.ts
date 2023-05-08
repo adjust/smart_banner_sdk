@@ -32,11 +32,15 @@ const config: JestConfigWithTsJest = {
         tsconfig: {
           esModuleInterop: true,
         },
+        diagnostics: {
+          ignoreCodes: ['2307']
+        },
       },
     ],
   },
   setupFiles: [
-    'jest-localstorage-mock'
+    'jest-localstorage-mock',
+    '<rootDir>/_setup/utils.ts'
   ],
   setupFilesAfterEnv: ['jest-extended/all'],
   testEnvironment: 'jsdom',

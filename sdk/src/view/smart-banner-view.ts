@@ -9,13 +9,19 @@ export class SmartBannerView {
   private wrapper: HTMLElement;
   private bannerBody: BannerBody;
 
-  constructor(private parent: HTMLElement, private banner: SmartBannerViewData, href: string, onDismiss: () => void) {
+  constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
     this.root = document.createElement('div');
     this.wrapper = document.createElement('div');
-    this.bannerBody = new BannerBody(banner, href, onDismiss);
+    this.bannerBody = new BannerBody(banner, trackerUrl, onDismiss);
   }
 
-  public render() {
+  public update(banner: SmartBannerViewData, trackerUrl: string) {
+    this.banner = banner;
+
+    this.bannerBody.update(banner, trackerUrl);
+  }
+
+  public render(parent: HTMLElement) {
     const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
     this.root.className = `${styles.banner} ${positionStyle}`;
 
@@ -25,9 +31,9 @@ export class SmartBannerView {
     this.bannerBody.render(this.root);
 
     if (this.banner.position === Position.Top) {
-      this.parent.insertBefore(this.wrapper, this.parent.firstChild);
+      parent.insertBefore(this.wrapper, parent.firstChild);
     } else {
-      this.parent.appendChild(this.wrapper);
+      parent.appendChild(this.wrapper);
     }
   }
 

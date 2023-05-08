@@ -1,36 +1,21 @@
-import { SmartBannerData, UserContext, UserTrackerData } from '../data/types';
+import { SmartBannerData, UserTrackerData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
 import { convertSmartBannerToTracker } from '../data/converters/smart-banner-to-tracker-data';
 import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
 import { NetworkConfig, NetworkFactory } from '../network/network-factory';
-import { DataResidencyRegion } from '../network/data-residency/data-residency';
 import { Logger } from '../utils/logger';
 import { DeviceOS } from '../utils/detect-os';
 import { getLanguage } from '../utils/language';
 import { SmartBannerView } from '../view/smart-banner-view';
+import { SmartBannerViewData } from '../view/types';
 import { Globals } from '../globals';
 import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
 import { buildSmartBannerUrl } from './tracker-builder';
-
-/** @public */
-export type Callback = () => any;
-
-/** @public */
-export type AppToken = { [k in DeviceOS]?: string } | string;
-
-/** @public */
-export interface SmartBannerOptions {
-  appToken: AppToken;
-  dataResidency?: DataResidencyRegion;
-  deeplink?: string;
-  context?: UserContext;
-  language?: string;
-  onCreated?: Callback;
-  onDismissed?: Callback;
-}
+import { Callback, SmartBannerOptions } from '../types';
+import { isEmptyObject } from '../utils/object-utils';
 
 export class SmartBanner {
   private network: Network;
@@ -41,15 +26,15 @@ export class SmartBanner {
   private customTrackerData: UserTrackerData = {};
   private onCreated?: Callback;
   private onDismissed?: Callback;
-  private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
+  private gettingBannerPromise: Promise<{ banner: SmartBannerData, when: number } | null> | null = null;
+  private selectedBanner: { banner: SmartBannerData, when: number } | null = null;
   private view: SmartBannerView | null = null;
   private url: string = window.location.href;
 
   constructor(
-    appToken: string,
+    private appToken: string,
     { dataResidency, language, deeplink, context, onCreated, onDismissed }: SmartBannerOptions,
-    private deviceOs: DeviceOS,
-    network?: Network
+    private deviceOs: DeviceOS
   ) {
     this.dismissHandler = new DismissHandler();
     this.bannersSelector = new BannerSelector(this.dismissHandler);
@@ -58,11 +43,11 @@ export class SmartBanner {
     this.onDismissed = onDismissed;
 
     const networkConfig: NetworkConfig = {
-      dataEndpoint: Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_ ? Globals._DEV_ENDPOINT_ : undefined,
+      dataEndpoint: (Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_) ? Globals._DEV_ENDPOINT_ : undefined,
       dataResidencyRegion: dataResidency
     };
 
-    this.network = network || NetworkFactory.create(networkConfig);
+    this.network = NetworkFactory.create(networkConfig);
 
     const networkApi = new SmartBannerApi(this.deviceOs, this.network);
     this.repository = new SmartBannerRepository(networkApi);
@@ -77,153 +62,223 @@ export class SmartBanner {
       this.customTrackerData.context = context;
     }
 
-    this.init(appToken);
+    this.init();
   }
 
-  private isInitialised(): boolean {
-    if (this.view) {
-      Logger.error('Smart Banner is created already');
-      return true;
-    }
+  private init() {
+    this.getMatchingBanner()
+      .then(matchingBanner => {
+        this.selectedBanner = matchingBanner;
 
-    if (this.dataFetchPromise) {
-      Logger.error('Smart Banner is initialising already');
-      return true;
-    }
+        if (!this.selectedBanner) {
+          return;
+        }
 
-    return false;
+        const { banner, when } = this.selectedBanner;
+        this.createOrSchedule(banner, when);
+      });
   }
 
-  private createBanner(bannerData: SmartBannerData) {
-    Logger.log('Creating Smart Banner');
+  /**
+   * Gets banners from SmartBannerRepository and selects a _random_ matching one with BannerSelector
+   * @returns a suitable banner and a timestamp when it should be shown (mignt be negative, then show immediately),
+   * or null if there is no suitable banner
+   */
+  private getMatchingBanner(): Promise<{ banner: SmartBannerData, when: number } | null> {
+    this.gettingBannerPromise = this.repository.fetch(this.appToken)
+      .then(bannersList => {
+        if (!bannersList) {
+          Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
+          return null;
+        }
 
-    const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint);
+        const matchingBanner = this.bannersSelector.next(bannersList, this.url);
+
+        this.gettingBannerPromise = null;
+
+        if (!matchingBanner) {
+          Logger.log(`No Smart Banners for ${this.url} page found`);
+          return null;
+        }
+
+        return matchingBanner;
+      });
+
+    return this.gettingBannerPromise;
+  }
+
+  /**
+   * Returns localized render data and tracker URL
+   */
+  private prepareDataForRender(bannerData: SmartBannerData): { renderData: SmartBannerViewData, trackerUrl: string } {
+    const renderData = convertSmartBannerDataForView(bannerData, this.language);
+
+    const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint, this.language);
     const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customTrackerData);
 
-    this.view = new SmartBannerView(
-      document.body,
-      convertSmartBannerDataForView(bannerData, this.language),
-      trackerUrl,
-      () => this.dismiss(bannerData)
-    );
-    this.view.render();
+    return { renderData, trackerUrl };
+  }
 
-    Logger.log('Smart Banner created');
+  private createOrSchedule(banner: SmartBannerData, when: number) {
+    if (when <= 0) {
+      this.createView(banner);
+    } else {
+      this.dismissHandler.schedule(banner, () => this.createView(banner), when);
+    }
+  }
+
+  private createView(bannerData: SmartBannerData) {
+    Logger.info(`Render banner: ${bannerData.name}`);
+
+    const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
+
+    this.view = new SmartBannerView(renderData, trackerUrl, () => this.dismiss(bannerData));
+    this.view.render(document.body);
+
+    Logger.log('Smart banner rendered');
 
     if (this.onCreated) {
       this.onCreated();
     }
   }
 
-  private init(appToken: string) {
-    if (this.isInitialised()) {
+  private updateView(banner: SmartBannerData) {
+    if (this.view) {
+      Logger.log('Updating Smart banner');
+
+      const { renderData, trackerUrl } = this.prepareDataForRender(banner);
+
+      this.view.update(renderData, trackerUrl);
+
+      Logger.log('Smart banner updated');
+    } else {
+      Logger.error('There is no Smart banner to update');
+    }
+  }
+
+  private updateOrScheduleCreation(banner: SmartBannerData, when: number) {
+    if (when <= 0) {
+      this.updateView(banner);
+    } else {
+      this.dismissHandler.schedule(banner, () => this.createView(banner), when);
+    }
+  }
+
+  private destroyView() {
+    if (this.view) {
+      this.view.destroy();
+      this.view = null;
+      Logger.log('Smart banner removed');
+    } else {
+      Logger.error('There is no Smart banner to remove');
+    }
+  }
+
+  private changeVisibility(action: 'show' | 'hide') {
+    if (this.view) {
+      this.view[action]();
+      let message = `${action} banner`;
+      message = message.charAt(0).toUpperCase() + message.slice(1);
+      Logger.log(message);
       return;
     }
 
-    Logger.log('Fetching Smart banners');
+    if (this.gettingBannerPromise) {
+      Logger.log(`Fetching banners now, ${action} banner after fetch finished`);
 
-    this.dataFetchPromise = this.repository.fetch(appToken);
+      this.gettingBannerPromise
+        .then(() => {
+          Logger.log(`Banners fetch finished, ${action} Smart banner now`);
+          this.changeVisibility(action);
+        });
 
-    this.dataFetchPromise.then(bannersList => {
-      this.dataFetchPromise = null;
-
-      if (!bannersList) {
-        Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
-        return;
-      }
-
-      const matchingBanner = this.bannersSelector.next(bannersList, this.url);
-
-      if (!matchingBanner) {
-        Logger.log(`No Smart Banners for ${this.url} page found`);
-        return;
-      }
-
-      const { banner, schedule } = matchingBanner;
-      if (schedule <= 0) {
-        this.createBanner(banner);
-      } else {
-        this.dismissHandler.schedule(banner, () => this.createBanner(banner), schedule);
-      }
-    });
+      return;
+    }
   }
 
   private dismiss(banner: SmartBannerData) {
     this.dismissHandler.dismiss(banner);
 
-    this.destroy();
+    this.destroyView();
 
     if (this.onDismissed) {
       this.onDismissed();
     }
   }
 
-  /**
-   * Removes Smart Banner from DOM
-   */
-  private destroy() {
-    if (this.view) {
-      this.view.destroy();
-      this.view = null;
-      Logger.log('Smart Banner removed');
-    } else {
-      Logger.error('There is no Smart Banner to remove');
-    }
-  }
-
-  // TODO: should check if page url changed and select another banner if needed, not just change visibility
   show(): void {
-    this.url = window.location.href;
+    if (this.url === window.location.href) {
+      this.changeVisibility('show');
+    } else {
+      Logger.info('Page address changed');
 
-    if (this.view) {
-      this.view.show();
-      return;
+      this.url = window.location.href;
+
+      if (this.view) {
+        this.destroyView();
+      }
+
+      this.init();
     }
-
-    if (this.dataFetchPromise) {
-      Logger.log('Smart Banner will be shown after initialisation finished');
-
-      this.dataFetchPromise
-        .then(() => {
-          Logger.log('Initialisation finished, show Smart Banner now');
-          this.show();
-        });
-
-      return;
-    }
-
-    Logger.error('There is no Smart Banner to show, have you called initialisation?');
   }
 
   hide(): void {
-    if (this.view) {
-      this.view.hide();
-      return;
-    }
-
-    if (this.dataFetchPromise) {
-      Logger.log('Smart Banner will be hidden after initialisation finished');
-
-      this.dataFetchPromise
-        .then(() => {
-          Logger.log('Initialisation finished, hide Smart Banner now');
-          this.hide();
-        });
-
-      return;
-    }
-
-    Logger.error('There is no Smart Banner to hide, have you called initialisation?');
+    this.changeVisibility('hide');
   }
 
   setLanguage(language: string): void {
     this.language = language;
-    // TODO: change language in view
-    // TODO: update banner URL
+
+    if (this.gettingBannerPromise) {
+      Logger.log('Smart banner was not created yet, the chosen language will be applied within creation');
+      return;
+    }
+
+    if (!this.selectedBanner) {
+      Logger.log('There is no suitable banner for current page, preserving the choosen language');
+      return;
+    }
+
+    const { banner, when } = this.selectedBanner;
+    this.updateOrScheduleCreation(banner, when);
   }
 
   setDeeplinkContext({ deeplink, context }: UserTrackerData): void {
+    if (!deeplink && (!context || isEmptyObject(context))) {
+      // empty deeplink and context passed, clean current value
+      deeplink = undefined;
+      context = undefined;
+    } else {
+      if (deeplink === undefined) {
+        // only context passed, don't override the previous deeplink
+        deeplink = this.customTrackerData.deeplink;
+      } else if (!deeplink) {
+        // deeplink === '', clean it
+        deeplink = undefined;
+      }
+
+      if (context === undefined) {
+        // only deeplink passed, don't override the previous context
+        context = this.customTrackerData.context;
+      } else if (isEmptyObject(context)) {
+        // context === {}, clean it
+        context = undefined;
+      }
+    }
+
     this.customTrackerData = { deeplink, context };
-    // TODO: update banner URL
+
+    if (this.gettingBannerPromise) {
+      Logger.log('Smart banner was not created yet, the provided deeplink context will be applied within creation');
+      return;
+    }
+
+    if (!this.selectedBanner) {
+      Logger.log('There is no suitable banner for current page, preserving the provided deeplink context language');
+      return;
+    }
+
+    const { banner, when } = this.selectedBanner;
+    this.updateOrScheduleCreation(banner, when);
   }
 }

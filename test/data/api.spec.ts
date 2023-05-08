@@ -4,7 +4,7 @@ import { Network } from '@sdk/network/network';
 import { DeviceOS } from '@sdk/utils/detect-os';
 import { snakeToCamelCase } from '@sdk/utils/snake-to-camel-case';
 
-import dataMock from '../../fake-data/smart_banners.json';
+import serverResponseMock from '../../fake-data/smart_banners.json';
 
 jest.mock('@sdk/utils/logger');
 
@@ -13,8 +13,6 @@ describe('Smart banner API tests', () => {
   describe('fetchSmartBannerData', () => {
     const appToken = 'some-token';
     const platform = DeviceOS.iOS;
-
-    const serverResponseMock = dataMock;
 
     const testNetwork: Network = {
       trackerEndpoint: '', // not used in tests
@@ -43,7 +41,7 @@ describe('Smart banner API tests', () => {
 
       expect(smartBannerData).not.toBeNull();
 
-      smartBannerData = smartBannerData!;
+      smartBannerData = smartBannerData!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
       for (let i = 0; i < smartBannerData.length; i++) {
         const expected = snakeToCamelCase(serverResponseMock[i]);

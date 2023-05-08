@@ -28,14 +28,12 @@ export class DismissHandler {
     this.storage.setItem(banner.id, Date.now());
   }
 
-  public schedule(banner: SmartBannerData, showBannerCallback: () => void, delay?: number) {
+  public schedule(banner: SmartBannerData, showBannerCallback: () => void, when: number) {
     if (this.timer) {
-      Logger.log('Clearing previously scheduled creation of Smart Banner');
+      Logger.log('Clearing previously scheduled creation of a Smart banner');
       clearTimeout(this.timer);
       this.timer = null;
     }
-
-    const when = this.getDateToShowAgain(banner);
 
     this.timer = setTimeout(
       () => {
@@ -43,9 +41,9 @@ export class DismissHandler {
         this.storage.removeItem(banner.id);
         showBannerCallback();
       },
-      delay || when - Date.now());
+      when - Date.now());
 
-    Logger.log(`Smart Banner creation scheduled on ${new Date(when)}`);
+    Logger.info(`Smart banner ${banner.name} creation scheduled on ${new Date(when)}`);
   }
 
 }

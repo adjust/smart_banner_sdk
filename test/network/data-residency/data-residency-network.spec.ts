@@ -17,7 +17,7 @@ describe('NetworkWithDataResidency', () => {
 
   const networkMock: Network = {
     trackerEndpoint: '', // not used in tests
-    request: (_: string, __?: Record<string, string | number | boolean>) => Promise.resolve('all good') as any
+    request: () => Promise.resolve('all good') as any
   };
 
   describe('request', () => {

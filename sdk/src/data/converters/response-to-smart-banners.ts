@@ -2,6 +2,10 @@ import { SmartBannerData, SmartBannerResponseData } from '../types';
 import { snakeToCamelCase } from '../../utils/snake-to-camel-case';
 
 export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): SmartBannerData[] | null {
+  if (!Array.isArray(data)) {
+    return null;
+  }
+
   const banners: Array<SmartBannerData> = [];
 
   for (const item of data) {

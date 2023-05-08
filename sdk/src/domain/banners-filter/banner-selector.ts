@@ -30,7 +30,7 @@ export class BannerSelector {
   /**
    * Returns next suitable banner and a number of seconds to wait until show the banner
    */
-  public next(banners: SmartBannerData[], url: string): { banner: SmartBannerData, schedule: number } | null {
+  public next(banners: SmartBannerData[], url: string): { banner: SmartBannerData, when: number } | null {
     const suitableBanners = this.getSuitableBanners(banners, url);
 
     if (suitableBanners.length <= 0) {
@@ -47,7 +47,7 @@ export class BannerSelector {
 
     return {
       banner: this.getRandomFromArray(suitableBanners), // Show any banner with equal probability
-      schedule: dateToShow || NO_DELAY
+      when: dateToShow || NO_DELAY
     };
   }
 }
