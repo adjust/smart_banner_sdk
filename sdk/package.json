@@ -1,5 +1,5 @@
 {
-  "name": "@adjustcom/sb-sdk",
+  "name": "@adjustcom/smart-banner-sdk",
   "version": "0.0.1",
   "description": "Adjust Smart Banner SDK",
   "scripts": {
@@ -7,10 +7,10 @@
     "build:snippet": "terser ./loading-snippet.js -o dist/sdk.loading-snippet.min.js -c -m",
     "build": "npm-run-all build:sdk build:snippet"
   },
-  "main": "dist/adjust-sb-latest.js",
+  "main": "dist/smart-banner-sdk.js",
   "files": [
-    "dist/adjust-sb-latest.js",
-    "dist/adjust-sb-latest.min.js",
+    "dist/smart-banner-sdk.js",
+    "dist/smart-banner-sdk.min.js",
     "CHANGELOG.md"
   ],
   "repository": {

@@ -1,6 +1,6 @@
-import * as sdk from '@adjustcom/sb-sdk';
+import { AdjustSmartBanner } from '@adjustcom/smart-banner-sdk';
 
-console.log(sdk);
+console.log(AdjustSmartBanner);
 
 const div = document.createElement('div');
 div.innerText = 'WHOA!';
