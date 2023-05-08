@@ -433,15 +433,22 @@ describe('Smart Banner tests', () => {
 
     describe('View creation scheduled', () => {
       const testStartedAt = Date.now();
+      const recordId = 'adjust-smart-banner.' + serverResponseMock[0].id
       const bannerName = serverResponseMock[0].name;
 
       beforeAll(() => {
-        localStorage.setItem('adjust-smart-banner.' + serverResponseMock[0].id, '' + testStartedAt);
+        // Jenkins test debug
+        console.warn(`Write to LS {${recordId}: ${testStartedAt}}`)
+
+        localStorage.setItem(recordId, '' + testStartedAt);
         jest.useFakeTimers();
       });
 
       afterAll(() => {
-        localStorage.removeItem('adjust-smart-banner.' + serverResponseMock[0].id);
+        // Jenkins test debug
+        console.warn(`Remove${recordId} from LS`)
+
+        localStorage.removeItem(recordId);
         jest.useRealTimers();
       });
 
