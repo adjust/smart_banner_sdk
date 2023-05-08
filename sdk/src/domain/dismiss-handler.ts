@@ -45,7 +45,7 @@ export class DismissHandler {
       },
       delay || when - Date.now());
 
-    Logger.log(`Smart Banner creation scheduled on ${new Date(when)}`);
+    Logger.info(`Smart Banner ${banner.name} creation scheduled on ${new Date(when)}`);
   }
 
 }
