@@ -1,11 +1,11 @@
-import { Logger } from '@sdk/logger';
+import { Logger } from '@sdk/utils/logger';
 import { BlockedUrlBypass } from '@sdk/network/url-strategy/blocked-url-bypass';
 import { CustomUrl } from '@sdk/network/url-strategy/custom-url';
 import { DataResidency } from '@sdk/network/url-strategy/data-residency';
 import * as UrlStrategyModule from '@sdk/network/url-strategy/url-strategy';
 import { UrlStrategyFactory } from '@sdk/network/url-strategy/url-strategy-factory';
 
-jest.mock('@sdk/logger');
+jest.mock('@sdk/utils/logger');
 
 describe('UrlStrategyFactory', () => {
   const urlStrategyConstructorMock = jest.fn();

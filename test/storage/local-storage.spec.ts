@@ -1,4 +1,4 @@
-import { LocalStorage } from '@sdk/storage/local-storage';
+import { LocalStorage } from '@sdk/data/storage/local-storage';
 
 describe('Local storage', () => {
   const storage = new LocalStorage;

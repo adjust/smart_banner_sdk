@@ -1,7 +1,7 @@
 import { NoConnectionError } from '@sdk/network/errors';
 import { XhrNetwork } from '@sdk/network/xhr-network';
 
-jest.mock('../../sdk/src/logger');
+jest.mock('@sdk/utils/logger');
 
 describe('XhrNetwork tests', () => {
   const testEndpoint = 'test.test';
