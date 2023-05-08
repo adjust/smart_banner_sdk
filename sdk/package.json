@@ -4,10 +4,12 @@
   "description": "Adjust Smart Banner SDK",
   "scripts": {
     "build:sdk": "webpack --config ./webpack.config.js",
-    "build:snippet": "terser ./loading-snippet.js -o dist/sdk.loading-snippet.min.js -c -m",
-    "build": "npm-run-all build:sdk build:snippet"
+    "build:types": "tsc -p ./tsconfig.types.json && api-extractor run --local",
+    "build:snippet": "terser ./loading-snippet.js -o dist/loading-snippet.min.js -c -m",
+    "build": "npm-run-all build:sdk build:types build:snippet"
   },
   "main": "dist/smart-banner-sdk.js",
+  "types": "dist/smart-banner-sdk.d.ts",
   "files": [
     "dist/smart-banner-sdk.js",
     "dist/smart-banner-sdk.min.js",
@@ -22,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/adjust/smart_banner_sdk_dev/issues"
   },
-  "homepage": "https://github.com/adjust/smart_banner_sdk_dev#readme"
+  "homepage": "https://github.com/adjust/smart_banner_sdk_dev#readme",
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.34.4"
+  }
 }
