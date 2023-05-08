@@ -112,15 +112,15 @@ export class SmartBanner {
         return;
       }
 
-      const matchingBanner = this.bannersSelector.get(bannersList, window.location.href);
+      const matchingBanner = this.bannersSelector.next(bannersList, window.location.href);
 
       if (!matchingBanner) {
         Logger.log(`No Smart Banners for ${window.location.href} page found`);
         return;
       }
 
-      const { banner, dismissed } = matchingBanner;
-      if (!dismissed) {
+      const { banner, schedule } = matchingBanner;
+      if (!schedule) {
         this.createBanner(banner);
       } else {
         this.dismissHandler.schedule(banner, () => this.createBanner(banner));

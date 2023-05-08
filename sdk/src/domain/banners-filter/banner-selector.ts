@@ -8,7 +8,7 @@ export class BannersSelector {
   private displayRule: DisplayRule;
   private dismissedFilter: DismissedFilter;
 
-  constructor(private dismissHandler: DismissHandler) {
+  constructor(dismissHandler: DismissHandler) {
     this.displayRule = new DisplayRule();
     this.dismissedFilter = new DismissedFilter(dismissHandler);
   }
@@ -22,29 +22,9 @@ export class BannersSelector {
   }
 
   /**
-   * Get the first suitable banner and a flag if it was dismissed
-   * 
-   * Current business logic requires to show first matching banner or nothing if the first one was dismissed
+   * Returns next suitable banner and a flag if the banner should be scheduled
    */
-  public get(banners: SmartBannerData[], url: string): { banner: SmartBannerData, dismissed: boolean } | null {
-    const suitableBanners = this.getSuitableBanners(banners, url);
-
-    if (suitableBanners.length <= 0) {
-      return null;
-    }
-
-    return {
-      banner: suitableBanners[0],
-      dismissed: this.dismissHandler.isDismissed(suitableBanners[0])
-    };
-  }
-
-  /**
-   * Get a suitable banner to be shown or scheduled
-   * 
-   * Could be called to get next banner to show after the current one was dismissed
-   */
-  public next(banners: SmartBannerData[], url: string): { banner: SmartBannerData, dismissed: boolean } | null {
+  public next(banners: SmartBannerData[], url: string): { banner: SmartBannerData, schedule: boolean } | null {
     const suitableBanners = this.getSuitableBanners(banners, url);
 
     if (suitableBanners.length <= 0) {
@@ -54,15 +34,19 @@ export class BannersSelector {
     const nonDismissedSuitableBanners = this.dismissedFilter.filter(suitableBanners);
 
     if (nonDismissedSuitableBanners.length > 0) {
+
+      // Current business logic requires to return any banner from array of suitable ones with equal probability
+      const index = Math.floor(Math.random() * nonDismissedSuitableBanners.length);
+
       return {
-        banner: nonDismissedSuitableBanners[0],
-        dismissed: false
+        banner: nonDismissedSuitableBanners[index],
+        schedule: false
       };
     }
 
     return {
       banner: this.dismissedFilter.sort(suitableBanners)[0],
-      dismissed: true
+      schedule: true
     };
   }
 }
