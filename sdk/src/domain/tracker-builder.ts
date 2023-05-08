@@ -46,7 +46,7 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, userTrac
   let template = data.template;
 
   if (deeplink && template.indexOf('deeplink=') < 0) {
-    template += template.indexOf('?') < 0 ? '?deeplink={deeplink}' : 'deeplink={deeplink}';
+    template += template.indexOf('?') < 0 ? '?deeplink={deeplink}' : '&deeplink={deeplink}';
   }
 
   let context: Record<string, string | null> = {
