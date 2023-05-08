@@ -1,7 +1,7 @@
-import { SmartBannerData } from 'sdk/src/data/api';
 import { ActionButton } from '../action-button';
 import { AppIcon } from '../app-icon';
 import { DismissButton } from '../dismiss-button';
+import { SmartBannerViewData } from '../types';
 
 import styles from './styles.module.scss';
 
@@ -10,7 +10,7 @@ export class BannerBody {
   private appIcon: AppIcon;
   private actionButton: ActionButton;
 
-  constructor(private banner: SmartBannerData, href: string, onDismiss: () => void) {
+  constructor(private banner: SmartBannerViewData, href: string, onDismiss: () => void) {
     this.dismissButton = new DismissButton(onDismiss);
     this.appIcon = new AppIcon(banner);
     this.actionButton = new ActionButton(banner.buttonLabel, href);

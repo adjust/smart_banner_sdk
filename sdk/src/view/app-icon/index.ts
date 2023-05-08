@@ -1,12 +1,12 @@
-import { SmartBannerData } from '../../data/api';
+import { SmartBannerViewData } from '../types';
+
 import styles from './styles.module.scss';
 
 export class AppIcon {
   private placeholder: HTMLElement;
   private image: HTMLImageElement;
 
-  constructor(private banner: SmartBannerData) {
-    // create elements in contructor to avoid null-checks in other methods
+  constructor(private banner: SmartBannerViewData) {
     this.placeholder = document.createElement('div');
     this.placeholder.className = styles.placeholder;
 
@@ -20,17 +20,17 @@ export class AppIcon {
 
     appIcon.append(this.placeholder, this.image);
 
-    const imageSources = this.getSources(this.banner);
+    const imageSources = this.getSources();
     this.showImage(imageSources);
 
     root.appendChild(appIcon);
   }
 
-  private getSources(banner: SmartBannerData): string[] {
+  private getSources(): string[] {
     const sourcesArray: string[] = [];
 
-    if (banner.iconUrl) {
-      sourcesArray.push(banner.iconUrl);
+    if (this.banner.iconUrl) {
+      sourcesArray.push(this.banner.iconUrl);
     }
 
     // There is no app_id nor bundle_id nor package_name in data for now
