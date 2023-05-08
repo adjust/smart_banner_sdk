@@ -55,7 +55,7 @@ describe('BannersSelector tests', () => {
 
     expect(actual).not.toBeNull();
     expect(actual?.banner).toBeOneOf(expectedBanners);
-    expect(actual?.schedule).toBe(expectedDateToShow);
+    expect(actual?.when).toBe(expectedDateToShow);
   });
 
   it('returns one of default banner with equal probability if no matching banners present', () => {
@@ -68,7 +68,7 @@ describe('BannersSelector tests', () => {
 
     expect(actual).not.toBeNull();
     expect(actual?.banner).toBeOneOf(expectedBanners);
-    expect(actual?.schedule).toBe(expectedDateToShow);
+    expect(actual?.when).toBe(expectedDateToShow);
   });
 
   it('returns one of suitable banners and delay to wait until banner could be shown', () => {
@@ -81,7 +81,7 @@ describe('BannersSelector tests', () => {
 
     expect(actual).not.toBeNull();
     expect(actual?.banner).toBeOneOf(expectedBanners);
-    expect(actual?.schedule).toBe(expectedDateToShow);
+    expect(actual?.when).toBe(expectedDateToShow);
   });
 
   it('returns one of default banners and delay to wait until banner could be shown', () => {
@@ -94,7 +94,7 @@ describe('BannersSelector tests', () => {
 
     expect(actual).not.toBeNull();
     expect(actual?.banner).toBeOneOf(expectedBanners);
-    expect(actual?.schedule).toBe(expectedDateToShow);
+    expect(actual?.when).toBe(expectedDateToShow);
   });
 
   it('returns null if no suitable and default banners present', () => {

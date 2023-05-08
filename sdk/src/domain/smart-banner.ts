@@ -26,7 +26,8 @@ export class SmartBanner {
   private customTrackerData: UserTrackerData = {};
   private onCreated?: Callback;
   private onDismissed?: Callback;
-  private gettingBannerPromise: Promise<{ banner: SmartBannerData, schedule: number } | null> | null = null;
+  private gettingBannerPromise: Promise<{ banner: SmartBannerData, when: number } | null> | null = null;
+  private selectedBanner: { banner: SmartBannerData, when: number } | null = null;
   private view: SmartBannerView | null = null;
   private url: string = window.location.href;
 
@@ -67,20 +68,23 @@ export class SmartBanner {
   private init() {
     this.getMatchingBanner()
       .then(matchingBanner => {
-        if (!matchingBanner) {
+        this.selectedBanner = matchingBanner;
+
+        if (!this.selectedBanner) {
           return;
         }
 
-        const { banner, schedule } = matchingBanner;
-        if (schedule <= 0) {
-          this.createView(banner);
-        } else {
-          this.dismissHandler.schedule(banner, () => this.createView(banner), schedule);
-        }
+        const { banner, when } = this.selectedBanner;
+        this.createOrSchedule(banner, when);
       });
   }
 
-  private getMatchingBanner(): Promise<{ banner: SmartBannerData, schedule: number } | null> {
+  /**
+   * Gets banners from SmartBannerRepository and selects a _random_ matching one with BannerSelector
+   * @returns a suitable banner and a timestamp when it should be shown (mignt be negative, then show immediately),
+   * or null if there is no suitable banner
+   */
+  private getMatchingBanner(): Promise<{ banner: SmartBannerData, when: number } | null> {
     this.gettingBannerPromise = this.repository.fetch(this.appToken)
       .then(bannersList => {
         if (!bannersList) {
@@ -115,6 +119,14 @@ export class SmartBanner {
     return { renderData, trackerUrl };
   }
 
+  private createOrSchedule(banner: SmartBannerData, when: number) {
+    if (when <= 0) {
+      this.createView(banner);
+    } else {
+      this.dismissHandler.schedule(banner, () => this.createView(banner), when);
+    }
+  }
+
   private createView(bannerData: SmartBannerData) {
     Logger.info(`Render banner: ${bannerData.name}`);
 
@@ -130,29 +142,26 @@ export class SmartBanner {
     }
   }
 
-  private updateView() {
-    return this.getMatchingBanner()
-      .then((matchingBanner) => {
-        if (!matchingBanner) {
-          return;
-        }
+  private updateView(banner: SmartBannerData) {
+    if (this.view) {
+      Logger.log('Updating Smart banner');
 
-        const { banner, schedule } = matchingBanner;
+      const { renderData, trackerUrl } = this.prepareDataForRender(banner);
 
-        if (schedule > 0) {
-          // rescheduling banner creation with updated data
-          this.dismissHandler.schedule(banner, () => this.createView(banner), schedule);
-          return;
-        }
+      this.view.update(renderData, trackerUrl);
 
-        if (this.view) {
-          const { renderData, trackerUrl } = this.prepareDataForRender(banner);
-          Logger.log('Updating Smart banner');
-          this.view.update(renderData, trackerUrl);
-        } else {
-          // TODO ? Is it possible? Should it be handled somehow?
-        }
-      });
+      Logger.log('Smart banner updated');
+    } else {
+      Logger.error('There is no Smart banner to update');
+    }
+  }
+
+  private updateOrScheduleCreation(banner: SmartBannerData, when: number) {
+    if (when <= 0) {
+      this.updateView(banner);
+    } else {
+      this.dismissHandler.schedule(banner, () => this.createView(banner), when);
+    }
   }
 
   private destroyView() {
@@ -225,7 +234,13 @@ export class SmartBanner {
       return;
     }
 
-    this.updateView();
+    if (!this.selectedBanner) {
+      Logger.log('There is no suitable banner for current page, preserving the choosen language');
+      return;
+    }
+
+    const { banner, when } = this.selectedBanner;
+    this.updateOrScheduleCreation(banner, when);
   }
 
   setDeeplinkContext({ deeplink, context }: UserTrackerData): void {
@@ -254,10 +269,16 @@ export class SmartBanner {
     this.customTrackerData = { deeplink, context };
 
     if (this.gettingBannerPromise) {
-      Logger.log('Smart banner was not created yet, the defined deeplink context will be applied within creation');
+      Logger.log('Smart banner was not created yet, the provided deeplink context will be applied within creation');
       return;
     }
 
-    this.updateView();
+    if (!this.selectedBanner) {
+      Logger.log('There is no suitable banner for current page, preserving the provided deeplink context language');
+      return;
+    }
+
+    const { banner, when } = this.selectedBanner;
+    this.updateOrScheduleCreation(banner, when);
   }
 }
