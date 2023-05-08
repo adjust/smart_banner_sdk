@@ -4,7 +4,7 @@ import { fetchSmartBannerData, SmartBannerData } from '../../src/api';
 import { Network } from '../../src/network/network';
 import { snakeToCamelCase } from '../../src/utils/snake-to-camel-case';
 
-import * as dataMock from '../../src/mockData/smart_banners.json';
+import * as dataMock from '../../fake-server/smart_banners.json';
 
 jest.mock('../../src/logger');
 
@@ -13,7 +13,7 @@ describe('Smart banner API tests', () => {
     const webToken = 'p6o2pnb1zkzk';
     const platform = DeviceOS.iOS;
 
-    const serverResponseMock = dataMock['app_token=p6o2pnb1zkzk&platform=ios'];
+    const serverResponseMock = dataMock['ios'];
 
     const testNetwork: Network = {
       endpoint: 'test-endpoint',
