@@ -20,7 +20,7 @@ describe('Smart banner API tests', () => {
       request: jest.fn()
     };
 
-    const api = new SmartBannerApi(platform, testNetwork)
+    const api = new SmartBannerApi(platform, testNetwork);
 
     let requestSpy: jest.SpyInstance;
 

@@ -27,6 +27,6 @@ export class SmartBannerRepository implements Repository<string, SmartBannerData
         }
 
         return banners;
-      })
+      });
   }
 }
