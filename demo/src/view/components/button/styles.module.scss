@@ -1,0 +1,78 @@
+@import 'assets/colors.scss';
+
+.button {
+  padding: 6px 20px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 20px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  transition: all .3s ease-in-out;
+
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  &.primary {
+    fill: white; // for svg icons
+    color: white; // for text
+    border-color: $blue-400;
+    background-color: $blue-400;
+
+    &:hover {
+      fill: $blue-600;
+      color: $blue-600;
+      border-color: $blue-600;
+      background-color: white;
+    }
+  }
+
+  &.secondary {
+    fill: white;
+    color: white;
+    border-color: white;
+    background-color: $blue-600;
+
+    &:hover {
+      fill: white;
+      color: white;
+      border-color: white;
+      background-color: $blue-400;
+    }
+  }
+
+  &.iconButton {
+    min-width: 24px;
+    min-height: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    &.no-labeled {
+      background-color: transparent;
+      border: none;
+
+      &:hover {
+        background-color: transparent;
+        border: none;
+      }
+    }
+
+    .label {
+      margin-left: 12px;
+      align-self: center;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: auto;
+    }
+  }
+}

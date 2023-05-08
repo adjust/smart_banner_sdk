@@ -1,0 +1,49 @@
+[
+  {
+    "title_color": "#000000",
+    "position": "bottom",
+    "description": "Description",
+    "size": "small",
+    "id": "banner-id",
+    "description_color": "#000000",
+    "display_rule": null,
+    "name": "Banner",
+    "icon_url": "https://icon/url",
+    "button_label": "Button",
+    "is_previous_attribution_priority": true,
+    "default_language": "en",
+    "button_color": "#000000",
+    "dismissal_period": 60,
+    "title": "Title",
+    "background_color": "#FFFFFF",
+    "background_image_url": "None",
+    "localizations": {
+      "ru": {
+        "title": "Заголовок",
+        "description": "Описание",
+        "button_label": "Кнопка",
+        "context": {
+          "adgroup": "ru"
+        }
+      },
+      "de": {
+        "title": "Titel",
+        "description": "Beschreibung",
+        "button_label": "Knopf",
+        "context": {
+          "adgroup": "de"
+        }
+      }
+    },
+    "tracker_url": {
+      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}&engagement_type=fallback_click",
+      "context": {
+        "domain": "app.adjust.com",
+        "tracker": "tracker",
+        "campaign": "Banner",
+        "adgroup": "en",
+        "deeplink": null
+      }
+    }
+  }
+]

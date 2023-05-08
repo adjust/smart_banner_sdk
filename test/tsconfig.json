@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@sdk/*": [
+        "../sdk/src/*"
+      ],
+    },
+    "resolveJsonModule": true,
+  }
+}

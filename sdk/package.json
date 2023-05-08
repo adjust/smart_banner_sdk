@@ -1,0 +1,33 @@
+{
+  "name": "@adjustcom/smart-banner-sdk",
+  "version": "0.0.1",
+  "description": "Adjust Smart Banner SDK",
+  "scripts": {
+    "build:sdk": "webpack --config ./webpack.config.js",
+    "build:types": "tsc -p ./tsconfig.types.json && api-extractor run --local",
+    "build:snippet": "terser ./loading-snippet.js -o dist/loading-snippet.min.js -c -m",
+    "build": "npm-run-all build:sdk build:types build:snippet",
+    "build-dev:server-mock": "npm run build:sdk -- --mode=development --env devEndpoint='localhost'",
+    "build-dev": "npm run build:sdk -- --mode=development"
+  },
+  "main": "dist/smart-banner-sdk.js",
+  "types": "dist/smart-banner-sdk.d.ts",
+  "files": [
+    "dist/smart-banner-sdk.js",
+    "dist/smart-banner-sdk.min.js",
+    "CHANGELOG.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adjust/smart_banner_sdk_dev.git"
+  },
+  "author": "Adjust GmbH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adjust/smart_banner_sdk_dev/issues"
+  },
+  "homepage": "https://github.com/adjust/smart_banner_sdk_dev#readme",
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.34.4"
+  }
+}
