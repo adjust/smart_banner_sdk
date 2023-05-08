@@ -1,0 +1,18 @@
+<div class="flex-column">
+  <label for="token-type">What apps are in your space?</label>
+  <select id="token-type" class="input-field">
+    <option value="string-token" selected>A single multi-platform app</option>
+    <option value="multiple-tokens">Multiple single-platform apps</option>
+  </select>
+</div>
+
+<div id="string-token-wrapper" class="flex-row settings-row">
+  <span class="flex-one">App token:</span>
+  <input type="text" placeholder="app_token" id="multi-platform-token" class="flex-one input-field" />
+</div>
+
+<div id="multiple-tokens-wrapper" class="settings-row hidden">
+  <span>App token per platform:</span>
+  <ul id="tokens-list">
+  </ul>
+</div>

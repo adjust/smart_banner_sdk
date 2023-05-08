@@ -1,0 +1,25 @@
+@import 'assets/colors.scss';
+
+.sdk-settings {
+  margin: 16px;
+  border-radius: 12px;
+  background-color: $blue-200;
+  display: flex;
+  overflow: hidden;
+}
+
+.sdk-settings-wrapper {
+  padding: 12px 24px;
+  flex: 2;
+
+  &>* {
+    margin-top: 12px;
+  }
+}
+
+.preview {
+  padding: 16px;
+  background-color: $blue-600;
+  color: $blue-100;
+  flex: 1;
+}

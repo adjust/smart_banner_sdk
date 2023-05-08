@@ -51,14 +51,14 @@ export class SmartBanner {
     } else if (Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_) {
       // remove from production code
       // TODO: should customUrl be exposed in SDK options to simplify this?
-      urlStrategyConfig = { customUrl: Globals._DEV_ENDPOINT_ }
+      urlStrategyConfig = { customUrl: Globals._DEV_ENDPOINT_ };
     }
 
     this.network = network || NetworkFactory.create({ urlStrategyParameters: { urlStrategyConfig } });
 
     this.storage = StorageFactory.createStorage();
 
-    const networkApi = new SmartBannerApi(this.deviceOs, this.network)
+    const networkApi = new SmartBannerApi(this.deviceOs, this.network);
     this.repository = new SmartBannerRepository(networkApi);
 
     this.language = language || getLanguage();

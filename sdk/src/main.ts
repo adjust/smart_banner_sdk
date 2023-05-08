@@ -2,7 +2,11 @@ import { Logger, LogLevel } from './logger';
 import { AppToken, SmartBanner, SmartBannerOptions } from './smart-banner';
 import { DeviceOS, getDeviceOS } from './utils/detect-os';
 
-type InitialisationOptions = SmartBannerOptions & { logLevel?: LogLevel };
+/** @public */
+export { AppToken, DeviceOS, LogLevel, SmartBannerOptions };
+
+/** @public */
+export type InitialisationOptions = SmartBannerOptions & { logLevel?: LogLevel };
 
 function flattenAppToken(appToken: AppToken, deviceOs: DeviceOS): string | undefined {
   if (typeof appToken === 'string') {

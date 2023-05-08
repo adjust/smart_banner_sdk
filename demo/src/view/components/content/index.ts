@@ -1,4 +1,5 @@
 import { ArticlePlaceholder } from '../article-placeholder';
+import { SdkSettings } from '../sdk-settings';
 import styles from './styles.module.scss';
 
 export function Content() {
@@ -6,6 +7,8 @@ export function Content() {
     const content = document.createElement('div');
 
     content.className = styles.content;
+
+    content.appendChild(SdkSettings().render());
 
     for (let i = 0; i < 6; i++) {
       const article = ArticlePlaceholder().render();
