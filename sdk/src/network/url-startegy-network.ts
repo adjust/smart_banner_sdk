@@ -26,7 +26,7 @@ export class NetworkWithUrlStrategy extends NetworkDecorator {
   /**
    * Returns last succesfull endpoint or default (`https://app.adjust.com`) one
    */
-  public get endpoint(): string {
+  public override get trackerEndpoint(): string {
     return this.lastSuccessfulEndpoint || NetworkWithUrlStrategy.DEFAULT_ENDPOINT;
   }
 
