@@ -12,10 +12,10 @@ export function convertSmartBannerToTracker(data: SmartBannerData, domain?: stri
   const localization = locale && localizations ? localizations[locale] : null;
   const localeContext = localization ? localization.context : {};
 
-  const trackerDomain = domain ? { domain } : {}
+  const trackerDomain = domain ? { domain } : {};
 
   return {
     template,
     context: { ...context, ...localeContext, ...trackerDomain }
-  }
+  };
 }

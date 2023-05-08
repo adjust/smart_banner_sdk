@@ -8,7 +8,7 @@ export interface TrackerData {
 }
 
 function buildDeeplink(data: TrackerData, pageUrl: string, userTrackerData: UserTrackerData) {
-  const deeplinkTemplate = userTrackerData.deeplink || data.context.deeplink
+  const deeplinkTemplate = userTrackerData.deeplink || data.context.deeplink;
 
   if (!deeplinkTemplate) {
     return null;
@@ -18,29 +18,29 @@ function buildDeeplink(data: TrackerData, pageUrl: string, userTrackerData: User
     ...data.context,
     ...parseGetParams(pageUrl),
     ...userTrackerData.context
-  }
+  };
 
-  const deeplink = interpolate(deeplinkTemplate, deeplinkContext)
+  const deeplink = interpolate(deeplinkTemplate, deeplinkContext);
 
-  return encodeURIComponent(deeplink)
+  return encodeURIComponent(deeplink);
 }
 
 export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, userTrackerData: UserTrackerData | null) {
-  const customTrackerData = userTrackerData || {}
+  const customTrackerData = userTrackerData || {};
 
-  const deeplink = buildDeeplink(data, pageUrl, customTrackerData)
+  const deeplink = buildDeeplink(data, pageUrl, customTrackerData);
 
   let template = data.template;
 
   if (deeplink && template.indexOf('deeplink=') < 0) {
-    template += template.indexOf('?') < 0 ? '?deeplink={deeplink}' : 'deeplink={deeplink}'
+    template += template.indexOf('?') < 0 ? '?deeplink={deeplink}' : 'deeplink={deeplink}';
   }
 
   const context = {
     ...data.context,
     ...customTrackerData.context,
     deeplink
-  }
+  };
 
-  return interpolate(template, context)
+  return interpolate(template, context);
 }
