@@ -10,7 +10,7 @@ export interface NetworkConfig {
 }
 
 export class NetworkFactory {
-  private static readonly DEFAULT_DATA_ENDPOINT = 'https://dash-qa-2.adjust.com/control-center/smart-banners-backend/core/';
+  private static readonly DEFAULT_DATA_ENDPOINT = 'https://app.adjust.com';
   private static readonly DEFAULT_TRACKER_ENDPOINT = ENDPOINTS.default.app;
 
   static create(config: NetworkConfig): Network {
