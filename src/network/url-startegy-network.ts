@@ -4,12 +4,20 @@ import { UrlStrategy } from './url-strategy/url-strategy';
 import { UrlStrategyFactory, UrlStrategyConfig } from './url-strategy/url-strategy-factory';
 import { NetworkError } from './errors';
 
+export type UrlStrategyParameters = {
+  urlStrategy: UrlStrategy;
+  urlStrategyConfig?: never;
+} | {
+  urlStrategy?: never;
+  urlStrategyConfig: UrlStrategyConfig;
+}
+
 export class NetworkWithUrlStrategy extends NetworkDecorator {
   private static readonly DEFAULT_ENDPOINT = ENDPOINTS.default.app;
   private lastSuccessfulEndpoint: string | undefined;
   private urlStrategy: UrlStrategy;
 
-  constructor(network: Network, { urlStrategy, urlStrategyConfig }: NetworkWithUrlStrategy.UrlStrategyParameters) {
+  constructor(network: Network, { urlStrategy, urlStrategyConfig }: UrlStrategyParameters) {
     super(network);
 
     this.urlStrategy = urlStrategy || UrlStrategyFactory.create(urlStrategyConfig);
@@ -44,15 +52,5 @@ export class NetworkWithUrlStrategy extends NetworkDecorator {
           throw err;
         });
     });
-  }
-}
-
-namespace NetworkWithUrlStrategy {
-  export type UrlStrategyParameters = {
-    urlStrategy: UrlStrategy;
-    urlStrategyConfig?: never;
-  } | {
-    urlStrategy?: never;
-    urlStrategyConfig: UrlStrategyConfig;
   }
 }
