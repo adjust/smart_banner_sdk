@@ -10,7 +10,7 @@ export class AdjustSmartBannerSDK {
   private static smartBanner: SmartBanner | null = null;
 
   static init({ logLevel = 'error', ...restOptions }: InitialisationOptions) {
-    if (!restOptions.webToken) {
+    if (!restOptions.appToken) {
       Logger.error('Can not initialise Smart Banner, you should provide appToken');
       return;
     }

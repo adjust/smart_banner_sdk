@@ -1,6 +1,6 @@
 import { SmartBannerData } from '../api';
 
-type AppIconData = Pick<SmartBannerData, 'appId' | 'appName' | 'imageUrl'>
+//type AppIconData = Pick<SmartBannerData, 'appId' | 'appName' | 'imageUrl'>
 
 export class AppIcon {
   private appTraceUrl = (appId: string) => `https://www.apptrace.com/api/app/${appId}/artwork_url_small`;
@@ -10,22 +10,22 @@ export class AppIcon {
   private image: HTMLImageElement;
   private placeholder: HTMLElement;
 
-  constructor(bannerData: AppIconData, image: HTMLImageElement, placeholder: HTMLElement) {
+  constructor(bannerData: SmartBannerData, image: HTMLImageElement, placeholder: HTMLElement) {
     this.image = image;
     this.placeholder = placeholder;
-    this.appName = bannerData.appName;
+    this.appName = ''; // bannerData.appName;
 
     const sources = this.getSources(bannerData);
     this.showImage(sources);
   }
 
-  private getSources(bannerData: AppIconData): string[] {
+  private getSources(bannerData: SmartBannerData): string[] {
     const sourcesArray: string[] = [];
 
-    if (bannerData.imageUrl) {
-      sourcesArray.push(bannerData.imageUrl);
+    if (bannerData.iconUrl) {
+      sourcesArray.push(bannerData.iconUrl);
     }
-    sourcesArray.push(this.appTraceUrl(bannerData.appId));
+    // sourcesArray.push(this.appTraceUrl(bannerData.appId));
 
     return sourcesArray;
   }
