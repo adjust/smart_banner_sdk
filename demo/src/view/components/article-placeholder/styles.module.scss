@@ -1,0 +1,12 @@
+@import 'assets/colors.scss';
+
+.article {
+  padding: 24px 32px;
+  background-color: $blue-50;
+  border-radius: 12px;
+  margin: 16px;
+
+  &.fixedHeight {
+    overflow: hidden;
+  }
+}

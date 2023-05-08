@@ -1,5 +1,6 @@
 const path = require('path');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const devPort = 8080;
 
@@ -14,10 +15,16 @@ module.exports = (env, args) => ({
     minimize: false,
   },
   plugins: [
-    new ESLintPlugin()
+    new ESLintPlugin(),
+    new HtmlWebpackPlugin({
+      template: './assets/index.html'
+    }),
   ],
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.scss', '.svg'],
+    alias: {
+      assets: path.resolve(__dirname, 'assets'),
+    },
   },
   module: {
     rules: [
@@ -27,7 +34,7 @@ module.exports = (env, args) => ({
         use: [
           {
             loader: 'ts-loader',
-            options: { configFile: "tsconfig.demo.json" }
+            options: { configFile: 'tsconfig.demo.json' }
           }
         ]
       }, {
@@ -38,12 +45,15 @@ module.exports = (env, args) => ({
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: '[name]-[local]_[hash:base64:5]',
+                localIdentName: '[local]_[hash:base64:5]',
               }
             },
           },
           { loader: 'sass-loader' }
         ]
+      }, {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        use: 'svg-inline-loader'
       }]
   },
   devServer: {
@@ -58,7 +68,7 @@ module.exports = (env, args) => ({
         throw new Error('webpack-dev-server is not defined');
       }
 
-      middlewares.push({
+      middlewares.unshift({
         name: 'fake-data-provider',
         path: '/smart_banner',
         middleware: (req, res) => {
