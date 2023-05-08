@@ -1,6 +1,6 @@
 import { InitialisationOptions } from '@adjustcom/smart-banner-sdk';
 
 export const defaultSdkSettings: InitialisationOptions = {
-  appToken: 'asdgs11414',
+  appToken: '9ok2a35jge0w',
   logLevel: 'verbose',
 };
