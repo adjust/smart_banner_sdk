@@ -188,8 +188,10 @@ There are two ways to set preferred language
  - call `setLanguage` setter as shown below:
 
 ```js
-AdjustSmartBanner.setLanguage();
+AdjustSmartBanner.setLanguage("fr");
 ``` 
+
+The setter accepts a two-letters language code, i.e. `en`, `de`, etc.
 
 ## <a id="dynamic-deeplinks">Deeplinks</a>
 
@@ -200,29 +202,107 @@ There are two ways to set a deeplink:
  - pass it as a [deeplink option](#init-deeplink) to `AdjustSmartBanner.init`
  - call `setDeeplinkContext` setter as shown below
 
-There are two ways to provide context to interpolate deeplink template:
+There are ways to provide context to interpolate deeplink template:
  - pass it as a [context option](#init-context) to `AdjustSmartBanner.init`
  - call `setDeeplinkContext` setter as shown below
- - use GET parameters
+ - [use GET parameters](#deeplink-context-url-params)
 
  ### <a id="deeplink-context-setter">**Setting deeplink and deeplink context**</a>
 
-The `setDeeplinkContext` setter accepts `deeplink` and `context` options.
+The `setDeeplinkContext` accepts `deeplink` and `context` options.
 
 #### <a id="dynamic-deeplinks-deeplink">**deeplink**</a> `string`
 
 A deeplink itself or a deeplink template.
 
-TBD
+Example:
+```js
+AdjustSmartBanner.setDeeplinkContext({
+  deeplink: "myapp://products/jeans/product=cool-jeans&promo=spring_10"
+})
+```
+
+A deeplink template could contain any number of parameters enclosed in curly brackets.
+
+Example:
+```js
+AdjustSmartBanner.setDeeplinkContext({
+  deeplink: "myapp://products/{category}/product={product_id}&promo={promo}"
+})
+```
 
 #### <a id="dynamic-deeplinks-context">**context**</a> `object`
-TBD
 
-Everything said about the `deeplink` and `context` options of `setDeeplinkContext` setter is the same for of the same names options of `init` method.
+An object with data to fill placeholders in deeplink template.
+
+The sdk searches a placeholder among the keys of passed context and replaces the placeholder with according value.
+
+Example:
+```js
+AdjustSmartBanner.setDeeplinkContext({
+  deeplink: "myapp://products/{category}?product={product_id}&promo={promo}",
+  context: {
+    category: "jeans",
+    product_id: "cool-jeans",
+    promo: "spring_10"
+  }
+
+// Resulting deeplink is "myapp://products/jeans?product=cool-jeans&promo=spring_10"
+})
+```
+
+ **Important**: if there is no such key in `context` found the sdk will try to get value from GET parameters of current URL address. Then if sdk is unable to find value to be filled in, placeholder is replaced with an empty string.
+
+ Example:
+```js
+AdjustSmartBanner.setDeeplinkContext({
+  deeplink: "myapp://products/{category}?product={product_id}&promo={promo}",
+  context: {
+    category: "jeans"
+  }
+})
+
+// Resulting deeplink is "myapp://products/jeans?product=&promo="
+```
+
+Note: everything said about the `deeplink` and `context` options of `setDeeplinkContext` setter is the same for of the same names options of `init` method.
 
 ### <a id="deeplink-context-url-params">**Using GET parameters as context**</a>
 
-TBD
+If some of the parameters present in the deeplink template are missing in the `context`, the sdk tries to find them among the GET parameters of the current URL.
+
+Example:
+```js
+AdjustSmartBanner.setDeeplinkContext({
+  deeplink: "myapp://products/{category}?product={product_id}&promo={promo}",
+  context: {
+    category: "jeans"
+  }
+})
+
+// Let's say the current URL is "my-shop.com/spring-promo?product_id=cool-jeans&promo=spring_10"
+
+// Then resulting deeplink is "myapp://products/jeans?product=cool-jeans&promo=spring_10"
+```
+
+**Important**: if your web app is a single page applications (SPA) you should to call `AdjustSmartBanner.show()` after page address changed since the sdk itself is unable to track navigation events and retrieve an updated URL.
+
+**Important**: the `context` passed to the sdk is a prior choice to fill in placeholders, and GET parameters with the same keys are ignored in favor of the `context`.
+
+Example:
+```js
+AdjustSmartBanner.setDeeplinkContext({
+  deeplink: "myapp://products/jeans?product={product_id}&promo={promo}",
+  context: {
+    product_id: "floral-jeans"
+  }
+})
+
+// Let's say the current URL is "my-shop.com/spring-promo?product_id=cool-jeans&promo=spring_10",
+// so we have product_id parameter in the URL and in the context
+
+// Then resulting deeplink is "myapp://products/jeans?product=floral-jeans&promo=spring_10"
+```
 
 ## <a id="license">License</a>
 
