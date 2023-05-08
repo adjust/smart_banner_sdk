@@ -1,9 +1,9 @@
-import { Logger } from '../src/logger';
-import { SmartBanner } from '../src/smart-banner';
-import { LocalStorage } from '../src/storage/local-storage';
-import { StorageFactory } from '../src/storage/storage-factory';
+import { Logger } from '@sdk/logger';
+import { SmartBanner } from '@sdk/smart-banner';
+import { LocalStorage } from '@sdk/storage/local-storage';
+import { StorageFactory } from '@sdk/storage/storage-factory';
 
-jest.mock('../src/logger');
+jest.mock('../sdk/src/logger');
 
 jest.useFakeTimers();
 

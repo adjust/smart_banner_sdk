@@ -1,4 +1,4 @@
-import { InMemoryStorage } from '../../src/storage/in-memory-storage';
+import { InMemoryStorage } from '@sdk/storage/in-memory-storage';
 
 describe('In-memory storage', () => {
   let storage: InMemoryStorage;

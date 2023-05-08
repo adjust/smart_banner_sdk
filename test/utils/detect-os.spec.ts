@@ -1,4 +1,4 @@
-import { getDeviceOS, DeviceOS } from '../../src/utils/detect-os';
+import { DeviceOS, getDeviceOS } from '@sdk/utils/detect-os';
 
 describe('Returns recognizable device OS', () => {
   afterAll(() => {

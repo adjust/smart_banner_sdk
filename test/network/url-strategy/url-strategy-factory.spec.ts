@@ -1,11 +1,11 @@
-import { Logger } from '../../../src/logger';
-import * as UrlStrategyModule from '../../../src/network/url-strategy/url-strategy';
-import { UrlStrategyFactory } from '../../../src/network/url-strategy/url-strategy-factory';
-import { BlockedUrlBypass } from '../../../src/network/url-strategy/blocked-url-bypass';
-import { CustomUrl } from '../../../src/network/url-strategy/custom-url';
-import { DataResidency } from '../../../src/network/url-strategy/data-residency';
+import { Logger } from '@sdk/logger';
+import { BlockedUrlBypass } from '@sdk/network/url-strategy/blocked-url-bypass';
+import { CustomUrl } from '@sdk/network/url-strategy/custom-url';
+import { DataResidency } from '@sdk/network/url-strategy/data-residency';
+import * as UrlStrategyModule from '@sdk/network/url-strategy/url-strategy';
+import { UrlStrategyFactory } from '@sdk/network/url-strategy/url-strategy-factory';
 
-jest.mock('../../../src/logger');
+jest.mock('@sdk/logger');
 
 describe('UrlStrategyFactory', () => {
   const urlStrategyConstructorMock = jest.fn();

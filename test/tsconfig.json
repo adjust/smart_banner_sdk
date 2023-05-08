@@ -1,10 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@test-utils": [
-        "_setup/utils.ts"
+      "@sdk/*": [
+        "../sdk/src/*"
       ],
     },
     "resolveJsonModule": true,

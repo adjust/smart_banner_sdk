@@ -1,23 +1,18 @@
 {
-  "name": "@adjustcom/adjust-smart-banner",
+  "name": "@adjustcom/smart-banner-sdk",
   "version": "0.0.1",
   "description": "Adjust Smart Banner SDK",
-  "main": "dist/adjust-sb-lates.js",
   "scripts": {
-    "build:sdk": "webpack --config webpack.config.js",
-    "build:snippet": "terser ./src/loading-snippet.js -o ./dist/sdk.loading-snippet.min.js -c -m",
-    "build": "npm-run-all build:sdk build:snippet",
-    "clean": "rm -rf ./dist/*",
-    "start": "webpack serve --hot --mode development --config webpack.config.js",
-    "lint": "eslint ./src ./test",
+    "build": "npm run build --workspace=sdk",
+    "clean": "rm -rf ./sdk/dist/ ./demo/dist/",
+    "start": "npm run build && npm run start --workspace=demo",
+    "lint": "eslint ./sdk/src ./test ./demo/src --fix",
     "test": "TZ=UTC jest --config ./test/jest.config.ts",
-    "test:all": "npm-run-all test lint",
-    "prepublishOnly": "npm run test:all"
+    "prepublishOnly": "npm-run-all lint test"
   },
   "files": [
-    "dist/adjust-sb-latest.d.ts",
-    "dist/adjust-sb-latest.js",
-    "dist/adjust-sb-latest.min.js",
+    "sdk/dist/adjust-sb-latest.js",
+    "sdk/dist/adjust-sb-latest.min.js",
     "CHANGELOG.md"
   ],
   "repository": {
@@ -53,5 +48,9 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0",
     "webpack-dev-server": "^4.11.1"
-  }
+  },
+  "workspaces": [
+    "./demo/",
+    "./sdk/"
+  ]
 }

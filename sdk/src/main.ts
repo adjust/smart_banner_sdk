@@ -15,8 +15,8 @@ function flattenAppToken(appToken: AppToken, deviceOs: DeviceOS): string | undef
 /**
  * A main SDK class to access public methods
  */
-export class AdjustSmartBannerSDK {
-  private static smartBanner: SmartBanner | null = null;
+export class AdjustSmartBanner {
+  private static smartBanner: SmartBanner | undefined;
 
   static init({ logLevel = 'error', ...restOptions }: InitialisationOptions) {
     if (!restOptions.appToken) {

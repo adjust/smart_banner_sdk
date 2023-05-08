@@ -1,4 +1,4 @@
-import { stringToCamelCase, snakeToCamelCase, SnakeToCamelCaseObjectKeys } from './../../src/utils/snake-to-camel-case';
+import { snakeToCamelCase, SnakeToCamelCaseObjectKeys, stringToCamelCase } from '@sdk/utils/snake-to-camel-case';
 
 describe('snake_case to camelCase', () => {
   describe('String to camelCase', () => {
