@@ -1,5 +1,6 @@
 import { SmartBannerData, UserTrackerData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
+import { BannerProvider } from './banner-provider';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
 import { convertSmartBannerToTracker } from '../data/converters/smart-banner-to-tracker-data';
 import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
@@ -19,28 +20,21 @@ import { isEmptyObject } from '../utils/object-utils';
 
 export class SmartBanner {
   private network: Network;
-  private repository: SmartBannerRepository;
   private dismissHandler: DismissHandler;
-  private bannersSelector: BannerSelector;
+  private bannerProvider: BannerProvider;
   private language: string | null;
   private customTrackerData: UserTrackerData = {};
   private onCreated?: Callback;
   private onDismissed?: Callback;
-  private gettingBannerPromise: Promise<{ banner: SmartBannerData, when: number } | null> | null = null;
-  private selectedBanner: { banner: SmartBannerData, when: number } | null = null;
   private view: SmartBannerView | null = null;
   private url: string = window.location.href;
 
   constructor(
-    private appToken: string,
+    appToken: string,
     { dataResidency, language, deeplink, context, onCreated, onDismissed }: SmartBannerOptions,
     private deviceOs: DeviceOS
   ) {
     this.dismissHandler = new DismissHandler();
-    this.bannersSelector = new BannerSelector(this.dismissHandler);
-
-    this.onCreated = onCreated;
-    this.onDismissed = onDismissed;
 
     const networkConfig: NetworkConfig = {
       dataEndpoint: (Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_) ? Globals._DEV_ENDPOINT_ : undefined,
@@ -48,9 +42,17 @@ export class SmartBanner {
     };
 
     this.network = NetworkFactory.create(networkConfig);
-
     const networkApi = new SmartBannerApi(this.deviceOs, this.network);
-    this.repository = new SmartBannerRepository(networkApi);
+
+    this.bannerProvider = new BannerProvider(
+      appToken,
+      this.url,
+      new SmartBannerRepository(networkApi),
+      new BannerSelector(this.dismissHandler)
+    )
+
+    this.onCreated = onCreated;
+    this.onDismissed = onDismissed;
 
     this.language = language || getLanguage();
 
@@ -58,7 +60,7 @@ export class SmartBanner {
       this.customTrackerData.deeplink = deeplink;
     }
 
-    if (context) {
+    if (context && !isEmptyObject(context)) {
       this.customTrackerData.context = context;
     }
 
@@ -88,17 +90,17 @@ export class SmartBanner {
   setLanguage(language: string): void {
     this.language = language;
 
-    if (this.gettingBannerPromise) {
+    if (this.bannerProvider.isLoading) {
       Logger.log('Smart banner was not created yet, the chosen language will be applied within creation');
       return;
     }
 
-    if (!this.selectedBanner) {
+    if (!this.bannerProvider.banner) {
       Logger.log('There is no suitable banner for current page, preserving the choosen language');
       return;
     }
 
-    const { banner, when } = this.selectedBanner;
+    const { banner, when } = this.bannerProvider.banner;
     this.updateOrScheduleCreation(banner, when);
   }
 
@@ -127,30 +129,28 @@ export class SmartBanner {
 
     this.customTrackerData = { deeplink, context };
 
-    if (this.gettingBannerPromise) {
+    if (this.bannerProvider.isLoading) {
       Logger.log('Smart banner was not created yet, the provided deeplink context will be applied within creation');
       return;
     }
 
-    if (!this.selectedBanner) {
+    if (!this.bannerProvider.banner) {
       Logger.log('There is no suitable banner for current page, preserving the provided deeplink context');
       return;
     }
 
-    const { banner, when } = this.selectedBanner;
+    const { banner, when } = this.bannerProvider.banner;
     this.updateOrScheduleCreation(banner, when);
   }
 
   private init() {
-    this.fetchAndSelectBanner()
-      .then(matchingBanner => {
-        this.selectedBanner = matchingBanner;
-
-        if (!this.selectedBanner) {
+    this.bannerProvider.fetchBanner()
+      .then(() => {
+        if (!this.bannerProvider.banner) {
           return;
         }
 
-        const { banner, when } = this.selectedBanner;
+        const { banner, when } = this.bannerProvider.banner;
         this.createOrSchedule(banner, when);
       });
   }
@@ -229,10 +229,10 @@ export class SmartBanner {
       return;
     }
 
-    if (this.gettingBannerPromise) {
+    if (this.bannerProvider.isLoading) {
       Logger.log(`Fetching banners now, ${action} banner after fetch finished`);
 
-      this.gettingBannerPromise
+      this.bannerProvider.fetchBanner()
         .then(() => {
           Logger.log(`Banners fetch finished, ${action} Smart banner now`);
           this.changeVisibility(action);
@@ -240,34 +240,6 @@ export class SmartBanner {
 
       return;
     }
-  }
-
-  /**
-   * Gets banners from SmartBannerRepository and selects a _random_ matching one with BannerSelector
-   * @returns a suitable banner and a timestamp when it should be shown (mignt be negative, then show immediately),
-   * or null if there is no suitable banner
-   */
-  private fetchAndSelectBanner(): Promise<{ banner: SmartBannerData, when: number } | null> {
-    this.gettingBannerPromise = this.repository.fetch(this.appToken)
-      .then(bannersList => {
-        if (!bannersList) {
-          Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
-          return null;
-        }
-
-        const matchingBanner = this.bannersSelector.next(bannersList, this.url);
-
-        this.gettingBannerPromise = null;
-
-        if (!matchingBanner) {
-          Logger.log(`No Smart Banners for ${this.url} page found`);
-          return null;
-        }
-
-        return matchingBanner;
-      });
-
-    return this.gettingBannerPromise;
   }
 
   /**
