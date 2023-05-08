@@ -64,7 +64,24 @@
     "name": "banner test 0",
     "icon_url": "https://www.apptrace.com/api/app/1386566985/artwork_url_small",
     "button_label": "click",
-    "localizations": {},
+    "localizations": {
+      "de": {
+        "title": "mein Titel",
+        "description": "meine Beschreibung",
+        "button_label": "anklicken",
+        "context": {
+          "adgroup": "de"
+        }
+      },
+      "ru": {
+        "title": "мой заголовок",
+        "description": "мое описание",
+        "button_label": "нажми",
+        "context": {
+          "adgroup": "ru"
+        }
+      }
+    },
     "tracker_url": {
       "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}&engagement_type=fallback_click",
       "context": {
