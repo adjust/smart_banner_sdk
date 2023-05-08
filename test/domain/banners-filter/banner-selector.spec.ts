@@ -6,29 +6,33 @@ import { BannerSelector, NO_DELAY } from '@sdk/domain/banners-filter/banner-sele
 import 'jest-extended';
 
 describe('BannersSelector tests', () => {
-  const url = 'some-url';
-  const dismissalPeriod = 600;
+  const defaultUrl = 'some-url';
+  const dismissalPeriodInSeconds = 60
+  const dismissalPeriod = dismissalPeriodInSeconds * 1000;
+
+  const createBannerData = (id: string, url: string | null = defaultUrl, dismissalPeriod: number = dismissalPeriodInSeconds) => (
+    { id, dismissalPeriod, displayRule: url } as SmartBannerData
+  )
 
   //#region Set of test 'banners'
 
   // Banners matching display_rule 
-  const banner1 = { id: 'banner-1', dismissalPeriod, displayRule: url } as SmartBannerData;
-  const banner2 = { id: 'banner-2', dismissalPeriod, displayRule: url } as SmartBannerData;
-  const dismissedBanner = { id: 'dismissed-banner', dismissalPeriod, displayRule: url } as SmartBannerData;
+  const banner1 = createBannerData('banner-1')
+  const banner2 = createBannerData('banner-2')
+  const dismissedBanner = createBannerData('dismissed-banner')
   // Would be considered as not dismissed if dismissal period has passed
-  const dismissedLongAgoBanner = { id: 'banner-to-schedule', dismissalPeriod, displayRule: url } as SmartBannerData;
+  const dismissedLongAgoBanner = createBannerData('banner-to-schedule');
 
   // Banners with empty display_rule - default ones
-  const defaultBanner1 = { id: 'default-banner-1', dismissalPeriod, displayRule: null } as SmartBannerData;
-  const defaultBanner2 = { id: 'default-banner-2', dismissalPeriod, displayRule: null } as SmartBannerData;
-  const dismissedDefaultBanner = { id: 'dismissed-default-banner', dismissalPeriod, displayRule: null } as SmartBannerData;
+  const defaultBanner1 = createBannerData('default-banner-1', null);
+  const defaultBanner2 = createBannerData('default-banner-2', null);
+  const dismissedDefaultBanner = createBannerData('dismissed-default-banner', null);
 
   // Not matching banner
-  const nonSuitableBanner = { id: 'non-suitable', dismissalPeriod, displayRule: 'other-url' } as SmartBannerData;
+  const nonSuitableBanner = createBannerData('non-suitable', 'other-url');
 
   //#endregion
 
-  // TODO: for possible future refactor: doesn it make sense to inject dismiss date to banner data?
   const longAgoDismissedDate = Date.now() - dismissalPeriod - 100;
   const justDismissedDate = Date.now() - 1;
 
@@ -51,7 +55,7 @@ describe('BannersSelector tests', () => {
     const expectedBanners = [banner1, banner2];
     const expectedDateToShow = NO_DELAY;
 
-    const actual = bannerSelector.next(banners, url);
+    const actual = bannerSelector.next(banners, defaultUrl);
 
     expect(actual).not.toBeNull();
     expect(actual?.banner).toBeOneOf(expectedBanners);
@@ -64,7 +68,7 @@ describe('BannersSelector tests', () => {
     const expectedBanners = [defaultBanner1, defaultBanner2];
     const expectedDateToShow = NO_DELAY;
 
-    const actual = bannerSelector.next(banners, url);
+    const actual = bannerSelector.next(banners, defaultUrl);
 
     expect(actual).not.toBeNull();
     expect(actual?.banner).toBeOneOf(expectedBanners);
@@ -75,9 +79,9 @@ describe('BannersSelector tests', () => {
     const banners = [defaultBanner1, banner1, dismissedBanner, dismissedLongAgoBanner, nonSuitableBanner];
 
     const expectedBanners = [banner1, dismissedBanner, dismissedLongAgoBanner];
-    const expectedDateToShow = justDismissedDate + dismissedBanner.dismissalPeriod;
+    const expectedDateToShow = justDismissedDate + dismissalPeriod;
 
-    const actual = bannerSelector.next(banners, url);
+    const actual = bannerSelector.next(banners, defaultUrl);
 
     expect(actual).not.toBeNull();
     expect(actual?.banner).toBeOneOf(expectedBanners);
@@ -88,9 +92,9 @@ describe('BannersSelector tests', () => {
     const banners = [dismissedDefaultBanner, defaultBanner1, defaultBanner2, nonSuitableBanner];
 
     const expectedBanners = [dismissedDefaultBanner, defaultBanner1, defaultBanner2];
-    const expectedDateToShow = justDismissedDate + dismissedDefaultBanner.dismissalPeriod;
+    const expectedDateToShow = justDismissedDate + dismissalPeriod;
 
-    const actual = bannerSelector.next(banners, url);
+    const actual = bannerSelector.next(banners, defaultUrl);
 
     expect(actual).not.toBeNull();
     expect(actual?.banner).toBeOneOf(expectedBanners);
@@ -100,11 +104,11 @@ describe('BannersSelector tests', () => {
   it('returns null if no suitable and default banners present', () => {
     const banners = [nonSuitableBanner];
 
-    expect(bannerSelector.next(banners, url)).toBeNull();
+    expect(bannerSelector.next(banners, defaultUrl)).toBeNull();
   });
 
   it('does not throw if array is empty and returns null', () => {
-    expect(bannerSelector.next([], url)).toBeNull();
+    expect(bannerSelector.next([], defaultUrl)).toBeNull();
   });
 
 });

@@ -13,7 +13,7 @@
     "is_previous_attribution_priority": true,
     "default_language": "en",
     "button_color": "#000000",
-    "dismissal_period": 600,
+    "dismissal_period": 60,
     "title": "Title",
     "background_color": "#FFFFFF",
     "background_image_url": "None",
