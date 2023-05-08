@@ -1,0 +1,67 @@
+import { SmartBannerData } from '@sdk/data/api';
+import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
+import { DismissHandler } from '@sdk/domain/dismiss-handler';
+import { DismissedFilter } from '@sdk/domain/banners-filter/dismissed-filter';
+
+describe('DismissedFilter tests', () => {
+  const neverDismissedBanner = {
+    id: 'never-dismissed-banner',
+    dismissalPeriod: 600
+  } as SmartBannerData;
+
+  const justDismissedBanner = {
+    id: 'just-dismissed-banner',
+    dismissalPeriod: 600
+  } as SmartBannerData;
+
+  const someTimeAgoDismissedBanner = {
+    id: 'some-time-ago-dismissed-banner',
+    dismissalPeriod: 600
+  } as SmartBannerData;
+
+  const readyToBeShownBanner = {
+    id: 'ready-banner',
+    dismissalPeriod: 600
+  } as SmartBannerData;
+
+  let dismissedFilter: DismissedFilter;
+
+  beforeAll(() => {
+    const storage = new InMemoryStorage();
+    storage.setItem(justDismissedBanner.id, Date.now() - 1);
+    storage.setItem(someTimeAgoDismissedBanner.id, Date.now() - 100);
+    storage.setItem(readyToBeShownBanner.id, Date.now() - readyToBeShownBanner.dismissalPeriod);
+
+    const handler = new DismissHandler(storage);
+
+    dismissedFilter = new DismissedFilter(handler);
+  });
+
+  describe('Filtering', () => {
+    it('filter out out banners those are too early to be shown', () => {
+      const actual = dismissedFilter.filter([neverDismissedBanner, someTimeAgoDismissedBanner, justDismissedBanner, readyToBeShownBanner]);
+      const expected = [neverDismissedBanner, readyToBeShownBanner];
+
+      expect(actual).toEqual(expected);
+    });
+
+    it('does not throw on empty array', () => {
+      expect(dismissedFilter.filter([])).toEqual([]);
+    });
+  });
+
+  describe('Sorting', () => {
+    it('sorts banners by date when they should be shown again', () => {
+      const actual = dismissedFilter.sort([neverDismissedBanner, someTimeAgoDismissedBanner, justDismissedBanner, readyToBeShownBanner]);
+      const expected = [neverDismissedBanner, readyToBeShownBanner, someTimeAgoDismissedBanner, justDismissedBanner];
+
+      expect(actual).toEqual(expected);
+    });
+
+    it('does not throw on empty array', () => {
+      expect(dismissedFilter.sort([])).toEqual([]);
+    });
+  });
+
+});
+
