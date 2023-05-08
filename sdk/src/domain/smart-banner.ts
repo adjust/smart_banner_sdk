@@ -65,147 +65,6 @@ export class SmartBanner {
     this.init();
   }
 
-  private init() {
-    this.getMatchingBanner()
-      .then(matchingBanner => {
-        this.selectedBanner = matchingBanner;
-
-        if (!this.selectedBanner) {
-          return;
-        }
-
-        const { banner, when } = this.selectedBanner;
-        this.createOrSchedule(banner, when);
-      });
-  }
-
-  /**
-   * Gets banners from SmartBannerRepository and selects a _random_ matching one with BannerSelector
-   * @returns a suitable banner and a timestamp when it should be shown (mignt be negative, then show immediately),
-   * or null if there is no suitable banner
-   */
-  private getMatchingBanner(): Promise<{ banner: SmartBannerData, when: number } | null> {
-    this.gettingBannerPromise = this.repository.fetch(this.appToken)
-      .then(bannersList => {
-        if (!bannersList) {
-          Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
-          return null;
-        }
-
-        const matchingBanner = this.bannersSelector.next(bannersList, this.url);
-
-        this.gettingBannerPromise = null;
-
-        if (!matchingBanner) {
-          Logger.log(`No Smart Banners for ${this.url} page found`);
-          return null;
-        }
-
-        return matchingBanner;
-      });
-
-    return this.gettingBannerPromise;
-  }
-
-  /**
-   * Returns localized render data and tracker URL
-   */
-  private prepareDataForRender(bannerData: SmartBannerData): { renderData: SmartBannerViewData, trackerUrl: string } {
-    const renderData = convertSmartBannerDataForView(bannerData, this.language);
-
-    const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint, this.language);
-    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customTrackerData);
-
-    return { renderData, trackerUrl };
-  }
-
-  private createOrSchedule(banner: SmartBannerData, when: number) {
-    if (when <= 0) {
-      this.createView(banner);
-    } else {
-      this.dismissHandler.schedule(banner, () => this.createView(banner), when);
-    }
-  }
-
-  private createView(bannerData: SmartBannerData) {
-    Logger.info(`Render banner: ${bannerData.name}`);
-
-    const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
-
-    this.view = new SmartBannerView(renderData, trackerUrl, () => this.dismiss(bannerData));
-    this.view.render(document.body);
-
-    Logger.log('Smart banner rendered');
-
-    if (this.onCreated) {
-      this.onCreated();
-    }
-  }
-
-  private updateView(banner: SmartBannerData) {
-    if (this.view) {
-      Logger.log('Updating Smart banner');
-
-      const { renderData, trackerUrl } = this.prepareDataForRender(banner);
-
-      this.view.update(renderData, trackerUrl);
-
-      Logger.log('Smart banner updated');
-    } else {
-      Logger.error('There is no Smart banner to update');
-    }
-  }
-
-  private updateOrScheduleCreation(banner: SmartBannerData, when: number) {
-    if (when <= 0) {
-      this.updateView(banner);
-    } else {
-      this.dismissHandler.schedule(banner, () => this.createView(banner), when);
-    }
-  }
-
-  private destroyView() {
-    if (this.view) {
-      this.view.destroy();
-      this.view = null;
-      Logger.log('Smart banner removed');
-    } else {
-      Logger.error('There is no Smart banner to remove');
-    }
-  }
-
-  private changeVisibility(action: 'show' | 'hide') {
-    if (this.view) {
-      this.view[action]();
-      let message = `${action} banner`;
-      message = message.charAt(0).toUpperCase() + message.slice(1);
-      Logger.log(message);
-      return;
-    }
-
-    if (this.gettingBannerPromise) {
-      Logger.log(`Fetching banners now, ${action} banner after fetch finished`);
-
-      this.gettingBannerPromise
-        .then(() => {
-          Logger.log(`Banners fetch finished, ${action} Smart banner now`);
-          this.changeVisibility(action);
-        });
-
-      return;
-    }
-  }
-
-  private dismiss(banner: SmartBannerData) {
-    this.dismissHandler.dismiss(banner);
-
-    this.destroyView();
-
-    if (this.onDismissed) {
-      this.onDismissed();
-    }
-  }
-
   show(): void {
     if (this.url === window.location.href) {
       this.changeVisibility('show');
@@ -274,11 +133,152 @@ export class SmartBanner {
     }
 
     if (!this.selectedBanner) {
-      Logger.log('There is no suitable banner for current page, preserving the provided deeplink context language');
+      Logger.log('There is no suitable banner for current page, preserving the provided deeplink context');
       return;
     }
 
     const { banner, when } = this.selectedBanner;
     this.updateOrScheduleCreation(banner, when);
+  }
+
+  private init() {
+    this.fetchAndSelectBanner()
+      .then(matchingBanner => {
+        this.selectedBanner = matchingBanner;
+
+        if (!this.selectedBanner) {
+          return;
+        }
+
+        const { banner, when } = this.selectedBanner;
+        this.createOrSchedule(banner, when);
+      });
+  }
+
+  private createOrSchedule(banner: SmartBannerData, when: number) {
+    if (when <= 0) {
+      this.createView(banner);
+    } else {
+      this.dismissHandler.schedule(banner, () => this.createView(banner), when);
+    }
+  }
+
+  private createView(bannerData: SmartBannerData) {
+    Logger.info(`Render banner: ${bannerData.name}`);
+
+    const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
+
+    this.view = new SmartBannerView(renderData, trackerUrl, () => this.dismiss(bannerData));
+    this.view.render(document.body);
+
+    Logger.log('Smart banner rendered');
+
+    if (this.onCreated) {
+      this.onCreated();
+    }
+  }
+
+  private updateOrScheduleCreation(banner: SmartBannerData, when: number) {
+    if (when <= 0) {
+      this.updateView(banner);
+    } else {
+      this.dismissHandler.schedule(banner, () => this.createView(banner), when);
+    }
+  }
+
+  private updateView(banner: SmartBannerData) {
+    if (this.view) {
+      Logger.log('Updating Smart banner');
+
+      const { renderData, trackerUrl } = this.prepareDataForRender(banner);
+
+      this.view.update(renderData, trackerUrl);
+
+      Logger.log('Smart banner updated');
+    } else {
+      Logger.error('There is no Smart banner to update');
+    }
+  }
+
+  private destroyView() {
+    if (this.view) {
+      this.view.destroy();
+      this.view = null;
+      Logger.log('Smart banner removed');
+    } else {
+      Logger.error('There is no Smart banner to remove');
+    }
+  }
+
+  private dismiss(banner: SmartBannerData) {
+    this.dismissHandler.dismiss(banner);
+
+    this.destroyView();
+
+    if (this.onDismissed) {
+      this.onDismissed();
+    }
+  }
+
+  private changeVisibility(action: 'show' | 'hide') {
+    if (this.view) {
+      this.view[action]();
+      let message = `${action} banner`;
+      message = message.charAt(0).toUpperCase() + message.slice(1);
+      Logger.log(message);
+      return;
+    }
+
+    if (this.gettingBannerPromise) {
+      Logger.log(`Fetching banners now, ${action} banner after fetch finished`);
+
+      this.gettingBannerPromise
+        .then(() => {
+          Logger.log(`Banners fetch finished, ${action} Smart banner now`);
+          this.changeVisibility(action);
+        });
+
+      return;
+    }
+  }
+
+  /**
+   * Gets banners from SmartBannerRepository and selects a _random_ matching one with BannerSelector
+   * @returns a suitable banner and a timestamp when it should be shown (mignt be negative, then show immediately),
+   * or null if there is no suitable banner
+   */
+  private fetchAndSelectBanner(): Promise<{ banner: SmartBannerData, when: number } | null> {
+    this.gettingBannerPromise = this.repository.fetch(this.appToken)
+      .then(bannersList => {
+        if (!bannersList) {
+          Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
+          return null;
+        }
+
+        const matchingBanner = this.bannersSelector.next(bannersList, this.url);
+
+        this.gettingBannerPromise = null;
+
+        if (!matchingBanner) {
+          Logger.log(`No Smart Banners for ${this.url} page found`);
+          return null;
+        }
+
+        return matchingBanner;
+      });
+
+    return this.gettingBannerPromise;
+  }
+
+  /**
+   * Returns localized render data and tracker URL
+   */
+  private prepareDataForRender(bannerData: SmartBannerData): { renderData: SmartBannerViewData, trackerUrl: string } {
+    const renderData = convertSmartBannerDataForView(bannerData, this.language);
+
+    const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint, this.language);
+    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customTrackerData);
+
+    return { renderData, trackerUrl };
   }
 }
