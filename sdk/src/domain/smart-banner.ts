@@ -81,7 +81,7 @@ export class SmartBanner {
     Logger.log('Creating Smart Banner');
 
     const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint, this.language);
-    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.userTrackerData);
+    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customTrackerData);
 
     this.view = new SmartBannerView(
       document.body,
