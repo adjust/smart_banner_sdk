@@ -5,29 +5,6 @@ describe('Detecting browser language', () => {
     jest.restoreAllMocks();
   });
 
-  const testSet = /*
-    [
-      [],
-      'ru-RU',
-      'ru'
-    ],
-    [
-      undefined,
-      'ru-RU',
-      'ru'
-    ],
-    [
-      undefined,
-      '',
-      'en'
-    ],
-    [
-      undefined,
-      undefined,
-      'en'
-    ],
-  ];*/
-
   test.each([
     {languages: ['fr', 'en-US'], language: 'ru-RU', expected: 'fr'},
     {languages: ['en-US', 'fr'], language: 'ru-RU', expected: 'en'},
