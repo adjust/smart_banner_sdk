@@ -51,6 +51,8 @@ describe('Smart Banner tests', () => {
     return locale && localisations[locale] || {};
   };
 
+  const dismissalPeriod = serverResponseMock[0].dismissal_period * 1000;
+
   const trackerTemplate = '{domain}/tracker-template/{adgroup}';
   const tracker = (domain: string, adgroup: string) => `${domain}/tracker-template/${adgroup}`;
   const trackerWithDeeplink = (domain: string, adgroup: string, deeplink: string) => `${domain}/tracker-template/${adgroup}?deeplink=${deeplink}`;
@@ -481,14 +483,14 @@ describe('Smart Banner tests', () => {
         const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, defaultPlatform);
         await Utils.flushPromises();
 
-        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt + 600)}`);
+        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt + dismissalPeriod)}`);
 
         smartBanner.setLanguage('ru');
         await Utils.flushPromises();
 
         expect(smartBannerViewMock.update).not.toBeCalled();
         expect(Logger.log).toBeCalledWith('Clearing previously scheduled creation of a Smart banner');
-        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt + 600)}`);
+        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt + dismissalPeriod)}`);
 
         jest.runOnlyPendingTimers();
 
@@ -647,14 +649,14 @@ describe('Smart Banner tests', () => {
           defaultPlatform);
         await Utils.flushPromises();
 
-        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt() + 600)}`);
+        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt() + dismissalPeriod)}`);
 
         smartBanner.setDeeplinkContext(newContext as any);
         await Utils.flushPromises();
 
         expect(smartBannerViewMock.update).not.toBeCalled();
         expect(Logger.log).toBeCalledWith('Clearing previously scheduled creation of a Smart banner');
-        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt() + 600)}`);
+        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(testStartedAt() + dismissalPeriod)}`);
 
         jest.runOnlyPendingTimers();
 

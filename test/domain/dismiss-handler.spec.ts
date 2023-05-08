@@ -3,20 +3,22 @@ import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
 import { DismissHandler } from '@sdk/domain/dismiss-handler';
 
 describe('DismissHandler tests', () => {
+  const dismissalPeriodInSeconds = 60;
+  const dismissalPeriod = dismissalPeriodInSeconds * 1000;
 
   const dismissedBanner = {
     id: 'dismissed-banner',
-    dismissalPeriod: 600
+    dismissalPeriod: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const readyToShowBanner = {
     id: 'ready-banner',
-    dismissalPeriod: 600
+    dismissalPeriod: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const neverDismissedBanner = {
     id: 'another-banner',
-    dismissalPeriod: 600
+    dismissalPeriod: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   let dismissHandler: DismissHandler;
@@ -28,7 +30,7 @@ describe('DismissHandler tests', () => {
 
     storage = new InMemoryStorage();
     storage.setItem(dismissedBanner.id, now);
-    storage.setItem(readyToShowBanner.id, now - readyToShowBanner.dismissalPeriod);
+    storage.setItem(readyToShowBanner.id, now - dismissalPeriod);
 
     dismissHandler = new DismissHandler(storage);
   });
@@ -39,7 +41,7 @@ describe('DismissHandler tests', () => {
 
   describe('Getting a date of next show', () => {
     it('returns a proper date for dismissed banners', () => {
-      expect(dismissHandler.getDateToShowAgain(dismissedBanner)).toEqual(now + dismissedBanner.dismissalPeriod);
+      expect(dismissHandler.getDateToShowAgain(dismissedBanner)).toEqual(now + dismissalPeriod);
       expect(dismissHandler.getDateToShowAgain(readyToShowBanner)).toEqual(now);
     });
 
@@ -74,7 +76,7 @@ describe('DismissHandler tests', () => {
     it('writes current date when dismissing a banner', () => {
       const banner = {
         id: 'some-id',
-        dismissalPeriod: 600
+        dismissalPeriod: 60
       } as SmartBannerData;
 
       dismissHandler.dismiss(banner);
@@ -107,20 +109,20 @@ describe('DismissHandler tests', () => {
 
     const banner = {
       id: 'some-id',
-      dismissalPeriod: 600
+      dismissalPeriod: 60
     } as SmartBannerData;
 
     it('schedules next banner creation', () => {
-      dismissHandler.schedule(banner, jest.fn(), Date.now() + banner.dismissalPeriod);
+      dismissHandler.schedule(banner, jest.fn(), Date.now() + dismissalPeriod);
 
-      expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), banner.dismissalPeriod);
+      expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), dismissalPeriod);
     });
 
     it('calls banner creation function and removes a record from storage', () => {
       const bannerCreationCallback = jest.fn();
-      dismissHandler.schedule(banner, bannerCreationCallback, Date.now() + banner.dismissalPeriod);
+      dismissHandler.schedule(banner, bannerCreationCallback, Date.now() + dismissalPeriod);
 
-      jest.advanceTimersByTime(banner.dismissalPeriod);
+      jest.advanceTimersByTime(dismissalPeriod);
 
       expect(bannerCreationCallback).toHaveBeenCalled();
       expect(storage.removeItem).toHaveBeenCalledWith(banner.id);
@@ -130,13 +132,13 @@ describe('DismissHandler tests', () => {
       const fn1 = jest.fn();
       const fn2 = jest.fn();
 
-      dismissHandler.schedule(banner, fn1, Date.now() + banner.dismissalPeriod);
-      dismissHandler.schedule(banner, fn2, Date.now() + banner.dismissalPeriod);
+      dismissHandler.schedule(banner, fn1, Date.now() + dismissalPeriod);
+      dismissHandler.schedule(banner, fn2, Date.now() + dismissalPeriod);
 
       expect(setTimeout).toBeCalledTimes(2);
       expect(clearTimeout).toBeCalled();
 
-      jest.advanceTimersByTime(banner.dismissalPeriod);
+      jest.advanceTimersByTime(dismissalPeriod);
 
       expect(fn1).not.toBeCalled();
       expect(fn2).toBeCalled();
