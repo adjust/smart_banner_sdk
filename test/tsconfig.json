@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@test-utils": [
+        "_setup/utils.ts"
+      ],
+    }
+  }
+}
