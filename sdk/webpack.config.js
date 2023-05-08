@@ -6,7 +6,9 @@ const packageJson = require('./package.json');
 
 const namespace = 'adjust_smart_banner';
 
-module.exports = () => ({
+const devPort = 8080;
+
+module.exports = (env, args) => ({
   mode: 'production',
   entry: {
     'smart-banner-sdk': path.resolve(__dirname, './src/main.ts'),
@@ -31,7 +33,9 @@ module.exports = () => ({
     new ESLintPlugin(),
     new webpack.DefinePlugin({
       __ADJUST_SB__NAMESPACE: JSON.stringify(namespace),
-      __ADJUST_SB__SDK_VERSION: JSON.stringify(packageJson.version)
+      __ADJUST_SB__SDK_VERSION: JSON.stringify(packageJson.version),
+      _DEV_MODE_: JSON.stringify(args.mode === 'development'),
+      _DEV_ENDPOINT_: JSON.stringify(`http://${env.devEndpoint}:${env.devPort || devPort}`)
     }),
   ],
   resolve: {
