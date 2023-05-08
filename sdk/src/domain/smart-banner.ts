@@ -15,6 +15,7 @@ import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
 import { buildSmartBannerUrl } from './tracker-builder';
 import { Callback, SmartBannerOptions } from '../types';
+import { isEmptyObject } from '../utils/object-utils';
 
 export class SmartBanner {
   private network: Network;
@@ -228,6 +229,28 @@ export class SmartBanner {
   }
 
   setDeeplinkContext({ deeplink, context }: UserTrackerData): void {
+    if (!deeplink && (!context || isEmptyObject(context))) {
+      // empty deeplink and context passed, clean current value
+      deeplink = undefined;
+      context = undefined;
+    } else {
+      if (deeplink === undefined) {
+        // only context passed, don't override the previous deeplink
+        deeplink = this.customTrackerData.deeplink;
+      } else if (!deeplink) {
+        // deeplink === '', clean it
+        deeplink = undefined;
+      }
+
+      if (context === undefined) {
+        // only deeplink passed, don't override the previous context
+        context = this.customTrackerData.context;
+      } else if (isEmptyObject(context)) {
+        // context === {}, clean it
+        context = undefined;
+      }
+    }
+
     this.customTrackerData = { deeplink, context };
 
     if (this.gettingBannerPromise) {
