@@ -4,6 +4,7 @@
   margin: 0 auto;
   max-width: $bannerMaxWidth;
   background: white;
+  pointer-events: auto;
 
   .container {
     display: flex;
