@@ -21,7 +21,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, '', null)).toBe(expected);
+      expect(buildSmartBannerUrl(trackerData, '')).toBe(expected);
     });
 
     it('builds tracker with deeplink', () => {
@@ -32,7 +32,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=myapp%3A%2F%2Fsuper%2Fpromotion&adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, '', null)).toBe(expected);
+      expect(buildSmartBannerUrl(trackerData, '')).toBe(expected);
     });
 
     it('interpolates deeplink with GET parameters', () => {
@@ -43,7 +43,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=myapp%3A%2F%2Fpromotion%2Fnew-user&adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, 'https://example.com?promotion_id=new-user', null)).toBe(expected);
+      expect(buildSmartBannerUrl(trackerData, 'https://example.com?promotion_id=new-user')).toBe(expected);
     });
   });
 
