@@ -4,6 +4,7 @@ import { DataResidencyRegion, DeviceOS } from '@sdk/main';
 import { NetworkConfig, NetworkFactory } from '@sdk/network/network-factory';
 import { StorageFactory } from '@sdk/data/storage/storage-factory';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
+import { BannerSelector } from '@sdk/domain/banners-filter/banner-selector';
 import * as DataToViewConverter from '@sdk/data/converters/smart-banner-for-view';
 import * as DataToTrackerConverter from '@sdk/data/converters/smart-banner-to-tracker-data';
 import * as TrackerBuilder from '@sdk/domain/tracker-builder';
@@ -73,12 +74,18 @@ describe('Smart Banner tests', () => {
     jest.spyOn(DataToViewConverter, 'convertSmartBannerDataForView').mockImplementation((_, locale) => renderDataMock(locale));
     jest.spyOn(DataToTrackerConverter, 'convertSmartBannerToTracker').mockImplementation((_, domain, locale) => trackerDataMock(domain, locale));
     jest.spyOn(TrackerBuilder, 'buildSmartBannerUrl');
+    jest.spyOn(BannerSelector.prototype, 'next');
     jest.spyOn(View, 'SmartBannerView').mockReturnValue(smartBannerViewMock);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
+
+  afterAll(() => {
+    jest.resetAllMocks();
+    jest.resetModules();
+  })
 
   describe('Initialisation and creation', () => {
     describe('Network creation', () => {
@@ -424,6 +431,8 @@ describe('Smart Banner tests', () => {
         { initLang: 'ru', newLang: 'de' },
         { initLang: 'ru', newLang: 'en' }
       ])('updates the view with localised strings', async ({ initLang, newLang }) => {
+        expect.assertions(1);
+
         const smartBanner = new SmartBanner('some-token', { appToken: 'some-token', language: initLang }, defaultPlatform);
         await Utils.flushPromises();
 
@@ -432,6 +441,20 @@ describe('Smart Banner tests', () => {
 
         expect(smartBannerViewMock.update).toBeCalledWith(renderDataMock(newLang), tracker(defaultDomain, newLang));
       });
+
+      it('does not select a new banner to show', async () => {
+        expect.assertions(2);
+
+        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, defaultPlatform);
+        await Utils.flushPromises();
+
+        expect(BannerSelector.prototype.next).toBeCalled();
+
+        smartBanner.setLanguage('ru');
+        await Utils.flushPromises();
+
+        expect(BannerSelector.prototype.next).toBeCalledTimes(1);
+      })
     });
 
     describe('View creation scheduled', () => {
@@ -570,6 +593,26 @@ describe('Smart Banner tests', () => {
 
         expect(smartBannerViewMock.update).toBeCalledWith(renderDataMock(defaultLang), trackerUrl);
       });
+
+      it.each(testSet)('does not select a new banner to show when deeplink context updated', async ({ initContext, newContext }) => {
+        expect.assertions(2);
+
+        const smartBanner = new SmartBanner('some-token',
+          {
+            appToken: 'some-token',
+            deeplink: initContext?.deeplink,
+            context: initContext?.context
+          },
+          defaultPlatform);
+        await Utils.flushPromises();
+
+        expect(BannerSelector.prototype.next).toBeCalled();
+
+        smartBanner.setDeeplinkContext(newContext as any);
+        await Utils.flushPromises();
+
+        expect(BannerSelector.prototype.next).toBeCalledTimes(1);
+      })
     });
 
     describe('View creation scheduled', () => {
