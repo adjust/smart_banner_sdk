@@ -1,4 +1,5 @@
-import { SmartBannerApi, SmartBannerData } from '../data/api';
+import { SmartBannerData } from '../data/types';
+import { SmartBannerApi } from '../data/api';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
 import { convertDataToViewData } from '../data/converters/view-data-converter';
 import { Logger } from '../utils/logger';

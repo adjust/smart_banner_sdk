@@ -1,4 +1,4 @@
-import { SmartBannerData } from '../../data/api';
+import { SmartBannerData } from '../../data/types';
 
 export class DisplayRule {
 
