@@ -18,7 +18,7 @@ pipeline {
     stage('Build') {
       steps {
         sh "npm run clean"
-        sh "npm run build:demo"
+        sh "npm run build"
       }
     }
     stage('Test') {
