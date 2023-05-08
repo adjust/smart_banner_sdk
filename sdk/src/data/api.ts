@@ -18,7 +18,9 @@ export class SmartBannerApi implements AsyncDataSource<string, SmartBannerData[]
     return this.network.request<SmartBannerResponseData[]>(path, { 'app_token': token, 'platform': this.platform })
       .then(data => {
         const banners = convertResponseToSmartBanners(data);
-        Logger.log('Smart banners fetched');
+        if (banners) {
+          Logger.log('Smart banners fetched');
+        }
         return banners;
       })
       .catch(error => {
