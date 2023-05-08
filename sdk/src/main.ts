@@ -1,7 +1,7 @@
+import { AppToken, SmartBannerOptions, Callback, DataResidencyRegion } from './types';
 import { Logger, LogLevel } from './utils/logger';
-import { AppToken, Callback, SmartBanner, SmartBannerOptions } from './domain/smart-banner';
 import { DeviceOS, getDeviceOS } from './utils/detect-os';
-import { DataResidencyRegion } from './network/data-residency/data-residency';
+import { SmartBanner } from './domain/smart-banner';
 
 // For api-extractor
 export { AppToken, DeviceOS, LogLevel, SmartBannerOptions, DataResidencyRegion, Callback };

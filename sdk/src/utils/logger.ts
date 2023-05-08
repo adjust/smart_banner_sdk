@@ -12,7 +12,7 @@ export class Logger {
 
   private static level: number = Logger.LEVELS.error;
 
-  private static print(messageLevel: LogLevel, message?: any) {
+  private static print(messageLevel: LogLevel, message: string) {
     if (Logger.LEVELS[messageLevel] < Logger.level) {
       return;
     }
@@ -37,19 +37,19 @@ export class Logger {
     Logger.level = Logger.LEVELS[level];
   }
 
-  static log(message?: any) {
+  static log(message: string) {
     Logger.print('verbose', message);
   }
 
-  static info(message?: any) {
+  static info(message: string) {
     Logger.print('info', message);
   }
 
-  static warn(message?: any) {
+  static warn(message: string) {
     Logger.print('warning', message);
   }
 
-  static error(message?: any) {
+  static error(message: string) {
     Logger.print('error', message);
   }
 }
