@@ -4,24 +4,27 @@ import { DismissHandler } from '@sdk/domain/dismiss-handler';
 import { DismissedFilter } from '@sdk/domain/banners-filter/dismissed-filter';
 
 describe('DismissedFilter tests', () => {
+  const dismissalPeriodInSeconds = 60;
+  const dismissalPeriod = dismissalPeriodInSeconds * 1000;
+
   const neverDismissedBanner = {
     id: 'never-dismissed-banner',
-    dismissalPeriod: 600
+    dismissalPeriod: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const justDismissedBanner = {
     id: 'just-dismissed-banner',
-    dismissalPeriod: 600
+    dismissalPeriod: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const someTimeAgoDismissedBanner = {
     id: 'some-time-ago-dismissed-banner',
-    dismissalPeriod: 600
+    dismissalPeriod: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const readyToBeShownBanner = {
     id: 'ready-banner',
-    dismissalPeriod: 600
+    dismissalPeriod: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   let dismissedFilter: DismissedFilter;
@@ -30,7 +33,7 @@ describe('DismissedFilter tests', () => {
     const storage = new InMemoryStorage();
     storage.setItem(justDismissedBanner.id, Date.now() - 1);
     storage.setItem(someTimeAgoDismissedBanner.id, Date.now() - 100);
-    storage.setItem(readyToBeShownBanner.id, Date.now() - readyToBeShownBanner.dismissalPeriod);
+    storage.setItem(readyToBeShownBanner.id, Date.now() - dismissalPeriod);
 
     const handler = new DismissHandler(storage);
 
