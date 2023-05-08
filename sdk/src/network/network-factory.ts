@@ -8,7 +8,7 @@ export interface NetworkConfig {
 }
 
 export class NetworkFactory {
-  private static readonly DEFAULT_DATA_ENDPOINT = '';
+  private static readonly DEFAULT_DATA_ENDPOINT = 'https://dash-qa-2.adjust.com/control-center/smart-banners-backend/core/';
 
   static create(config: NetworkConfig): Network {
     const dataEndpoint = config.dataEndpoint || this.DEFAULT_DATA_ENDPOINT;
