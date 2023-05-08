@@ -120,10 +120,10 @@ export class SmartBanner {
       }
 
       const { banner, schedule } = matchingBanner;
-      if (!schedule) {
+      if (schedule <= 0) {
         this.createBanner(banner);
       } else {
-        this.dismissHandler.schedule(banner, () => this.createBanner(banner));
+        this.dismissHandler.schedule(banner, () => this.createBanner(banner), schedule);
       }
     });
   }
