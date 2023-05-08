@@ -1,23 +1,24 @@
-import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
+import { Repository } from '../data/repositories/repository';
 import { SmartBannerData } from '../data/types';
 import { BannerSelector } from './banners-filter/banner-selector';
 
 /**
- * Fetches banners from SmartBannerRepository and selects a matching one with BannerSelector
+ * Fetches banners from Repository and selects a matching one with BannerSelector
  */
 export class BannerProvider {
   private gettingBannerPromise: Promise<{ banner: SmartBannerData, when: number } | null> | null = null;
   private selectedBanner: { banner: SmartBannerData, when: number } | null = null;
 
-  constructor(private appToken: string, private url: string, private repository: SmartBannerRepository, private selector: BannerSelector) { }
+  constructor(private appToken: string, private url: string, private repository: Repository<string, SmartBannerData[]>, private selector: BannerSelector) { }
 
   /**
-   * Selects a suitable banner and returns it accompanied with a timestamp when the banner should be shown. If tim (mignt be negative, then show immediately),
-   * or null if there is no suitable banner
+   * Fetches banners, selects one of suitable ones and returns it with a timestamp when the banner should be shown, if
+   * timestamp is negative, then the banners should be shown immediately.
+   * If there is no suitable banners then returns null.
    */
   public fetchBanner(): Promise<{ banner: SmartBannerData, when: number } | null> {
     if (this.gettingBannerPromise) {
-      return this.gettingBannerPromise
+      return this.gettingBannerPromise;
     }
 
     this.gettingBannerPromise = this.repository.fetch(this.appToken)
@@ -36,10 +37,10 @@ export class BannerProvider {
   }
 
   public get isLoading() {
-    return this.gettingBannerPromise !== null
+    return this.gettingBannerPromise !== null;
   }
 
   public get banner() {
-    return this.selectedBanner
+    return this.selectedBanner;
   }
 }
