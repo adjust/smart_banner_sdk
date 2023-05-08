@@ -7,22 +7,22 @@ export type BaseUrlsMap = {
 export const ENDPOINTS = {
   default: {
     endpointName: 'Default',
-    app: 'https://app.adjust.com',
-    gdpr: 'https://gdpr.adjust.com'
+    app: 'app.adjust.com',
+    gdpr: 'gdpr.adjust.com'
   } as BaseUrlsMap,
   EU: {
     endpointName: 'EU',
-    app: 'https://app.eu.adjust.com',
-    gdpr: 'https://gdpr.eu.adjust.com'
+    app: 'app.eu.adjust.com',
+    gdpr: 'gdpr.eu.adjust.com'
   } as BaseUrlsMap,
   TR: {
     endpointName: 'TR',
-    app: 'https://app.tr.adjust.com',
-    gdpr: 'https://gdpr.tr.adjust.com'
+    app: 'app.tr.adjust.com',
+    gdpr: 'gdpr.tr.adjust.com'
   } as BaseUrlsMap,
   US: {
     endpointName: 'US',
-    app: 'https://app.us.adjust.com',
-    gdpr: 'https://gdpr.us.adjust.com'
+    app: 'app.us.adjust.com',
+    gdpr: 'gdpr.us.adjust.com'
   } as BaseUrlsMap
 };
