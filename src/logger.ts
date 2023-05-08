@@ -40,6 +40,10 @@ export class Logger {
     Logger.print('verbose', message, optionalParams);
   }
 
+  static info(message?: any, ...optionalParams: any[]) {
+    Logger.print('info', message, optionalParams);
+  }
+
   static warn(message?: any, ...optionalParams: any[]) {
     Logger.print('warning', message, optionalParams);
   }

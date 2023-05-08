@@ -1,4 +1,4 @@
-import { parseJson } from '../utilities';
+import { parseJson } from '../utils/json';
 import { Storage } from './storage';
 
 export class LocalStorage implements Storage {
