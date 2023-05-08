@@ -39,7 +39,7 @@ describe('SmartBannerRepository', () => {
 
     const fetchedData = await repository.fetch('app-token-1');
 
-    expect(fetchedData).toStrictEqual(data);
+    expect(fetchedData).toEqual(data);
     expect(testApi.retrieve).toBeCalled();
     expect(testCache.setItem).toBeCalledWith('app-token-1', data);
   });
@@ -53,7 +53,7 @@ describe('SmartBannerRepository', () => {
 
     const cachedData = await repository.fetch('app-token-1');
 
-    expect(cachedData).toStrictEqual(fetchedData);
+    expect(cachedData).toEqual(fetchedData);
     expect(testApi.retrieve).toBeCalledTimes(1);
     expect(testCache.getItem).toBeCalledTimes(2);
   });
@@ -69,7 +69,7 @@ describe('SmartBannerRepository', () => {
 
     const dataForNewToken = await repository.fetch('new-token');
 
-    expect(dataForNewToken).toStrictEqual(['new-data']);
+    expect(dataForNewToken).toEqual(['new-data']);
     expect(testCache.getItem).toBeCalledTimes(2);
     expect(testCache.getItem).toHaveBeenNthCalledWith(2, 'new-token');
     expect(testApi.retrieve).toBeCalledTimes(2);

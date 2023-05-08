@@ -32,6 +32,6 @@ describe('Detecting browser language', () => {
     jest.spyOn(global.navigator, 'languages', 'get').mockReturnValue(languages as any);
     jest.spyOn(global.navigator, 'language', 'get').mockReturnValue(language as any);
 
-    expect(getLanguage()).toBe(null)
-  })
-})
+    expect(getLanguage()).toBe(null);
+  });
+});

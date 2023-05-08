@@ -4,29 +4,20 @@ import { DisplayRule } from '@sdk/domain/banners-filter/display-rule';
 describe('DisplayRule tests', () => {
   const url = 'some-url';
 
-  const defaultBanners = [{
-    id: 'default_1',
-    displayRule: null
-  } as SmartBannerData, {
-    id: 'default_2',
-    displayRule: null
-  } as SmartBannerData];
+  const defaultBanners = [
+    { id: 'default_1', displayRule: null },
+    { id: 'default_2', displayRule: null }
+  ] as SmartBannerData[];
 
-  const suitableBanners = [{
-    id: 'suitable_1',
-    displayRule: 'some-url'
-  } as SmartBannerData, {
-    id: 'suitable_2',
-    displayRule: 'some-url'
-  } as SmartBannerData];
+  const suitableBanners = [
+    { id: 'suitable_1', displayRule: 'some-url' },
+    { id: 'suitable_2', displayRule: 'some-url' }
+  ] as SmartBannerData[];
 
-  const nonSuitableBanners = [{
-    id: 'banner_1',
-    displayRule: 'other-url'
-  } as SmartBannerData, {
-    id: 'banner_2',
-    displayRule: 'another-url'
-  } as SmartBannerData];
+  const nonSuitableBanners = [
+    { id: 'banner_1', displayRule: 'other-url' },
+    { id: 'banner_2', displayRule: 'another-url' }
+  ] as SmartBannerData[];
 
   const displayRule = new DisplayRule();
 
