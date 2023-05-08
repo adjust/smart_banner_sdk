@@ -1,6 +1,6 @@
-import { StorageFactory } from '../../src/storage/factory';
-import { LocalStorage } from '../../src/storage/local-storage';
 import { InMemoryStorage } from '../../src/storage/in-memory-storage';
+import { LocalStorage } from '../../src/storage/local-storage';
+import { StorageFactory } from '../../src/storage/storage-factory';
 
 jest.mock('../../src/storage/local-storage');
 jest.mock('../../src/storage/in-memory-storage');

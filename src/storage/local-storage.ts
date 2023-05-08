@@ -2,7 +2,7 @@ import { parseJson } from '../utils/json';
 import { Storage } from './storage';
 
 export class LocalStorage implements Storage {
-  constructor(private storageName: string = 'adjust-smart-banner') {}
+  constructor(private storageName: string = 'adjust-smart-banner') { }
 
   setItem(key: string, value: any): void {
     localStorage.setItem(`${this.storageName}.${key}`, JSON.stringify(value));
