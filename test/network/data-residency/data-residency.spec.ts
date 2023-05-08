@@ -1,33 +1,29 @@
-import { DataResidency } from '@sdk/network/data-residency/data-residency';
+import { DataResidency, DataResidencyRegion } from '@sdk/network/data-residency/data-residency';
 import { BaseUrlsMap } from '@sdk/network/data-residency/endpoints';
 
 describe('DataResidency', () => {
 
-  const testEndpoints: Record<DataResidency.Region, BaseUrlsMap> = {
-    [DataResidency.EU]: {
+  const testEndpoints: Record<DataResidencyRegion, BaseUrlsMap> = {
+    EU: {
       endpointName: 'EU',
       app: 'app.eu',
       gdpr: 'gdpr.eu'
     },
-    [DataResidency.TR]: {
+    TR: {
       endpointName: 'TR',
       app: 'app.tr',
       gdpr: 'gdpr.tr'
     },
-    [DataResidency.US]: {
+    US: {
       endpointName: 'US',
       app: 'app.us',
       gdpr: 'gdpr.us'
     }
   };
 
-  const regions: Array<DataResidency.Region> = [
-    DataResidency.EU,
-    DataResidency.TR,
-    DataResidency.US
-  ];
+  const regions: Array<DataResidencyRegion> = ['EU', 'TR', 'US'];
 
-  it.each(regions)('returns urls map depending on region', (region: DataResidency.Region) => {
+  it.each(regions)('returns urls map depending on region', (region: DataResidencyRegion) => {
     const dataResidency = new DataResidency(region, testEndpoints);
 
     expect(dataResidency.endpoint).toEqual(testEndpoints[region].app);
