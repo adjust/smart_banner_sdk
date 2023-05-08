@@ -1,29 +1,69 @@
-import { MenuIconButton } from '../button';
+import { Button } from '../button';
+import { MainMenu, MenuItem } from '../main-menu';
 import styles from './styles.module.scss';
 
-export function Header(fixed = true) {
-  const classNames = () => {
-    const names = [styles.header];
+export interface HeaderProps {
+  fixed: boolean;
+}
 
-    if (fixed) {
-      names.push(styles.fixed);
-    }
-
-    return names.join(' ');
-  };
+export function Header(props: HeaderProps) {
+  let header: HTMLElement;
+  let headerLabel: HTMLElement;
+  let fixed = props.fixed;
 
   const render = () => {
-    const header = document.createElement('div');
-    header.className = classNames();
+    header = document.createElement('div');
 
-    const menuButton = MenuIconButton({ label: 'Menu', clickHandler: () => { console.log('Menu clicked'); } }).render();
-    header.appendChild(menuButton);
+    const mainMenu = createMenu();
 
-    const text = document.createElement('h1');
-    text.innerHTML = `I am a ${fixed ? 'Fixed' : ''} Header`;
-    header.appendChild(text);
+    header.appendChild(
+      Button({
+        label: 'Menu',
+        onClick: () => { mainMenu.open(); }
+      }).render()
+    );
+
+    headerLabel = document.createElement('h1');
+    headerLabel.innerHTML = `I am a ${props.fixed ? 'Fixed ' : ''}Header`;
+    header.appendChild(headerLabel);
+
+    if (props.fixed) {
+      makeHeaderFixed();
+    } else {
+      makeHeaderFloat();
+    }
 
     return header;
+  };
+
+  const makeHeaderFixed = () => {
+    header.className = `${styles.header} ${styles.fixed}`;
+    headerLabel.innerHTML = 'I am a Fixed Header';
+  };
+
+  const makeHeaderFloat = () => {
+    header.className = styles.header;
+    headerLabel.innerHTML = 'I am a Header';
+  };
+
+  const createMenu = () => {
+    const fixedHeaderMenuItem = MenuItem({
+      label: 'Fixed header',
+      onClick: () => {
+        fixed = !fixed;
+        if (fixed) {
+          makeHeaderFixed();
+        } else {
+          makeHeaderFloat();
+        }
+      }
+    });
+
+    const mainMenu = MainMenu({ menuItems: [fixedHeaderMenuItem] });
+    const renderred = mainMenu.render();
+    header.appendChild(renderred);
+
+    return mainMenu;
   };
 
   return { render };

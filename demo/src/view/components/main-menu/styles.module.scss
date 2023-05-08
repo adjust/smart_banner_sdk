@@ -1,1 +1,44 @@
+@import 'assets/colors.scss';
 
+.main-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  z-index: 1;
+  left: 0;
+  background-color: $blue-600;
+  overflow-x: hidden;
+  transition: width 0.5s;
+  display: flex;
+  flex-direction: column;
+
+  &.opened {
+    width: 250px;
+  }
+
+  .menu-header {
+    height: 58px;
+    background-color: $blue-400;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &>* {
+      margin-left: 29px;
+    }
+  }
+
+  &>* {
+    line-height: 40px;
+    white-space: nowrap;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

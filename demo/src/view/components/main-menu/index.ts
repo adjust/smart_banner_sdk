@@ -1,13 +1,55 @@
+import { MenuItem, MenuItemComponent, MenuItemProps } from './menu-item';
+import { IconButton } from '../button';
+import cross from 'assets/cross.svg';
 import styles from './styles.module.scss';
 
-export function MainMenu() {
-  const render = () => {
-    const menu = document.createElement('div');
-    menu.id = 'drawer';
-    menu.className = `${styles.drawer}`;
+export interface MenuProps {
+  menuItems: MenuItemComponent[];
+}
 
-    return menu;
+export function MainMenu(props: MenuProps) {
+  let root: HTMLElement;
+  let menu: HTMLElement;
+
+  const render = () => {
+    root = document.createElement('div');
+    root.addEventListener('click', close);
+
+    menu = document.createElement('div');
+    menu.className = styles['main-menu'];
+
+    const menuHeader = document.createElement('div');
+    menuHeader.className = styles['menu-header'];
+    menuHeader.innerHTML = '<span>Menu</span>';
+
+    menuHeader.appendChild(IconButton({
+      iconSrc: cross,
+      onClick: close,
+      iconSize: '16px'
+    }).render())
+
+    menu.append(menuHeader);
+
+    for (const it of props.menuItems) {
+      menu.appendChild(it.render())
+    }
+
+    root.append(menu);
+
+    return root;
   };
 
-  return { render };
+  const open = () => {
+    root.className = styles.overlay;
+    menu.className = `${styles['main-menu']} ${styles['opened']}`;
+  };
+
+  const close = () => {
+    root.className = '';
+    menu.className = `${styles['main-menu']}`;
+  };
+
+  return { render, open, close };
 }
+
+export { MenuItem, MenuItemProps };

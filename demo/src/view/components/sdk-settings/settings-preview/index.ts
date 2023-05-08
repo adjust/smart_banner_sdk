@@ -1,4 +1,4 @@
-import { Component } from "demo/src/view/base-component";
+import { Component } from 'demo/src/view/base-component';
 import styles from './settings-preview.module.scss';
 
 export interface SettingsPreviewProps {
@@ -17,7 +17,7 @@ export function SettingsPreview(props: SettingsPreviewProps): Component<Settings
 
   const update = (newProps: SettingsPreviewProps) => {
     preview.innerHTML = newProps.innerCode;
-  }
+  };
 
   return {
     render,

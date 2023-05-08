@@ -16,7 +16,7 @@ export function DataResidency(props: DataResidencyProps) {
     drSelect.addEventListener('change', () => { props.onChange(drSelect.value); });
 
     if (props.value) {
-      drSelect.value = props.value
+      drSelect.value = props.value;
     }
 
     return wrapper;
