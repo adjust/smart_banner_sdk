@@ -630,7 +630,7 @@ describe('Smart Banner tests', () => {
         const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, defaultPlatform);
         smartBanner.setDeeplinkContext({ deeplink: 'my-deeplink' });
 
-        expect(Logger.log).toBeCalledWith('Smart banner was not created yet, the defined deeplink context will be applied within creation');
+        expect(Logger.log).toBeCalledWith('Smart banner was not created yet, the provided deeplink context will be applied within creation');
         expect(smartBannerViewMock.update).not.toBeCalled();
       });
 
@@ -651,7 +651,7 @@ describe('Smart Banner tests', () => {
           trackerWithDeeplink(defaultDomain, defaultLang, deeplink) :
           tracker(defaultDomain, defaultLang);
 
-        expect(Logger.log).toBeCalledWith('Smart banner was not created yet, the defined deeplink context will be applied within creation');
+        expect(Logger.log).toBeCalledWith('Smart banner was not created yet, the provided deeplink context will be applied within creation');
         expect(smartBannerViewMock.update).not.toBeCalled();
         expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
       });
