@@ -4,20 +4,20 @@ import * as _SmartBannerModule from '@sdk/domain/smart-banner';
 import * as OsDetector from '@sdk/utils/detect-os';
 import { AdjustSmartBanner as _AdjustSmartBanner } from '@sdk/main';
 
-jest.doMock('@sdk/domain/smart-banner')
-jest.mock('@sdk/utils/logger')
+jest.doMock('@sdk/domain/smart-banner');
+jest.mock('@sdk/utils/logger');
 
 describe('Entry point tests', () => {
-  let AdjustSmartBanner: typeof _AdjustSmartBanner
-  let Logger: typeof _Logger
-  let DetectOs: typeof OsDetector
-  let SmartBannerModule: typeof _SmartBannerModule
-  let SmartBanner = {
+  let AdjustSmartBanner: typeof _AdjustSmartBanner;
+  let Logger: typeof _Logger;
+  let DetectOs: typeof OsDetector;
+  let SmartBannerModule: typeof _SmartBannerModule;
+  const SmartBanner = {
     show: jest.fn(),
     hide: jest.fn(),
     setLanguage: jest.fn(),
     setDeeplinkContext: jest.fn()
-  }
+  };
 
   let getDeviceOSSpy: jest.SpyInstance<OsDetector.DeviceOS | undefined>;
 
@@ -31,20 +31,20 @@ describe('Entry point tests', () => {
   };
 
   beforeEach(() => {
-    AdjustSmartBanner = require('@sdk/main').AdjustSmartBanner
-    DetectOs = require('@sdk/utils/detect-os')
-    SmartBannerModule = require('@sdk/domain/smart-banner')
-    Logger = require('@sdk/utils/logger').Logger
+    AdjustSmartBanner = require('@sdk/main').AdjustSmartBanner;
+    DetectOs = require('@sdk/utils/detect-os');
+    SmartBannerModule = require('@sdk/domain/smart-banner');
+    Logger = require('@sdk/utils/logger').Logger;
 
     getDeviceOSSpy = jest.spyOn(DetectOs, 'getDeviceOS');
     getDeviceOSSpy.mockReturnValue(OsDetector.DeviceOS.Android);
 
-    jest.spyOn(SmartBannerModule, 'SmartBanner').mockImplementation(() => SmartBanner as any as _SmartBannerModule.SmartBanner)
+    jest.spyOn(SmartBannerModule, 'SmartBanner').mockImplementation(() => SmartBanner as any as _SmartBannerModule.SmartBanner);
     jest.spyOn(Logger, 'setLogLevel');
     jest.spyOn(Logger, 'error');
     jest.spyOn(Logger, 'info');
     jest.spyOn(Logger, 'log');
-  })
+  });
 
   afterEach(() => {
     jest.resetAllMocks();
@@ -135,13 +135,13 @@ describe('Entry point tests', () => {
           language: 'fr',
           onCreated: jest.fn(),
           onDismissed: jest.fn(),
-        }
+        };
 
         AdjustSmartBanner.init(options);
 
         expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', options, OsDetector.DeviceOS.Android);
-      })
-    })
+      });
+    });
 
     describe('Multiple initialisations', () => {
       it('prevents repeated initialisations and logs an error', () => {
@@ -154,8 +154,8 @@ describe('Entry point tests', () => {
 
         expect(SmartBannerModule.SmartBanner).toBeCalledTimes(1);
         expect(Logger.error).toBeCalledWith('Smart Banner is initialised already');
-      })
-    })
+      });
+    });
   });
 
   describe('Public methods', () => {
@@ -167,15 +167,15 @@ describe('Entry point tests', () => {
           AdjustSmartBanner.show();
 
           expect(SmartBanner.show).toBeCalled();
-        })
+        });
 
         it('prevents if SDK was not initialised', () => {
           AdjustSmartBanner.show();
 
           expect(SmartBanner.show).not.toBeCalled();
           expect(Logger.error).toBeCalledWith('Can\'t show banner, you should initialise Smart Banner first');
-        })
-      })
+        });
+      });
 
       describe('hide', () => {
         it('calls SmartBanner.hide() method', () => {
@@ -184,16 +184,16 @@ describe('Entry point tests', () => {
           AdjustSmartBanner.hide();
 
           expect(SmartBanner.hide).toBeCalled();
-        })
+        });
 
         it('prevents if SDK was not initialised', () => {
           AdjustSmartBanner.hide();
 
           expect(SmartBanner.hide).not.toBeCalled();
           expect(Logger.error).toBeCalledWith('Can\'t hide banner, you should initialise Smart Banner first');
-        })
-      })
-    })
+        });
+      });
+    });
 
     describe('Set language', () => {
       it('calls SmartBanner.setLanguage() method', () => {
@@ -202,21 +202,21 @@ describe('Entry point tests', () => {
         AdjustSmartBanner.setLanguage('fr');
 
         expect(SmartBanner.setLanguage).toBeCalledWith('fr');
-      })
+      });
 
       it('prevents if SDK was not initialised', () => {
         AdjustSmartBanner.setLanguage('fr');
 
         expect(SmartBanner.setLanguage).not.toBeCalled();
         expect(Logger.error).toBeCalledWith('Can\'t set locale, you should initilise Smart Banner first');
-      })
-    })
+      });
+    });
 
     describe('Set deeplink and context', () => {
       const deeplinkContext = {
         deeplink: 'someapp://{path}',
         context: { path: 'nowhere' }
-      }
+      };
 
       it('calls SmartBanner.setDeeplinkContext() method', () => {
         AdjustSmartBanner.init({ appToken: 'some-token' });
@@ -224,7 +224,7 @@ describe('Entry point tests', () => {
         AdjustSmartBanner.setDeeplinkContext(deeplinkContext);
 
         expect(SmartBanner.setDeeplinkContext).toBeCalledWith(deeplinkContext);
-      })
+      });
 
       it('prevents if SDK was not initialised', () => {
         AdjustSmartBanner.setDeeplinkContext({
@@ -234,7 +234,7 @@ describe('Entry point tests', () => {
 
         expect(SmartBanner.setDeeplinkContext).not.toBeCalled();
         expect(Logger.error).toBeCalledWith('Can\'t set deeplink context, you should initilise Smart Banner first');
-      })
-    })
+      });
+    });
   });
 });
