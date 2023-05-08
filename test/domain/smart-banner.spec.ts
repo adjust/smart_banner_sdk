@@ -546,11 +546,11 @@ describe('Smart Banner tests', () => {
         newContext: { deeplink: 'new-path/param={greet}', context: { greet: 'hi' } },
         deeplink: encodeURIComponent('new-path/param=hi')
       },
-    ]
+    ];
 
     describe('View exists', () => {
       it.each(testSet)('$_action, updates the view with new tracker url', async ({ _action, initContext, newContext, deeplink }) => {
-        expect.assertions(1)
+        expect.assertions(1);
 
         const smartBanner = new SmartBanner('some-token',
           {
