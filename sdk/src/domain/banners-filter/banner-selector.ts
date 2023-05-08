@@ -3,6 +3,8 @@ import { DisplayRule } from './display-rule';
 import { DismissedFilter } from './dismissed-filter';
 import { DismissHandler } from '../dismiss-handler';
 
+export const NO_DELAY = -1;
+
 export class BannerSelector {
   private displayRule: DisplayRule;
   private dismissedFilter: DismissedFilter;
@@ -35,16 +37,17 @@ export class BannerSelector {
       return null;
     }
 
-    let delay = -1;
+    // If one of banners was dismissed, we should wait till 'the oldest' dismissalPeriod passed
+    let dateToShow: number | null = null;
     const dismissed = this.dismissedFilter.getDismissed(suitableBanners);
     if (dismissed.length > 0) {
       const sortedDismissed = this.dismissedFilter.sort(dismissed);
-      delay = this.dismissHandler.getDateToShowAgain(sortedDismissed[0])
+      dateToShow = this.dismissHandler.getDateToShowAgain(sortedDismissed[0]);
     }
 
     return {
       banner: this.getRandomFromArray(suitableBanners), // Show any banner with equal probability
-      schedule: delay // Or schedule the banner if any banner for this page was dismissed 
+      schedule: dateToShow || NO_DELAY
     };
   }
 }
