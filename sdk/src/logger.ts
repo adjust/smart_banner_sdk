@@ -11,23 +11,23 @@ export class Logger {
 
   private static level: number = Logger.LEVELS.error;
 
-  private static print(messageLevel: LogLevel, message?: any, ...optionalParams: any[]) {
+  private static print(messageLevel: LogLevel, message?: any) {
     if (Logger.LEVELS[messageLevel] < Logger.level) {
       return;
     }
 
     switch (messageLevel) {
       case 'verbose':
-        console.log(message, optionalParams);
+        console.log(message);
         break;
       case 'info':
-        console.log(message, optionalParams);
+        console.log(message);
         break;
       case 'warning':
-        console.warn(message, optionalParams);
+        console.warn(message);
         break;
       case 'error':
-        console.error(message, optionalParams);
+        console.error(message);
         break;
     }
   }
@@ -36,19 +36,19 @@ export class Logger {
     Logger.level = Logger.LEVELS[level];
   }
 
-  static log(message?: any, ...optionalParams: any[]) {
-    Logger.print('verbose', message, optionalParams);
+  static log(message?: any) {
+    Logger.print('verbose', message);
   }
 
-  static info(message?: any, ...optionalParams: any[]) {
-    Logger.print('info', message, optionalParams);
+  static info(message?: any) {
+    Logger.print('info', message);
   }
 
-  static warn(message?: any, ...optionalParams: any[]) {
-    Logger.print('warning', message, optionalParams);
+  static warn(message?: any) {
+    Logger.print('warning', message);
   }
 
-  static error(message?: any, ...optionalParams: any[]) {
-    Logger.print('error', message, optionalParams);
+  static error(message?: any) {
+    Logger.print('error', message);
   }
 }
