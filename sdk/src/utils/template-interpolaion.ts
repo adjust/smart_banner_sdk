@@ -9,8 +9,10 @@
  * const greet = interpolate("Hello {username}!", { username: John Smith });
  * console.log(greet); // prints "Hello John Smith!"
  */
-export function interpolate(template: string, context: Record<string, string | null>) {
-  const re = /{(\w+)}/g
-  const replacer = (_: string, paramName: string) => context[paramName] || ''
+export function interpolate(template: string, context: Record<string, Primitive>) {
+  const re = /{(\w+)}/g;
+  const replacer = (_: string, paramName: string): string => String(context[paramName] || '');
   return template.replace(re, replacer);
 }
+
+type Primitive = number | string | boolean | null | undefined
