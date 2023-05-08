@@ -17,7 +17,7 @@ export class DismissHandler {
       return Date.now();
     }
 
-    return dismissedDate + banner.dismissalPeriod;
+    return Math.max(dismissedDate + banner.dismissalPeriod, Date.now());
   }
 
   public isDismissed(banner: SmartBannerData): boolean {
@@ -28,9 +28,6 @@ export class DismissHandler {
     this.storage.setItem(banner.id, Date.now());
   }
 
-  /**
-   * Schedules a creation of banner
-   */
   public schedule(banner: SmartBannerData, showBannerCallback: () => void) {
     if (this.timer) {
       Logger.log('Clearing previously scheduled creation of Smart Banner');
