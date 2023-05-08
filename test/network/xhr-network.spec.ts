@@ -4,7 +4,7 @@ import { XhrNetwork } from '@sdk/network/xhr-network';
 jest.mock('@sdk/utils/logger');
 
 describe('XhrNetwork tests', () => {
-  const testEndpoint = 'test.test';
+  const dataEndpoint = 'load-data.test';
 
   const xhrMock: Partial<XMLHttpRequest> = {
     open: jest.fn(),
@@ -14,7 +14,7 @@ describe('XhrNetwork tests', () => {
     onreadystatechange: jest.fn()
   };
 
-  const testedNetwork = new XhrNetwork(testEndpoint);
+  const testedNetwork = new XhrNetwork(dataEndpoint);
 
   beforeAll(() => {
     jest.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
@@ -30,7 +30,7 @@ describe('XhrNetwork tests', () => {
 
       testedNetwork.request('/whatever', { foo: 'bar', n: 42 });
 
-      const expectedUrl = `${testEndpoint}/whatever?foo=bar&n=42`;
+      const expectedUrl = `${dataEndpoint}/whatever?foo=bar&n=42`;
 
       expect(xhrMock.open).toHaveBeenCalledWith('GET', expectedUrl);
     });
@@ -40,7 +40,7 @@ describe('XhrNetwork tests', () => {
 
       testedNetwork.request('/whatever');
 
-      const expectedUrl = `${testEndpoint}/whatever`;
+      const expectedUrl = `${dataEndpoint}/whatever`;
 
       expect(xhrMock.open).toHaveBeenCalledWith('GET', expectedUrl);
     });
@@ -75,12 +75,6 @@ describe('XhrNetwork tests', () => {
       } catch (error) {
         expect(error).toEqual(err);
       }
-    });
-  });
-
-  describe('endpoint property', () => {
-    it('returns endpoint', () => {
-      expect(testedNetwork.endpoint).toEqual(testEndpoint);
     });
   });
 });

@@ -5,11 +5,11 @@ import { UrlStrategyFactory, UrlStrategyConfig } from './url-strategy/url-strate
 import { NetworkError } from './errors';
 
 export type UrlStrategyParameters = {
-  urlStrategy: UrlStrategy;
-  urlStrategyConfig?: never;
+  instance: UrlStrategy;
+  config?: never;
 } | {
-  urlStrategy?: never;
-  urlStrategyConfig: UrlStrategyConfig;
+  instance?: never;
+  config: UrlStrategyConfig;
 }
 
 export class NetworkWithUrlStrategy extends NetworkDecorator {
@@ -17,10 +17,10 @@ export class NetworkWithUrlStrategy extends NetworkDecorator {
   private lastSuccessfulEndpoint: string | undefined;
   private urlStrategy: UrlStrategy;
 
-  constructor(network: Network, { urlStrategy, urlStrategyConfig }: UrlStrategyParameters) {
+  constructor(network: Network, { instance, config }: UrlStrategyParameters) {
     super(network);
 
-    this.urlStrategy = urlStrategy || UrlStrategyFactory.create(urlStrategyConfig);
+    this.urlStrategy = instance || UrlStrategyFactory.create(config);
   }
 
   /**
@@ -40,7 +40,7 @@ export class NetworkWithUrlStrategy extends NetworkDecorator {
   public request<T>(path: string, params?: Record<string, string | number | boolean>): Promise<T> {
 
     return this.urlStrategy.retries((baseUrlsMap) => {
-      this.network.endpoint = baseUrlsMap.app;
+      this.network.trackerEndpoint = baseUrlsMap.app;
 
       return this.network.request<T>(path, params)
         .then((result: T) => {
