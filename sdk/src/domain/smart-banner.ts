@@ -4,12 +4,12 @@ import { Logger } from '../utils/logger';
 import { Network } from '../network/network';
 import { NetworkFactory } from '../network/network-factory';
 import { DataResidency } from '../network/url-strategy/data-residency';
-import { Storage, StorageFactory } from '../data/storage/storage-factory';
 import { DeviceOS } from '../utils/detect-os';
 import { getLanguage } from '../utils/language';
 import { SmartBannerView } from '../view/smart-banner-view';
 import { Globals } from '../globals';
 import { UrlStrategyConfig } from '../network/url-strategy/url-strategy-factory';
+import { DismissHandler } from './dismiss-handler';
 
 type Callback = () => any;
 
@@ -24,14 +24,12 @@ export interface SmartBannerOptions {
 }
 
 export class SmartBanner {
-  private readonly STORAGE_KEY_DISMISSED = 'closed';
   private network: Network;
-  private storage: Storage;
   private repository: SmartBannerRepository;
+  private dismissHandler: DismissHandler;
   private language: string;
   private onCreated?: Callback;
   private onDismissed?: Callback;
-  private timer: ReturnType<typeof setTimeout> | null = null;
   private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
   private view: SmartBannerView | null = null;
 
@@ -41,6 +39,7 @@ export class SmartBanner {
     private deviceOs: DeviceOS,
     network?: Network
   ) {
+    this.dismissHandler = new DismissHandler();
 
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
@@ -50,13 +49,10 @@ export class SmartBanner {
       urlStrategyConfig = { dataResidency };
     } else if (Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_) {
       // remove from production code
-      // TODO: should customUrl be exposed in SDK options to simplify this?
       urlStrategyConfig = { customUrl: Globals._DEV_ENDPOINT_ };
     }
 
     this.network = network || NetworkFactory.create({ urlStrategyParameters: { urlStrategyConfig } });
-
-    this.storage = StorageFactory.createStorage();
 
     const networkApi = new SmartBannerApi(this.deviceOs, this.network);
     this.repository = new SmartBannerRepository(networkApi);
@@ -66,14 +62,38 @@ export class SmartBanner {
     this.init(appToken);
   }
 
-  private init(appToken: string) {
+  private isInitialised(): boolean {
     if (this.view) {
       Logger.error('Smart Banner is created already');
-      return;
+      return true;
     }
 
     if (this.dataFetchPromise) {
       Logger.error('Smart Banner is initialising already');
+      return true;
+    }
+
+    return false;
+  }
+
+  private createBanner(bannerData: SmartBannerData) {
+    Logger.log('Creating Smart Banner');
+
+    this.view = new SmartBannerView(
+      bannerData,
+      () => this.dismiss(bannerData),
+      this.network.endpoint
+    );
+
+    Logger.log('Smart Banner created');
+
+    if (this.onCreated) {
+      this.onCreated();
+    }
+  }
+
+  private init(appToken: string) {
+    if (this.isInitialised()) {
       return;
     }
 
@@ -90,29 +110,32 @@ export class SmartBanner {
       }
 
       // TODO: get needed banner based on page URL and other conditions
+      const matchingBanner = { banner: bannersList[0], dismissed: false }
 
-
-      /*const whenToShow = this.getDateToShowAgain(bannerData.dismissInterval);
-      if (Date.now() < whenToShow) {
-        Logger.log('Smart Banner was dismissed');
-        this.scheduleCreation(token, whenToShow);
+      if (!matchingBanner) {
+        Logger.log(`No Smart Banners for ${window.location.href} page found`);
         return;
       }
 
-      Logger.log('Creating Smart Banner');
-
-      this.view = new SmartBannerView(
-        bannerData,
-        () => this.dismiss(appToken, bannerData.dismissInterval),
-        this.network.endpoint
-      );
-
-      Logger.log('Smart Banner created');
-
-      if (this.onCreated) {
-        this.onCreated();
-      }*/
+      const { banner, dismissed } = matchingBanner;
+      if (!dismissed) {
+        this.createBanner(banner);
+      } else {
+        this.dismissHandler.schedule(banner, () => this.createBanner(banner))
+      }
     });
+  }
+
+  private dismiss(banner: SmartBannerData) {
+    this.dismissHandler.dismiss(banner);
+
+    // TODO: schedule show of next banner
+
+    this.destroy();
+
+    if (this.onDismissed) {
+      this.onDismissed();
+    }
   }
 
   /**
