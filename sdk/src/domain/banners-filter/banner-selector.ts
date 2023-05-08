@@ -2,6 +2,7 @@ import { SmartBannerData } from '../../data/types';
 import { DisplayRule } from './display-rule';
 import { DismissedFilter } from './dismissed-filter';
 import { DismissHandler } from '../dismiss-handler';
+import { Logger } from '../../utils/logger';
 
 export const NO_DELAY = -1;
 
@@ -34,6 +35,7 @@ export class BannerSelector {
     const suitableBanners = this.getSuitableBanners(banners, url);
 
     if (suitableBanners.length <= 0) {
+      Logger.log(`No Smart Banners for ${url} page found`);
       return null;
     }
 

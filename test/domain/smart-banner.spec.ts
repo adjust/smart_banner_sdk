@@ -4,7 +4,7 @@ import { DataResidencyRegion, DeviceOS } from '@sdk/main';
 import { NetworkConfig, NetworkFactory } from '@sdk/network/network-factory';
 import { StorageFactory } from '@sdk/data/storage/storage-factory';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
-import { BannerSelector } from '@sdk/domain/banners-filter/banner-selector';
+import { BannerProvider } from '@sdk/domain/banner-provider';
 import * as DataToViewConverter from '@sdk/data/converters/smart-banner-for-view';
 import * as DataToTrackerConverter from '@sdk/data/converters/smart-banner-to-tracker-data';
 import * as TrackerBuilder from '@sdk/domain/tracker-builder';
@@ -74,7 +74,7 @@ describe('Smart Banner tests', () => {
     jest.spyOn(DataToViewConverter, 'convertSmartBannerDataForView').mockImplementation((_, locale) => renderDataMock(locale));
     jest.spyOn(DataToTrackerConverter, 'convertSmartBannerToTracker').mockImplementation((_, domain, locale) => trackerDataMock(domain, locale));
     jest.spyOn(TrackerBuilder, 'buildSmartBannerUrl');
-    jest.spyOn(BannerSelector.prototype, 'next');
+    jest.spyOn(BannerProvider.prototype, 'fetchBanner');
     jest.spyOn(View, 'SmartBannerView').mockReturnValue(smartBannerViewMock);
   });
 
@@ -85,7 +85,7 @@ describe('Smart Banner tests', () => {
   afterAll(() => {
     jest.resetAllMocks();
     jest.resetModules();
-  })
+  });
 
   describe('Initialisation and creation', () => {
     describe('Network creation', () => {
@@ -448,13 +448,13 @@ describe('Smart Banner tests', () => {
         const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, defaultPlatform);
         await Utils.flushPromises();
 
-        expect(BannerSelector.prototype.next).toBeCalled();
+        expect(BannerProvider.prototype.fetchBanner).toBeCalled();
 
         smartBanner.setLanguage('ru');
         await Utils.flushPromises();
 
-        expect(BannerSelector.prototype.next).toBeCalledTimes(1);
-      })
+        expect(BannerProvider.prototype.fetchBanner).toBeCalledTimes(1);
+      });
     });
 
     describe('View creation scheduled', () => {
@@ -606,13 +606,13 @@ describe('Smart Banner tests', () => {
           defaultPlatform);
         await Utils.flushPromises();
 
-        expect(BannerSelector.prototype.next).toBeCalled();
+        expect(BannerProvider.prototype.fetchBanner).toBeCalled();
 
         smartBanner.setDeeplinkContext(newContext as any);
         await Utils.flushPromises();
 
-        expect(BannerSelector.prototype.next).toBeCalledTimes(1);
-      })
+        expect(BannerProvider.prototype.fetchBanner).toBeCalledTimes(1);
+      });
     });
 
     describe('View creation scheduled', () => {
