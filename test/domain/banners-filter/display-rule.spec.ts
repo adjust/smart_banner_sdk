@@ -1,4 +1,4 @@
-import { SmartBannerData } from '@sdk/data/api';
+import { SmartBannerData } from '@sdk/data/types';
 import { DisplayRule } from '@sdk/domain/banners-filter/display-rule';
 
 describe('DisplayRule tests', () => {

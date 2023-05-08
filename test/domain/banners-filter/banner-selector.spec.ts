@@ -1,4 +1,4 @@
-import { SmartBannerData } from '@sdk/data/api';
+import { SmartBannerData } from '@sdk/data/types';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
 import { DismissHandler } from '@sdk/domain/dismiss-handler';
 import { BannerSelector, NO_DELAY } from '@sdk/domain/banners-filter/banner-selector';
