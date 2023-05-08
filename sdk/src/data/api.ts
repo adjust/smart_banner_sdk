@@ -20,6 +20,8 @@ export class SmartBannerApi implements AsyncDataSource<string, SmartBannerData[]
         const banners = convertResponseToSmartBanners(data);
         if (banners) {
           Logger.log('Smart banners fetched');
+        } else {
+          Logger.log(`No Smart Banners for ${this.platform} platform found`);
         }
         return banners;
       })
