@@ -1,16 +1,16 @@
-import { Logger } from '../../src/logger';
-import { DeviceOS } from '../../src/utils/detect-os';
-import { fetchSmartBannerData, SmartBannerData } from '../../src/api';
-import { Network } from '../../src/network/network';
-import { snakeToCamelCase } from '../../src/utils/snake-to-camel-case';
-
 import * as dataMock from '../../fake-server/smart_banners.json';
+import { SmartBannerApi } from '../../src/data/api';
+import { Logger } from '../../src/logger';
+import { Network } from '../../src/network/network';
+import { DeviceOS } from '../../src/utils/detect-os';
+import { snakeToCamelCase } from '../../src/utils/snake-to-camel-case';
 
 jest.mock('../../src/logger');
 
 describe('Smart banner API tests', () => {
+
   describe('fetchSmartBannerData', () => {
-    const webToken = 'p6o2pnb1zkzk';
+    const appToken = 'some-token';
     const platform = DeviceOS.iOS;
 
     const serverResponseMock = dataMock['ios'];
@@ -19,6 +19,8 @@ describe('Smart banner API tests', () => {
       endpoint: 'test-endpoint',
       request: jest.fn()
     };
+
+    const api = new SmartBannerApi(platform, testNetwork)
 
     let requestSpy: jest.SpyInstance;
 
@@ -36,7 +38,7 @@ describe('Smart banner API tests', () => {
     it('returns data when request is succesfull', async () => {
       expect.assertions(1 + serverResponseMock.length);
 
-      let smartBannerData = await fetchSmartBannerData(webToken, platform, testNetwork);
+      let smartBannerData = await api.retrieve(appToken);
 
       expect(smartBannerData).not.toBeNull();
 
@@ -48,23 +50,11 @@ describe('Smart banner API tests', () => {
       }
     });
 
-    it('caches data', async () => {
-      expect.assertions(2);
-
-      const smartBannerData = await fetchSmartBannerData(webToken, platform, testNetwork);
-
-      expect(smartBannerData).not.toBeNull();
-
-      await fetchSmartBannerData(webToken, platform, testNetwork);
-
-      expect(requestSpy).toBeCalledTimes(1);
-    });
-
     it('returns null when no banners for platform', async () => {
       expect.assertions(1);
       requestSpy.mockResolvedValueOnce([]);
 
-      const smartBannerData = await fetchSmartBannerData(webToken, platform, testNetwork);
+      const smartBannerData = await api.retrieve(appToken);
 
       expect(smartBannerData).toBeNull();
     });
@@ -75,7 +65,7 @@ describe('Smart banner API tests', () => {
       const error = { status: 404, message: 'Not found' };
       requestSpy.mockRejectedValueOnce(error);
 
-      const smartBannerData = await fetchSmartBannerData(webToken, platform, testNetwork);
+      const smartBannerData = await api.retrieve(appToken);
 
       expect(smartBannerData).toBeNull();
       expect(Logger.error).toHaveBeenCalledWith('Network error occurred during loading Smart Banner: ' + JSON.stringify(error));
