@@ -49,7 +49,7 @@ export class SmartBanner {
       this.url,
       new SmartBannerRepository(networkApi),
       new BannerSelector(this.dismissHandler)
-    )
+    );
 
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
