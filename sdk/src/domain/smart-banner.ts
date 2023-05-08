@@ -1,15 +1,15 @@
-import { Context, SmartBannerApi, SmartBannerData } from './data/api';
-import { SmartBannerRepository } from './data/repositories/smart-banner-repository';
-import { Logger } from './logger';
-import { Network } from './network/network';
-import { NetworkFactory } from './network/network-factory';
-import { DataResidency } from './network/url-strategy/data-residency';
-import { Storage, StorageFactory } from './storage/storage-factory';
-import { DeviceOS } from './utils/detect-os';
-import { getLanguage } from './utils/language';
-import { SmartBannerView } from './view/smart-banner-view';
-import { Globals } from './globals';
-import { UrlStrategyConfig } from './network/url-strategy/url-strategy-factory';
+import { Context, SmartBannerApi, SmartBannerData } from '../data/api';
+import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
+import { Logger } from '../utils/logger';
+import { Network } from '../network/network';
+import { NetworkFactory } from '../network/network-factory';
+import { DataResidency } from '../network/url-strategy/data-residency';
+import { Storage, StorageFactory } from '../data/storage/storage-factory';
+import { DeviceOS } from '../utils/detect-os';
+import { getLanguage } from '../utils/language';
+import { SmartBannerView } from '../view/smart-banner-view';
+import { Globals } from '../globals';
+import { UrlStrategyConfig } from '../network/url-strategy/url-strategy-factory';
 
 type Callback = () => any;
 

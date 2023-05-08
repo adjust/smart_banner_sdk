@@ -1,6 +1,7 @@
 import { LocalStorage } from './local-storage';
 import { InMemoryStorage } from './in-memory-storage';
 import { Storage } from './storage';
+import { Logger } from '../../utils/logger';
 
 class StorageFactory {
   private static isLocalStorageSupported(): boolean {
@@ -24,6 +25,7 @@ class StorageFactory {
       return new LocalStorage();
     }
 
+    Logger.info('Persistant storage is not available, using an in-memory storage instead');
     return new InMemoryStorage();
   }
 }

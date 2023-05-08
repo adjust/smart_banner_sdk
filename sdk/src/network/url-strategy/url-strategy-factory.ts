@@ -1,4 +1,4 @@
-import { Logger } from '../../logger';
+import { Logger } from '../../utils/logger';
 import { UrlStrategy } from './url-strategy';
 import { BlockedUrlBypass } from './blocked-url-bypass';
 import { CustomUrl } from './custom-url';

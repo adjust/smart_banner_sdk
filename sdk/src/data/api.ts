@@ -1,6 +1,6 @@
 import { AsyncDataSource } from './data-source';
 import { DeviceOS } from '../utils/detect-os';
-import { Logger } from '../logger';
+import { Logger } from '../utils/logger';
 import { Network } from '../network/network';
 import { snakeToCamelCase, SnakeToCamelCaseObjectKeys } from '../utils/snake-to-camel-case';
 
@@ -28,7 +28,7 @@ interface Localization {
 }
 
 interface SmartBannerResponseData {
-  id: number;
+  id: string;
   is_previous_attribution_priority: boolean;
   position: Position;
   name: string;

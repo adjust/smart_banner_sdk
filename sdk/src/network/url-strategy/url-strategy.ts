@@ -1,4 +1,4 @@
-import { Logger } from '../../logger';
+import { Logger } from '../../utils/logger';
 import { NetworkError, NoConnectionError } from '../errors';
 
 export type BaseUrlsMap = {

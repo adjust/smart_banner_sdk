@@ -17,18 +17,18 @@ export class Logger {
     }
 
     switch (messageLevel) {
-      case 'verbose':
-        console.log(message);
-        break;
-      case 'info':
-        console.log(message);
-        break;
-      case 'warning':
-        console.warn(message);
-        break;
-      case 'error':
-        console.error(message);
-        break;
+    case 'verbose':
+      console.log(message);
+      break;
+    case 'info':
+      console.log(message);
+      break;
+    case 'warning':
+      console.warn(message);
+      break;
+    case 'error':
+      console.error(message);
+      break;
     }
   }
 
