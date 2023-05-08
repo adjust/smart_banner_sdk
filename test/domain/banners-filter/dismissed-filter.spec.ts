@@ -38,7 +38,7 @@ describe('DismissedFilter tests', () => {
   });
 
   describe('Filtering', () => {
-    it('filter out out banners those are too early to be shown', () => {
+    it('filter out banners those are too early to be shown', () => {
       const actual = dismissedFilter.filter([neverDismissedBanner, someTimeAgoDismissedBanner, justDismissedBanner, readyToBeShownBanner]);
       const expected = [neverDismissedBanner, readyToBeShownBanner];
 
@@ -47,6 +47,19 @@ describe('DismissedFilter tests', () => {
 
     it('does not throw on empty array', () => {
       expect(dismissedFilter.filter([])).toEqual([]);
+    });
+  });
+
+  describe('getDismissed', () => {
+    it('returns banners those were dismissed and those are too early to be shown', () => {
+      const actual = dismissedFilter.getDismissed([neverDismissedBanner, someTimeAgoDismissedBanner, justDismissedBanner, readyToBeShownBanner]);
+      const expected = [someTimeAgoDismissedBanner, justDismissedBanner];
+
+      expect(actual).toEqual(expected);
+    });
+
+    it('does not throw on empty array', () => {
+      expect(dismissedFilter.getDismissed([])).toEqual([]);
     });
   });
 

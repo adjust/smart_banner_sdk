@@ -10,7 +10,7 @@ import { SmartBannerView } from '../view/smart-banner-view';
 import { Globals } from '../globals';
 import { UrlStrategyConfig } from '../network/url-strategy/url-strategy-factory';
 import { DismissHandler } from './dismiss-handler';
-import { BannersSelector } from './banners-filter/banner-selector';
+import { BannerSelector } from './banners-filter/banner-selector';
 
 type Callback = () => any;
 
@@ -28,7 +28,7 @@ export class SmartBanner {
   private network: Network;
   private repository: SmartBannerRepository;
   private dismissHandler: DismissHandler;
-  private bannersSelector: BannersSelector;
+  private bannersSelector: BannerSelector;
   private language: string;
   private onCreated?: Callback;
   private onDismissed?: Callback;
@@ -42,7 +42,7 @@ export class SmartBanner {
     network?: Network
   ) {
     this.dismissHandler = new DismissHandler();
-    this.bannersSelector = new BannersSelector(this.dismissHandler);
+    this.bannersSelector = new BannerSelector(this.dismissHandler);
 
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
@@ -151,6 +151,7 @@ export class SmartBanner {
     }
   }
 
+  // TODO: should check if page url changed and select another banner if needed
   show(): void {
     if (this.view) {
       this.view.show();

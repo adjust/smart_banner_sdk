@@ -1,10 +1,9 @@
-import { SmartBannerData } from 'sdk/src/data/api';
+import { SmartBannerData } from '../../data/api';
 import { DisplayRule } from './display-rule';
 import { DismissedFilter } from './dismissed-filter';
 import { DismissHandler } from '../dismiss-handler';
 
-
-export class BannersSelector {
+export class BannerSelector {
   private displayRule: DisplayRule;
   private dismissedFilter: DismissedFilter;
 
@@ -21,6 +20,11 @@ export class BannersSelector {
     return this.displayRule.sort(suitableBanners);
   }
 
+  private getRandomFromArray(banners: SmartBannerData[]): SmartBannerData {
+    const index = Math.floor(Math.random() * banners.length);
+    return banners[index];
+  }
+
   /**
    * Returns next suitable banner and a flag if the banner should be scheduled
    */
@@ -31,22 +35,11 @@ export class BannersSelector {
       return null;
     }
 
-    const nonDismissedSuitableBanners = this.dismissedFilter.filter(suitableBanners);
-
-    if (nonDismissedSuitableBanners.length > 0) {
-
-      // Current business logic requires to return any banner from array of suitable ones with equal probability
-      const index = Math.floor(Math.random() * nonDismissedSuitableBanners.length);
-
-      return {
-        banner: nonDismissedSuitableBanners[index],
-        schedule: false
-      };
-    }
+    const dismissed = this.dismissedFilter.getDismissed(suitableBanners);
 
     return {
-      banner: this.dismissedFilter.sort(suitableBanners)[0],
-      schedule: true
+      banner: this.getRandomFromArray(suitableBanners), // Show any banner with equal probability
+      schedule: dismissed.length > 0 // Or schedule the banner if any banner for this page was dismissed 
     };
   }
 }
