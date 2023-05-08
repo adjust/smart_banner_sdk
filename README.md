@@ -2,8 +2,6 @@
 
 This is the guide to the Adjust Smart Banner SDK for web sites or web apps. You can read more about Adjust™ at [adjust.com].
 
-TBD: what is this and why?
-
 ## Table of contents
 
 * [Installation](#installation)
