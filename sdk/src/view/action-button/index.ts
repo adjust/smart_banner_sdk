@@ -20,4 +20,12 @@ export class ActionButton {
 
     root.appendChild(this.link);
   }
+
+  public update(banner: SmartBannerViewData, trackerUrl: string) {
+    this.banner = banner;
+    this.trackerUrl = trackerUrl;
+
+    this.link.href = this.trackerUrl;
+    this.link.innerText = this.banner.buttonLabel;
+  }
 }

@@ -15,6 +15,12 @@ export class SmartBannerView {
     this.bannerBody = new BannerBody(banner, trackerUrl, onDismiss);
   }
 
+  public update(banner: SmartBannerViewData, trackerUrl: string) {
+    this.banner = banner;
+
+    this.bannerBody.update(banner, trackerUrl);
+  }
+
   public render(parent: HTMLElement) {
     const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
     this.root.className = `${styles.banner} ${positionStyle}`;
