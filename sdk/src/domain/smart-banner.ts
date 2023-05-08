@@ -122,17 +122,14 @@ export class SmartBanner {
   private dismiss(banner: SmartBannerData) {
     this.dismissHandler.dismiss(banner);
 
-    this.destroy();
+    this.destroyView();
 
     if (this.onDismissed) {
       this.onDismissed();
     }
   }
 
-  /**
-   * Removes Smart Banner from DOM
-   */
-  private destroy() {
+  private destroyView() {
     if (this.view) {
       this.view.destroy();
       this.view = null;
@@ -164,9 +161,20 @@ export class SmartBanner {
     }
   }
 
-  // TODO: should check if page url changed and select another banner if needed, not just change visibility
   show(): void {
-    this.changeVisibility('show');
+    if (this.url === window.location.href) {
+      this.changeVisibility('show');
+    } else {
+      Logger.info('Page address changed');
+
+      this.url = window.location.href;
+
+      if (this.view) {
+        this.destroyView();
+      }
+
+      this.init();
+    }
   }
 
   hide(): void {
@@ -175,6 +183,8 @@ export class SmartBanner {
 
   setLanguage(language: string): void {
     this.language = language;
+
+
     // TODO: change language in view
     // TODO: update banner URL
   }
