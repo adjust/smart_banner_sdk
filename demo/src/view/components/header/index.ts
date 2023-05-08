@@ -4,6 +4,7 @@ import styles from './styles.module.scss';
 
 export interface HeaderProps {
   fixed: boolean;
+  onHeaderModeChanged: (fixed: boolean) => void
 }
 
 export function Header(props: HeaderProps) {
@@ -56,6 +57,7 @@ export function Header(props: HeaderProps) {
         } else {
           makeHeaderFloat();
         }
+        props.onHeaderModeChanged(fixed);
       }
     });
 

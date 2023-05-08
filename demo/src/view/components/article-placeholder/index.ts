@@ -1,11 +1,11 @@
 import { loremIpsum } from 'lorem-ipsum';
 import styles from './styles.module.scss';
 
-export function ArticlePlaceholder(fixedHeight = false) {
+export function ArticlePlaceholder() {
   const random = (min: number, max: number) => min + Math.floor(Math.random() * (max - min));
 
   const generateText = () => {
-    return loremIpsum({ count: random(2, 6), units: 'paragraph', format: 'html' });
+    return loremIpsum({ count: random(1, 4), units: 'paragraph', format: 'html' });
   };
 
   const render = () => {
