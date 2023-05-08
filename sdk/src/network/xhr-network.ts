@@ -11,14 +11,6 @@ export class XhrNetwork implements Network {
 
   constructor(private dataEndpoint: string) { }
 
-  public get trackerEndpoint(): string {
-    return this.trackerDomain;
-  }
-
-  public set trackerEndpoint(value: string) {
-    this.trackerDomain = value;
-  }
-
   /**
    * Creates an XMLHttpRequest object and sends a GET request with provided encoded URL
    * @param url encoded URL

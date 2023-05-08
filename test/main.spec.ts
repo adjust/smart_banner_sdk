@@ -1,5 +1,5 @@
 import { Logger as _Logger, LogLevel } from '@sdk/utils/logger';
-import { AppToken, DataResidencyRegion, InitialisationOptions } from '@sdk/main';
+import { AppToken, InitialisationOptions } from '@sdk/main';
 import * as _SmartBannerModule from '@sdk/domain/smart-banner';
 import * as OsDetector from '@sdk/utils/detect-os';
 import { AdjustSmartBanner as _AdjustSmartBanner } from '@sdk/main';
@@ -129,7 +129,6 @@ describe('Entry point tests', () => {
       it('Passes options to SmartBanner', () => {
         const options = {
           appToken: 'some-token',
-          dataResidency: 'TR' as DataResidencyRegion,
           deeplink: 'deeplink',
           context: { deeplink: 'some:://path' },
           language: 'fr',

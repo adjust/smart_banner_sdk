@@ -1,7 +1,6 @@
 import { InitialisationOptions } from '@adjustcom/smart-banner-sdk';
 import { Observable } from 'demo/src/data/observable';
 import { AppToken } from './app-token';
-import { DataResidency } from './data-residence';
 import { Language } from './language';
 import { LogLevel } from './log-level';
 import { Context } from './context';
@@ -62,11 +61,6 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
     rightColumn.appendChild(LogLevel({
       value: sdkConfig.value.logLevel,
       onChange: logLevel => sdkConfig.value = { ...sdkConfig.value, logLevel }
-    }).render());
-
-    rightColumn.appendChild(DataResidency({
-      value: sdkConfig.value.dataResidency,
-      onChange: value => sdkConfig.value = { ...sdkConfig.value, dataResidency: value as any }
     }).render());
 
     rightColumn.appendChild(Language({

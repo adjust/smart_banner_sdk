@@ -31,14 +31,13 @@ export class SmartBanner {
 
   constructor(
     appToken: string,
-    { dataResidency, language, deeplink, context, onCreated, onDismissed }: SmartBannerOptions,
+    { language, deeplink, context, onCreated, onDismissed }: SmartBannerOptions,
     private deviceOs: DeviceOS
   ) {
     this.dismissHandler = new DismissHandler();
 
     const networkConfig: NetworkConfig = {
-      dataEndpoint: (Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_) ? Globals._DEV_ENDPOINT_ : undefined,
-      dataResidencyRegion: dataResidency
+      dataEndpoint: (Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_) ? Globals._DEV_ENDPOINT_ : undefined
     };
 
     this.network = NetworkFactory.create(networkConfig);
@@ -248,7 +247,7 @@ export class SmartBanner {
   private prepareDataForRender(bannerData: SmartBannerData): { renderData: SmartBannerViewData, trackerUrl: string } {
     const renderData = convertSmartBannerDataForView(bannerData, this.language);
 
-    const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint, this.language);
+    const trackerData = convertSmartBannerToTracker(bannerData, this.language);
     const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customTrackerData);
 
     return { renderData, trackerUrl };

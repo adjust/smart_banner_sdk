@@ -79,25 +79,6 @@ Here are more details about each log level:
 - `error` - will print only error message
 - `none` - won't print anything
 
-#### <a id="init-data-residency">**dataResidency**</a> `string`
-
-The data residency feature allows you to choose the country in which Adjust stores your data. This is useful if you are operating in a country with strict privacy requirements. When you set up data residency, Adjust stores your data in a data center located in the region your have chosen.
-
-To set your country of data residency, pass a `dataResidency` argument in your `init` call.
-
-```js
-AdjustSmartBanner.init({
-  // other initialisation parameters including mandatory ones
-  "dataResidency": "EU"
-})
-```
-
-The following values are accepted:
-
-- `EU` – sets the data residency region to the EU.
-- `TR` – sets the data residency region to Turkey.
-- `US` – sets the data residency region to the USA.
-
 #### <a id="init-language">**language**</a> `string`
 
 You can instruct the sdk what localisation it should use to display the banner. For further information see [Localisation](#localisation).
