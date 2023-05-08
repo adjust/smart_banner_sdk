@@ -4,7 +4,7 @@ import { SmartBannerRepository } from '../data/repositories/smart-banner-reposit
 import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
 import { NetworkConfig, NetworkFactory } from '../network/network-factory';
-import { DataResidency } from '../network/url-strategy/data-residency';
+import { DataResidency } from '../network/data-residency/data-residency';
 import { Logger } from '../utils/logger';
 import { DeviceOS } from '../utils/detect-os';
 import { getLanguage } from '../utils/language';
@@ -50,7 +50,7 @@ export class SmartBanner {
 
     const networkConfig: NetworkConfig = {
       dataEndpoint: Globals._DEV_MODE_ && Globals._DEV_ENDPOINT_ ? Globals._DEV_ENDPOINT_ : undefined,
-      urlStrategy: dataResidency ? { config: { dataResidency } } : { config: {} }
+      dataResidencyRegion: dataResidency
     };
 
     this.network = network || NetworkFactory.create(networkConfig);
