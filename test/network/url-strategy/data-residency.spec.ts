@@ -25,7 +25,7 @@ describe('DataResidency', () => {
     DataResidency.EU,
     DataResidency.TR,
     DataResidency.US
-  ]
+  ];
 
   it.each(regions)('returns urls map depending on region', (dataResidency: DataResidency.Region) => {
     const resultingFn = DataResidency.preferredUrlsGetter(dataResidency, testEndpoints);

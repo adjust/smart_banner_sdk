@@ -24,7 +24,7 @@ describe('BlockedUrlBypass', () => {
     [BlockedUrlBypass.China, 2, [BlockedUrlBypass.Default]],
     [BlockedUrlBypass.India, 2, [BlockedUrlBypass.Default]],
     [BlockedUrlBypass.Default, 3, [BlockedUrlBypass.India, BlockedUrlBypass.China]],
-  ]
+  ];
 
   it.each(testCases)('returns urls map array depending on strategy', (strategy: BlockedUrlBypass.Strategy, retriesNumber, nextEndpoints) => {
     const resultingFn = BlockedUrlBypass.preferredUrlsGetter(strategy, testEndpoints);
@@ -37,7 +37,7 @@ describe('BlockedUrlBypass', () => {
     expect(baseUrlsMap[0]).toEqual(testEndpoints[strategy]);
 
     for (let i = 0; i < nextEndpoints.length; i++) {
-      const a = nextEndpoints[i]
+      const a = nextEndpoints[i];
       expect(baseUrlsMap[i + 1]).toEqual(testEndpoints[nextEndpoints[i]]);
     }
   });
