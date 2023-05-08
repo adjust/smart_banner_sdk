@@ -24,6 +24,8 @@ export class AdjustSmartBanner {
   private static smartBanner: SmartBanner | undefined;
 
   static init({ logLevel = 'error', ...restOptions }: InitialisationOptions) {
+    Logger.setLogLevel(logLevel);
+
     if (!restOptions.appToken) {
       Logger.error('Can not initialise Smart Banner, you should provide appToken');
       return;
@@ -43,8 +45,6 @@ export class AdjustSmartBanner {
     }
 
     if (!this.smartBanner) {
-      Logger.setLogLevel(logLevel);
-
       this.smartBanner = new SmartBanner(appToken, restOptions, deviceOs);
     } else {
       Logger.error('Smart Banner is initialised already');
