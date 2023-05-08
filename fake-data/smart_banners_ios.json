@@ -1,0 +1,126 @@
+[
+  {
+    "name": "banner test 2",
+    "button_label": "click",
+    "status": "being_published",
+    "button_color": "#000000",
+    "is_previous_attribution_priority": true,
+    "default_language": "en",
+    "background_color": "#99FFCC",
+    "dismissal_period": 86400,
+    "title": "my titile",
+    "background_image_url": null,
+    "title_color": "#FFFF80",
+    "position": "bottom",
+    "space_id": "b58beded-de7d-46a6-995d-1a7d107a79a2",
+    "description": "my description my description my description my description my description my description my description my description my description my description ",
+    "size": "small",
+    "id": "68386666-cfee-4a28-b4eb-e861512d5cc6",
+    "description_color": "#FF66FF",
+    "display_rule": "((http|https)?:\/\/)localhost:8787(\\?|\\/|$)",
+    "icon_url": "https://www.apptrace.com/api/app/1386566985/artwork_url_small",
+    "localizations": {
+      "de": {
+        "title": "mein Titel",
+        "description": "meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung ",
+        "button_label": "anklicken",
+        "context": {
+          "adgroup": "de"
+        }
+      },
+      "ru": {
+        "title": "мой заголовок",
+        "description": "мое описание мое описание мое описание мое описание мое описание мое описание мое описание мое описание мое описание ",
+        "button_label": "нажми",
+        "context": {
+          "adgroup": "ru"
+        }
+      }
+    },
+    "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}&deeplink={deeplink}",
+    "context": {
+      "domain": "app.adjust.com",
+      "tracker": "qtzy19",
+      "campaign": "banner test 1",
+      "adgroup": "en",
+      "deeplink": null
+    }
+  },
+  {
+    "name": "banner test 1",
+    "button_label": "click",
+    "status": "being_published",
+    "button_color": "#000000",
+    "is_previous_attribution_priority": true,
+    "default_language": "en",
+    "background_color": "#99FFCC",
+    "dismissal_period": 86400,
+    "title": "my titile",
+    "background_image_url": null,
+    "title_color": "#FFFF80",
+    "position": "top",
+    "space_id": "b58beded-de7d-46a6-995d-1a7d107a79a2",
+    "description": "my description my description my description my description my description my description my description my description my description my description ",
+    "size": "small",
+    "id": "68386666-cfee-4a28-b4eb-e861512d5cc6",
+    "description_color": "#FF66FF",
+    "display_rule": "((http|https)?:\/\/)localhost:8787(\\?|\\/|$)",
+    "icon_url": "https://www.apptrace.com/api/app/1386566985/artwork_url_small",
+    "localizations": {
+      "de": {
+        "title": "mein Titel",
+        "description": "meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung meine Beschreibung ",
+        "button_label": "anklicken",
+        "context": {
+          "adgroup": "de"
+        }
+      },
+      "ru": {
+        "title": "мой заголовок",
+        "description": "мое описание мое описание мое описание мое описание мое описание мое описание мое описание мое описание мое описание ",
+        "button_label": "нажми",
+        "context": {
+          "adgroup": "ru"
+        }
+      }
+    },
+    "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}&deeplink={deeplink}",
+    "context": {
+      "domain": "app.adjust.com",
+      "tracker": "qtzy19",
+      "campaign": "banner test 1",
+      "adgroup": "en",
+      "deeplink": null
+    }
+  },
+  {
+    "name": "banner test 0",
+    "button_label": "click",
+    "status": "being_published",
+    "button_color": "#000000",
+    "is_previous_attribution_priority": false,
+    "default_language": "en",
+    "background_color": "#99FFCC",
+    "dismissal_period": 86400,
+    "title": "my titile",
+    "background_image_url": null,
+    "title_color": "#FFFF80",
+    "position": "bottom",
+    "space_id": "b58beded-de7d-46a6-995d-1a7d107a79a2",
+    "description": "my description my description my description my description my description my description my description my description my description my description ",
+    "size": "small",
+    "id": "652b2aae-2038-4cb0-89dd-6b9457fd831b",
+    "description_color": "#FF66FF",
+    "display_rule": "((http|https)?:\/\/)localhost:8787(\\?|\\/|$)",
+    "icon_url": "https://www.apptrace.com/api/app/1386566985/artwork_url_small",
+    "localizations": {},
+    "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}&deeplink={deeplink}",
+    "context": {
+      "domain": "app.adjust.com",
+      "tracker": "qtzy19",
+      "campaign": "banner test 0",
+      "adgroup": "en",
+      "deeplink": null
+    }
+  }
+]
