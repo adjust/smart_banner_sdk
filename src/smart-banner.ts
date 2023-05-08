@@ -5,13 +5,13 @@ import { Network } from './network/network';
 import { NetworkFactory } from './network/network-factory';
 import { DataResidency } from './network/url-strategy/data-residency';
 import { Storage, StorageFactory } from './storage/storage-factory';
-import { DeviceOS, getDeviceOS } from './utils/detect-os';
+import { DeviceOS } from './utils/detect-os';
 import { getLanguage } from './utils/language';
 import { SmartBannerView } from './view/smart-banner-view';
 
 type Callback = () => any;
 
-type AppToken = { [k in DeviceOS]?: string } | string;
+export type AppToken = { [k in DeviceOS]?: string } | string;
 
 export interface SmartBannerOptions {
   appToken: AppToken;
@@ -25,15 +25,20 @@ export class SmartBanner {
   private readonly STORAGE_KEY_DISMISSED = 'closed';
   private network: Network;
   private storage: Storage;
-  private repository: SmartBannerRepository | null = null;
-  private timer: ReturnType<typeof setTimeout> | null = null;
-  private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
-  private view: SmartBannerView | null = null;
+  private repository: SmartBannerRepository;
   private language: string;
   private onCreated?: Callback;
   private onDismissed?: Callback;
+  private timer: ReturnType<typeof setTimeout> | null = null;
+  private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
+  private view: SmartBannerView | null = null;
 
-  constructor({ appToken, dataResidency, language, onCreated, onDismissed }: SmartBannerOptions, network?: Network) {
+  constructor(
+    appToken: string,
+    { dataResidency, language, onCreated, onDismissed }: SmartBannerOptions,
+    private deviceOs: DeviceOS,
+    network?: Network) {
+
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
 
@@ -42,39 +47,14 @@ export class SmartBanner {
 
     this.storage = StorageFactory.createStorage();
 
+    this.repository = new SmartBannerRepository(new SmartBannerApi(this.deviceOs, this.network));
+
     this.language = language || getLanguage();
 
     this.init(appToken);
   }
 
-  private detectDeviceOs(): DeviceOS | null {
-    const deviceOs = getDeviceOS();
-
-    if (!deviceOs) {
-      Logger.log('This platform is not one of the targeting ones, Smart banner will not be shown');
-      return null;
-    }
-
-    Logger.log('Detected platform: ' + deviceOs);
-    return deviceOs;
-  }
-
-  private flattenAppToken(appToken: AppToken, deviceOs: DeviceOS): string | null {
-    if (typeof appToken === 'string') {
-      return appToken;
-    }
-
-    const token = appToken[deviceOs];
-
-    if (!token) {
-      Logger.info(`No app token found for platform: ${deviceOs}, Smart banner will not be shown`);
-      return null;
-    }
-
-    return token;
-  }
-
-  private init(appToken: AppToken) {
+  private init(appToken: string) {
     if (this.view) {
       Logger.error('Smart Banner is created already');
       return;
@@ -85,29 +65,15 @@ export class SmartBanner {
       return;
     }
 
-    const deviceOs = this.detectDeviceOs();
-    if (!deviceOs) {
-      return;
-    }
-
-    const token = this.flattenAppToken(appToken, deviceOs);
-    if (!token) {
-      return;
-    }
-
     Logger.log('Fetching Smart banners');
 
-    if (!this.repository) {
-      this.repository = new SmartBannerRepository(new SmartBannerApi(deviceOs, this.network));
-    }
-
-    this.dataFetchPromise = this.repository.fetch(token);
+    this.dataFetchPromise = this.repository.fetch(appToken);
 
     this.dataFetchPromise.then(bannersList => {
       this.dataFetchPromise = null;
 
       if (!bannersList) {
-        Logger.log(`No Smart Banners for ${deviceOs} platform found`);
+        Logger.log(`No Smart Banners for ${this.deviceOs} platform found`);
         return;
       }
 
