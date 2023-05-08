@@ -1,12 +1,12 @@
 import { Network } from './network';
 import { XhrNetwork } from './xhr-network';
 import { NetworkWithDataResidency } from './data-residency/data-residency-network';
-import { DataResidency } from './data-residency/data-residency';
+import { DataResidency, DataResidencyRegion } from './data-residency/data-residency';
 import { ENDPOINTS } from './data-residency/endpoints';
 
 export interface NetworkConfig {
   dataEndpoint?: string;
-  dataResidencyRegion?: DataResidency.Region;
+  dataResidencyRegion?: DataResidencyRegion;
 }
 
 export class NetworkFactory {

@@ -1,25 +1,20 @@
 import { BaseUrlsMap, ENDPOINTS } from './endpoints';
 
+/** @public */
+export type DataResidencyRegion = 'EU' | 'TR' | 'US'
+
 export class DataResidency {
-  private endpoints: Record<DataResidency.Region, BaseUrlsMap> = {
-    [DataResidency.EU]: ENDPOINTS.EU,
-    [DataResidency.TR]: ENDPOINTS.TR,
-    [DataResidency.US]: ENDPOINTS.US,
+  private endpoints: Record<DataResidencyRegion, BaseUrlsMap> = {
+    EU: ENDPOINTS.EU,
+    TR: ENDPOINTS.TR,
+    US: ENDPOINTS.US,
   };
 
-  constructor(private region: DataResidency.Region, endpoints?: Record<DataResidency.Region, BaseUrlsMap>) {
-    this.endpoints = endpoints || this.endpoints
+  constructor(private region: DataResidencyRegion, endpoints?: Record<DataResidencyRegion, BaseUrlsMap>) {
+    this.endpoints = endpoints || this.endpoints;
   }
 
   public get endpoint() {
     return this.endpoints[this.region].app;
   }
-}
-
-export namespace DataResidency {
-  export const EU = 'EU';
-  export const TR = 'TR';
-  export const US = 'US';
-
-  export type Region = typeof EU | typeof TR | typeof US
 }
