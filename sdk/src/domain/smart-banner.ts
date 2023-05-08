@@ -38,7 +38,7 @@ export class SmartBanner {
   private dismissHandler: DismissHandler;
   private bannersSelector: BannerSelector;
   private language: string | null;
-  private userTrackerData: UserTrackerData = {};
+  private customTrackerData: UserTrackerData = {};
   private onCreated?: Callback;
   private onDismissed?: Callback;
   private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
@@ -70,11 +70,11 @@ export class SmartBanner {
     this.language = language || getLanguage();
 
     if (deeplink) {
-      this.userTrackerData.deeplink = deeplink;
+      this.customTrackerData.deeplink = deeplink;
     }
 
     if (context) {
-      this.userTrackerData.context = context;
+      this.customTrackerData.context = context;
     }
 
     this.init(appToken);
@@ -98,7 +98,7 @@ export class SmartBanner {
     Logger.log('Creating Smart Banner');
 
     const trackerData = convertSmartBannerToTracker(bannerData, this.network.trackerEndpoint);
-    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.userTrackerData);
+    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customTrackerData);
 
     this.view = new SmartBannerView(
       document.body,
@@ -222,8 +222,8 @@ export class SmartBanner {
     // TODO: update banner URL
   }
 
-  setCustomContext({ deeplink, context }: UserTrackerData): void {
-    this.userTrackerData = { deeplink, context };
+  setDeeplinkContext({ deeplink, context }: UserTrackerData): void {
+    this.customTrackerData = { deeplink, context };
     // TODO: update banner URL
   }
 }
