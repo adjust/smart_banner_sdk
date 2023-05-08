@@ -42,7 +42,7 @@ describe('Smart Banner tests', () => {
     update: jest.fn()
   } as any as View.SmartBannerView;
 
-  const defaultLocale = serverResponseMock[0].default_language;
+  const defaultLang = serverResponseMock[0].default_language;
   const getLocalization = (locale?: string | null) => {
     const localisations = serverResponseMock[0].localizations as any;
     return locale && localisations[locale] || {};
@@ -50,6 +50,7 @@ describe('Smart Banner tests', () => {
 
   const trackerTemplate = '{domain}/tracker-template/{adgroup}';
   const tracker = (domain: string, adgroup: string) => `${domain}/tracker-template/${adgroup}`;
+  const trackerWithDeeplink = (domain: string, adgroup: string, deeplink: string) => `${domain}/tracker-template/${adgroup}?deeplink=${deeplink}`;
 
   const renderDataMock = (locale?: string | null) => ({
     buttonLabel: getLocalization(locale).button_label || serverResponseMock[0].button_label
@@ -58,7 +59,7 @@ describe('Smart Banner tests', () => {
   const trackerDataMock = (domain?: string | null, locale?: string | null) => ({
     template: trackerTemplate,
     context: {
-      adgroup: getLocalization(locale).context?.adgroup || defaultLocale,
+      adgroup: getLocalization(locale).context?.adgroup || defaultLang,
       domain: domain || defaultDomain
     }
   });
@@ -101,7 +102,7 @@ describe('Smart Banner tests', () => {
         expect(Logger.log).toBeCalledWith('Fetching Smart banners');
         expect(Logger.log).toBeCalledWith('Smart banners fetched');
         expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].name);
-        expect(View.SmartBannerView).toBeCalledWith(expect.anything(), tracker(drDomain(dr), defaultLocale), expect.any(Function));
+        expect(View.SmartBannerView).toBeCalledWith(expect.anything(), tracker(drDomain(dr), defaultLang), expect.any(Function));
         expect(smartBannerViewMock.render).toBeCalled();
         expect(Logger.log).toBeCalledWith('Smart banner rendered');
       });
@@ -136,7 +137,7 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].name);
-          expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLocale), tracker(defaultDomain, defaultLocale), expect.any(Function));
+          expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), tracker(defaultDomain, defaultLang), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -152,7 +153,7 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].name);
-          expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLocale), tracker(defaultDomain, defaultLocale), expect.any(Function));
+          expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), tracker(defaultDomain, defaultLang), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -182,13 +183,13 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).not.toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].name);
-          expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLocale), tracker(defaultDomain, defaultLocale), expect.any(Function));
+          expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), tracker(defaultDomain, defaultLang), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
 
         it('uses default language when preferred language is the same as default', async () => {
-          new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
+          new SmartBanner('some-token', { appToken: 'some-token', language: defaultLang }, defaultPlatform);
 
           expect.assertions(5);
 
@@ -196,24 +197,105 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).not.toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].name);
-          expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLocale), tracker(defaultDomain, defaultLocale), expect.any(Function));
+          expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), tracker(defaultDomain, defaultLang), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
       });
     });
 
-    /*describe('Custom deeplink context', () => {
-      it('accepts and preserves custom deeplink context', () => {
+    describe('Custom deeplink context', () => {
+      const bannerName = serverResponseMock[0].name;
 
+      it('creates tracker without deeplink when no deeplink and context passed', async () => {
+        expect.assertions(4);
+
+        new SmartBanner('some-token', { appToken: 'some-token', deeplink: undefined, context: undefined }, defaultPlatform);
+        await Utils.flushPromises();
+
+        const trackerUrl = tracker(defaultDomain, defaultLang)
+
+        expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+        expect(smartBannerViewMock.render).toBeCalled();
+        expect(Logger.log).toBeCalledWith('Smart banner rendered');
       });
 
-      it('creates view considering custom deeplink context', () => {
+      it('ignores context when no deeplink passed and creates tracker without deeplink', async () => {
+        expect.assertions(4);
 
+        new SmartBanner('some-token', { appToken: 'some-token', context: { param: 'pam-param' } }, defaultPlatform);
+        await Utils.flushPromises();
+
+        const trackerUrl = tracker(defaultDomain, defaultLang)
+
+        expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+        expect(smartBannerViewMock.render).toBeCalled();
+        expect(Logger.log).toBeCalledWith('Smart banner rendered');
+      });
+
+      it('accepts and uses custom deeplink to create a tracker for view', async () => {
+        expect.assertions(4);
+
+        new SmartBanner('some-token', { appToken: 'some-token', deeplink: 'some-deeplink' }, defaultPlatform);
+        await Utils.flushPromises();
+
+        const trackerUrl = trackerWithDeeplink(defaultDomain, defaultLang, 'some-deeplink')
+
+        expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+        expect(smartBannerViewMock.render).toBeCalled();
+        expect(Logger.log).toBeCalledWith('Smart banner rendered');
+      });
+
+      it('accepts and uses custom deeplink and context to create a tracker for view', async () => {
+        expect.assertions(4);
+
+        new SmartBanner('some-token',
+          {
+            appToken: 'some-token',
+            deeplink: 'some-deeplink/param={param}',
+            context: { param: 'pam-param' }
+          },
+          defaultPlatform);
+        await Utils.flushPromises();
+
+        const trackerUrl = trackerWithDeeplink(defaultDomain, defaultLang, 'some-deeplink%2Fparam%3Dpam-param')
+
+        expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+        expect(smartBannerViewMock.render).toBeCalled();
+        expect(Logger.log).toBeCalledWith('Smart banner rendered');
+      });
+
+      it('accepts and uses custom deeplink and URL params as a context to create a tracker for view', async () => {
+        expect.assertions(4);
+
+        jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock('http://path?param=meow-meow'));
+
+        new SmartBanner('some-token',
+          {
+            appToken: 'some-token',
+            deeplink: 'some-deeplink/param={param}'
+          },
+          defaultPlatform);
+        await Utils.flushPromises();
+
+        const trackerUrl = trackerWithDeeplink(defaultDomain, defaultLang, 'some-deeplink%2Fparam%3Dmeow-meow')
+
+        expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+        expect(smartBannerViewMock.render).toBeCalled();
+        expect(Logger.log).toBeCalledWith('Smart banner rendered');
+      });
+
+      afterAll(() => {
+        jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock());
       });
     });
 
-    describe('Callbacks', () => {
+    /*describe('Callbacks', () => {
       describe('onCreated', () => {
         it('is being called after banner renderred for first time', () => {
 
@@ -253,7 +335,7 @@ describe('Smart Banner tests', () => {
       it('hides view', async () => {
         expect.assertions(2);
 
-        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
+        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLang }, defaultPlatform);
         await Utils.flushPromises();
 
         smartbanner.hide();
@@ -265,7 +347,7 @@ describe('Smart Banner tests', () => {
       it('logs a message when view was not created yet and hides after view is created', async () => {
         expect.assertions(4);
 
-        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
+        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLang }, defaultPlatform);
         smartbanner.hide();
 
         expect(Logger.log).toBeCalledWith('Fetching banners now, hide banner after fetch finished');
@@ -282,7 +364,7 @@ describe('Smart Banner tests', () => {
       it('shows view', async () => {
         expect.assertions(2);
 
-        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
+        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLang }, defaultPlatform);
         await Utils.flushPromises();
 
         smartbanner.show();
@@ -294,7 +376,7 @@ describe('Smart Banner tests', () => {
       it('logs a message when view was not created yet and shows after view is created', async () => {
         expect.assertions(4);
 
-        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLocale }, defaultPlatform);
+        const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', language: defaultLang }, defaultPlatform);
         smartbanner.show();
 
         expect(Logger.log).toBeCalledWith('Fetching banners now, show banner after fetch finished');
@@ -317,11 +399,11 @@ describe('Smart Banner tests', () => {
         smartbanner.show();
         await Utils.flushPromises();
 
-        const trackerLink = tracker(defaultDomain, defaultLocale) + '?deeplink=new-location';
+        const trackerLink = trackerWithDeeplink(defaultDomain, defaultLang, 'new-location');
 
         expect(Logger.info).toBeCalledWith('Page address changed');
         expect(smartBannerViewMock.destroy).toBeCalled();
-        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLocale), trackerLink, expect.any(Function));
+        expect(View.SmartBannerView).toBeCalledWith(renderDataMock(defaultLang), trackerLink, expect.any(Function));
         expect(smartBannerViewMock.render).toBeCalled();
       });
 
