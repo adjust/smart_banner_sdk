@@ -50,7 +50,7 @@ body * {
     border-width: 1.2px;
     color: $blue-500;
     padding: 2px 4px;
-    max-width: 300px;
+    min-width: 80px;
     box-sizing: border-box;
     align-self: flex-end;
   }

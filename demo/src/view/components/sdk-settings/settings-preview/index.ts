@@ -1,16 +1,26 @@
+import { Component } from "demo/src/view/base-component";
 import styles from './settings-preview.module.scss';
 
 export interface SettingsPreviewProps {
   innerCode: string;
 }
 
-export function SettingsPreview(props: SettingsPreviewProps) {
+export function SettingsPreview(props: SettingsPreviewProps): Component<SettingsPreviewProps> {
+  let preview: HTMLElement;
+
   const render = () => {
-    const preview = document.createElement('pre');
-    preview.className = 'flex-one';
+    preview = document.createElement('pre');
+    preview.className = 'flex-one ' + styles.code;
     preview.innerText = props.innerCode;
     return preview;
   };
 
-  return { render };
+  const update = (newProps: SettingsPreviewProps) => {
+    preview.innerHTML = newProps.innerCode;
+  }
+
+  return {
+    render,
+    update
+  };
 }
