@@ -222,13 +222,8 @@ export class SmartBanner {
     // TODO: update banner URL
   }
 
-  setContext(context: UserContext): void {
-    this.userTrackerData.context = context;
-    // TODO: update banner URL
-  }
-
-  setDeeplink(deeplink: string): void {
-    this.userTrackerData.deeplink = deeplink;
+  setCustomContext({ deeplink, context }: UserTrackerData): void {
+    this.userTrackerData = { deeplink, context };
     // TODO: update banner URL
   }
 }
