@@ -1,5 +1,5 @@
 import { MenuItem, MenuItemComponent, MenuItemProps } from './menu-item';
-import { IconButton } from '../button';
+import { CloseIconButton } from '../button';
 import cross from 'assets/cross.svg';
 import styles from './styles.module.scss';
 
@@ -22,8 +22,7 @@ export function MainMenu(props: MenuProps) {
     menuHeader.className = styles['menu-header'];
     menuHeader.innerHTML = '<span>Menu</span>';
 
-    menuHeader.appendChild(IconButton({
-      iconSrc: cross,
+    menuHeader.appendChild(CloseIconButton({
       onClick: close,
       iconSize: '16px'
     }).render())
