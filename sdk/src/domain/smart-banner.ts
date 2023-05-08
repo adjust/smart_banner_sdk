@@ -33,7 +33,7 @@ export class SmartBanner {
   private repository: SmartBannerRepository;
   private dismissHandler: DismissHandler;
   private bannersSelector: BannerSelector;
-  private language: string;
+  private language: string | null;
   private onCreated?: Callback;
   private onDismissed?: Callback;
   private dataFetchPromise: Promise<SmartBannerData[] | null> | null = null;
