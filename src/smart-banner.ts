@@ -1,5 +1,6 @@
 import { Logger } from './logger';
 import { getDeviceOS } from './utils/detect-os';
+import { getLanguage } from './utils/language';
 import { Storage, StorageFactory } from './storage/factory';
 import { fetchSmartBannerData, SmartBannerData } from './api';
 import { SmartBannerView } from './view/smart-banner-view';
@@ -12,6 +13,7 @@ type Callback = () => any;
 export interface SmartBannerOptions {
   webToken: string;
   dataResidency?: DataResidency.Region;
+  language?: string;
   onCreated?: Callback;
   onDismissed?: Callback;
 }
@@ -23,10 +25,11 @@ export class SmartBanner {
   private timer: ReturnType<typeof setTimeout> | null = null;
   private dataFetchPromise: Promise<SmartBannerData | null> | null = null;
   private view: SmartBannerView | null = null;
+  private language: string;
   private onCreated?: Callback;
   private onDismissed?: Callback;
 
-  constructor({ webToken, dataResidency, onCreated, onDismissed }: SmartBannerOptions, network?: Network) {
+  constructor({ webToken, dataResidency, language, onCreated, onDismissed }: SmartBannerOptions, network?: Network) {
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
 
@@ -34,6 +37,8 @@ export class SmartBanner {
     this.network = network || NetworkFactory.create({urlStrategyParameters: {urlStrategyConfig}});
 
     this.storage = StorageFactory.createStorage();
+
+    this.language = language || getLanguage();
 
     this.init(webToken);
   }
@@ -187,5 +192,10 @@ export class SmartBanner {
 
   hide(): void {
     this.changeVisibility('hide');
+  }
+
+  setLanguage(language: string): void {
+    this.language = language;
+    // TODO: change language in view
   }
 }
