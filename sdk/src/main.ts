@@ -69,6 +69,7 @@ export class AdjustSmartBanner {
   }
 
   static setLanguage(lang: string) {
+    // TODO: type check
     if (this.smartBanner) {
       this.smartBanner.setLanguage(lang);
     } else {
@@ -76,9 +77,28 @@ export class AdjustSmartBanner {
     }
   }
 
-  static setDeeplinkContext(congif: { deeplink?: string, context?: Record<string, string> }): void {
+  static setAndroidAppSchema(androidAppSchema: string): void {
+    // TODO: type check
     if (this.smartBanner) {
-      this.smartBanner.setDeeplinkContext(congif);
+      this.smartBanner.setAppSchema(androidAppSchema);
+    } else {
+      Logger.error('Can\'t set android app schema, you should initilise Smart Banner SDK first');
+    }
+  }
+
+  static setDeepLinkPath(deeplinkPath: string): void {
+    // TODO: type check
+    if (this.smartBanner) {
+      this.smartBanner.setDeepLinkPath(deeplinkPath);
+    } else {
+      Logger.error('Can\'t set deeplink, you should initilise Smart Banner SDK first');
+    }
+  }
+
+  static setContext(context?: Record<string, string>): void {
+    // TODO: type check
+    if (this.smartBanner) {
+      this.smartBanner.setContext(context);
     } else {
       Logger.error('Can\'t set deeplink context, you should initilise Smart Banner SDK first');
     }

@@ -12,7 +12,7 @@ describe('NetworkFactory', () => {
   afterAll(() => jest.resetAllMocks());
 
   it('creates XhrNetwork', () => {
-    const network = NetworkFactory.create({ dataEndpoint: 'endpoint.test' });
+    NetworkFactory.create({ dataEndpoint: 'endpoint.test' });
 
     expect(xhrNetworkModule.XhrNetwork).toBeCalledWith('endpoint.test');
   });

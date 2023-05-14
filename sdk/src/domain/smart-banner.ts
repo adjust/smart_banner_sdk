@@ -1,4 +1,4 @@
-import { SmartBannerData, UserTrackerData } from '../data/types';
+import { SmartBannerData, DeeplinkData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { BannerProvider } from './banner-provider';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
@@ -23,7 +23,7 @@ export class SmartBanner {
   private dismissHandler: DismissHandler;
   private bannerProvider: BannerProvider;
   private language: string | null;
-  private customTrackerData: UserTrackerData = {};
+  private customDeeplinkData: DeeplinkData = { context: {} };
   private onCreated?: Callback;
   private onDismissed?: Callback;
   private view: SmartBannerView | null = null;
@@ -31,7 +31,7 @@ export class SmartBanner {
 
   constructor(
     appToken: string,
-    { language, deeplink, context, onCreated, onDismissed }: SmartBannerOptions,
+    { language, deepLinkPath, androidAppSchema, context, onCreated, onDismissed }: SmartBannerOptions,
     private deviceOs: DeviceOS
   ) {
     this.dismissHandler = new DismissHandler();
@@ -55,13 +55,9 @@ export class SmartBanner {
 
     this.language = language || getLanguage();
 
-    if (deeplink) {
-      this.customTrackerData.deeplink = deeplink;
-    }
+    context = (context && !isEmptyObject(context)) ? context : {};
 
-    if (context && !isEmptyObject(context)) {
-      this.customTrackerData.context = context;
-    }
+    this.customDeeplinkData = { androidAppSchema, deepLinkPath, context };
 
     this.init();
   }
@@ -100,33 +96,45 @@ export class SmartBanner {
     }
 
     const { banner, when } = this.bannerProvider.banner;
-    this.updateOrScheduleCreation(banner, when);
+    this.updateViewOrScheduleCreation(banner, when);
   }
 
-  setDeeplinkContext({ deeplink, context }: UserTrackerData): void {
-    if (!deeplink && (!context || isEmptyObject(context))) {
-      // empty deeplink and context passed, clean current value
-      deeplink = undefined;
-      context = undefined;
-    } else {
-      if (deeplink === undefined) {
-        // only context passed, don't override the previous deeplink
-        deeplink = this.customTrackerData.deeplink;
-      } else if (!deeplink) {
-        // deeplink === '', clean it
-        deeplink = undefined;
-      }
+  setAppSchema(androidAppSchema: string): void {
+    this.customDeeplinkData.androidAppSchema = androidAppSchema;
 
-      if (context === undefined) {
-        // only deeplink passed, don't override the previous context
-        context = this.customTrackerData.context;
-      } else if (isEmptyObject(context)) {
-        // context === {}, clean it
-        context = undefined;
-      }
+    if (this.bannerProvider.isLoading) {
+      Logger.log('Smart banner was not created yet, the provided app schema will be applied within creation');
+      return;
     }
 
-    this.customTrackerData = { deeplink, context };
+    if (!this.bannerProvider.banner) {
+      Logger.log('There is no suitable banner for current page, preserving the provided app schema');
+      return;
+    }
+
+    const { banner, when } = this.bannerProvider.banner;
+    this.updateViewOrScheduleCreation(banner, when);
+  }
+
+  setDeepLinkPath(deeplinkPath: string): void {
+    this.customDeeplinkData.deepLinkPath = deeplinkPath;
+
+    if (this.bannerProvider.isLoading) {
+      Logger.log('Smart banner was not created yet, the provided deeplink path will be applied within creation');
+      return;
+    }
+
+    if (!this.bannerProvider.banner) {
+      Logger.log('There is no suitable banner for current page, preserving the provided deeplink path');
+      return;
+    }
+
+    const { banner, when } = this.bannerProvider.banner;
+    this.updateViewOrScheduleCreation(banner, when);
+  }
+
+  setContext(context: Record<string, string> = {}): void {
+    this.customDeeplinkData.context = context;
 
     if (this.bannerProvider.isLoading) {
       Logger.log('Smart banner was not created yet, the provided deeplink context will be applied within creation');
@@ -139,7 +147,7 @@ export class SmartBanner {
     }
 
     const { banner, when } = this.bannerProvider.banner;
-    this.updateOrScheduleCreation(banner, when);
+    this.updateViewOrScheduleCreation(banner, when);
   }
 
   private init() {
@@ -163,7 +171,7 @@ export class SmartBanner {
   }
 
   private createView(bannerData: SmartBannerData) {
-    Logger.info(`Render banner: ${bannerData.name}`);
+    Logger.info(`Render banner: ${bannerData.title}`);
 
     const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
 
@@ -177,7 +185,7 @@ export class SmartBanner {
     }
   }
 
-  private updateOrScheduleCreation(banner: SmartBannerData, when: number) {
+  private updateViewOrScheduleCreation(banner: SmartBannerData, when: number) {
     if (when <= 0) {
       this.updateView(banner);
     } else {
@@ -248,7 +256,7 @@ export class SmartBanner {
     const renderData = convertSmartBannerDataForView(bannerData, this.language);
 
     const trackerData = convertSmartBannerToTracker(bannerData, this.language);
-    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customTrackerData);
+    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customDeeplinkData);
 
     return { renderData, trackerUrl };
   }

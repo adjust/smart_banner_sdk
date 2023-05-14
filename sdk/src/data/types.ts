@@ -11,12 +11,13 @@ export enum BannerSize {
   Large = 'large'
 }
 
-export interface Context {
+interface ContextData {
   domain?: string;
   tracker?: string;
   campaign?: string;
   adgroup?: string;
-  deeplink?: string | null;
+  deep_link?: string;
+  deep_link_path?: string;
 }
 
 interface LocalizationData {
@@ -24,7 +25,7 @@ interface LocalizationData {
   description: string;
   button_label: string;
   icon_url: string;
-  context: Context;
+  context: { adgroup: string; };
 }
 
 export interface SmartBannerResponseData {
@@ -47,7 +48,7 @@ export interface SmartBannerResponseData {
   default_language: string,
   tracker_url: {
     template: string;
-    context: Context;
+    context: ContextData;
   };
   localizations: {
     [key: string]: LocalizationData;
@@ -56,7 +57,12 @@ export interface SmartBannerResponseData {
 
 export type Localization = SnakeCaseKeysToCamelCase<LocalizationData>
 
+export type Context = SnakeCaseKeysToCamelCase<ContextData>
+
 export type SmartBannerData = SnakeCaseKeysToCamelCase<SmartBannerResponseData>
 
-export type UserContext = Record<string, string>
-export type UserTrackerData = { deeplink?: string, context?: UserContext }
+export type DeeplinkData = {
+  deepLinkPath?: string;
+  androidAppSchema?: string;
+  context: Record<string, string>;
+}

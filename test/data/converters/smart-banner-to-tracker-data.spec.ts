@@ -9,8 +9,7 @@ describe('Convertation of SmartBannerData to TrackerData', () => {
       domain: 'app.adjust.com',
       tracker: 'qtzy19',
       campaign: 'banner test 2',
-      adgroup: 'en',
-      deeplink: null
+      adgroup: 'en'
     }
   };
 
