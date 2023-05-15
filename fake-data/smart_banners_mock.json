@@ -36,13 +36,12 @@
       }
     },
     "tracker_url": {
-      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}&engagement_type=fallback_click",
+      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}",
       "context": {
         "domain": "app.adjust.com",
         "tracker": "tracker",
         "campaign": "Banner",
-        "adgroup": "en",
-        "deeplink": null
+        "adgroup": "en"
       }
     }
   }

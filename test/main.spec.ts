@@ -1,5 +1,5 @@
 import { Logger as _Logger, LogLevel } from '@sdk/utils/logger';
-import { AppToken, DataResidencyRegion, InitialisationOptions } from '@sdk/main';
+import { AppToken, InitialisationOptions } from '@sdk/main';
 import * as _SmartBannerModule from '@sdk/domain/smart-banner';
 import * as OsDetector from '@sdk/utils/detect-os';
 import { AdjustSmartBanner as _AdjustSmartBanner } from '@sdk/main';
@@ -16,7 +16,9 @@ describe('Entry point tests', () => {
     show: jest.fn(),
     hide: jest.fn(),
     setLanguage: jest.fn(),
-    setDeeplinkContext: jest.fn()
+    setAppSchema: jest.fn(),
+    setDeepLinkPath: jest.fn(),
+    setContext: jest.fn(),
   };
 
   let getDeviceOSSpy: jest.SpyInstance<OsDetector.DeviceOS | undefined>;
@@ -129,7 +131,6 @@ describe('Entry point tests', () => {
       it('Passes options to SmartBanner', () => {
         const options = {
           appToken: 'some-token',
-          dataResidency: 'TR' as DataResidencyRegion,
           deeplink: 'deeplink',
           context: { deeplink: 'some:://path' },
           language: 'fr',
@@ -212,27 +213,49 @@ describe('Entry point tests', () => {
       });
     });
 
-    describe('Set deeplink and context', () => {
-      const deeplinkContext = {
-        deeplink: 'someapp://{path}',
-        context: { path: 'nowhere' }
-      };
-
-      it('calls SmartBanner.setDeeplinkContext() method', () => {
+    describe('Set deeplink parameters', () => {
+      it('calls SmartBanner.setAndroidAppSchema() method', () => {
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        AdjustSmartBanner.setDeeplinkContext(deeplinkContext);
+        AdjustSmartBanner.setAndroidAppSchema('someapp');
 
-        expect(SmartBanner.setDeeplinkContext).toBeCalledWith(deeplinkContext);
+        expect(SmartBanner.setAppSchema).toBeCalledWith('someapp');
       });
 
-      it('prevents if SDK was not initialised', () => {
-        AdjustSmartBanner.setDeeplinkContext({
-          deeplink: 'someapp://{path}',
-          context: { path: 'nowhere' }
-        });
+      it('calls SmartBanner.setDeepLinkPath() method', () => {
+        AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        expect(SmartBanner.setDeeplinkContext).not.toBeCalled();
+        AdjustSmartBanner.setDeepLinkPath('someapp://{path}');
+
+        expect(SmartBanner.setDeepLinkPath).toBeCalledWith('someapp://{path}');
+      });
+
+      it('calls SmartBanner.setContext() method', () => {
+        AdjustSmartBanner.init({ appToken: 'some-token' });
+
+        AdjustSmartBanner.setContext({ path: 'nowhere' });
+
+        expect(SmartBanner.setContext).toBeCalledWith({ path: 'nowhere' });
+      });
+
+      it('prevents SmartBanner.setDeepLinkPath() if SDK was not initialised', () => {
+        AdjustSmartBanner.setDeepLinkPath('someapp://{path}');
+
+        expect(SmartBanner.setDeepLinkPath).not.toBeCalled();
+        expect(Logger.error).toBeCalledWith('Can\'t set deeplink, you should initilise Smart Banner SDK first');
+      });
+
+      it('prevents SmartBanner.setAndroidAppSchema() if SDK was not initialised', () => {
+        AdjustSmartBanner.setAndroidAppSchema('someapp');
+
+        expect(SmartBanner.setAppSchema).not.toBeCalled();
+        expect(Logger.error).toBeCalledWith('Can\'t set android app schema, you should initilise Smart Banner SDK first');
+      });
+
+      it('prevents SmartBanner.setContext() if SDK was not initialised', () => {
+        AdjustSmartBanner.setContext({ path: 'nowhere' });
+
+        expect(SmartBanner.setContext).not.toBeCalled();
         expect(Logger.error).toBeCalledWith('Can\'t set deeplink context, you should initilise Smart Banner SDK first');
       });
     });

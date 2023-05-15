@@ -15,7 +15,6 @@ describe('Smart banner API tests', () => {
     const platform = DeviceOS.iOS;
 
     const testNetwork: Network = {
-      trackerEndpoint: '', // not used in tests
       request: jest.fn()
     };
 

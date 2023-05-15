@@ -7,19 +7,19 @@ import 'jest-extended';
 
 describe('BannersSelector tests', () => {
   const defaultUrl = 'some-url';
-  const dismissalPeriodInSeconds = 60
+  const dismissalPeriodInSeconds = 60;
   const dismissalPeriod = dismissalPeriodInSeconds * 1000;
 
   const createBannerData = (id: string, url: string | null = defaultUrl, dismissalPeriod: number = dismissalPeriodInSeconds) => (
     { id, dismissalPeriod, displayRule: url } as SmartBannerData
-  )
+  );
 
   //#region Set of test 'banners'
 
   // Banners matching display_rule 
-  const banner1 = createBannerData('banner-1')
-  const banner2 = createBannerData('banner-2')
-  const dismissedBanner = createBannerData('dismissed-banner')
+  const banner1 = createBannerData('banner-1');
+  const banner2 = createBannerData('banner-2');
+  const dismissedBanner = createBannerData('dismissed-banner');
   // Would be considered as not dismissed if dismissal period has passed
   const dismissedLongAgoBanner = createBannerData('banner-to-schedule');
 

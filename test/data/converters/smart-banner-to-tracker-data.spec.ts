@@ -9,8 +9,7 @@ describe('Convertation of SmartBannerData to TrackerData', () => {
       domain: 'app.adjust.com',
       tracker: 'qtzy19',
       campaign: 'banner test 2',
-      adgroup: 'en',
-      deeplink: null
+      adgroup: 'en'
     }
   };
 
@@ -39,17 +38,6 @@ describe('Convertation of SmartBannerData to TrackerData', () => {
       context: { ...trackerData.context, ...localizationContext }
     };
 
-    expect(convertSmartBannerToTracker(bannerData, null, 'ru')).toEqual(expected);
-  });
-
-  it('converts data and adds custom domain', () => {
-    const domain = 'my.nice.domain';
-
-    const expected = {
-      template: trackerData.template,
-      context: { ...trackerData.context, domain }
-    };
-
-    expect(convertSmartBannerToTracker(bannerData, 'my.nice.domain')).toEqual(expected);
+    expect(convertSmartBannerToTracker(bannerData, 'ru')).toEqual(expected);
   });
 });
