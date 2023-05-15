@@ -12,11 +12,11 @@
     "test": "TZ=UTC jest --config ./test/jest.config.ts",
     "prepublishOnly": "npm-run-all lint test"
   },
-  "main": "sdk/dist/smart-banner-sdk.js",
-  "types": "sdk/dist/smart-banner-sdk.d.ts",
+  "main": "sdk/dist/adjust-smart-banner.js",
+  "types": "sdk/dist/adjust-smart-banner.d.ts",
   "files": [
-    "sdk/dist/smart-banner-sdk.js",
-    "sdk/dist/smart-banner-sdk.min.js",
+    "sdk/dist/adjust-smart-banner.js",
+    "sdk/dist/adjust-smart-banner.min.js",
     "CHANGELOG.md"
   ],
   "repository": {
