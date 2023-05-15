@@ -2,7 +2,7 @@ import { Logger as _Logger, LogLevel } from '@sdk/utils/logger';
 import { AppToken, InitialisationOptions } from '@sdk/main';
 import * as _SmartBannerModule from '@sdk/domain/smart-banner';
 import * as OsDetector from '@sdk/utils/detect-os';
-import { AdjustSmartBanner as _AdjustSmartBanner } from '@sdk/main';
+import _AdjustSmartBanner from '@sdk/main';
 
 jest.doMock('@sdk/domain/smart-banner');
 jest.mock('@sdk/utils/logger');
@@ -33,7 +33,7 @@ describe('Entry point tests', () => {
   };
 
   beforeEach(() => {
-    AdjustSmartBanner = require('@sdk/main').AdjustSmartBanner;
+    AdjustSmartBanner = require('@sdk/main').default;
     DetectOs = require('@sdk/utils/detect-os');
     SmartBannerModule = require('@sdk/domain/smart-banner');
     Logger = require('@sdk/utils/logger').Logger;

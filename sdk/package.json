@@ -10,23 +10,23 @@
     "build-dev:server-mock": "npm run build:sdk -- --mode=development --env devEndpoint='localhost'",
     "build-dev": "npm run build:sdk -- --mode=development"
   },
-  "main": "dist/smart-banner-sdk.js",
-  "types": "dist/smart-banner-sdk.d.ts",
+  "main": "dist/adjust-smart-banner.js",
+  "types": "dist/adjust-smart-banner.d.ts",
   "files": [
-    "dist/smart-banner-sdk.js",
-    "dist/smart-banner-sdk.min.js",
+    "dist/adjust-smart-banner.js",
+    "dist/adjust-smart-banner.min.js",
     "CHANGELOG.md"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adjust/smart_banner_sdk_dev.git"
+    "url": "git+https://github.com/adjust/smart_banner_sdk.git"
   },
   "author": "Adjust GmbH",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/adjust/smart_banner_sdk_dev/issues"
+    "url": "https://github.com/adjust/smart_banner_sdk/issues"
   },
-  "homepage": "https://github.com/adjust/smart_banner_sdk_dev#readme",
+  "homepage": "https://github.com/adjust/smart_banner_sdk#readme",
   "devDependencies": {
     "@microsoft/api-extractor": "^7.34.4"
   }

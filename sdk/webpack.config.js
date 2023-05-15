@@ -11,17 +11,14 @@ const devPort = 8080;
 module.exports = (env, args) => ({
   mode: 'production',
   entry: {
-    'smart-banner-sdk': path.resolve(__dirname, './src/main.ts'),
-    'smart-banner-sdk.min': path.resolve(__dirname, './src/main.ts')
+    'adjust-smart-banner': path.resolve(__dirname, './src/main.ts'),
+    'adjust-smart-banner.min': path.resolve(__dirname, './src/main.ts')
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
-    globalObject: 'this',
-    library: {
-      name: 'AdjustSmartBanner',
-      type: 'umd'
-    },
+    library: 'AdjustSmartBanner',
+    libraryTarget: 'umd',
+    libraryExport: 'default'
   },
   optimization: {
     minimize: true,
