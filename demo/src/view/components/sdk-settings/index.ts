@@ -10,7 +10,7 @@ import { defaultSdkSettings } from 'demo/src/data/default-sdk-settings';
 import styles from './styles.module.scss';
 
 // TODO it's too 'deep' for this dependency, need to move it somewhere to App level or something like that
-import { AdjustSmartBanner } from '@adjustcom/smart-banner-sdk';
+import AdjustSmartBanner from '@adjustcom/smart-banner-sdk';
 
 export interface SdkSettingsProps {
   sdkSettings?: InitialisationOptions
