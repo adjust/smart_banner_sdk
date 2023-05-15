@@ -16,7 +16,6 @@ import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
 import { buildSmartBannerUrl } from './tracker-builder';
 import { Callback, SmartBannerOptions } from '../types';
-import { isEmptyObject } from '../utils/object-utils';
 
 export class SmartBanner {
   private network: Network;
@@ -55,7 +54,7 @@ export class SmartBanner {
 
     this.language = language || getLanguage();
 
-    context = (context && !isEmptyObject(context)) ? context : {};
+    context = context || {};
 
     this.customDeeplinkData = { androidAppSchema, deepLinkPath, context };
 
