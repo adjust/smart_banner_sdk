@@ -64,5 +64,5 @@ export type SmartBannerData = SnakeCaseKeysToCamelCase<SmartBannerResponseData>
 export type DeeplinkData = {
   deepLinkPath?: string;
   androidAppSchema?: string;
-  context: Record<string, string>;
+  context?: Record<string, string>;
 }

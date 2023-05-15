@@ -1,279 +1,209 @@
 import { buildSmartBannerUrl } from '@sdk/domain/tracker-builder';
+import { Logger } from '@sdk/utils/logger';
+
+jest.mock('@sdk/utils/logger');
 
 describe('Smart Banners tracker link building', () => {
-  const trackerWithoutDeeplink = 'https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}';
-  const trackerWithDeeplink = 'https://{domain}/{tracker}?campaign={campaign}&deeplink={deeplink}&adgroup={adgroup}';
+  const commonTracker = 'https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}';
+  const iosTracker = 'https://{domain}/{deep_link_path}/adj_t={tracker}?adj_campaign={campaign}&adj_adgroup={adgroup}';
+  const androidTracker = 'https://{domain}/{tracker}?deep_link={deep_link}&campaign={campaign}&adgroup={adgroup}';
 
-  const context = {
-    domain: 'app.adjust.com',
-    tracker: 'qtzy19',
-    campaign: 'banner test 1',
-    adgroup: 'en',
-    deeplink: null
+  const commonContext = {
+    domain: 'test.domain',
+    tracker: 'abc123',
+    campaign: 'banner1',
+    adgroup: 'en'
   };
 
-  describe('No custom data, all data received from BE', () => {
-    it('builds tracker without deeplink', () => {
+  const emptyUrl = '';
+  const emptyCustomData = {};
+
+  describe('No custom data', () => {
+    it('builds common tracker', () => {
       const trackerData = {
-        template: trackerWithoutDeeplink,
-        context
+        template: commonTracker,
+        context: commonContext
       };
 
-      const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&adgroup=en';
+      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, '')).toBe(expected);
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
     });
 
-    it('builds tracker with deeplink', () => {
+    it('builds ios tracker with plain deeplink', () => {
       const trackerData = {
-        template: trackerWithDeeplink,
-        context: { ...context, deeplink: 'myapp://super/promotion' }
+        template: iosTracker,
+        context: { ...commonContext, deepLinkPath: 'some-path' }
       };
 
-      const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=myapp%3A%2F%2Fsuper%2Fpromotion&adgroup=en';
+      const expected = 'https://test.domain/some-path/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, '')).toBe(expected);
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
     });
 
-    it('interpolates deeplink with GET parameters', () => {
+    it('builds android tracker with plain deeplink', () => {
+      const deepLink = 'schema://some-path';
       const trackerData = {
-        template: trackerWithDeeplink,
-        context: { ...context, deeplink: 'myapp://promotion/{promotion_id}' }
+        template: androidTracker,
+        context: { ...commonContext, deepLink }
       };
 
-      const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=myapp%3A%2F%2Fpromotion%2Fnew-user&adgroup=en';
+      const expected = `https://test.domain/abc123?deep_link=${encodeURIComponent(deepLink)}&campaign=banner1&adgroup=en`;
 
-      expect(buildSmartBannerUrl(trackerData, 'https://example.com?promotion_id=new-user')).toBe(expected);
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
+    });
+  });
+
+  describe('Uses URL parameters for interpolation', () => {
+    it('builds ios tracker with deeplink template', () => {
+      const trackerData = {
+        template: iosTracker,
+        context: { ...commonContext, deepLinkPath: 'some-path/{page}' }
+      };
+
+      const expected = 'https://test.domain/some-path/hello/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+
+      expect(buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', emptyCustomData)).toBe(expected);
+    });
+
+    it('builds android tracker with deeplink template', () => {
+      const trackerData = {
+        template: androidTracker,
+        context: { ...commonContext, deepLink: 'schema://some-path/{page}' }
+      };
+
+      const deeplink = encodeURIComponent('schema://some-path/hello');
+      const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
+
+      expect(buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', emptyCustomData)).toBe(expected);
     });
   });
 
   describe('Custom deeplink context', () => {
-    describe('Custom static deeplink provided', () => {
-      const customTrackerData = {
-        deeplink: 'myapp://super/promotion'
+    it('builds ios tracker with plain deeplink', () => {
+      const customDeepLinkPath = 'my-product/t-shirt';
+
+      const trackerData = {
+        template: iosTracker,
+        context: { ...commonContext, deepLinkPath: 'some-path/' }
       };
 
-      it('builds tracker and appends deeplink', () => {
-        const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&adgroup=en&deeplink=myapp%3A%2F%2Fsuper%2Fpromotion';
+      const expected = 'https://test.domain/my-product/t-shirt/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
 
-        expect(buildSmartBannerUrl({ template: trackerWithoutDeeplink, context }, '', customTrackerData)).toBe(expected);
-      });
-
-      it('builds tracker from template containing deeplink', () => {
-        const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=myapp%3A%2F%2Fsuper%2Fpromotion&adgroup=en';
-
-        expect(buildSmartBannerUrl({ template: trackerWithDeeplink, context }, '', customTrackerData)).toBe(expected);
-      });
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, { deepLinkPath: customDeepLinkPath })).toBe(expected);
     });
 
-    describe('Custom deeplink template provided, but no custom context', () => {
-      const customTrackerData = {
-        deeplink: 'myapp://promotion/{promotion_id}'
+    it('builds ios tracker with deeplink template', () => {
+      const customDeepLinkPath = 'my-product/{product}';
+
+      const trackerData = {
+        template: iosTracker,
+        context: { ...commonContext, deepLinkPath: 'some-path/{page}' }
       };
 
-      describe('Template contains deeplink placeholder', () => {
-        it('interpolates deeplink with GET params', () => {
-          const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=myapp%3A%2F%2Fpromotion%2Fnew-user&adgroup=en';
+      const expected = 'https://test.domain/my-product/jeans/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
 
-          expect(buildSmartBannerUrl(
-            { template: trackerWithDeeplink, context },
-            'https://example.com?cat=meow&promotion_id=new-user',
-            customTrackerData
-          ))
-            .toBe(expected);
-        });
-
-        it('interpolates deeplink param with empty string if no such GET param', () => {
-          const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=myapp%3A%2F%2Fpromotion%2F&adgroup=en';
-
-          expect(buildSmartBannerUrl(
-            { template: trackerWithDeeplink, context },
-            'https://example.com?cat=meow&param=oops',
-            customTrackerData
-          ))
-            .toBe(expected);
-        });
-      });
-
-      describe('Template does not contain deeplink placeholder', () => {
-        it('interpolates deeplink with GET params', () => {
-          const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&adgroup=en&deeplink=myapp%3A%2F%2Fpromotion%2Fnew-user';
-
-          expect(buildSmartBannerUrl(
-            { template: trackerWithoutDeeplink, context },
-            'https://example.com?cat=meow&promotion_id=new-user',
-            customTrackerData
-          ))
-            .toBe(expected);
-        });
-
-        it('interpolates deeplink param with empty string if no such GET param', () => {
-          const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&adgroup=en&deeplink=myapp%3A%2F%2Fpromotion%2F';
-
-          expect(buildSmartBannerUrl(
-            { template: trackerWithoutDeeplink, context },
-            'https://example.com?cat=meow&param=oops',
-            customTrackerData
-          ))
-            .toBe(expected);
-        });
-      });
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+        deepLinkPath: customDeepLinkPath,
+        context: { product: 'jeans' }
+      })).toBe(expected);
     });
 
-    describe('Custom deeplink and custom context provided', () => {
-      const customDeeplink = 'myapp://{catalog}?product={product_id}&discout={discount_id}';
-      const customContext = {
-        product_id: '123',
-        discount_id: 'new-client'
+    it('builds android tracker with plain deeplink', () => {
+      const trackerData = {
+        template: androidTracker,
+        context: { ...commonContext, deepLink: 'schema://some-path' }
       };
 
-      describe('Template contains deeplink placeholder', () => {
-        it('interpolates deeplink with custom context, ignoring GET params', () => {
-          const customTrackerData = { deeplink: customDeeplink, context: { ...customContext, catalog: 'summer_dresses' } };
+      const deeplink = encodeURIComponent('app://products');
+      const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-          const expectedDeeplink = encodeURIComponent('myapp://summer_dresses?product=123&discout=new-client');
-          const expected = `https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=${expectedDeeplink}&adgroup=en`;
-
-          expect(buildSmartBannerUrl(
-            { template: trackerWithDeeplink, context },
-            'https://example.com?catalog=winter-shoes',
-            customTrackerData
-          ))
-            .toBe(expected);
-        });
-
-        it('interpolates deeplink parameter with GET param if missing in custom context', () => {
-          const expectedDeeplink = encodeURIComponent('myapp://winter-shoes?product=123&discout=new-client');
-          const expected = `https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=${expectedDeeplink}&adgroup=en`;
-
-          expect(buildSmartBannerUrl(
-            { template: trackerWithDeeplink, context },
-            'https://example.com?catalog=winter-shoes',
-            { deeplink: customDeeplink, context: customContext }
-          ))
-            .toBe(expected);
-        });
-
-        it('interpolates deeplink param with empty string if no such param found', () => {
-          const expectedDeeplink = encodeURIComponent('myapp://?product=123&discout=new-client');
-          const expected = `https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=${expectedDeeplink}&adgroup=en`;
-
-          expect(buildSmartBannerUrl(
-            { template: trackerWithDeeplink, context },
-            'https://example.com?param=oops',
-            { deeplink: customDeeplink, context: customContext }
-          ))
-            .toBe(expected);
-        });
-      });
-
-      describe('Template does not contain deeplink placeholder', () => {
-        it('interpolates deeplink with custom context, ignoring GET params', () => {
-          const customTrackerData = { deeplink: customDeeplink, context: { ...customContext, catalog: 'summer_dresses' } };
-
-          const expectedDeeplink = encodeURIComponent('myapp://summer_dresses?product=123&discout=new-client');
-          const expected = `https://app.adjust.com/qtzy19?campaign=banner%20test%201&adgroup=en&deeplink=${expectedDeeplink}`;
-
-          expect(buildSmartBannerUrl(
-            { template: trackerWithoutDeeplink, context },
-            'https://example.com?catalog=winter-shoes',
-            customTrackerData
-          ))
-            .toBe(expected);
-        });
-
-        it('interpolates deeplink parameter with GET param if missing in custom context', () => {
-          const expectedDeeplink = encodeURIComponent('myapp://winter-shoes?product=123&discout=new-client');
-          const expected = `https://app.adjust.com/qtzy19?campaign=banner%20test%201&adgroup=en&deeplink=${expectedDeeplink}`;
-
-          expect(buildSmartBannerUrl(
-            { template: trackerWithoutDeeplink, context },
-            'https://example.com?catalog=winter-shoes',
-            { deeplink: customDeeplink, context: customContext }
-          ))
-            .toBe(expected);
-        });
-
-        it('interpolates deeplink param with empty string if no such param found', () => {
-          const expectedDeeplink = encodeURIComponent('myapp://?product=123&discout=new-client');
-          const expected = `https://app.adjust.com/qtzy19?campaign=banner%20test%201&adgroup=en&deeplink=${expectedDeeplink}`;
-
-          expect(buildSmartBannerUrl(
-            { template: trackerWithoutDeeplink, context },
-            'https://example.com?param=oops',
-            { deeplink: customDeeplink, context: customContext }
-          ))
-            .toBe(expected);
-        });
-      });
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+        androidAppSchema: 'app',
+        deepLinkPath: 'products'
+      })).toBe(expected);
     });
 
-    describe('Custom context, default deeplink', () => {
-      describe('Static deeplink', () => {
-        const trackerData = {
-          template: trackerWithDeeplink,
-          context: { ...context, deeplink: 'myapp://super/promotion' }
-        };
+    it('builds android tracker with deeplink template', () => {
+      const trackerData = {
+        template: androidTracker,
+        context: { ...commonContext, deepLink: 'schema://some-path' }
+      };
 
-        const expected = 'https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=myapp%3A%2F%2Fsuper%2Fpromotion&adgroup=en';
+      const deeplink = encodeURIComponent('app://products/shoes');
+      const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-        it('ignores custom context parameters', () => {
-          expect(buildSmartBannerUrl(trackerData, '', { context: { everything: 'ignored' } })).toBe(expected);
-        });
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+        androidAppSchema: 'app',
+        deepLinkPath: 'products/{product}',
+        context: { product: 'shoes' }
+      })).toBe(expected);
+    });
 
-        it('ignores GET parameters', () => {
-          expect(buildSmartBannerUrl(trackerData, 'https://example.com?param=oops', { context: { everything: 'ignored' } })).toBe(expected);
-        });
-      });
+    it('logs a warning if no app achema provided for android tracker', () => {
+      const trackerData = {
+        template: androidTracker,
+        context: { ...commonContext, deepLink: 'schema://some-path' }
+      };
 
-      describe('Deeplink template', () => {
-        const deeplinkTemplate = 'myapp://{catalog}?product={product_id}';
-        const trackerData = {
-          template: trackerWithDeeplink,
-          context: { ...context, deeplink: deeplinkTemplate }
-        };
+      const deeplink = encodeURIComponent('schema://some-path');
+      const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-        it('interpolates deeplink with custom context ignoring GET params', () => {
-          const expectedDeeplink = encodeURIComponent('myapp://summer-dresses?product=123');
-          const expected = `https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=${expectedDeeplink}&adgroup=en`;
+      const tracker = buildSmartBannerUrl(trackerData, emptyUrl, { deepLinkPath: 'new-path' });
+      expect(Logger.warn).toBeCalledWith('Both androidAppSchema and deepLinkPath needed for android platform');
+      expect(tracker).toBe(expected);
+    });
 
-          expect(buildSmartBannerUrl(
-            trackerData,
-            'https://example.com?catalog=winter-shoes',
-            {
-              context: {
-                catalog: 'summer-dresses',
-                product_id: '123'
-              }
-            }
-          ))
-            .toBe(expected);
-        });
+    it('logs a warning if no deep link path provided for android tracker', () => {
+      const trackerData = {
+        template: androidTracker,
+        context: { ...commonContext, deepLink: 'schema://some-path' }
+      };
 
-        it('interpolates deeplink with GET parameters if no such parameters in context', () => {
-          const expectedDeeplink = encodeURIComponent('myapp://winter-shoes?product=123');
-          const expected = `https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=${expectedDeeplink}&adgroup=en`;
+      const deeplink = encodeURIComponent('schema://some-path');
+      const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-          expect(buildSmartBannerUrl(
-            trackerData,
-            'https://example.com?catalog=winter-shoes',
-            { context: { product_id: '123' } }
-          ))
-            .toBe(expected);
-        });
+      const tracker = buildSmartBannerUrl(trackerData, emptyUrl, { androidAppSchema: 'app' });
+      expect(Logger.warn).toBeCalledWith('Both androidAppSchema and deepLinkPath needed for android platform');
+      expect(tracker).toBe(expected);
+    });
 
-        it('interpolates deeplink param with empty string if no such param found', () => {
-          const expectedDeeplink = encodeURIComponent('myapp://?product=123');
-          const expected = `https://app.adjust.com/qtzy19?campaign=banner%20test%201&deeplink=${expectedDeeplink}&adgroup=en`;
+    it('logs a warning if tracker template does not contain deeplink placeholders and custom app schema provided', () => {
+      const trackerData = {
+        template: commonTracker,
+        context: commonContext
+      };
 
-          expect(buildSmartBannerUrl(
-            trackerData,
-            'https://example.com?param=oops',
-            { context: { product_id: '123' } }
-          ))
-            .toBe(expected);
-        });
-      });
+      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en';
+
+      const tracker = buildSmartBannerUrl(trackerData, emptyUrl, { androidAppSchema: 'schema' });
+      expect(Logger.warn).toBeCalledWith('Tracker template does not contain deep link placeholders, can not set custom deep link path');
+      expect(tracker).toBe(expected);
+    });
+
+    it('logs a warning if tracker template does not contain deeplink placeholders and custom deep link path provided', () => {
+      const trackerData = {
+        template: commonTracker,
+        context: commonContext
+      };
+
+      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en';
+
+      const tracker = buildSmartBannerUrl(trackerData, emptyUrl, { deepLinkPath: 'some/path' });
+      expect(Logger.warn).toBeCalledWith('Tracker template does not contain deep link placeholders, can not set custom deep link path');
+      expect(tracker).toBe(expected);
+    });
+
+    it('prefers custom context than URL parameters', () => {
+      const trackerData = {
+        template: iosTracker,
+        context: { ...commonContext, deepLinkPath: 'path/{page}' }
+      };
+
+      const expected = 'https://test.domain/path/meow/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+
+      const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { context: { page: 'meow' } });
+      expect(tracker).toBe(expected);
     });
   });
 });

@@ -34,7 +34,7 @@ function warnIfDataInconsistent({ template, context }: TrackerData, customDeepli
   if (androidDeeplink) {
     const schema = customDeeplinkData.androidAppSchema;
     const path = customDeeplinkData.deepLinkPath;
-    if ((schema && !path) && (!schema && path)) {
+    if ((schema && !path) || (!schema && path)) {
       Logger.warn('Both androidAppSchema and deepLinkPath needed for android platform');
     }
   }
@@ -68,7 +68,7 @@ function buildDeeplink(data: TrackerData, pageUrl: string, customDeeplinkData: D
   };
 }
 
-function encodeContext(context: Record<string, string>): Record<string, string> {
+function encodeContext(context: Record<string, string> = {}): Record<string, string> {
   return Object.keys(context)
     .map((key: string) => {
       const value = context[key];
