@@ -36,7 +36,7 @@ In order to initialize the Smart Banner SDK you should call the `AdjustSmartBann
 
 ```js
 AdjustSmartBanner.init({
-    "appToken": "APP_TOKEN",
+  appToken: "APP_TOKEN",
 })
 ```
 
@@ -53,17 +53,17 @@ Depending on what apps you have in your space you provide one or multiple app to
 For multiplatform app pass its app token to initialise the SDK:
 ```js
 AdjustSmartBanner.init({
-    "appToken": "APP_TOKEN",
+  appToken: "APP_TOKEN",
 })
 ```
 
 For single-platform apps pass app tokens for each platform:
 ```js
 AdjustSmartBanner.init({
-    "appToken": {
-        "ios": "IOS_APP_TOKEN",
-        "android": "ANDROID_APP_TOKEN"
-    }
+  appToken: {
+    ios: "IOS_APP_TOKEN",
+    android: "ANDROID_APP_TOKEN"
+  }
 })
 ```
 
@@ -87,31 +87,33 @@ Example:
 ```js
 AdjustSmartBanner.init({
   // other initialisation parameters including mandatory ones
-  "language": "fr"
+  language: "fr"
 })
 ```
 
-#### <a id="init-deeplinkpath">**deepLinkPath**</a> `string`
 #### <a id="init-schema">**androidAppSchema**</a> `string`
-#### <a id="init-context">**context**</a> `string`
+#### <a id="init-deeplinkpath">**deepLinkPath**</a> `string`
+#### <a id="init-context">**context**</a> `object`
 
-These parameters allow you to specify where your user land in your app when they click on banner. For further information see [Deeplinks](#dynamic-deeplinks).
+These parameters allow you to specify where your user land in your app when they click on banner. For further information see [Deeplinks](#deeplinks).
 
 Example:
 ```js
 AdjustSmartBanner.init({
-   // other initialisation parameters including mandatory ones
-    "deeplink": "myapp://promotion/"
+  // other initialisation parameters including mandatory ones
+  androidAppSchema: "myapp",
+  deepLinkPath: "products/promotion",
 })
 ```
 
 ```js
 AdjustSmartBanner.init({
-   // other initialisation parameters including mandatory ones
-    deeplink: "myapp://promotion/{promotion_id}"
-    context: {
-      promotion_id: "new_user"
-    }
+  // other initialisation parameters including mandatory ones
+  androidAppSchema: "myapp",
+  deepLinkPath: "products/promo={promotion_id}",
+  context: {
+    promotion_id: "new_user"
+  }
 })
 ```
 
