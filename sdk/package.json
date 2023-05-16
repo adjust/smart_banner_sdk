@@ -14,8 +14,10 @@
   "types": "dist/adjust-smart-banner.d.ts",
   "files": [
     "dist/adjust-smart-banner.js",
-    "dist/adjust-smart-banner.min.js",
-    "CHANGELOG.md"
+    "dist/adjust-smart-banner.d.ts",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "repository": {
     "type": "git",
@@ -28,6 +30,17 @@
   },
   "homepage": "https://github.com/adjust/smart_banner_sdk#readme",
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.34.4"
+    "@microsoft/api-extractor": "^7.34.4",
+    "css-loader": "^6.7.2",
+    "npm-run-all": "^4.1.5",
+    "sass": "^1.56.2",
+    "sass-loader": "^13.2.0",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.6",
+    "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4",
+    "webpack": "^5.76.2",
+    "webpack-cli": "^5.0.1"
   }
 }
