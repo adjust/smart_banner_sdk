@@ -1,6 +1,4 @@
-import { DataResidencyRegion } from './network/data-residency/data-residency';
 import { DeviceOS } from './utils/detect-os';
-import { UserContext } from './data/types';
 
 /** @public */
 export type Callback = () => any;
@@ -11,12 +9,10 @@ export type AppToken = { [k in DeviceOS]?: string } | string;
 /** @public */
 export interface SmartBannerOptions {
   appToken: AppToken;
-  dataResidency?: DataResidencyRegion;
-  deeplink?: string;
-  context?: UserContext;
   language?: string;
+  androidAppSchema?: string;
+  deepLinkPath?: string;
+  context?: Record<string, string>;
   onCreated?: Callback;
   onDismissed?: Callback;
 }
-
-export { DataResidencyRegion };

@@ -43,7 +43,7 @@ export class DismissHandler {
       },
       when - Date.now());
 
-    Logger.info(`Smart banner ${banner.name} creation scheduled on ${new Date(when)}`);
+    Logger.info(`Smart banner ${banner.title} creation scheduled on ${new Date(when)}`);
   }
 
 }

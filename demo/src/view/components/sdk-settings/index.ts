@@ -1,7 +1,6 @@
 import { InitialisationOptions } from '@adjustcom/smart-banner-sdk';
 import { Observable } from 'demo/src/data/observable';
 import { AppToken } from './app-token';
-import { DataResidency } from './data-residence';
 import { Language } from './language';
 import { LogLevel } from './log-level';
 import { Context } from './context';
@@ -11,7 +10,7 @@ import { defaultSdkSettings } from 'demo/src/data/default-sdk-settings';
 import styles from './styles.module.scss';
 
 // TODO it's too 'deep' for this dependency, need to move it somewhere to App level or something like that
-import { AdjustSmartBanner } from '@adjustcom/smart-banner-sdk';
+import AdjustSmartBanner from '@adjustcom/smart-banner-sdk';
 
 export interface SdkSettingsProps {
   sdkSettings?: InitialisationOptions
@@ -62,11 +61,6 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
     rightColumn.appendChild(LogLevel({
       value: sdkConfig.value.logLevel,
       onChange: logLevel => sdkConfig.value = { ...sdkConfig.value, logLevel }
-    }).render());
-
-    rightColumn.appendChild(DataResidency({
-      value: sdkConfig.value.dataResidency,
-      onChange: value => sdkConfig.value = { ...sdkConfig.value, dataResidency: value as any }
     }).render());
 
     rightColumn.appendChild(Language({

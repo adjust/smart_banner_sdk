@@ -1,10 +1,10 @@
-import { AppToken, SmartBannerOptions, Callback, DataResidencyRegion } from './types';
+import { AppToken, SmartBannerOptions, Callback } from './types';
 import { Logger, LogLevel } from './utils/logger';
 import { DeviceOS, getDeviceOS } from './utils/detect-os';
 import { SmartBanner } from './domain/smart-banner';
 
 // For api-extractor
-export { AppToken, DeviceOS, LogLevel, SmartBannerOptions, DataResidencyRegion, Callback };
+export { AppToken, DeviceOS, LogLevel, SmartBannerOptions, Callback };
 
 /** @public */
 export type InitialisationOptions = SmartBannerOptions & { logLevel?: LogLevel };
@@ -21,7 +21,7 @@ function flattenAppToken(appToken: AppToken, deviceOs: DeviceOS): string | undef
  * A main SDK class to access public methods
  * @public
  */
-export class AdjustSmartBanner {
+class AdjustSmartBanner {
   private static smartBanner: SmartBanner | undefined;
 
   static init({ logLevel = 'error', ...restOptions }: InitialisationOptions) {
@@ -69,6 +69,7 @@ export class AdjustSmartBanner {
   }
 
   static setLanguage(lang: string) {
+    // TODO: type check
     if (this.smartBanner) {
       this.smartBanner.setLanguage(lang);
     } else {
@@ -76,11 +77,32 @@ export class AdjustSmartBanner {
     }
   }
 
-  static setDeeplinkContext(congif: { deeplink?: string, context?: Record<string, string> }): void {
+  static setAndroidAppSchema(androidAppSchema: string): void {
+    // TODO: type check
     if (this.smartBanner) {
-      this.smartBanner.setDeeplinkContext(congif);
+      this.smartBanner.setAppSchema(androidAppSchema);
+    } else {
+      Logger.error('Can\'t set android app schema, you should initilise Smart Banner SDK first');
+    }
+  }
+
+  static setDeepLinkPath(deeplinkPath: string): void {
+    // TODO: type check
+    if (this.smartBanner) {
+      this.smartBanner.setDeepLinkPath(deeplinkPath);
+    } else {
+      Logger.error('Can\'t set deeplink, you should initilise Smart Banner SDK first');
+    }
+  }
+
+  static setContext(context?: Record<string, string>): void {
+    // TODO: type check
+    if (this.smartBanner) {
+      this.smartBanner.setContext(context);
     } else {
       Logger.error('Can\'t set deeplink context, you should initilise Smart Banner SDK first');
     }
   }
 }
+
+export default AdjustSmartBanner;

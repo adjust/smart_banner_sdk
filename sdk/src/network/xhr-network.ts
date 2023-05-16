@@ -7,17 +7,7 @@ type Primitive = string | number | boolean
 
 /** Sends HTTP GET request using XMLHttpRequest */
 export class XhrNetwork implements Network {
-  private trackerDomain = '';
-
   constructor(private dataEndpoint: string) { }
-
-  public get trackerEndpoint(): string {
-    return this.trackerDomain;
-  }
-
-  public set trackerEndpoint(value: string) {
-    this.trackerDomain = value;
-  }
 
   /**
    * Creates an XMLHttpRequest object and sends a GET request with provided encoded URL
