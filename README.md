@@ -302,7 +302,7 @@ AdjustSmartBanner.setContext({ category: "jeans" });
 
 Example:
 ```js
-AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}&promo={promo}");
+AdjustSmartBanner.setDeepLinkPath("products/jeans/?product={product_id}&promo={promo}");
 AdjustSmartBanner.setContext({ product_id: "floral-jeans" });
 
 // Let's say the current URL is "my-shop.com/spring-promo?product_id=cool-jeans&promo=spring_10",
