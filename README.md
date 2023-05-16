@@ -8,7 +8,7 @@ This is the guide to the Adjust Smart Banner SDK for web sites or web apps. You 
 * [Initialization](#initialization)
 * [Hide and show](#visibility)
 * [Localisation](#localisation)
-* [Deeplinks](#dynamic-deeplinks)
+* [Deeplinks](#deeplinks)
 * [License](#license)
 
 ## <a id="installation">Installation</a>
@@ -155,7 +155,7 @@ AdjustSmartBanner.hide();
 
 Shows smart banner.
 
-**Important**: If your web application is a single page application (SPA) you should call this method after navigation happens and current page URL changes. This forces the SDK to read the updated URL of the page and the SDK can find suitable banners for the current page or use updated GET parameters when it builds a tracker link with a [dynamic deeplink](#dynamic-deeplinks).
+**Important**: If your web application is a single page application (SPA) you should call this method after navigation happens and current page URL changes. This forces the SDK to read the updated URL of the page and the SDK can find suitable banners for the current page or use updated GET parameters when it builds a tracker link with a [dynamic deeplink](#deeplinks).
 
 ```js
 AdjustSmartBanner.show();
@@ -181,13 +181,13 @@ Deeplink is a link which allows to direct user to a certain events or pages in y
 Smart banner sdk supports plain string deeplinks and deeplink templates which contain placeholders to be filled out by the sdk using provided deeplink context or GET parameters of the web page URL.
 
 There are two ways to set a deeplink:
- - pass [deeplink path parameters](#init-deeplink) to `AdjustSmartBanner.init`
+ - pass [deeplink path parameters](#init-schema) to `AdjustSmartBanner.init`
  - call `setDeepLinkPath` and `setAndroidAppSchema` setters as shown below
 
 There are ways to provide context to interpolate deeplink template:
  - pass it as a [deeplink context parameter](#init-context) to `AdjustSmartBanner.init`
  - call `setContext` setter as shown below
- - [use GET parameters](#deeplink-context-url-params)
+ - [use GET parameters](#deeplink-context-urlparams)
 
  ### <a id="deeplink-setters">**Deeplink path and context setters**</a>
 
@@ -208,7 +208,7 @@ AdjustSmartBanner.setAndroidAppSchema("adjustExample")
 
 Accepts a deep link path which is an event or a screen in your mobile app.
 
-**Important**: On Android app scheme name is required, you can provide it with [`androidAppSchema`](#init-schema) parameter within initialisation or with [`setAndroidAppSchema`](#dynamic-deeplinks-schema) function.
+**Important**: On Android app scheme name is required, you can provide it with [`androidAppSchema`](#init-schema) parameter within initialisation or with [`setAndroidAppSchema`](#deeplinks-setters-schema) function.
 
 Example:
 ```js
