@@ -308,7 +308,7 @@ AdjustSmartBanner.setContext({ product_id: "floral-jeans" });
 // Let's say the current URL is "my-shop.com/spring-promo?product_id=cool-jeans&promo=spring_10",
 // so we have product_id parameter in the URL and in the context
 
-// Then resulting deeplink is "products/jeans/?product=floral-jeans&promo=spring_10"
+// Then resulting deeplink path is "products/jeans/?product=floral-jeans&promo=spring_10"
 ```
 
 ## <a id="license">License</a>
