@@ -99,6 +99,11 @@ export class SmartBanner {
   }
 
   setAppSchema(androidAppSchema: string): void {
+    if (this.customDeeplinkData.androidAppSchema === androidAppSchema) {
+      Logger.log(`Android app scheme ${androidAppSchema} already set, ignoring the same value`);
+      return;
+    }
+
     this.customDeeplinkData.androidAppSchema = androidAppSchema;
 
     if (this.bannerProvider.isLoading) {
