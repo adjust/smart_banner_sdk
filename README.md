@@ -259,15 +259,25 @@ AdjustSmartBanner.setContext({ category: "jeans" });
 // Resulting deeplink path is "products/jeans/?product=&promo="
 ```
 
- **Important**: Note that `setContext` overrides the last preserved context instead of merge it.
+ **Important**: Note that `setContext` overrides the last preserved context, instead of sequential calls you should combine all needed parameters in a single object and then call `setContext` with it.
 
  Example:
 ```js
-AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}&promo={promo}");
+// Wrong
+AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}");
 AdjustSmartBanner.setContext({ category: "jeans" });
 AdjustSmartBanner.setContext({ product_id: "blue-jeans" }); // Previous context is lost
 
 // Resulting deeplink path is "products//?product=blue-jeans&promo="
+
+// Correct
+AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}");
+AdjustSmartBanner.setContext({
+  category: "shoes",
+  product_id: "red-sneakers"
+});
+
+// Resulting deeplink path is "products/shoes/?product=red-sneakers"
 ```
 
 ### <a id="deeplink-context-urlparams">**Using GET parameters as context**</a>
