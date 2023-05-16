@@ -7,3 +7,6 @@ node_modules/
 coverage/
 
 dist/
+
+sdk/README.md
+sdk/LICENSE
