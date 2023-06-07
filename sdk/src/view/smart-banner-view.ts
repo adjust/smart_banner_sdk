@@ -47,5 +47,6 @@ export class SmartBannerView {
 
   public destroy() {
     this.bannerBody.destroy();
+    this.wrapper.remove();
   }
 }
