@@ -57,6 +57,7 @@
   },
   "workspaces": [
     "./demo/",
-    "./sdk/"
+    "./sdk/",
+    "./layout/"
   ]
 }

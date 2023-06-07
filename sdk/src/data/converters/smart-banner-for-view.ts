@@ -1,5 +1,5 @@
 import { SmartBannerData } from '../types';
-import { SmartBannerViewData } from '../../view/types';
+import { SmartBannerViewData } from '../../../../layout/view/types';
 
 /**
  * Converts SmartBannerData to SmartBannerViewData
