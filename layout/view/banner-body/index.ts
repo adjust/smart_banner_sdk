@@ -1,7 +1,7 @@
 import { ActionButton } from '../action-button';
 import { AppIcon } from '../app-icon';
 import { DismissButton } from '../dismiss-button';
-import { SmartBannerViewData } from '../types';
+import { SmartBannerViewData } from '../data-types';
 
 import styles from './styles.module.scss';
 
