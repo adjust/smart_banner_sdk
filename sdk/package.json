@@ -29,6 +29,9 @@
     "url": "https://github.com/adjust/smart_banner_sdk/issues"
   },
   "homepage": "https://github.com/adjust/smart_banner_sdk#readme",
+  "dependencies": {
+    "@adjustcom/smart-banner-sdk-layout": "^0.0.3"
+  },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.34.4",
     "css-loader": "^6.7.2",

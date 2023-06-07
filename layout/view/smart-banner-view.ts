@@ -1,4 +1,4 @@
-import { Position } from '../data/types';
+import { Position } from '@adjustcom/smart-banner-sdk/src/data/types';
 import { SmartBannerViewData } from './types';
 import { BannerBody } from './banner-body';
 
@@ -9,13 +9,13 @@ export class SmartBannerView {
   private wrapper: HTMLElement;
   private bannerBody: BannerBody;
 
-  constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
+  constructor(private banner: SmartBannerViewData, trackerUrl: string = '', onDismiss: () => void = () => { }) {
     this.root = document.createElement('div');
     this.wrapper = document.createElement('div');
     this.bannerBody = new BannerBody(banner, trackerUrl, onDismiss);
   }
 
-  public update(banner: SmartBannerViewData, trackerUrl: string) {
+  public update(banner: SmartBannerViewData, trackerUrl: string = '') {
     this.banner = banner;
 
     this.bannerBody.update(banner, trackerUrl);

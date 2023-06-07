@@ -1,3 +1,4 @@
+import { SmartBannerView, SmartBannerViewData } from '@adjustcom/smart-banner-sdk-layout'
 import { SmartBannerData, DeeplinkData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { BannerProvider } from './banner-provider';
@@ -9,8 +10,6 @@ import { NetworkConfig, NetworkFactory } from '../network/network-factory';
 import { Logger } from '../utils/logger';
 import { DeviceOS } from '../utils/detect-os';
 import { getLanguage } from '../utils/language';
-import { SmartBannerView } from '../view/smart-banner-view';
-import { SmartBannerViewData } from '../view/types';
 import { Globals } from '../globals';
 import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
