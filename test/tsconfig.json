@@ -6,6 +6,9 @@
       "@sdk/*": [
         "../sdk/src/*"
       ],
+      "@layout/*": [
+        "../layout/*"
+      ],
     },
     "resolveJsonModule": true,
   }
