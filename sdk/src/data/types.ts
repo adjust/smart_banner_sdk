@@ -1,15 +1,5 @@
+import { Position, BannerSize } from '@adjustcom/smart-banner-sdk-layout';
 import { SnakeCaseKeysToCamelCase } from '../utils/snake-to-camel-case';
-
-export enum Position {
-  Top = 'top',
-  Bottom = 'bottom'
-}
-
-export enum BannerSize {
-  Small = 'small',
-  Medium = 'medium',
-  Large = 'large'
-}
 
 interface ContextData {
   domain?: string;
