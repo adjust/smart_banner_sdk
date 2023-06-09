@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "Adjust Smart Banner SDK",
   "scripts": {
-    "build": "npm run build --workspace=sdk && npm run copy",
+    "build": "npm run build --workspace=sdk && npm run build:snippet && npm run copy",
+    "build:snippet": "terser ./loading-snippet.js -o ./sdk/dist/loading-snippet.min.js -c -m",
     "clean": "rm -rf ./sdk/dist/ ./demo/dist/",
     "start": "run-p build-sdk-dev run-demo",
     "build-sdk-dev": "npm run build-dev --workspace=sdk -- --env devPort=8787 --watch",
