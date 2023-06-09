@@ -1,5 +1,4 @@
-import { Position } from '@adjustcom/smart-banner-sdk/src/data/types';
-import { SmartBannerViewData } from './data-types';
+import { SmartBannerViewData, Position } from './data-types';
 import { BannerBody } from './banner-body';
 
 import styles from './styles.module.scss';

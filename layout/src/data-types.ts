@@ -1,6 +1,24 @@
-import { SmartBannerData } from '@adjustcom/smart-banner-sdk/src/data/types';
+export enum Position {
+  Top = 'top',
+  Bottom = 'bottom'
+}
 
-type KeyOfSmartBannerViewData = 'position' | 'size' | 'iconUrl' | 'title' | 'titleColor' | 'description' |
-  'descriptionColor' | 'buttonLabel' | 'buttonColor' | 'backgroundImageUrl' | 'backgroundColor';
+export enum BannerSize {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large'
+}
 
-export type SmartBannerViewData = Pick<SmartBannerData, KeyOfSmartBannerViewData>
+export interface SmartBannerViewData {
+  position: Position;
+  size: BannerSize;
+  iconUrl: string;
+  title: string;
+  titleColor?: string;
+  description: string;
+  descriptionColor?: string;
+  buttonLabel: string;
+  buttonColor?: string;
+  backgroundColor?: string;
+  backgroundImageUrl?: string,
+}

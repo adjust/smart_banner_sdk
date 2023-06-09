@@ -1,7 +1,9 @@
-import { SmartBannerView } from './view/smart-banner-view'
-import { SmartBannerViewData } from './view/data-types'
+import { SmartBannerView } from './src/smart-banner-view';
+import { SmartBannerViewData, Position, BannerSize } from './src/data-types';
 
 export {
   SmartBannerView,
-  SmartBannerViewData
-}
+  SmartBannerViewData,
+  Position,
+  BannerSize
+};

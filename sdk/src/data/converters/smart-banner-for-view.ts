@@ -1,5 +1,5 @@
 import { SmartBannerData } from '../types';
-import { SmartBannerViewData } from '@adjustcom/smart-banner-sdk-layout/view/data-types';
+import { SmartBannerViewData } from '@adjustcom/smart-banner-sdk-layout';
 
 /**
  * Converts SmartBannerData to SmartBannerViewData
