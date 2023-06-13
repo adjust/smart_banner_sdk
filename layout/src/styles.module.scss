@@ -2,19 +2,12 @@
 
 .banner-placeholder {
   height: 76px;
-
-  @media (min-width: $bannerMaxWidth) {
-    & {
-      height: 0;
-    }
-  }
 }
 
 .banner {
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 10000000;
   pointer-events: none;
 
   &.stickyToTop {

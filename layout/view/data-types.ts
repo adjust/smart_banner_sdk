@@ -1,6 +1,0 @@
-import { SmartBannerData } from '@adjustcom/smart-banner-sdk/src/data/types';
-
-type KeyOfSmartBannerViewData = 'position' | 'size' | 'iconUrl' | 'title' | 'titleColor' | 'description' |
-  'descriptionColor' | 'buttonLabel' | 'buttonColor' | 'backgroundImageUrl' | 'backgroundColor';
-
-export type SmartBannerViewData = Pick<SmartBannerData, KeyOfSmartBannerViewData>
