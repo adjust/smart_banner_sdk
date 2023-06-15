@@ -1,5 +1,14 @@
+@import 'assets/colors.scss';
+
 .content {
   &.fixed-header {
     padding-top: 58px;
   }
+}
+
+.smart-banner-parent {
+  padding: 8px;
+  margin: 24px 16px;
+  background-color: $blue-200;
+  border-radius: 12px;
 }

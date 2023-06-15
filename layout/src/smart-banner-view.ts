@@ -3,14 +3,16 @@ import { BannerBody } from './banner-body';
 
 import styles from './styles.module.scss';
 
+// eslint-disable-next-line 
+const emptyHandler = () => { }
+
 export class SmartBannerView {
   private root: HTMLElement;
-  private wrapper: HTMLElement;
+  private placeholder: HTMLElement | null = null;
   private bannerBody: BannerBody;
 
-  constructor(private banner: SmartBannerViewData, trackerUrl = '', onDismiss = () => { }) {
+  constructor(private banner: SmartBannerViewData, trackerUrl = '', onDismiss = emptyHandler) {
     this.root = document.createElement('div');
-    this.wrapper = document.createElement('div');
     this.bannerBody = new BannerBody(banner, trackerUrl, onDismiss);
   }
 
@@ -20,19 +22,33 @@ export class SmartBannerView {
     this.bannerBody.update(banner, trackerUrl);
   }
 
-  public render(parent: HTMLElement) {
-    const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
-    this.root.className = `${styles.banner} ${positionStyle}`;
+  public render(parent: HTMLElement = document.body) {
+    let bannerStyles = styles.banner;
 
-    this.wrapper.className = styles['banner-placeholder'];
-    this.wrapper.appendChild(this.root);
+    const customParent = parent !== document.body;
+    if (customParent) {
+      bannerStyles = `${bannerStyles} ${styles['custom-parent']}`;
+    } else {
+      parent = document.body;
+      this.placeholder = document.createElement('div');
+      this.placeholder.className = styles['banner-placeholder'];
+    }
+
+    const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
+    this.root.className = bannerStyles = `${bannerStyles} ${positionStyle}`;
 
     this.bannerBody.render(this.root);
 
     if (this.banner.position === Position.Top) {
-      parent.insertBefore(this.wrapper, parent.firstChild);
+      parent.insertBefore(this.root, parent.firstChild);
+      if (this.placeholder) {
+        parent.insertBefore(this.placeholder, parent.firstChild);
+      }
     } else {
-      parent.appendChild(this.wrapper);
+      parent.appendChild(this.root);
+      if (this.placeholder) {
+        parent.appendChild(this.placeholder);
+      }
     }
   }
 
@@ -46,6 +62,9 @@ export class SmartBannerView {
 
   public destroy() {
     this.bannerBody.destroy();
-    this.wrapper.remove();
+    this.root.remove();
+    if (this.placeholder) {
+      this.placeholder.remove();
+    }
   }
 }

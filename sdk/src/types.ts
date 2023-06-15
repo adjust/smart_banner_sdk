@@ -13,6 +13,7 @@ export interface SmartBannerOptions {
   androidAppSchema?: string;
   deepLinkPath?: string;
   context?: Record<string, string>;
+  bannerParent?: HTMLElement;
   onCreated?: Callback;
   onDismissed?: Callback;
 }

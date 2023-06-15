@@ -20,6 +20,10 @@ body * {
     "Segoe UI Symbol";
 }
 
+body {
+  background-color: $blue-100;
+}
+
 :global {
   .flex-column {
     display: flex;
