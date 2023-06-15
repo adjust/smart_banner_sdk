@@ -22,6 +22,7 @@ export class SmartBanner {
   private bannerProvider: BannerProvider;
   private language: string | null;
   private customDeeplinkData: DeeplinkData = { context: {} };
+  private bannerParent?: HTMLElement;
   private onCreated?: Callback;
   private onDismissed?: Callback;
   private view: SmartBannerView | null = null;
@@ -29,7 +30,7 @@ export class SmartBanner {
 
   constructor(
     appToken: string,
-    { language, deepLinkPath, androidAppSchema, context, onCreated, onDismissed }: SmartBannerOptions,
+    { language, deepLinkPath, androidAppSchema, context, bannerParent, onCreated, onDismissed }: SmartBannerOptions,
     private deviceOs: DeviceOS
   ) {
     this.dismissHandler = new DismissHandler();
@@ -47,6 +48,8 @@ export class SmartBanner {
       new SmartBannerRepository(networkApi),
       new BannerSelector(this.dismissHandler)
     );
+
+    this.bannerParent = bannerParent;
 
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
@@ -179,7 +182,7 @@ export class SmartBanner {
     const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
 
     this.view = new SmartBannerView(renderData, trackerUrl, () => this.dismiss(bannerData));
-    this.view.render(document.body);
+    this.view.render(this.bannerParent);
 
     Logger.log('Smart banner rendered');
 

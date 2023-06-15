@@ -11,6 +11,7 @@ import styles from './styles.module.scss';
 
 // TODO it's too 'deep' for this dependency, need to move it somewhere to App level or something like that
 import AdjustSmartBanner from '@adjustcom/smart-banner-sdk';
+import { BannerParent } from './banner-parent';
 
 export interface SdkSettingsProps {
   sdkSettings?: InitialisationOptions
@@ -58,6 +59,21 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
       }
     }).render());
 
+    leftColumn.appendChild(BannerParent({
+      value: 'body',
+      onChange: selector => {
+        const element = document.querySelector(selector);
+        if (!element) {
+          // ??
+          return;
+        }
+
+        sdkConfig.value = { ...sdkConfig.value, bannerParent: element as HTMLElement };
+        // select a new element
+        // save it in config
+      }
+    }).render());
+
     rightColumn.appendChild(LogLevel({
       value: sdkConfig.value.logLevel,
       onChange: logLevel => sdkConfig.value = { ...sdkConfig.value, logLevel }
@@ -77,7 +93,11 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
     return root;
   };
 
-  const stringifyExample = () => `AdjustSmartBanner.init(${JSON.stringify(sdkConfig.value, null, 4)})`;
+  const stringifyExample = () => `AdjustSmartBanner.init(${JSON.stringify(
+    sdkConfig.value,
+    (k, v) => k === 'bannerParent' ? 'selector' : v,
+    4
+  )})`;
 
   const renderSettingsPreview = () => {
     const root = document.createElement('div');

@@ -15,6 +15,8 @@ export function Content(props: ContentProps = {
     root = document.createElement('div');
     setHeaderMode(props.fixedHeader);
 
+    renderBannerRoot();
+
     root.appendChild(SdkSettings().render());
 
     for (let i = 0; i < 3; i++) {
@@ -22,6 +24,14 @@ export function Content(props: ContentProps = {
     }
 
     return root;
+  };
+
+  const renderBannerRoot = () => {
+    const smartBannerRoot = document.createElement('div');
+    smartBannerRoot.id = 'smart-banner-parent';
+    smartBannerRoot.className = styles['smart-banner-parent'];
+    smartBannerRoot.append('#smart-banner-parent');
+    root.appendChild(smartBannerRoot);
   };
 
   const setHeaderMode = (fixed: boolean) => {
