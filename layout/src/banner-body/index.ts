@@ -34,7 +34,7 @@ export class BannerBody {
 
   private renderDescription() {
     this.description.className = styles['banner-text'];
-    this.description.innerText = this.banner.description;
+    this.description.innerText = this.banner.description || ''; // FIXME: don't render empty text
 
     if (this.banner.descriptionColor) {
       this.description.style.color = this.banner.descriptionColor;
@@ -81,7 +81,7 @@ export class BannerBody {
     this.actionButton.update(banner, trackerUrl);
 
     this.title.innerText = this.banner.title;
-    this.description.innerText = this.banner.description;
+    this.description.innerText = this.banner.description || ''; // FIXME: don't render empty text?
   }
 
   public destroy() {

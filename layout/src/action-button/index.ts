@@ -14,8 +14,12 @@ export class ActionButton {
     this.link.innerText = this.banner.buttonLabel;
     this.link.href = this.trackerUrl;
 
-    if (this.banner.buttonColor) {
-      // TODO: is buttonColor a color of what? Text? Button border? Background?
+    if (this.banner.buttonTextColor) {
+      this.link.style.color = this.banner.buttonTextColor
+    }
+
+    if (this.banner.buttonBackgroundColor) {
+      this.link.style.backgroundColor = this.banner.buttonBackgroundColor
     }
 
     root.appendChild(this.link);
