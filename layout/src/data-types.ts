@@ -6,19 +6,21 @@ export enum Position {
 export enum BannerSize {
   Small = 'small',
   Medium = 'medium',
-  Large = 'large'
+  Fullscreen = 'fullscreen'
 }
 
 export interface SmartBannerViewData {
   position: Position;
   size: BannerSize;
   iconUrl: string;
+  dismissButtonColor?: string;
   title: string;
   titleColor?: string;
-  description: string;
+  description?: string;
   descriptionColor?: string;
   buttonLabel: string;
-  buttonColor?: string;
+  buttonTextColor?: string;
+  buttonBackgroundColor?: string;
   backgroundColor?: string;
-  backgroundImageUrl?: string,
+  backgroundImageUrl?: string;
 }
