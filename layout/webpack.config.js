@@ -9,7 +9,14 @@ module.exports = (env, args) => ({
   entry: [path.resolve(__dirname, './index.ts')],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name].js',
+    library: {
+      type: "module",
+    },
+    module: true,
+  },
+  experiments: {
+    outputModule: true,
   },
   plugins: [
     new ESLintPlugin(),
@@ -22,8 +29,8 @@ module.exports = (env, args) => ({
   },
   module: {
     rules: [{
-      use: 'ts-loader',
       test: /\.(ts|js)$/,
+      use: 'ts-loader',
       exclude: /node_modules/
     }, {
       test: /\.module\.s?css$/,
