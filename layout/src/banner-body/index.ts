@@ -9,35 +9,48 @@ export class BannerBody {
   private dismissButton: DismissButton;
   private appIcon: AppIcon;
   private actionButton: ActionButton;
+  private bannerBody: HTMLElement;
   private title: HTMLElement;
   private description: HTMLElement;
 
   constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
-    this.dismissButton = new DismissButton(onDismiss);
+    this.dismissButton = new DismissButton(onDismiss, banner.dismissButtonColor);
     this.appIcon = new AppIcon(banner.iconUrl, ''); // There is app name in data for now
     this.actionButton = new ActionButton(banner, trackerUrl);
 
+    this.bannerBody = document.createElement('div');
+    this.bannerBody.className = styles['banner-body'];
+
     this.title = document.createElement('h4');
+    this.title.className = styles['banner-text'];
+
     this.description = document.createElement('p');
+    this.description.className = styles['banner-text'];
   }
 
-  private renderTitle() {
-    this.title.className = styles['banner-text'];
-    this.title.innerText = this.banner.title;
+  private renderBannerBody() {
+    // TODO it could be an image url, not only a color
 
-    if (this.banner.titleColor) {
-      this.title.style.color = this.banner.titleColor;
+    if (this.banner.backgroundColor) {
+      this.bannerBody.style.backgroundColor = this.banner.backgroundColor;
+    }
+  }
+
+  private renderTitle(text: string, color?: string) {
+    this.title.innerText = text;
+
+    if (color) {
+      this.title.style.color = color;
     }
 
     return this.title;
   }
 
-  private renderDescription() {
-    this.description.className = styles['banner-text'];
-    this.description.innerText = this.banner.description || ''; // FIXME: don't render empty text
+  private renderDescription(text?: string, color?: string) {
+    this.description.innerText = text || ''; // FIXME: don't render empty text
 
-    if (this.banner.descriptionColor) {
-      this.description.style.color = this.banner.descriptionColor;
+    if (color) {
+      this.description.style.color = color;
     }
 
     return this.description;
@@ -53,7 +66,11 @@ export class BannerBody {
 
     const textContainer = document.createElement('div');
     textContainer.className = styles['text-container'];
-    textContainer.append(this.renderTitle(), this.renderDescription());
+    textContainer.append(
+      this.renderTitle(this.banner.title, this.banner.titleColor),
+      this.renderDescription(this.banner.description, this.banner.descriptionColor)
+    );
+
     container.appendChild(textContainer);
 
     this.actionButton.render(container);
@@ -62,26 +79,21 @@ export class BannerBody {
   }
 
   public render(root: HTMLElement) {
-    const bannerBody = document.createElement('div');
-    bannerBody.className = styles['banner-body'];
+    this.renderBannerBody();
 
-    if (this.banner.backgroundColor) {
-      bannerBody.style.backgroundColor = this.banner.backgroundColor;
-    }
+    this.bannerBody.appendChild(this.renderInnerElements());
 
-    bannerBody.appendChild(this.renderInnerElements());
-
-    root.appendChild(bannerBody);
+    root.appendChild(this.bannerBody);
   }
 
   public update(banner: SmartBannerViewData, trackerUrl: string) {
     this.banner = banner;
 
-    this.appIcon.update(banner.iconUrl, '');
+    this.dismissButton.update(banner.dismissButtonColor);
+    this.appIcon.update(banner.iconUrl, ''); // FIXME should be app name here instead of empty string
     this.actionButton.update(banner, trackerUrl);
-
-    this.title.innerText = this.banner.title;
-    this.description.innerText = this.banner.description || ''; // FIXME: don't render empty text?
+    this.renderTitle(banner.title, banner.titleColor);
+    this.renderDescription(banner.description, banner.descriptionColor);
   }
 
   public destroy() {
