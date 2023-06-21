@@ -8,7 +8,7 @@ import { BannerProvider } from '@sdk/domain/banner-provider';
 import * as DataToViewConverter from '@sdk/data/converters/smart-banner-for-view';
 import * as TrackerBuilder from '@sdk/domain/tracker-builder';
 import * as LanguageModule from '@sdk/utils/language';
-import * as View from '@sdk/view/smart-banner-view';
+import * as View from '@layout/src/smart-banner-view';
 
 import serverResponseMock from '../../fake-data/smart_banners_mock.json';
 

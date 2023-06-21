@@ -3,14 +3,15 @@
   "version": "0.0.1",
   "description": "Adjust Smart Banner SDK",
   "scripts": {
-    "build": "npm run build --workspace=sdk && npm run copy",
-    "clean": "rm -rf ./sdk/dist/ ./demo/dist/",
+    "build": "npm run build --workspace=layout && npm run build --workspace=sdk && npm run build:snippet && npm run copy",
+    "build:snippet": "terser ./loading-snippet.js -o ./sdk/dist/loading-snippet.min.js -c -m",
+    "clean": "rm -rf ./layout/dist/ ./sdk/dist/ ./demo/dist/",
     "start": "run-p build-sdk-dev run-demo",
-    "build-sdk-dev": "npm run build-dev --workspace=sdk -- --env devPort=8787 --watch",
+    "build-sdk-dev": "npm run build --workspace=layout && npm run build-dev --workspace=sdk -- --env devPort=8787 --watch",
     "run-demo": "npm run start --workspace=demo -- --env devPort=8787",
-    "lint": "eslint ./sdk/src ./test ./demo/src --fix",
+    "lint": "eslint ./sdk/src ./layout/src ./test ./demo/src --fix",
     "test": "TZ=UTC jest --config ./test/jest.config.ts",
-    "prepublishOnly": "npm-run-all lint test ",
+    "prepublishOnly": "npm-run-all lint test",
     "copy": "cp LICENSE README.md sdk"
   },
   "main": "sdk/dist/adjust-smart-banner.js",
@@ -57,6 +58,7 @@
   },
   "workspaces": [
     "./demo/",
-    "./sdk/"
+    "./sdk/",
+    "./layout/"
   ]
 }

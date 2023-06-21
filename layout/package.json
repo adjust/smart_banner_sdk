@@ -1,0 +1,38 @@
+{
+  "name": "@adjustcom/smart-banner-sdk-layout",
+  "version": "1.0.0",
+  "description": "Adjust Smart Banner SDK Layout",
+  "scripts": {
+    "build": "npm run build:scr && npm run build:types",
+    "build:scr": "webpack --config ./webpack.config.js",
+    "build:types": "api-extractor run --local"
+  },
+  "files": [
+    "dist/adj-sb-layout.js",
+    "dist/adj-sb-layout.d.ts"
+  ],
+  "main": "dist/adj-sb-layout.js",
+  "types": "dist/adj-sb-layout.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adjust/smart_banner_sdk.git"
+  },
+  "author": "Adjust GmbH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adjust/smart_banner_sdk/issues"
+  },
+  "homepage": "https://github.com/adjust/smart_banner_sdk#readme",
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.34.4",
+    "css-loader": "^6.7.2",
+    "sass": "^1.56.2",
+    "sass-loader": "^13.2.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4",
+    "webpack": "^5.76.2",
+    "webpack-cli": "^5.0.1"
+  }
+}

@@ -1,4 +1,4 @@
-import { SmartBannerViewData } from '../types';
+import { SmartBannerViewData } from '../data-types';
 
 import styles from './styles.module.scss';
 
@@ -9,14 +9,22 @@ export class ActionButton {
     this.link = document.createElement('a');
   }
 
+  private applyColors() {
+    if (this.banner.buttonTextColor) {
+      this.link.style.color = this.banner.buttonTextColor;
+    }
+
+    if (this.banner.buttonBackgroundColor) {
+      this.link.style.backgroundColor = this.banner.buttonBackgroundColor;
+    }
+  }
+
   public render(root: HTMLElement) {
     this.link.className = styles.action;
     this.link.innerText = this.banner.buttonLabel;
     this.link.href = this.trackerUrl;
 
-    if (this.banner.buttonColor) {
-      // TODO: is buttonColor a color of what? Text? Button border? Background?
-    }
+    this.applyColors();
 
     root.appendChild(this.link);
   }
@@ -27,5 +35,7 @@ export class ActionButton {
 
     this.link.href = this.trackerUrl;
     this.link.innerText = this.banner.buttonLabel;
+
+    this.applyColors();
   }
 }

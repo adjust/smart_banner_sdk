@@ -2,20 +2,20 @@
 
 .banner-placeholder {
   height: 76px;
-
-  @media (min-width: $bannerMaxWidth) {
-    & {
-      height: 0;
-    }
-  }
 }
 
 .banner {
+  height: 76px;
+  pointer-events: none;
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 10000000;
-  pointer-events: none;
+  z-index: 100;
+
+  &.custom-parent {
+    z-index: unset;
+    position: relative;
+  }
 
   &.stickyToTop {
     top: 0;

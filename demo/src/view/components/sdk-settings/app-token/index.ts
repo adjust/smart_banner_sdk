@@ -1,10 +1,18 @@
-import { AppToken, DeviceOS } from '@adjustcom/smart-banner-sdk';
+import { AppToken } from '@adjustcom/smart-banner-sdk';
 import html from './app-token.html';
 import styles from './app-token.module.scss';
 
 export interface AppTokenProps {
   value?: AppToken,
   onChange: (tokens: AppToken) => void;
+}
+
+// it's not exported properly, let's just duplicate it :\
+enum DeviceOS {
+  Android = 'android',
+  iOS = 'ios',
+  WindowsPC = 'windows',
+  WindowsPhone = 'windows-phone'
 }
 
 export function AppToken(props: AppTokenProps) {
