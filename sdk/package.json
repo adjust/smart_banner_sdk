@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/adjust/smart_banner_sdk#readme",
   "dependencies": {
-    "@adjustcom/smart-banner-sdk-layout": "^0.0.3"
+    "@adjustcom/smart-banner-sdk-layout": "^0.0.4"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.34.4",
