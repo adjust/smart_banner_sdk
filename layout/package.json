@@ -1,6 +1,6 @@
 {
   "name": "@adjustcom/smart-banner-sdk-layout",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Adjust Smart Banner SDK Layout",
   "scripts": {
     "build": "npm run build:scr && npm run build:types",
