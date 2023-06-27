@@ -28,11 +28,11 @@ export class BannerBody {
     this.description.className = styles['banner-text'];
   }
 
-  private renderBannerBody() {
-    // TODO it could be an image url, not only a color
+  private renderBannerBody(backgroundColor?: string, _backgroundImageUrl?: string) {
+    // TODO implement image background
 
-    if (this.banner.backgroundColor) {
-      this.bannerBody.style.backgroundColor = this.banner.backgroundColor;
+    if (backgroundColor) {
+      this.bannerBody.style.backgroundColor = backgroundColor;
     }
   }
 
@@ -79,7 +79,7 @@ export class BannerBody {
   }
 
   public render(root: HTMLElement) {
-    this.renderBannerBody();
+    this.renderBannerBody(this.banner.backgroundColor, this.banner.backgroundImageUrl);
 
     this.bannerBody.appendChild(this.renderInnerElements());
 
@@ -94,6 +94,7 @@ export class BannerBody {
     this.actionButton.update(banner, trackerUrl);
     this.renderTitle(banner.title, banner.titleColor);
     this.renderDescription(banner.description, banner.descriptionColor);
+    this.renderBannerBody(banner.backgroundColor, banner.backgroundImageUrl)
   }
 
   public destroy() {
