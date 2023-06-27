@@ -15,7 +15,7 @@ export class BannerBody {
 
   constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
     this.dismissButton = new DismissButton(onDismiss, banner.dismissButtonColor);
-    this.appIcon = new AppIcon(banner.iconUrl, ''); // There is app name in data for now
+    this.appIcon = new AppIcon(banner.iconUrl, banner.appName);
     this.actionButton = new ActionButton(banner, trackerUrl);
 
     this.bannerBody = document.createElement('div');
