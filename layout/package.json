@@ -1,10 +1,10 @@
 {
   "name": "@adjustcom/smart-banner-sdk-layout",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Adjust Smart Banner SDK Layout",
   "scripts": {
-    "build": "npm run build:scr && npm run build:types",
-    "build:scr": "webpack --config ./webpack.config.js",
+    "build": "npm run build:src && npm run build:types",
+    "build:src": "webpack --config ./webpack.config.js",
     "build:types": "api-extractor run --local"
   },
   "files": [

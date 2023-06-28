@@ -13,7 +13,7 @@ export class BannerBody {
   private title: HTMLElement;
   private description: HTMLElement;
 
-  constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
+  constructor(private banner: SmartBannerViewData, onDismiss: () => void, trackerUrl?: string) {
     this.dismissButton = new DismissButton(onDismiss, banner.dismissButtonColor);
     this.appIcon = new AppIcon(banner.iconUrl, banner.appName);
     this.actionButton = new ActionButton(banner, trackerUrl);
@@ -90,7 +90,7 @@ export class BannerBody {
     this.banner = banner;
 
     this.dismissButton.update(banner.dismissButtonColor);
-    this.appIcon.update(banner.iconUrl, ''); // FIXME should be app name here instead of empty string
+    this.appIcon.update(banner.iconUrl, banner.appName);
     this.actionButton.update(banner, trackerUrl);
     this.renderTitle(banner.title, banner.titleColor);
     this.renderDescription(banner.description, banner.descriptionColor);
