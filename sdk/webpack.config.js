@@ -20,6 +20,7 @@ module.exports = (env, args) => ({
     libraryTarget: 'umd',
     libraryExport: 'default'
   },
+  externals: /@adjustcom/,
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin({
