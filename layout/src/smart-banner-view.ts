@@ -12,7 +12,7 @@ export interface SmartBannerLayout {
 }
 
 // eslint-disable-next-line 
-const emptyHandler = () => { }
+const emptyHandler = () => { };
 
 export class SmartBannerView implements SmartBannerLayout {
   private root: HTMLElement;
@@ -24,7 +24,7 @@ export class SmartBannerView implements SmartBannerLayout {
    */
   constructor(private banner: SmartBannerViewData, trackerUrl = '', onDismiss: () => void = emptyHandler) {
     this.root = document.createElement('div');
-    this.bannerBody = new BannerBody(banner, trackerUrl, onDismiss);
+    this.bannerBody = new BannerBody(banner, onDismiss, trackerUrl);
   }
 
   public update(banner: SmartBannerViewData, trackerUrl = '') {
