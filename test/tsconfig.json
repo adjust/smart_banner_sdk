@@ -6,8 +6,8 @@
       "@sdk/*": [
         "../sdk/src/*"
       ],
-      "@layout/*": [
-        "../layout/*"
+      "@layout": [
+        "../layout/index.ts"
       ],
     },
     "resolveJsonModule": true,

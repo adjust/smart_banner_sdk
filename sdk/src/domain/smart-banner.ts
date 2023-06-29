@@ -1,4 +1,4 @@
-import { SmartBannerView, SmartBannerViewData } from '@adjustcom/smart-banner-sdk-layout';
+import { SmartBannerLayout, SmartBannerViewData, SmartBannerLayoutFactory } from '@adjustcom/smart-banner-sdk-layout';
 import { SmartBannerData, DeeplinkData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { BannerProvider } from './banner-provider';
@@ -25,7 +25,7 @@ export class SmartBanner {
   private bannerParent?: HTMLElement;
   private onCreated?: Callback;
   private onDismissed?: Callback;
-  private view: SmartBannerView | null = null;
+  private view: SmartBannerLayout | null = null;
   private url: string = window.location.href;
 
   constructor(
@@ -181,7 +181,7 @@ export class SmartBanner {
 
     const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
 
-    this.view = new SmartBannerView(renderData, trackerUrl, () => this.dismiss(bannerData));
+    this.view = SmartBannerLayoutFactory.createViewForSdk(renderData, trackerUrl, () => this.dismiss(bannerData));
     this.view.render(this.bannerParent);
 
     Logger.log('Smart banner rendered');
