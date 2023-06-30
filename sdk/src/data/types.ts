@@ -13,7 +13,9 @@ interface ContextData {
 interface LocalizationData {
   title: string;
   description: string;
-  button_label: string;
+  /** @deprecated */
+  button_label?: string;
+  button_text?: string;
   icon_url: string;
   context: { adgroup: string; };
 }
@@ -30,9 +32,11 @@ export interface SmartBannerResponseData {
   icon_url: string;
   title: string;
   title_color?: string;
-  description: string;
+  description?: string;
   description_color?: string;
-  button_label: string;
+  /** @deprecated */
+  button_label?: string;
+  button_text?: string;
   button_color?: string;
   background_color?: string;
   background_image_url?: string,
@@ -46,14 +50,16 @@ export interface SmartBannerResponseData {
   };
 }
 
-export type Localization = SnakeCaseKeysToCamelCase<LocalizationData>
+export type Localization = Omit<SnakeCaseKeysToCamelCase<LocalizationData>, 'buttonLabel'> & { buttonText: string }
 
 export type Context = SnakeCaseKeysToCamelCase<ContextData>
 
-export type SmartBannerData = SnakeCaseKeysToCamelCase<SmartBannerResponseData>
+export type SmartBannerData = Omit<SnakeCaseKeysToCamelCase<SmartBannerResponseData>, 'buttonLabel'> & { buttonText: string }
 
 export type DeeplinkData = {
   deepLinkPath?: string;
   androidAppSchema?: string;
   context?: Record<string, string>;
 }
+
+export { Position, BannerSize };
