@@ -20,6 +20,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   };
 
   const viewData = {
+    appName: 'App',
     title: 'my title',
     description: 'my description',
     buttonLabel: 'click',
