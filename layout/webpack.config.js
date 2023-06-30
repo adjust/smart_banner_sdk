@@ -1,29 +1,25 @@
 const path = require('path');
 const ESLintPlugin = require('eslint-webpack-plugin');
-const webpack = require('webpack');
 
-const namespace = 'adj-sb-layout';
-
-module.exports = (env, args) => ({
+module.exports = () => ({
   mode: 'production',
   entry: [path.resolve(__dirname, './index.ts')],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: 'adj-sb-layout.js',
+    library: 'AdjustSBLayout',
+    libraryTarget: 'umd',
   },
   plugins: [
     new ESLintPlugin(),
-    new webpack.DefinePlugin({
-      __ADJUST_SB__NAMESPACE: JSON.stringify(namespace)
-    }),
   ],
   resolve: {
     extensions: ['.ts', '.js', '.scss']
   },
   module: {
     rules: [{
-      use: 'ts-loader',
       test: /\.(ts|js)$/,
+      use: 'ts-loader',
       exclude: /node_modules/
     }, {
       test: /\.module\.s?css$/,

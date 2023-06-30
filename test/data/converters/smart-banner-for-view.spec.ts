@@ -1,6 +1,6 @@
 import { Localization, SmartBannerData } from '@sdk/data/types';
 import { convertSmartBannerDataForView } from '@sdk/data/converters/smart-banner-for-view';
-import { BannerSize, Position } from '@layout/src/data-types';
+import { BannerSize, Position } from '@layout';
 
 import 'jest-extended';
 
