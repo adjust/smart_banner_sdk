@@ -13,9 +13,9 @@ export class BannerBody {
   private title: HTMLElement;
   private description: HTMLElement;
 
-  constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
+  constructor(private banner: SmartBannerViewData, onDismiss: () => void, trackerUrl?: string) {
     this.dismissButton = new DismissButton(onDismiss, banner.dismissButtonColor);
-    this.appIcon = new AppIcon(banner.iconUrl, ''); // There is app name in data for now
+    this.appIcon = new AppIcon(banner.iconUrl, banner.appName);
     this.actionButton = new ActionButton(banner, trackerUrl);
 
     this.bannerBody = document.createElement('div');
@@ -28,11 +28,11 @@ export class BannerBody {
     this.description.className = styles['banner-text'];
   }
 
-  private renderBannerBody() {
-    // TODO it could be an image url, not only a color
+  private renderBannerBody(backgroundColor?: string, _backgroundImageUrl?: string) {
+    // TODO implement image background
 
-    if (this.banner.backgroundColor) {
-      this.bannerBody.style.backgroundColor = this.banner.backgroundColor;
+    if (backgroundColor) {
+      this.bannerBody.style.backgroundColor = backgroundColor;
     }
   }
 
@@ -79,7 +79,7 @@ export class BannerBody {
   }
 
   public render(root: HTMLElement) {
-    this.renderBannerBody();
+    this.renderBannerBody(this.banner.backgroundColor, this.banner.backgroundImageUrl);
 
     this.bannerBody.appendChild(this.renderInnerElements());
 
@@ -90,10 +90,11 @@ export class BannerBody {
     this.banner = banner;
 
     this.dismissButton.update(banner.dismissButtonColor);
-    this.appIcon.update(banner.iconUrl, ''); // FIXME should be app name here instead of empty string
+    this.appIcon.update(banner.iconUrl, banner.appName);
     this.actionButton.update(banner, trackerUrl);
     this.renderTitle(banner.title, banner.titleColor);
     this.renderDescription(banner.description, banner.descriptionColor);
+    this.renderBannerBody(banner.backgroundColor, banner.backgroundImageUrl)
   }
 
   public destroy() {

@@ -21,6 +21,7 @@ interface LocalizationData {
 export interface SmartBannerResponseData {
   id: string;
   name: string;
+  app_name: string;
   display_rule: string | null;
   is_previous_attribution_priority: boolean;
   position: Position;
