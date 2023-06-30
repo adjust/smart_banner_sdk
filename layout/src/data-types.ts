@@ -19,7 +19,7 @@ export interface SmartBannerViewData {
   titleColor?: string;
   description?: string;
   descriptionColor?: string;
-  buttonLabel: string;
+  buttonText: string;
   buttonTextColor?: string;
   buttonBackgroundColor?: string;
   backgroundColor?: string;

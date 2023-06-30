@@ -94,7 +94,7 @@ export class BannerBody {
     this.actionButton.update(banner, trackerUrl);
     this.renderTitle(banner.title, banner.titleColor);
     this.renderDescription(banner.description, banner.descriptionColor);
-    this.renderBannerBody(banner.backgroundColor, banner.backgroundImageUrl)
+    this.renderBannerBody(banner.backgroundColor, banner.backgroundImageUrl);
   }
 
   public destroy() {

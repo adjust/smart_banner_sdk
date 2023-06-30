@@ -9,7 +9,7 @@
     "display_rule": null,
     "name": "Banner",
     "icon_url": "https://icon/url",
-    "button_label": "Button",
+    "button_text": "Button",
     "is_previous_attribution_priority": true,
     "default_language": "en",
     "button_color": "#000000",
@@ -21,7 +21,7 @@
       "ru": {
         "title": "Заголовок",
         "description": "Описание",
-        "button_label": "Кнопка",
+        "button_text": "Кнопка",
         "context": {
           "adgroup": "ru"
         }
@@ -29,7 +29,7 @@
       "de": {
         "title": "Titel",
         "description": "Beschreibung",
-        "button_label": "Knopf",
+        "button_text": "Knopf",
         "context": {
           "adgroup": "de"
         }
