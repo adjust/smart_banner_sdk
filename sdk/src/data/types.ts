@@ -1,4 +1,4 @@
-import { Position, BannerSize } from '@adjustcom/smart-banner-sdk-layout';
+import { Position, BannerSize } from '@layout';
 import { SnakeCaseKeysToCamelCase } from '../utils/snake-to-camel-case';
 
 interface ContextData {
