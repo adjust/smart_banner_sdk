@@ -11,16 +11,16 @@ const devPort = 8080;
 module.exports = (env, args) => ({
   mode: 'production',
   entry: {
-    'adjust-smart-banner': [path.resolve(__dirname, '../layout/index.ts'), path.resolve(__dirname, './src/main.ts')],
-    'adjust-smart-banner.min': [path.resolve(__dirname, '../layout/index.ts'), path.resolve(__dirname, './src/main.ts')]
+    'adjust-smart-banner': path.resolve(__dirname, './src/main.ts'),
+    'adjust-smart-banner.min': path.resolve(__dirname, './src/main.ts')
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    library: 'AdjustSmartBanner',
-    libraryTarget: 'umd',
-    libraryExport: 'default'
+    library: {
+      name: 'AdjustSmartBanner',
+      type: 'umd',
+    },
   },
-  externals: /@adjustcom/,
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin({
@@ -37,7 +37,10 @@ module.exports = (env, args) => ({
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.scss']
+    extensions: ['.ts', '.js', '.scss'],
+    alias: {
+      '@layout': path.resolve(__dirname, '../layout/index.ts'),
+    },
   },
   module: {
     rules: [{

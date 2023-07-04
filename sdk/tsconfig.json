@@ -2,6 +2,15 @@
   "extends": "../tsconfig.json",
   "include": [
     "./src/**/*",
-    "../typings.d.ts"
-  ]
+    "../typings.d.ts",
+    "../layout/**/*"
+  ],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@layout": [
+        "../layout/index.ts"
+      ],
+    },
+  }
 }

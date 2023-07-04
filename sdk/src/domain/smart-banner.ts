@@ -1,4 +1,4 @@
-import { SmartBannerLayout, SmartBannerViewData, SmartBannerLayoutFactory } from '@adjustcom/smart-banner-sdk-layout';
+import { SmartBannerLayout, SmartBannerViewData, SmartBannerLayoutFactory } from '@layout';
 import { SmartBannerData, DeeplinkData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { BannerProvider } from './banner-provider';
