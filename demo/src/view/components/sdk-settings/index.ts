@@ -69,7 +69,6 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
         }
 
         sdkConfig.value = { ...sdkConfig.value, bannerParent: element as HTMLElement };
-        // select a new element
         // save it in config
       }
     }).render());
