@@ -65,10 +65,18 @@ export class SmartBannerView implements SmartBannerLayout {
 
   public show() {
     this.root.hidden = false;
+
+    if (this.placeholder) {
+      this.placeholder.hidden = false;
+    }
   }
 
   public hide() {
     this.root.hidden = true;
+
+    if (this.placeholder) {
+      this.placeholder.hidden = true;
+    }
   }
 
   public destroy() {
