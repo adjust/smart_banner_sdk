@@ -7,6 +7,9 @@
 }
 
 .smart-banner-parent {
+  position: relative;
+  z-index: -1;
+
   padding: 8px;
   margin: 24px 16px;
   background-color: $blue-200;
