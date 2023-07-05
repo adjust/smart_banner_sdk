@@ -4,7 +4,8 @@ import styles from './styles.module.scss';
 
 export interface HeaderProps {
   fixed: boolean;
-  onHeaderModeChanged: (fixed: boolean) => void
+  onHeaderModeChanged: (fixed: boolean) => void;
+  onChangeUrl: () => void;
 }
 
 export function Header(props: HeaderProps) {
@@ -63,9 +64,7 @@ export function Header(props: HeaderProps) {
 
     const navigateMenuItem = MenuItem({
       label: 'Change URL',
-      onClick: () => {
-        history.pushState({}, '', `/random-page-${Math.random()}`);
-      }
+      onClick: props.onChangeUrl
     });
 
     const mainMenu = MainMenu({ menuItems: [fixedHeaderMenuItem, navigateMenuItem] });
