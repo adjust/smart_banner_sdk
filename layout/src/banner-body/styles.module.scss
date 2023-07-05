@@ -6,6 +6,10 @@
   background: $bannerBackgroundColor;
   pointer-events: auto;
 
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
   .container {
     display: flex;
     align-items: center;
