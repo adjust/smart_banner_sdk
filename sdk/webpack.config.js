@@ -37,7 +37,7 @@ module.exports = (env, args) => ({
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.scss'],
+    extensions: ['.ts', '.js', '.scss', '.svg'],
     alias: {
       '@layout': path.resolve(__dirname, '../layout/index.ts'),
     },
@@ -61,6 +61,9 @@ module.exports = (env, args) => ({
         },
         { loader: 'sass-loader' }
       ]
+    }, {
+      test: /\.svg$/i,
+      use: 'svg-inline-loader'
     }]
   }
 });
