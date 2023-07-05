@@ -69,7 +69,7 @@ export function Header(props: HeaderProps) {
 
     const mainMenu = MainMenu({ menuItems: [fixedHeaderMenuItem, navigateMenuItem] });
     const renderred = mainMenu.render();
-    header.appendChild(renderred);
+    document.body.appendChild(renderred);
 
     return mainMenu;
   };
