@@ -29,6 +29,7 @@ export interface SmartBannerResponseData {
   position: Position;
   size: BannerSize;
   dismissal_period: number;
+  dismissal_button_color?: string;
   icon_url: string;
   title: string;
   title_color?: string;
@@ -37,6 +38,7 @@ export interface SmartBannerResponseData {
   /** @deprecated */
   button_label?: string;
   button_text?: string;
+  button_text_color?: string;
   button_color?: string;
   background_color?: string;
   background_image_url?: string,

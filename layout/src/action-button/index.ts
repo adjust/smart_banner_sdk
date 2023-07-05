@@ -14,8 +14,8 @@ export class ActionButton {
       this.link.style.color = this.banner.buttonTextColor;
     }
 
-    if (this.banner.buttonBackgroundColor) {
-      this.link.style.backgroundColor = this.banner.buttonBackgroundColor;
+    if (this.banner.buttonColor) {
+      this.link.style.backgroundColor = this.banner.buttonColor;
     }
   }
 
