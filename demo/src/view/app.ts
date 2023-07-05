@@ -6,7 +6,7 @@ import AdjustSmartBanner from '@adjustcom/smart-banner-sdk';
 export function App() {
   const fixedHeader = false;
 
-  const render = () => {
+  const render = (appRoot: HTMLElement) => {
     const elements: HTMLElement[] = [];
 
     const content = Content({ fixedHeader });
@@ -21,6 +21,8 @@ export function App() {
     }).render());
 
     elements.push(content.render());
+
+    appRoot.append(...elements)
 
     return elements;
   };
