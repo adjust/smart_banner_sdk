@@ -1,3 +1,4 @@
+import cross from '../../assets/cross.svg'
 import styles from './styles.module.scss';
 
 export class DismissButton {
@@ -10,6 +11,7 @@ export class DismissButton {
   }
 
   public render(root: HTMLElement) {
+    this.button.innerHTML = cross;
     this.button.className = styles.dismiss;
     this.button.addEventListener('click', this.onClick);
 
