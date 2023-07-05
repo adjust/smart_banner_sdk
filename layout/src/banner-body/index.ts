@@ -14,7 +14,7 @@ export class BannerBody {
   private description: HTMLElement;
 
   constructor(private banner: SmartBannerViewData, onDismiss: () => void, trackerUrl?: string) {
-    this.dismissButton = new DismissButton(onDismiss, banner.dismissButtonColor);
+    this.dismissButton = new DismissButton(onDismiss, banner.dismissalButtonColor);
     this.appIcon = new AppIcon(banner.iconUrl, banner.appName);
     this.actionButton = new ActionButton(banner, trackerUrl);
 
@@ -89,7 +89,7 @@ export class BannerBody {
   public update(banner: SmartBannerViewData, trackerUrl: string) {
     this.banner = banner;
 
-    this.dismissButton.update(banner.dismissButtonColor);
+    this.dismissButton.update(banner.dismissalButtonColor);
     this.appIcon.update(banner.iconUrl, banner.appName);
     this.actionButton.update(banner, trackerUrl);
     this.renderTitle(banner.title, banner.titleColor);

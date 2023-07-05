@@ -14,14 +14,14 @@ export interface SmartBannerViewData {
   size: BannerSize;
   iconUrl: string;
   appName: string;
-  dismissButtonColor?: string;
+  dismissalButtonColor?: string;
   title: string;
   titleColor?: string;
   description?: string;
   descriptionColor?: string;
   buttonText: string;
   buttonTextColor?: string;
-  buttonBackgroundColor?: string;
+  buttonColor?: string;
   backgroundColor?: string;
   backgroundImageUrl?: string;
 }
