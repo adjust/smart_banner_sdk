@@ -28,11 +28,13 @@ export class BannerBody {
     this.description.className = styles['banner-text'];
   }
 
-  private renderBannerBody(backgroundColor?: string, _backgroundImageUrl?: string) {
-    // TODO implement image background
-
+  private renderBannerBody(backgroundColor?: string, backgroundImageUrl?: string) {
     if (backgroundColor) {
       this.bannerBody.style.backgroundColor = backgroundColor;
+    }
+
+    if (backgroundImageUrl) {
+      this.bannerBody.style.backgroundImage = `url(${backgroundImageUrl})`;
     }
   }
 
@@ -47,7 +49,9 @@ export class BannerBody {
   }
 
   private renderDescription(text?: string, color?: string) {
-    this.description.innerText = text || ''; // FIXME: don't render empty text
+    if (text) {
+      this.description.innerText = text;
+    }
 
     if (color) {
       this.description.style.color = color;
