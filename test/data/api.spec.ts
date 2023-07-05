@@ -4,7 +4,7 @@ import { Network } from '@sdk/network/network';
 import { DeviceOS } from '@sdk/utils/detect-os';
 import { snakeToCamelCase } from '@sdk/utils/snake-to-camel-case';
 
-import serverResponseMock from '../../fake-data/smart_banners.json';
+import serverResponseMock from '../../fake-data/smart_banners_mock.json';
 
 jest.mock('@sdk/utils/logger');
 

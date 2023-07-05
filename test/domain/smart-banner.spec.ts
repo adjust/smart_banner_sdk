@@ -45,7 +45,7 @@ describe('Smart Banner tests', () => {
   const dismissalPeriod = serverResponseMock[0].dismissal_period * 1000;
 
   const renderDataMock = (locale?: string | null) => ({
-    buttonText: getLocalization(locale).button_label || serverResponseMock[0].button_label
+    buttonText: getLocalization(locale).button_label || serverResponseMock[0].button_text
   } as any); // return the only field because this is just a mock
 
   const trackerMock = jest.fn().mockReturnValue('deeplink');

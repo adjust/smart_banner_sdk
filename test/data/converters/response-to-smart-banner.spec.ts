@@ -12,7 +12,7 @@ describe('Convertation of server responce to SmartBannerData', () => {
 
     const expected = []
     for (let item of dataMock) {
-      expected.push(snakeToCamelCase(item))
+      expected.push({ ...snakeToCamelCase(item), appName: '' })
     }
 
     expect(actual).toEqual(expected);
@@ -27,7 +27,7 @@ describe('Convertation of server responce to SmartBannerData', () => {
 
     const expected = []
     for (let item of dataMock) {
-      expected.push({ ...snakeToCamelCase(item), buttonText: text })
+      expected.push({ ...snakeToCamelCase(item), buttonText: text, appName: '' })
     }
 
     expect(actual).toEqual(expected);
