@@ -37,6 +37,10 @@
     'init',
     'show',
     'hide',
+    'setLanguage',
+    'setAndroidAppSchema',
+    'setDeepLinkPath',
+    'setContext'
   ],
   function (context, queue, methodName) {
     context[methodName] = function () {
@@ -44,7 +48,3 @@
     };
   }
 );
-
-document.addEventListener('DOMContentLoaded', () => {
-  AdjustSmartBanner.init({ appToken: '6uzo4j2d8hz4' })
-})
