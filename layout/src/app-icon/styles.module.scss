@@ -1,10 +1,10 @@
 @import '../../assets/constants.scss';
 
 .app-icon {
+  min-width: 56px;
   width: 56px;
   height: 56px;
   overflow: hidden;
-  background-color: $buttonColor;
   border-radius: 8px;
 
   & .placeholder {
@@ -13,12 +13,12 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    color: $textColor;
+    color: $iconPlaceholderColor;
     font-weight: bold;
     font-size: 23px;
     font-family: $fontsFamily;
     line-height: 32px;
-    background-color: $shadowColor;
+    background-color: $iconPlaceholderBackgroundColor;
   }
 
   & .image {

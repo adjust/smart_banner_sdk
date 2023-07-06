@@ -1,4 +1,4 @@
-import { SmartBannerLayout, SmartBannerViewData, SmartBannerLayoutFactory } from '@adjustcom/smart-banner-sdk-layout';
+import { SmartBannerLayout, SmartBannerViewData, SmartBannerLayoutFactory } from '@layout';
 import { SmartBannerData, DeeplinkData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { BannerProvider } from './banner-provider';
@@ -44,7 +44,6 @@ export class SmartBanner {
 
     this.bannerProvider = new BannerProvider(
       appToken,
-      this.url,
       new SmartBannerRepository(networkApi),
       new BannerSelector(this.dismissHandler)
     );
@@ -157,7 +156,7 @@ export class SmartBanner {
   }
 
   private init() {
-    this.bannerProvider.fetchBanner()
+    this.bannerProvider.fetchBanner(this.url)
       .then(() => {
         if (!this.bannerProvider.banner) {
           return;
@@ -245,7 +244,7 @@ export class SmartBanner {
     if (this.bannerProvider.isLoading) {
       Logger.log(`Fetching banners now, ${action} banner after fetch finished`);
 
-      this.bannerProvider.fetchBanner()
+      this.bannerProvider.fetchBanner(this.url)
         .then(() => {
           Logger.log(`Banners fetch finished, ${action} Smart banner now`);
           this.changeVisibility(action);

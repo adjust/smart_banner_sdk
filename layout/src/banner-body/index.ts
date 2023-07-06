@@ -14,7 +14,7 @@ export class BannerBody {
   private description: HTMLElement;
 
   constructor(private banner: SmartBannerViewData, onDismiss: () => void, trackerUrl?: string) {
-    this.dismissButton = new DismissButton(onDismiss, banner.dismissButtonColor);
+    this.dismissButton = new DismissButton(onDismiss, banner.dismissalButtonColor);
     this.appIcon = new AppIcon(banner.iconUrl, banner.appName);
     this.actionButton = new ActionButton(banner, trackerUrl);
 
@@ -28,11 +28,13 @@ export class BannerBody {
     this.description.className = styles['banner-text'];
   }
 
-  private renderBannerBody(backgroundColor?: string, _backgroundImageUrl?: string) {
-    // TODO implement image background
-
+  private renderBannerBody(backgroundColor?: string, backgroundImageUrl?: string) {
     if (backgroundColor) {
       this.bannerBody.style.backgroundColor = backgroundColor;
+    }
+
+    if (backgroundImageUrl) {
+      this.bannerBody.style.backgroundImage = `url(${backgroundImageUrl})`;
     }
   }
 
@@ -47,7 +49,9 @@ export class BannerBody {
   }
 
   private renderDescription(text?: string, color?: string) {
-    this.description.innerText = text || ''; // FIXME: don't render empty text
+    if (text) {
+      this.description.innerText = text;
+    }
 
     if (color) {
       this.description.style.color = color;
@@ -89,12 +93,12 @@ export class BannerBody {
   public update(banner: SmartBannerViewData, trackerUrl: string) {
     this.banner = banner;
 
-    this.dismissButton.update(banner.dismissButtonColor);
+    this.dismissButton.update(banner.dismissalButtonColor);
     this.appIcon.update(banner.iconUrl, banner.appName);
     this.actionButton.update(banner, trackerUrl);
     this.renderTitle(banner.title, banner.titleColor);
     this.renderDescription(banner.description, banner.descriptionColor);
-    this.renderBannerBody(banner.backgroundColor, banner.backgroundImageUrl)
+    this.renderBannerBody(banner.backgroundColor, banner.backgroundImageUrl);
   }
 
   public destroy() {

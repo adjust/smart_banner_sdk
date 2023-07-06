@@ -8,7 +8,7 @@ export interface BannerParentProps {
 export function BannerParent(props: BannerParentProps) {
   const render = () => {
     const wrapper = document.createElement('div');
-    wrapper.className = 'flex-column';
+    wrapper.className = 'flex-row';
 
     wrapper.innerHTML = html;
     const input = wrapper.querySelector('#settings-view-root') as HTMLInputElement;

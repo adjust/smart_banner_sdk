@@ -9,5 +9,4 @@ if (!appRoot) {
   document.body.appendChild(appRoot);
 }
 
-const app = App().render();
-appRoot.append(...app);
+App().render(appRoot);

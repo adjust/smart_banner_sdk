@@ -1,19 +1,19 @@
 @import '../assets/constants.scss';
 
 .banner-placeholder {
-  height: 76px;
+  height: $bannerHeight;
 }
 
 .banner {
-  height: 76px;
+  height: $bannerHeight;
   pointer-events: none;
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 1;
 
   &.custom-parent {
-    z-index: auto;
+    z-index: initial;
     position: relative;
   }
 

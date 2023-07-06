@@ -14,8 +14,8 @@ export class ActionButton {
       this.link.style.color = this.banner.buttonTextColor;
     }
 
-    if (this.banner.buttonBackgroundColor) {
-      this.link.style.backgroundColor = this.banner.buttonBackgroundColor;
+    if (this.banner.buttonColor) {
+      this.link.style.backgroundColor = this.banner.buttonColor;
     }
   }
 
@@ -29,7 +29,7 @@ export class ActionButton {
 
   public render(root: HTMLElement) {
     this.link.className = styles.action;
-    this.link.innerText = this.banner.buttonLabel;
+    this.link.innerText = this.banner.buttonText;
 
     this.applyUrl();
     this.applyColors();
@@ -41,7 +41,7 @@ export class ActionButton {
     this.banner = banner;
     this.trackerUrl = trackerUrl;
 
-    this.link.innerText = this.banner.buttonLabel;
+    this.link.innerText = this.banner.buttonText;
 
     this.applyUrl();
     this.applyColors();

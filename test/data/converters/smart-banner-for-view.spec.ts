@@ -23,7 +23,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
     appName: 'App',
     title: 'my title',
     description: 'my description',
-    buttonLabel: 'click',
+    buttonText: 'click',
     position: Position.Top,
     size: BannerSize.Small,
     buttonColor: '#000000',
@@ -43,7 +43,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   const translations = {
     title: 'мой заголовок',
     description: 'мое описание',
-    buttonLabel: 'нажми',
+    buttonText: 'нажми',
   };
 
   const localizations = { ru: { ...translations, ...localizedContext } as Localization };

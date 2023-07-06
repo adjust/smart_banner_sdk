@@ -16,11 +16,11 @@ module.exports = (env, args) => ({
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    library: 'AdjustSmartBanner',
-    libraryTarget: 'umd',
-    libraryExport: 'default'
+    library: {
+      name: 'AdjustSmartBanner',
+      type: 'umd',
+    },
   },
-  externals: /@adjustcom/,
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin({
@@ -37,7 +37,10 @@ module.exports = (env, args) => ({
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.scss']
+    extensions: ['.ts', '.js', '.scss', '.svg'],
+    alias: {
+      '@layout': path.resolve(__dirname, '../layout/index.ts'),
+    },
   },
   module: {
     rules: [{
@@ -58,6 +61,9 @@ module.exports = (env, args) => ({
         },
         { loader: 'sass-loader' }
       ]
+    }, {
+      test: /\.svg$/i,
+      use: 'svg-inline-loader'
     }]
   }
 });
