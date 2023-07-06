@@ -18,16 +18,21 @@ The recommended way to install the SDK is npm:
 npm install @adjustcom/smart-banner-sdk --save
 ```
 
-But the sdk is also available through CDN and then access it through global `AdjustSmartBanner`.
+And then import it into your code:
+```
+import AdjustSmartBanner from '@adjustcom/smart-banner-sdk'
+```
+
+The sdk is also available through CDN and then accessible through global `AdjustSmartBanner`.
 
 To <a id="loading-snippet">load Smart Banner SDK through CDN</a> paste the following snippet into the `<head>` tag:
 ```html
 <script type="application/javascript">
-!function(n,t,e,a,r,o,s,c,i){var d=r+"_q";n[r]=n[r]||{},n[d]=n[d]||[];for(var u=0;u<o.length;u++)s(n[r],n[d],o[u]);c=t.createElement(e),i=t.getElementsByTagName(e)[0],c.async=!0,c.src="https://cdn.adjust.com/adjust-smart-banner-latest.min.js",c.onload=function(){for(var t=0;t<n[d].length;t++)n[r][n[d][t][0]].apply(n[r],n[d][t][1]);n[d]=[]},i.parentNode.insertBefore(c,i)}(window,document,"script",0,"AdjustSmartBanner",["init","show","hide"],(function(n,t,e){n[e]=function(){t.push([e,arguments])}}));
+!function(n,t,e,a,o,s,r,c,i){var u=o+"_q";n[o]=n[o]||{},n[u]=n[u]||[];for(var d=0;d<s.length;d++)r(n[o],n[u],s[d]);c=t.createElement(e),i=t.getElementsByTagName(e)[0],c.async=!0,c.src="https://cdn.adjust.com/adjust-smart-banner-latest.min.js",c.onload=function(){n[o]=n[o].default;for(var t=0;t<n[u].length;t++)n[o][n[u][t][0]]?n[o][n[u][t][0]].apply(n[o],n[u][t][1]):console.error("No such function found in "+o+": "+n[u][t][0]);n[u]=[]},i.parentNode.insertBefore(c,i)}(window,document,"script",0,"AdjustSmartBanner",["init","show","hide","setLanguage","setAndroidAppSchema","setDeepLinkPath","setContext"],(function(n,t,e){n[e]=function(){t.push([e,arguments])}}));
 </script>
 ```
 
-When loading the sdk through CDN we suggest using minified version. You can target specific version like `https://cdn.adjust.com/adjust-smart-banner-0.0.3.min.js`, or you can target latest version `https://cdn.adjust.com/adjust-smart-banner-latest.min.js` if you want automatic updates without need to change the target file. The sdk files are cached so they are served as fast as possible, and the cache is refreshed every half an hour. If you want updates immediately make sure to target specific version.
+When loading the sdk through CDN we suggest using minified version. You can target specific version like `https://cdn.adjust.com/adjust-smart-banner-0.0.4.min.js`, or you can target latest version `https://cdn.adjust.com/adjust-smart-banner-latest.min.js` if you want automatic updates without need to change the target file. The sdk files are cached so they are served as fast as possible, and the cache is refreshed every half an hour. If you want updates immediately make sure to target specific version.
 
 
 ## <a id="initialization">Initialization</a>
@@ -114,6 +119,19 @@ AdjustSmartBanner.init({
   context: {
     promotion_id: "new_user"
   }
+})
+```
+
+#### <a id="init-bannerparent">**bannerParent**</a> `HTMLElement`
+
+By default banner is attached to `document.body`. To change this behaviour you could specify the parent for the banner. It should be an existing `HTMLElement`.
+
+```js
+const element = document.querySelector('#root-for-banner');
+
+AdjustSmartBanner.init({
+    // other initialisation parameters including mandatory ones
+    bannerParent: element
 })
 ```
 
