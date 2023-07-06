@@ -50,7 +50,10 @@ export class BannerBody {
 
   private renderDescription(text?: string, color?: string) {
     if (text) {
+      this.description.hidden = false;
       this.description.innerText = text;
+    } else {
+      this.description.hidden = true;
     }
 
     if (color) {
