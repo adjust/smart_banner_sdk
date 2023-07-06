@@ -178,6 +178,10 @@ export class SmartBanner {
   private createView(bannerData: SmartBannerData) {
     Logger.info(`Render banner: ${bannerData.title}`);
 
+    if (!this.bannerParent) {
+      Logger.warn('Specified banner parent not found, banner will be attached to document.body');
+    }
+
     const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
 
     this.view = SmartBannerLayoutFactory.createViewForSdk(renderData, trackerUrl, () => this.dismiss(bannerData));
