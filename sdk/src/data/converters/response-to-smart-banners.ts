@@ -1,4 +1,4 @@
-import { SmartBannerData, SmartBannerResponseData } from '../types';
+import { SmartBannerData, SmartBannerResponseData, Position, BannerSize } from '../types';
 import { snakeToCamelCase } from '../../utils/snake-to-camel-case';
 
 export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): SmartBannerData[] | null {
@@ -9,9 +9,19 @@ export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): 
   const banners: Array<SmartBannerData> = [];
 
   for (const item of data) {
-    const banner: SmartBannerData = snakeToCamelCase<SmartBannerResponseData>(item);
+    const data = snakeToCamelCase<SmartBannerResponseData>(item);
+    const { buttonLabel, ...rest } = data;
 
-    // TODO: is any validation needed?
+    // TODO: Maybe it's needed to ignore this banner if all this fields are missing?
+    const banner: SmartBannerData = {
+      ...rest,
+      position: data.position || Position.Top,
+      size: data.size || BannerSize.Small,
+      appName: data.appName || '',
+      title: data.title || '',
+      buttonText: buttonLabel || data.buttonText || '',
+      dismissalPeriod: (data.dismissalPeriod !== null && data.dismissalPeriod !== undefined) ? data.dismissalPeriod : 86400
+    };
 
     banners.push(banner);
   }

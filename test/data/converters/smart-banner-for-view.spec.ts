@@ -1,6 +1,6 @@
 import { Localization, SmartBannerData } from '@sdk/data/types';
 import { convertSmartBannerDataForView } from '@sdk/data/converters/smart-banner-for-view';
-import { BannerSize, Position } from '@layout/src/data-types';
+import { BannerSize, Position } from '@layout';
 
 import 'jest-extended';
 
@@ -20,9 +20,10 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   };
 
   const viewData = {
+    appName: 'App',
     title: 'my title',
     description: 'my description',
-    buttonLabel: 'click',
+    buttonText: 'click',
     position: Position.Top,
     size: BannerSize.Small,
     buttonColor: '#000000',
@@ -42,7 +43,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   const translations = {
     title: 'мой заголовок',
     description: 'мое описание',
-    buttonLabel: 'нажми',
+    buttonText: 'нажми',
   };
 
   const localizations = { ru: { ...translations, ...localizedContext } as Localization };

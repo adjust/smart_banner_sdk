@@ -1,148 +1,121 @@
 [
   {
-    "title_color": "#FFFF80",
-    "position": "bottom",
-    "description": "my description",
-    "size": "small",
-    "id": "4dcda597-f25d-4d84-a510-ada81f67fa5e",
-    "description_color": "#FF66FF",
-    "display_rule": "http[s]?:\\/\\/.*\\.\\w*\\/my-page\\/?(\\?.*)?$",
-    "name": "Adjust banner 1",
-    "icon_url": "https://www.apptrace.com/api/app/1386566985/artwork_url_small",
-    "button_label": "click",
-    "is_previous_attribution_priority": true,
-    "default_language": "en",
-    "button_color": "#000000",
+    "id": "7091c9c2-981d-4d40-9add-675e5fe4b827",
+    "title": "yara-sb-sdk-test",
+    "description": "Download now and enjoy!",
+    "button_text": "Download",
     "dismissal_period": 86400,
-    "title": "my title",
-    "background_color": "#99FFCC",
-    "background_image_url": "None",
-    "localizations": {},
-    "tracker_url": {
-      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}&engagement_type=fallback_click",
-      "context": {
-        "domain": "app.adjust.com",
-        "tracker": "mz6ie90",
-        "campaign": "Adjust banner 1",
-        "adgroup": "en",
-        "deeplink": null
-      }
-    }
-  },
-  {
-    "title_color": "#FFFF80",
+    "default_language": "en",
+    "icon_url": null,
     "position": "top",
-    "description": "my description",
     "size": "small",
-    "id": "7c1bb554-a5ee-471c-af05-127b34479b30",
-    "description_color": "#FF66FF",
+    "button_label": "Download",
+    "title_color": null,
+    "button_color": null,
+    "background_color": null,
+    "description_color": null,
+    "background_image_url": null,
     "display_rule": null,
-    "name": "Adjust banner 2",
-    "icon_url": "https://www.apptrace.com/api/app/1386566985/artwork_url_small",
-    "button_label": "click",
-    "is_previous_attribution_priority": false,
-    "default_language": "en",
-    "button_color": "#000000",
-    "dismissal_period": 86400,
-    "title": "my titile",
-    "background_color": "#99FFCC",
-    "background_image_url": "None",
     "localizations": {
-      "de": {
-        "title": "mein Titel",
-        "description": "meine Beschreibung",
-        "button_label": "anklicken",
-        "context": {
-          "adgroup": "de"
-        }
-      }
-    },
-    "tracker_url": {
-      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}",
-      "context": {
-        "domain": "app.adjust.com",
-        "tracker": "mz6ie90",
-        "campaign": "Adjust banner 2",
-        "adgroup": "en",
-        "deeplink": null
-      }
-    }
-  },
-  {
-    "button_color": "#000000",
-    "is_previous_attribution_priority": true,
-    "default_language": "en",
-    "background_color": "#000000",
-    "dismissal_period": 86400,
-    "title": "my title",
-    "background_image_url": "None",
-    "title_color": "#FFFF80",
-    "position": "bottom",
-    "description": "my description",
-    "size": "small",
-    "id": "652b2aae-2038-4cb0-89dd-6b9457fd831b",
-    "description_color": "#FF66FF",
-    "display_rule": "((http|https)?:\/\/)localhost:8787(\\?|\\/|$)",
-    "name": "banner test 0",
-    "icon_url": "https://www.apptrace.com/api/app/1386566985/artwork_url_small",
-    "button_label": "click",
-    "localizations": {
-      "de": {
-        "title": "mein Titel",
-        "description": "meine Beschreibung",
-        "button_label": "anklicken",
-        "context": {
-          "adgroup": "de"
-        }
-      },
       "ru": {
-        "title": "мой заголовок",
-        "description": "мое описание",
-        "button_label": "нажми",
+        "title": "Заголовок",
+        "description": "Это описательное описание",
+        "button_label": "Клик!",
+        "button_text": "Клик!",
         "context": {
           "adgroup": "ru"
         }
       }
     },
     "tracker_url": {
-      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}&engagement_type=fallback_click",
+      "template": "https://{domain}/{deep_link_path}?adj_t={tracker}&adj_campaign={campaign}&adj_adgroup={adgroup}",
       "context": {
-        "domain": "app.adjust.com",
-        "tracker": "qtzy19",
-        "campaign": "banner test 0",
+        "tracker": "g01qa9",
+        "campaign": "Banner!@2",
         "adgroup": "en",
-        "deeplink": null
+        "domain": "m25y.adj.st",
+        "deep_link_path": "some-path/promo={promo}&meow"
       }
-    }
+    },
+    "app_name": null
   },
   {
-    "button_color": "#000000",
-    "is_previous_attribution_priority": true,
-    "default_language": "en",
-    "background_color": "#000000",
+    "id": "8d6a1779-e757-45e2-98e6-3592e72b84b6",
+    "title": "Banner 2",
+    "description": "Download now and enjoy!",
+    "button_text": "Download",
     "dismissal_period": 86400,
-    "title": "my title",
-    "background_image_url": "None",
-    "title_color": "#FFFF80",
-    "position": "bottom",
-    "description": "my description",
+    "default_language": "en",
+    "icon_url": null,
+    "position": "top",
     "size": "small",
-    "id": "any-fake-id",
-    "description_color": "#FF66FF",
-    "display_rule": "((http|https)?:\/\/)localhost:8787(\\?|\\/|$)",
-    "name": "banner test 2",
-    "icon_url": "https://www.apptrace.com/api/app/1386566985/artwork_url_small",
-    "button_label": "click",
+    "button_label": "Download",
+    "title_color": null,
+    "button_color": null,
+    "background_color": null,
+    "description_color": null,
+    "background_image_url": null,
+    "display_rule": "(\\/?\\?|&)param(&|$)",
+    "localizations": {
+      "ar": {
+        "title": "TestingBanner345fgg",
+        "description": "sdfsffsdfdfdgfddg",
+        "button_label": "sdsfsdf",
+        "button_text": "sdsfsdf",
+        "context": {
+          "adgroup": "ar"
+        }
+      },
+      "af": {
+        "title": "T00A-NoName-2345543w",
+        "description": "download",
+        "button_label": "button",
+        "button_text": "button",
+        "context": {
+          "adgroup": "af"
+        }
+      }
+    },
+    "tracker_url": {
+      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}",
+      "context": {
+        "tracker": "g01qa9",
+        "campaign": "Banner-2",
+        "adgroup": "en",
+        "domain": "app.adjust.com"
+      }
+    },
+    "app_name": null
+  },
+  {
+    "id": "2f11e88a-d0e6-4c48-a78e-586254352001",
+    "title": "yara-sb-sdk-test",
+    "description": "Download now and enjoy!",
+    "button_text": "Download",
+    "dismissal_period": 86400,
+    "default_language": "en",
+    "icon_url": "https://static.vecteezy.com/system/resources/previews/001/203/858/non_2x/bee-png.png",
+    "position": "top",
+    "size": "small",
+    "button_label": "Download",
+    "title_color": "#5E3006",
+    "button_color": "#B77D05",
+    "background_color": "#FFFFFF",
+    "button_text_color": "#F6F5F0",
+    "description_color": "#5E3006",
+    "background_image_url": "https://adjustweb.neocities.org/combs.png",
+    "dismissal_button_color": "#5E3006",
+    "display_rule": "http[s]?:\\/\\/.*\\w*\\/about\\/?(\\?.*)?$",
     "localizations": {},
     "tracker_url": {
-      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}&engagement_type=fallback_click",
+      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}",
       "context": {
-        "domain": "app.adjust.com",
-        "tracker": "qtzy19",
-        "campaign": "banner test 2",
+        "tracker": "g01qa9",
+        "campaign": "image-background",
         "adgroup": "en",
-        "deeplink": null
+        "domain": "app.adjust.com"
       }
-    }
+    },
+    "app_name": null
   }
 ]

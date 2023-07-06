@@ -21,7 +21,7 @@ describe('Convertation of SmartBannerData to TrackerData', () => {
     ru: {
       title: 'мой заголовок',
       description: 'мое описание',
-      buttonLabel: 'нажми',
+      buttonText: 'нажми',
       context: localizationContext
     } as Localization
   } as { [key: string]: Localization };

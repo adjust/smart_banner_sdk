@@ -3,17 +3,28 @@ import { BannerBody } from './banner-body';
 
 import styles from './styles.module.scss';
 
-// eslint-disable-next-line 
-const emptyHandler = () => { }
+export interface SmartBannerLayout {
+  render: (parent?: HTMLElement) => void;
+  update: (banner: SmartBannerViewData, trackerUrl?: string) => void;
+  show: () => void;
+  hide: () => void;
+  destroy: () => void;
+}
 
-export class SmartBannerView {
+// eslint-disable-next-line 
+const emptyHandler = () => { };
+
+export class SmartBannerView implements SmartBannerLayout {
   private root: HTMLElement;
   private placeholder: HTMLElement | null = null;
   private bannerBody: BannerBody;
 
-  constructor(private banner: SmartBannerViewData, trackerUrl = '', onDismiss = emptyHandler) {
+  /**
+   * @deprecated Please don't create this class directly anymore. Instead use SmartBannerLayoutFactory.createPreview method.
+   */
+  constructor(private banner: SmartBannerViewData, trackerUrl = '', onDismiss: () => void = emptyHandler) {
     this.root = document.createElement('div');
-    this.bannerBody = new BannerBody(banner, trackerUrl, onDismiss);
+    this.bannerBody = new BannerBody(banner, onDismiss, trackerUrl);
   }
 
   public update(banner: SmartBannerViewData, trackerUrl = '') {
@@ -54,10 +65,18 @@ export class SmartBannerView {
 
   public show() {
     this.root.hidden = false;
+
+    if (this.placeholder) {
+      this.placeholder.hidden = false;
+    }
   }
 
   public hide() {
     this.root.hidden = true;
+
+    if (this.placeholder) {
+      this.placeholder.hidden = true;
+    }
   }
 
   public destroy() {

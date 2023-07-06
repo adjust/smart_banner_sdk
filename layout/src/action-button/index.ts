@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 export class ActionButton {
   private link: HTMLAnchorElement;
 
-  constructor(private banner: SmartBannerViewData, private trackerUrl: string) {
+  constructor(private banner: SmartBannerViewData, private trackerUrl: string = '') {
     this.link = document.createElement('a');
   }
 
@@ -14,16 +14,24 @@ export class ActionButton {
       this.link.style.color = this.banner.buttonTextColor;
     }
 
-    if (this.banner.buttonBackgroundColor) {
-      this.link.style.backgroundColor = this.banner.buttonBackgroundColor;
+    if (this.banner.buttonColor) {
+      this.link.style.backgroundColor = this.banner.buttonColor;
+    }
+  }
+
+  private applyUrl() {
+    if (this.trackerUrl && this.trackerUrl !== '') {
+      this.link.href = this.trackerUrl;
+    } else {
+      this.link.removeAttribute('href');
     }
   }
 
   public render(root: HTMLElement) {
     this.link.className = styles.action;
-    this.link.innerText = this.banner.buttonLabel;
-    this.link.href = this.trackerUrl;
+    this.link.innerText = this.banner.buttonText;
 
+    this.applyUrl();
     this.applyColors();
 
     root.appendChild(this.link);
@@ -33,9 +41,9 @@ export class ActionButton {
     this.banner = banner;
     this.trackerUrl = trackerUrl;
 
-    this.link.href = this.trackerUrl;
-    this.link.innerText = this.banner.buttonLabel;
+    this.link.innerText = this.banner.buttonText;
 
+    this.applyUrl();
     this.applyColors();
   }
 }

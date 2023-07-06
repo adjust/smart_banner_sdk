@@ -1,4 +1,4 @@
-import { SmartBannerView, SmartBannerViewData } from '@adjustcom/smart-banner-sdk-layout';
+import { SmartBannerLayout, SmartBannerViewData, SmartBannerLayoutFactory } from '@layout';
 import { SmartBannerData, DeeplinkData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { BannerProvider } from './banner-provider';
@@ -25,7 +25,7 @@ export class SmartBanner {
   private bannerParent?: HTMLElement;
   private onCreated?: Callback;
   private onDismissed?: Callback;
-  private view: SmartBannerView | null = null;
+  private view: SmartBannerLayout | null = null;
   private url: string = window.location.href;
 
   constructor(
@@ -44,7 +44,6 @@ export class SmartBanner {
 
     this.bannerProvider = new BannerProvider(
       appToken,
-      this.url,
       new SmartBannerRepository(networkApi),
       new BannerSelector(this.dismissHandler)
     );
@@ -157,7 +156,7 @@ export class SmartBanner {
   }
 
   private init() {
-    this.bannerProvider.fetchBanner()
+    this.bannerProvider.fetchBanner(this.url)
       .then(() => {
         if (!this.bannerProvider.banner) {
           return;
@@ -179,9 +178,13 @@ export class SmartBanner {
   private createView(bannerData: SmartBannerData) {
     Logger.info(`Render banner: ${bannerData.title}`);
 
+    if (!this.bannerParent) {
+      Logger.warn('Specified banner parent not found, banner will be attached to document.body');
+    }
+
     const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
 
-    this.view = new SmartBannerView(renderData, trackerUrl, () => this.dismiss(bannerData));
+    this.view = SmartBannerLayoutFactory.createViewForSdk(renderData, trackerUrl, () => this.dismiss(bannerData));
     this.view.render(this.bannerParent);
 
     Logger.log('Smart banner rendered');
@@ -245,7 +248,7 @@ export class SmartBanner {
     if (this.bannerProvider.isLoading) {
       Logger.log(`Fetching banners now, ${action} banner after fetch finished`);
 
-      this.bannerProvider.fetchBanner()
+      this.bannerProvider.fetchBanner(this.url)
         .then(() => {
           Logger.log(`Banners fetch finished, ${action} Smart banner now`);
           this.changeVisibility(action);

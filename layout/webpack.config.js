@@ -14,7 +14,7 @@ module.exports = () => ({
     new ESLintPlugin(),
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.scss']
+    extensions: ['.ts', '.js', '.scss', '.svg']
   },
   module: {
     rules: [{
@@ -35,6 +35,9 @@ module.exports = () => ({
         },
         { loader: 'sass-loader' }
       ]
+    }, {
+      test: /\.svg$/i,
+      use: 'svg-inline-loader'
     }]
   }
 });

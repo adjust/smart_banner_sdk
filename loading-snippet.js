@@ -15,8 +15,14 @@
   script.src = url;
 
   script.onload = function () {
+    window[sdkName] = window[sdkName].default; // I can't make Webpack to export library as I want :\
+
     for (var i = 0; i < window[queueName].length; i++) {
-      window[sdkName][window[queueName][i][0]].apply(window[sdkName], window[queueName][i][1]);
+      if (!window[sdkName][window[queueName][i][0]]) {
+        console.error('No such function found in ' + sdkName + ': ' + window[queueName][i][0])
+      } else {
+        window[sdkName][window[queueName][i][0]].apply(window[sdkName], window[queueName][i][1]);
+      }
     }
     window[queueName] = [];
   };
@@ -31,6 +37,10 @@
     'init',
     'show',
     'hide',
+    'setLanguage',
+    'setAndroidAppSchema',
+    'setDeepLinkPath',
+    'setContext'
   ],
   function (context, queue, methodName) {
     context[methodName] = function () {

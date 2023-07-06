@@ -6,12 +6,12 @@ import { LogLevel } from './log-level';
 import { Context } from './context';
 import { SettingsPreview } from './settings-preview';
 import { SdkMethods } from './sdk-methods';
+import { BannerParent } from './banner-parent';
 import { defaultSdkSettings } from 'demo/src/data/default-sdk-settings';
 import styles from './styles.module.scss';
 
 // TODO it's too 'deep' for this dependency, need to move it somewhere to App level or something like that
 import AdjustSmartBanner from '@adjustcom/smart-banner-sdk';
-import { BannerParent } from './banner-parent';
 
 export interface SdkSettingsProps {
   sdkSettings?: InitialisationOptions
@@ -69,7 +69,6 @@ export function SdkSettings(props: SdkSettingsProps = {}) {
         }
 
         sdkConfig.value = { ...sdkConfig.value, bannerParent: element as HTMLElement };
-        // select a new element
         // save it in config
       }
     }).render());
