@@ -22,7 +22,7 @@ export function App() {
 
     elements.push(content.render());
 
-    appRoot.append(...elements)
+    appRoot.append(...elements);
 
     return elements;
   };
