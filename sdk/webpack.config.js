@@ -1,6 +1,7 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const webpack = require('webpack');
 const packageJson = require('./package.json');
 
@@ -25,7 +26,8 @@ module.exports = (env, args) => ({
     minimize: true,
     minimizer: [new TerserPlugin({
       include: /\.min\.js$/
-    })]
+    }),
+    new CssMinimizerPlugin()]
   },
   plugins: [
     new ESLintPlugin(),
