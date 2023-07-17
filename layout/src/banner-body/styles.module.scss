@@ -13,7 +13,9 @@
   .container {
     display: flex;
     align-items: center;
-    padding: 12px 8px 12px 0;
+    padding: 12px;
+    padding-inline-start: 0;
+    padding-inline-end: 8px;
 
     .text-container {
       flex: 1 1 0%;
