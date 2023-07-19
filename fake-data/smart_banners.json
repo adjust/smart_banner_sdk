@@ -1,8 +1,8 @@
 [
   {
     "id": "7091c9c2-981d-4d40-9add-675e5fe4b827",
-    "title": "yara-sb-sdk-test",
-    "description": "Download now and enjoy!",
+    "title": "Small",
+    "description": "Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy!",
     "button_text": "Download",
     "dismissal_period": 86400,
     "default_language": "en",
@@ -15,11 +15,11 @@
     "background_color": null,
     "description_color": null,
     "background_image_url": null,
-    "display_rule": null,
+    "display_rule": "http[s]?:\\/\\/.[^?#]*\\/small\\/?(.*)?$",
     "localizations": {
       "ru": {
         "title": "Заголовок",
-        "description": "Это описательное описание",
+        "description": "Это описательное описание, оно очень",
         "button_label": "Клик!",
         "button_text": "Клик!",
         "context": {
@@ -41,41 +41,22 @@
   },
   {
     "id": "8d6a1779-e757-45e2-98e6-3592e72b84b6",
-    "title": "Banner 2",
-    "description": "Download now and enjoy!",
+    "title": "Medium",
+    "description": "Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy!",
     "button_text": "Download",
     "dismissal_period": 86400,
     "default_language": "en",
     "icon_url": null,
     "position": "top",
-    "size": "small",
+    "size": "medium",
     "button_label": "Download",
     "title_color": null,
     "button_color": null,
     "background_color": null,
     "description_color": null,
     "background_image_url": null,
-    "display_rule": "(\\/?\\?|&)param(&|$)",
-    "localizations": {
-      "ar": {
-        "title": "TestingBanner345fgg",
-        "description": "sdfsffsdfdfdgfddg",
-        "button_label": "sdsfsdf",
-        "button_text": "sdsfsdf",
-        "context": {
-          "adgroup": "ar"
-        }
-      },
-      "af": {
-        "title": "T00A-NoName-2345543w",
-        "description": "download",
-        "button_label": "button",
-        "button_text": "button",
-        "context": {
-          "adgroup": "af"
-        }
-      }
-    },
+    "display_rule": "http[s]?:\\/\\/.[^?#]*\\/medium\\/?(.*)?$",
+    "localizations": {},
     "tracker_url": {
       "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}",
       "context": {
@@ -89,14 +70,14 @@
   },
   {
     "id": "2f11e88a-d0e6-4c48-a78e-586254352001",
-    "title": "yara-sb-sdk-test",
-    "description": "Download now and enjoy!",
+    "title": "Large",
+    "description": "Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy! Download now and enjoy!",
     "button_text": "Download",
     "dismissal_period": 86400,
     "default_language": "en",
     "icon_url": "https://static.vecteezy.com/system/resources/previews/001/203/858/non_2x/bee-png.png",
     "position": "top",
-    "size": "small",
+    "size": "large",
     "button_label": "Download",
     "title_color": "#5E3006",
     "button_color": "#B77D05",
@@ -105,7 +86,7 @@
     "description_color": "#5E3006",
     "background_image_url": "https://adjustweb.neocities.org/combs.png",
     "dismissal_button_color": "#5E3006",
-    "display_rule": "http[s]?:\\/\\/.*\\w*\\/about\\/?(\\?.*)?$",
+    "display_rule": "http[s]?:\\/\\/.[^?#]*\\/large\\/?(.*)?$",
     "localizations": {},
     "tracker_url": {
       "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}",
