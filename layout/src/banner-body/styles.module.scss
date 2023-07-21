@@ -1,14 +1,30 @@
-@import '../../assets/constants.scss';
+@use 'assets/size-small.scss' as small;
+@use 'assets/size-medium.scss' as medium;
+@use 'assets/size-large.scss' as large;
+
+@import 'assets/colors.scss';
+@import 'assets/fonts.scss';
 
 .banner-body {
   margin: 0 auto;
-  max-width: $bannerMaxWidth;
   background: $bannerBackgroundColor;
   pointer-events: auto;
 
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+
+  :global(.small) & {
+    max-width: small.$bannerMaxWidth;
+  }
+
+  :global(.medium) & {
+    max-width: medium.$bannerMaxWidth;
+  }
+
+  :global(.large) & {
+    max-width: large.$bannerMaxWidth;
+  }
 
   .container {
     display: flex;
