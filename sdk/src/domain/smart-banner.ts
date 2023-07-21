@@ -28,11 +28,9 @@ export class SmartBanner {
   private view: SmartBannerLayout | null = null;
   private url: string = window.location.href;
 
-  constructor(
-    appToken: string,
-    { language, deepLinkPath, androidAppSchema, context, bannerParent, onCreated, onDismissed }: SmartBannerOptions,
-    private deviceOs: DeviceOS
-  ) {
+  constructor(appToken: string, options: SmartBannerOptions, private deviceOs: DeviceOS) {
+    let { language, deepLinkPath, androidAppSchema, context, bannerParent, onCreated, onDismissed } = options;
+
     this.dismissHandler = new DismissHandler();
 
     const networkConfig: NetworkConfig = {
@@ -49,6 +47,9 @@ export class SmartBanner {
     );
 
     this.bannerParent = bannerParent;
+    if (options.hasOwnProperty('bannerParent') && !this.bannerParent) {
+      Logger.warn('Specified banner parent not found, banner will be attached to document.body');
+    }
 
     this.onCreated = onCreated;
     this.onDismissed = onDismissed;
@@ -177,10 +178,6 @@ export class SmartBanner {
 
   private createView(bannerData: SmartBannerData) {
     Logger.info(`Render banner: ${bannerData.title}`);
-
-    if (!this.bannerParent) {
-      Logger.warn('Specified banner parent not found, banner will be attached to document.body');
-    }
 
     const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
 
