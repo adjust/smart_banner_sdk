@@ -33,12 +33,10 @@ export class BannerBody {
       this.bannerBody.style.backgroundColor = backgroundColor;
     }
 
-    if (backgroundImageUrl !== this.banner.backgroundImageUrl) {
-      if (backgroundImageUrl) {
-        this.bannerBody.style.backgroundImage = `url(${backgroundImageUrl})`;
-      } else {
-        this.bannerBody.style.removeProperty('backgroundImage');
-      }
+    if (!backgroundImageUrl) {
+      this.bannerBody.style.removeProperty('backgroundImage');
+    } else if (this.bannerBody.style.backgroundImage !== `url(${backgroundImageUrl})`) {
+      this.bannerBody.style.backgroundImage = `url(${backgroundImageUrl})`;
     }
   }
 
