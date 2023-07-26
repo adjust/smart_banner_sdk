@@ -6,6 +6,7 @@
 @import 'assets/fonts.scss';
 
 .banner-body {
+  display: flex;
   margin: 0 auto;
   background: $bannerBackgroundColor;
   pointer-events: auto;
