@@ -71,8 +71,6 @@ export class BannerBody {
     const container = document.createElement('div');
     container.className = styles.container;
 
-    this.dismissButton.render(container);
-
     this.appIcon.render(container);
 
     const textContainer = document.createElement('div');
@@ -91,6 +89,8 @@ export class BannerBody {
 
   public render(root: HTMLElement) {
     this.renderBannerBody(this.banner.backgroundColor, this.banner.backgroundImageUrl);
+
+    this.dismissButton.render(this.bannerBody);
 
     this.bannerBody.appendChild(this.renderInnerElements());
 
