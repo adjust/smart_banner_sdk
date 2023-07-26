@@ -43,6 +43,7 @@ export class SmartBannerView implements SmartBannerLayout {
       parent = document.body;
 
       if (this.banner.size === BannerSize.Small) {
+        // trying to push the content
         this.placeholder = document.createElement('div');
         this.placeholder.className = styles['banner-placeholder'];
       }
