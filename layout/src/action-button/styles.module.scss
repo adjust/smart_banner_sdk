@@ -17,4 +17,9 @@
   line-height: 20px;
   cursor: pointer;
   text-decoration: none;
+
+  :global(.medium) &,
+  :global(.large) & {
+    align-self: stretch;
+  }
 }

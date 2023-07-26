@@ -1,15 +1,38 @@
+@use 'assets/size-small.scss' as small;
+@use 'assets/size-medium.scss' as medium;
+@use 'assets/size-large.scss' as large;
+
 @import 'assets/colors.scss';
 
 .dismiss {
-  padding: 8px;
-  height: 32px;
+  flex-shrink: 0;
+  padding: 0;
   border: none;
   background: none;
   cursor: pointer;
+  z-index: 1;
+
+  :global(.small) & {
+    align-self: center;
+    width: small.$dismissalButtonSize;
+    height: small.$dismissalButtonSize;
+  }
+
+  :global(.medium) & {
+    align-self: flex-end;
+    width: medium.$dismissalButtonSize;
+    height: medium.$dismissalButtonSize;
+    ;
+  }
+
+  :global(.large) & {
+    align-self: flex-end;
+    width: large.$dismissalButtonSize;
+    height: large.$dismissalButtonSize;
+    ;
+  }
 
   svg {
-    width: 16px;
-    height: 16px;
     fill: $dismissalButtonColor;
   }
 }
