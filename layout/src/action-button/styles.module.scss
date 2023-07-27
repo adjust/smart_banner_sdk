@@ -1,4 +1,5 @@
-@import '../../assets/constants.scss';
+@import 'assets/colors.scss';
+@import 'assets/fonts.scss';
 
 .action {
   color: $ctaColor;
@@ -16,4 +17,9 @@
   line-height: 20px;
   cursor: pointer;
   text-decoration: none;
+
+  :global(.medium) &,
+  :global(.large) & {
+    align-self: stretch;
+  }
 }

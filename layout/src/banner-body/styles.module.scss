@@ -1,8 +1,17 @@
-@import '../../assets/constants.scss';
+@use 'assets/size-small.scss' as small;
+@use 'assets/size-medium.scss' as medium;
+@use 'assets/size-large.scss' as large;
+
+@import 'assets/colors.scss';
+@import 'assets/fonts.scss';
+
+$dismissalButtonGap: 8px;
 
 .banner-body {
+  display: flex;
+  box-sizing: border-box;
+  height: 100%;
   margin: 0 auto;
-  max-width: $bannerMaxWidth;
   background: $bannerBackgroundColor;
   pointer-events: auto;
 
@@ -10,47 +19,111 @@
   background-position: center center;
   background-size: cover;
 
+  :global(.small) & {
+    flex-direction: row;
+    max-width: small.$bannerMaxWidth;
+    padding-block: small.$bannerVerticalPadding;
+    padding-inline: small.$bannerHorizontalPadding;
+    gap: $dismissalButtonGap;
+  }
+
+  :global(.medium) & {
+    flex-direction: column;
+    max-width: medium.$bannerMaxWidth;
+    padding-block: medium.$bannerVerticalPadding;
+    padding-inline: medium.$bannerHorizontalPadding;
+  }
+
+  :global(.large) & {
+    flex-direction: column;
+    max-width: large.$bannerMaxWidth;
+    padding-block: large.$bannerVerticalPadding;
+    padding-inline: large.$bannerHorizontalPadding;
+  }
+
   .container {
     display: flex;
-    align-items: center;
-    padding: 12px;
-    padding-inline-start: 0;
-    padding-inline-end: 8px;
+    height: 100%;
+    overflow: hidden;
+
+    :global(.small) & {
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+    }
+
+    :global(.medium) &,
+    :global(.large) & {
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+    }
+
+    :global(.medium) & {
+      gap: 20px;
+      margin-block-start: - medium.$dismissalButtonSize;
+    }
+
+    :global(.large) & {
+      gap: 24px;
+      margin-block-start: - large.$dismissalButtonSize;
+    }
 
     .text-container {
-      flex: 1 1 0%;
+      flex: 0 1 auto;
       min-height: 0;
       min-width: 0;
-      margin: 0 12px;
     }
 
     .banner-text {
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     h4 {
       margin: 0 0 4px 0;
       color: $titleColor;
       font-family: $fontsFamily;
-      font-size: 14px;
       font-weight: 500;
-      line-height: 20px;
-      white-space: nowrap;
+
+      :global(.small) & {
+        font-size: small.$headerFontSize;
+        line-height: small.$headerLineHeight;
+        white-space: nowrap;
+      }
+
+      :global(.medium) & {
+        font-size: medium.$headerFontSize;
+        line-height: medium.$headerLineHeight;
+        max-height: 2 * medium.$headerLineHeight; // 2-lines trim
+      }
+
+      :global(.large) & {
+        font-size: large.$headerFontSize;
+        line-height: large.$headerLineHeight;
+      }
     }
 
     p {
       margin: 0;
       color: $descriptionColor;
       font-family: $fontsFamily;
-      font-size: 12px;
-      line-height: 16px;
-      max-height: 32px;
 
-      // See https://css-tricks.com/line-clampin/
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      :global(.small) & {
+        font-size: small.$descriptionFontSize;
+        line-height: small.$descriptionLineHeight;
+        max-height: 2 * small.$descriptionLineHeight; // 2-lines trim
+      }
+
+      :global(.medium) & {
+        font-size: medium.$descriptionFontSize;
+        line-height: medium.$descriptionLineHeight;
+        max-height: 3 * medium.$descriptionLineHeight; // 3-lines trim
+      }
+
+      :global(.large) & {
+        font-size: large.$descriptionFontSize;
+        line-height: large.$descriptionLineHeight;
+      }
     }
   }
 }

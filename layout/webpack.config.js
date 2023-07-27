@@ -14,7 +14,10 @@ module.exports = () => ({
     new ESLintPlugin(),
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.scss', '.svg']
+    extensions: ['.ts', '.js', '.scss', '.svg'],
+    alias: {
+      assets: path.resolve(__dirname, 'assets'),
+    },
   },
   module: {
     rules: [{

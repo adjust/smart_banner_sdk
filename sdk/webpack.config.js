@@ -42,6 +42,9 @@ module.exports = (env, args) => ({
     extensions: ['.ts', '.js', '.scss', '.svg'],
     alias: {
       '@layout': path.resolve(__dirname, '../layout/index.ts'),
+
+      // inform webpack where to find assets when it builds layout not as a package but as a part of the sdk
+      assets: path.resolve(__dirname, '../layout/assets')
     },
   },
   module: {

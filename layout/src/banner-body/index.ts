@@ -33,7 +33,9 @@ export class BannerBody {
       this.bannerBody.style.backgroundColor = backgroundColor;
     }
 
-    if (backgroundImageUrl) {
+    if (!backgroundImageUrl) {
+      this.bannerBody.style.removeProperty('backgroundImage');
+    } else if (this.bannerBody.style.backgroundImage !== `url(${backgroundImageUrl})`) {
       this.bannerBody.style.backgroundImage = `url(${backgroundImageUrl})`;
     }
   }
@@ -67,8 +69,6 @@ export class BannerBody {
     const container = document.createElement('div');
     container.className = styles.container;
 
-    this.dismissButton.render(container);
-
     this.appIcon.render(container);
 
     const textContainer = document.createElement('div');
@@ -88,20 +88,22 @@ export class BannerBody {
   public render(root: HTMLElement) {
     this.renderBannerBody(this.banner.backgroundColor, this.banner.backgroundImageUrl);
 
+    this.dismissButton.render(this.bannerBody);
+
     this.bannerBody.appendChild(this.renderInnerElements());
 
     root.appendChild(this.bannerBody);
   }
 
   public update(banner: SmartBannerViewData, trackerUrl: string) {
-    this.banner = banner;
-
     this.dismissButton.update(banner.dismissalButtonColor);
     this.appIcon.update(banner.iconUrl, banner.appName);
     this.actionButton.update(banner, trackerUrl);
     this.renderTitle(banner.title, banner.titleColor);
     this.renderDescription(banner.description, banner.descriptionColor);
     this.renderBannerBody(banner.backgroundColor, banner.backgroundImageUrl);
+
+    this.banner = banner;
   }
 
   public destroy() {

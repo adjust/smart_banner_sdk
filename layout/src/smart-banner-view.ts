@@ -1,4 +1,4 @@
-import { SmartBannerViewData, Position } from './data-types';
+import { SmartBannerViewData, Position, BannerSize } from './data-types';
 import { BannerBody } from './banner-body';
 
 import styles from './styles.module.scss';
@@ -41,22 +41,28 @@ export class SmartBannerView implements SmartBannerLayout {
       bannerStyles = `${bannerStyles} ${styles['custom-parent']}`;
     } else {
       parent = document.body;
-      this.placeholder = document.createElement('div');
-      this.placeholder.className = styles['banner-placeholder'];
+
+      if (this.banner.size === BannerSize.Small) {
+        // trying to push the content
+        this.placeholder = document.createElement('div');
+        this.placeholder.className = styles['banner-placeholder'];
+      }
     }
 
     const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
-    this.root.className = bannerStyles = `${bannerStyles} ${positionStyle}`;
+    this.root.className = bannerStyles = `${bannerStyles} ${positionStyle} ${this.banner.size}`;
 
     this.bannerBody.render(this.root);
 
     if (this.banner.position === Position.Top) {
       parent.insertBefore(this.root, parent.firstChild);
+
       if (this.placeholder) {
         parent.insertBefore(this.placeholder, parent.firstChild);
       }
     } else {
       parent.appendChild(this.root);
+
       if (this.placeholder) {
         parent.appendChild(this.placeholder);
       }
