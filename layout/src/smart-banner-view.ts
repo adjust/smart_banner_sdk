@@ -11,18 +11,12 @@ export interface SmartBannerLayout {
   destroy: () => void;
 }
 
-// eslint-disable-next-line 
-const emptyHandler = () => { };
-
 export class SmartBannerView implements SmartBannerLayout {
   private root: HTMLElement;
   private placeholder: HTMLElement | null = null;
   private bannerBody: BannerBody;
 
-  /**
-   * @deprecated Please don't create this class directly anymore. Instead use SmartBannerLayoutFactory.createPreview method.
-   */
-  constructor(private banner: SmartBannerViewData, trackerUrl = '', onDismiss: () => void = emptyHandler) {
+  constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
     this.root = document.createElement('div');
     this.bannerBody = new BannerBody(banner, onDismiss, trackerUrl);
   }
