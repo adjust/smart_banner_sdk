@@ -19,8 +19,17 @@
   cursor: pointer;
   text-decoration: none;
 
-  :global(.medium) &,
+  :global(.medium) & {
+    align-self: stretch;
+    padding-inline: 16px;
+    padding-block: 8px;
+  }
+
   :global(.large) & {
     align-self: stretch;
+    padding-inline: 16px;
+    padding-block: 12px;
+    font-size: 16px;
+    line-height: 20px;
   }
 }
