@@ -29,7 +29,8 @@ export class SmartBanner {
   private url: string = window.location.href;
 
   constructor(appToken: string, options: SmartBannerOptions, private deviceOs: DeviceOS) {
-    let { language, deepLinkPath, androidAppSchema, context, bannerParent, onCreated, onDismissed } = options;
+    const { language, deepLinkPath, androidAppSchema, bannerParent, onCreated, onDismissed } = options;
+    let { context } = options;
 
     this.dismissHandler = new DismissHandler();
 
@@ -47,7 +48,7 @@ export class SmartBanner {
     );
 
     this.bannerParent = bannerParent;
-    if (options.hasOwnProperty('bannerParent') && !this.bannerParent) {
+    if (Object.prototype.hasOwnProperty.call(options, 'bannerParent') && !this.bannerParent) {
       Logger.warn('Specified banner parent not found, banner will be attached to document.body');
     }
 

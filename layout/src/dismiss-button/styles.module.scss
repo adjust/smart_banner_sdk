@@ -22,14 +22,12 @@
     align-self: flex-end;
     width: medium.$dismissalButtonSize;
     height: medium.$dismissalButtonSize;
-    ;
   }
 
   :global(.large) & {
     align-self: flex-end;
     width: large.$dismissalButtonSize;
     height: large.$dismissalButtonSize;
-    ;
   }
 
   svg {

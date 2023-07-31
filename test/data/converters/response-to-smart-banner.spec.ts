@@ -20,7 +20,7 @@ describe('Convertation of server responce to SmartBannerData', () => {
 
   it('replaces buttonLabel with buttonText', () => {
     const text = 'Click me!';
-    const [{ button_text, ...rest }] = dataMock; // removing button_text from testing data
+    const [{ button_text: _button_text, ...rest }] = dataMock; // removing button_text from testing data
     const data = [{ ...rest, button_label: text }]; // adding button_label instead
 
     const actual = convertResponseToSmartBanners(data) as SmartBannerData[];
