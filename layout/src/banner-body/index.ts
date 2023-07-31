@@ -28,7 +28,7 @@ export class BannerBody {
     this.description.className = styles['banner-text'];
   }
 
-  private renderBannerBody(backgroundColor?: string, backgroundImageUrl?: string) {
+  private renderBackground(backgroundColor?: string, backgroundImageUrl?: string) {
     if (backgroundColor) {
       this.bannerBody.style.backgroundColor = backgroundColor;
     }
@@ -36,6 +36,7 @@ export class BannerBody {
     if (!backgroundImageUrl) {
       this.bannerBody.style.removeProperty('backgroundImage');
     } else if (this.bannerBody.style.backgroundImage !== `url(${backgroundImageUrl})`) {
+      // TODO: preload image before show?
       this.bannerBody.style.backgroundImage = `url(${backgroundImageUrl})`;
     }
   }
@@ -86,7 +87,7 @@ export class BannerBody {
   }
 
   public render(root: HTMLElement) {
-    this.renderBannerBody(this.banner.backgroundColor, this.banner.backgroundImageUrl);
+    this.renderBackground(this.banner.backgroundColor, this.banner.backgroundImageUrl);
 
     this.dismissButton.render(this.bannerBody);
 
@@ -101,7 +102,7 @@ export class BannerBody {
     this.actionButton.update(banner, trackerUrl);
     this.renderTitle(banner.title, banner.titleColor);
     this.renderDescription(banner.description, banner.descriptionColor);
-    this.renderBannerBody(banner.backgroundColor, banner.backgroundImageUrl);
+    this.renderBackground(banner.backgroundColor, banner.backgroundImageUrl);
 
     this.banner = banner;
   }
