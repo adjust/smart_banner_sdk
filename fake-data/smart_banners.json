@@ -43,8 +43,8 @@
   },
   {
     "id": "7091c9c2-981d-4d40-9000-675e5fe4b827",
-    "title": "Small banner",
-    "description": "This is a description which might be short or a bit longer",
+    "title": "Small",
+    "description": "Description",
     "button_text": "Download",
     "dismissal_period": 86400,
     "default_language": "en",
@@ -75,7 +75,7 @@
   },
   {
     "id": "7091c9c2-981d-4d40-9000-675e5fe4b827",
-    "title": "Small banner with no description",
+    "title": "Small",
     "button_text": "Download",
     "dismissal_period": 86400,
     "default_language": "en",
@@ -137,8 +137,8 @@
   },
   {
     "id": "8d6a1779-e757-45e2-98e6-3592e72b84b6",
-    "title": "Medium banner",
-    "description": "This is a description which might be short or a bit longer",
+    "title": "Medium",
+    "description": "Description",
     "button_text": "Download",
     "dismissal_period": 86400,
     "default_language": "en",
@@ -168,7 +168,7 @@
   },
   {
     "id": "8d6a1779-e757-45e2-98e6-3592e72b84b6",
-    "title": "Medium banner with no description",
+    "title": "Medium",
     "button_text": "Download",
     "dismissal_period": 86400,
     "default_language": "en",
@@ -229,7 +229,7 @@
   },
   {
     "id": "2f11e88a-d0e6-4c48-a78e-586254352001",
-    "title": "Large banner with no description",
+    "title": "Large",
     "button_text": "Download",
     "dismissal_period": 86400,
     "default_language": "en",
