@@ -14,40 +14,51 @@ export interface SmartBannerLayout {
 export class SmartBannerView implements SmartBannerLayout {
   private root: HTMLElement;
   private placeholder: HTMLElement | null = null;
+  private wrapper: HTMLElement | null = null;
   private bannerBody: BannerBody;
 
   private parent?: HTMLElement;
 
-  constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
+  constructor(private data: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
     this.root = document.createElement('div');
-    this.bannerBody = new BannerBody(banner, onDismiss, trackerUrl);
+    this.bannerBody = new BannerBody(data, onDismiss, trackerUrl);
   }
 
   private applyRootStyles(customParent: boolean) {
     const customParentStyle = customParent ? styles['custom-parent'] : '';
-    const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
+    const positionStyle = this.data.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
 
-    this.root.className = `${styles.banner} ${customParentStyle} ${positionStyle} ${this.banner.size}`;;
+    this.root.className = `${styles.banner} ${customParentStyle} ${positionStyle} ${this.data.size}`;
   }
 
-  private renderPlaceholder() {
+  private createCustomParentWrapper() {
+    this.wrapper = document.createElement('div');
+    this.wrapper.className = styles['wrapper'];
+  }
+
+  private createPlaceholder() {
     this.placeholder = document.createElement('div');
     this.placeholder.className = styles['banner-placeholder'];
   }
 
-  private attach(parent: HTMLElement) {
-    if (this.banner.position === Position.Top) {
-      parent.insertBefore(this.root, parent.firstChild);
-
-      if (this.placeholder) {
-        parent.insertBefore(this.placeholder, parent.firstChild);
+  private attachBannerToParent(parent: HTMLElement) {
+    const attach = (child: HTMLElement, parent: HTMLElement, position?: Position) => {
+      if (position === Position.Top) {
+        parent.insertBefore(child, parent.firstChild);
+      } else {
+        parent.appendChild(child);
       }
+    }
+
+    if (this.placeholder) {
+      attach(this.placeholder, parent, this.data.position)
+    }
+
+    if (this.wrapper) {
+      attach(this.root, this.wrapper);
+      attach(this.wrapper, parent);
     } else {
-      parent.appendChild(this.root);
-
-      if (this.placeholder) {
-        parent.appendChild(this.placeholder);
-      }
+      attach(this.root, parent);
     }
   }
 
@@ -57,13 +68,17 @@ export class SmartBannerView implements SmartBannerLayout {
 
     this.applyRootStyles(customParent);
 
-    if (!customParent && this.banner.size === BannerSize.Small) {
-      this.renderPlaceholder(); // Trying to push the content
+    if (customParent) {
+      this.createCustomParentWrapper();
+    }
+
+    if (!customParent && this.data.size === BannerSize.Small) {
+      this.createPlaceholder(); // Trying to push the content
     }
 
     this.bannerBody.render(this.root);
 
-    this.attach(this.parent)
+    this.attachBannerToParent(this.parent)
   }
 
   public update(banner: SmartBannerViewData, trackerUrl = '') {

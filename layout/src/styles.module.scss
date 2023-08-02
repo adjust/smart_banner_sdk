@@ -6,6 +6,12 @@
   height: small.$bannerHeight;
 }
 
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .banner {
   pointer-events: none;
   position: fixed;
@@ -27,7 +33,7 @@
 
   &.custom-parent {
     z-index: initial;
-    position: relative;
+    position: absolute;
   }
 
   &.stickyToTop {
