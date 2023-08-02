@@ -16,38 +16,26 @@ export class SmartBannerView implements SmartBannerLayout {
   private placeholder: HTMLElement | null = null;
   private bannerBody: BannerBody;
 
+  private parent?: HTMLElement;
+
   constructor(private banner: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
     this.root = document.createElement('div');
     this.bannerBody = new BannerBody(banner, onDismiss, trackerUrl);
   }
 
-  public update(banner: SmartBannerViewData, trackerUrl = '') {
-    this.banner = banner;
+  private applyRootStyles(customParent: boolean) {
+    const customParentStyle = customParent ? styles['custom-parent'] : '';
+    const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
 
-    this.bannerBody.update(banner, trackerUrl);
+    this.root.className = `${styles.banner} ${customParentStyle} ${positionStyle} ${this.banner.size}`;;
   }
 
-  public render(parent: HTMLElement = document.body) {
-    let bannerStyles = styles.banner;
+  private renderPlaceholder() {
+    this.placeholder = document.createElement('div');
+    this.placeholder.className = styles['banner-placeholder'];
+  }
 
-    const customParent = parent !== document.body;
-    if (customParent) {
-      bannerStyles = `${bannerStyles} ${styles['custom-parent']}`;
-    } else {
-      parent = document.body;
-
-      if (this.banner.size === BannerSize.Small) {
-        // trying to push the content
-        this.placeholder = document.createElement('div');
-        this.placeholder.className = styles['banner-placeholder'];
-      }
-    }
-
-    const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
-    this.root.className = bannerStyles = `${bannerStyles} ${positionStyle} ${this.banner.size}`;
-
-    this.bannerBody.render(this.root);
-
+  private attach(parent: HTMLElement) {
     if (this.banner.position === Position.Top) {
       parent.insertBefore(this.root, parent.firstChild);
 
@@ -61,6 +49,27 @@ export class SmartBannerView implements SmartBannerLayout {
         parent.appendChild(this.placeholder);
       }
     }
+  }
+
+  public render(parent: HTMLElement = document.body) {
+    this.parent = parent;
+    const customParent = this.parent !== document.body;
+
+    this.applyRootStyles(customParent);
+
+    if (!customParent && this.banner.size === BannerSize.Small) {
+      this.renderPlaceholder(); // Trying to push the content
+    }
+
+    this.bannerBody.render(this.root);
+
+    this.attach(this.parent)
+  }
+
+  public update(banner: SmartBannerViewData, trackerUrl = '') {
+    this.data = banner;
+
+    this.bannerBody.update(banner, trackerUrl);
   }
 
   public show() {
