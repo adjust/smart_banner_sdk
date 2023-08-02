@@ -92,6 +92,10 @@ export class SmartBannerView implements SmartBannerLayout {
   public show() {
     this.root.hidden = false;
 
+    if (this.wrapper) {
+      this.wrapper.hidden = false;
+    }
+
     if (this.placeholder) {
       this.placeholder.hidden = false;
     }
@@ -99,6 +103,10 @@ export class SmartBannerView implements SmartBannerLayout {
 
   public hide() {
     this.root.hidden = true;
+
+    if (this.wrapper) {
+      this.wrapper.hidden = true;
+    }
 
     if (this.placeholder) {
       this.placeholder.hidden = true;
