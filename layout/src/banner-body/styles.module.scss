@@ -5,8 +5,6 @@
 @import 'assets/colors.scss';
 @import 'assets/fonts.scss';
 
-$dismissalButtonGap: 8px;
-
 .banner-body {
   display: flex;
   box-sizing: border-box;
@@ -24,7 +22,7 @@ $dismissalButtonGap: 8px;
     max-width: small.$bannerMaxWidth;
     padding-block: small.$bannerVerticalPadding;
     padding-inline: small.$bannerHorizontalPadding;
-    gap: $dismissalButtonGap;
+    gap: 8px;
   }
 
   :global(.medium) & {
@@ -43,6 +41,7 @@ $dismissalButtonGap: 8px;
 
   .container {
     display: flex;
+    flex: 1;
     height: 100%;
     overflow: hidden;
 
@@ -76,57 +75,6 @@ $dismissalButtonGap: 8px;
 
       :global(.small) & {
         flex: 1 1 auto;
-      }
-    }
-
-    .banner-text {
-      overflow: hidden;
-    }
-
-    h4 {
-      margin: 0 0 4px 0;
-      color: $titleColor;
-      font-family: $fontsFamily;
-      font-weight: 500;
-
-      :global(.small) & {
-        font-size: small.$headerFontSize;
-        line-height: small.$headerLineHeight;
-        white-space: nowrap;
-      }
-
-      :global(.medium) & {
-        font-size: medium.$headerFontSize;
-        line-height: medium.$headerLineHeight;
-        max-height: 2 * medium.$headerLineHeight; // 2-lines trim
-      }
-
-      :global(.large) & {
-        font-size: large.$headerFontSize;
-        line-height: large.$headerLineHeight;
-      }
-    }
-
-    p {
-      margin: 0;
-      color: $descriptionColor;
-      font-family: $fontsFamily;
-
-      :global(.small) & {
-        font-size: small.$descriptionFontSize;
-        line-height: small.$descriptionLineHeight;
-        max-height: 2 * small.$descriptionLineHeight; // 2-lines trim
-      }
-
-      :global(.medium) & {
-        font-size: medium.$descriptionFontSize;
-        line-height: medium.$descriptionLineHeight;
-        max-height: 3 * medium.$descriptionLineHeight; // 3-lines trim
-      }
-
-      :global(.large) & {
-        font-size: large.$descriptionFontSize;
-        line-height: large.$descriptionLineHeight;
       }
     }
   }
