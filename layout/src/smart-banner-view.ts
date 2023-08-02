@@ -69,6 +69,8 @@ export class SmartBannerView implements SmartBannerLayout {
   public update(banner: SmartBannerViewData, trackerUrl = '') {
     this.data = banner;
 
+    this.applyRootStyles(this.parent !== document.body);
+
     this.bannerBody.update(banner, trackerUrl);
   }
 
