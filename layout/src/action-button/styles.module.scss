@@ -1,4 +1,5 @@
-@import '../../assets/constants.scss';
+@import 'assets/colors.scss';
+@import 'assets/fonts.scss';
 
 .action {
   color: $ctaColor;
@@ -6,7 +7,8 @@
   border: 1px solid rgba(205, 208, 224, 0.3);
   border-radius: 6px;
   box-shadow: inset 0px -1px 1px 0px rgba(205, 208, 224, 0.3);
-  padding: 8px;
+  padding-inline: 12px;
+  padding-block: 8px;
   display: inline-block;
   vertical-align: middle;
   text-align: center;
@@ -16,4 +18,18 @@
   line-height: 20px;
   cursor: pointer;
   text-decoration: none;
+
+  :global(.medium) & {
+    align-self: stretch;
+    padding-inline: 16px;
+    padding-block: 8px;
+  }
+
+  :global(.large) & {
+    align-self: stretch;
+    padding-inline: 16px;
+    padding-block: 12px;
+    font-size: 16px;
+    line-height: 20px;
+  }
 }

@@ -1,4 +1,4 @@
-import { SmartBannerViewData, Position } from './data-types';
+import { SmartBannerViewData, Position, BannerSize } from './data-types';
 import { BannerBody } from './banner-body';
 
 import styles from './styles.module.scss';
@@ -11,60 +11,90 @@ export interface SmartBannerLayout {
   destroy: () => void;
 }
 
-// eslint-disable-next-line 
-const emptyHandler = () => { };
-
 export class SmartBannerView implements SmartBannerLayout {
   private root: HTMLElement;
   private placeholder: HTMLElement | null = null;
+  private wrapper: HTMLElement | null = null;
   private bannerBody: BannerBody;
 
-  /**
-   * @deprecated Please don't create this class directly anymore. Instead use SmartBannerLayoutFactory.createPreview method.
-   */
-  constructor(private banner: SmartBannerViewData, trackerUrl = '', onDismiss: () => void = emptyHandler) {
+  private parent?: HTMLElement;
+
+  constructor(private data: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
     this.root = document.createElement('div');
-    this.bannerBody = new BannerBody(banner, onDismiss, trackerUrl);
+    this.bannerBody = new BannerBody(data, onDismiss, trackerUrl);
+  }
+
+  private applyRootStyles(customParent: boolean) {
+    const customParentStyle = customParent ? styles['custom-parent'] : '';
+    const positionStyle = this.data.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
+
+    this.root.className = `${styles.banner} ${customParentStyle} ${positionStyle} ${this.data.size}`;
+  }
+
+  private createCustomParentWrapper() {
+    this.wrapper = document.createElement('div');
+    this.wrapper.className = styles['wrapper'];
+  }
+
+  private createPlaceholder() {
+    this.placeholder = document.createElement('div');
+    this.placeholder.className = styles['banner-placeholder'];
+  }
+
+  private attachBannerToParent(parent: HTMLElement) {
+    const attach = (child: HTMLElement, parent: HTMLElement, position?: Position) => {
+      if (position === Position.Top) {
+        parent.insertBefore(child, parent.firstChild);
+      } else {
+        parent.appendChild(child);
+      }
+    }
+
+    if (this.placeholder) {
+      attach(this.placeholder, parent, this.data.position)
+    }
+
+    if (this.wrapper) {
+      attach(this.root, this.wrapper);
+      attach(this.wrapper, parent);
+    } else {
+      attach(this.root, parent);
+    }
+  }
+
+  public render(parent: HTMLElement = document.body) {
+    this.parent = parent;
+    const customParent = this.parent !== document.body;
+
+    this.applyRootStyles(customParent);
+
+    if (customParent) {
+      this.createCustomParentWrapper();
+    }
+
+    if (!customParent && this.data.size === BannerSize.Small) {
+      this.createPlaceholder(); // Trying to push the content
+    }
+
+    this.bannerBody.render(this.root);
+
+    this.attachBannerToParent(this.parent)
   }
 
   public update(banner: SmartBannerViewData, trackerUrl = '') {
-    this.banner = banner;
+    this.data = banner;
+
+    this.applyRootStyles(this.parent !== document.body);
 
     this.bannerBody.update(banner, trackerUrl);
   }
 
-  public render(parent: HTMLElement = document.body) {
-    let bannerStyles = styles.banner;
-
-    const customParent = parent !== document.body;
-    if (customParent) {
-      bannerStyles = `${bannerStyles} ${styles['custom-parent']}`;
-    } else {
-      parent = document.body;
-      this.placeholder = document.createElement('div');
-      this.placeholder.className = styles['banner-placeholder'];
-    }
-
-    const positionStyle = this.banner.position === Position.Top ? styles.stickyToTop : styles.stickyToBottom;
-    this.root.className = bannerStyles = `${bannerStyles} ${positionStyle}`;
-
-    this.bannerBody.render(this.root);
-
-    if (this.banner.position === Position.Top) {
-      parent.insertBefore(this.root, parent.firstChild);
-      if (this.placeholder) {
-        parent.insertBefore(this.placeholder, parent.firstChild);
-      }
-    } else {
-      parent.appendChild(this.root);
-      if (this.placeholder) {
-        parent.appendChild(this.placeholder);
-      }
-    }
-  }
-
   public show() {
     this.root.hidden = false;
+
+    if (this.wrapper) {
+      this.wrapper.hidden = false;
+    }
 
     if (this.placeholder) {
       this.placeholder.hidden = false;
@@ -73,6 +103,10 @@ export class SmartBannerView implements SmartBannerLayout {
 
   public hide() {
     this.root.hidden = true;
+
+    if (this.wrapper) {
+      this.wrapper.hidden = true;
+    }
 
     if (this.placeholder) {
       this.placeholder.hidden = true;

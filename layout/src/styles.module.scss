@@ -1,27 +1,49 @@
-@import '../assets/constants.scss';
+@use 'assets/size-small.scss' as small;
+@use 'assets/size-medium.scss' as medium;
+@use 'assets/size-large.scss' as large;
 
 .banner-placeholder {
-  height: $bannerHeight;
+  height: small.$bannerHeight;
+}
+
+.wrapper {
+  display: flex;
+  height: 100%;
 }
 
 .banner {
-  height: $bannerHeight;
   pointer-events: none;
   position: fixed;
   left: 0;
   right: 0;
   z-index: 1;
+  max-width: 100%;
+
+  &:global(.small) {
+    height: small.$bannerHeight;
+  }
+
+  &:global(.medium) {
+    height: medium.$bannerHeight;
+  }
+
+  &:global(.large) {
+    height: large.$bannerHeight;
+  }
 
   &.custom-parent {
+    position: static;
+    flex: 1;
     z-index: initial;
-    position: relative;
   }
 
   &.stickyToTop {
     top: 0;
+    align-self: flex-start;
   }
 
   &.stickyToBottom {
     bottom: 0;
+    align-self: flex-end;
   }
 }

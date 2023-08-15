@@ -1,4 +1,4 @@
-import cross from '../../assets/cross.svg'
+import cross from 'assets/cross.svg';
 import styles from './styles.module.scss';
 
 export class DismissButton {

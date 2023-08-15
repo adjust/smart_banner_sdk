@@ -6,7 +6,7 @@ export enum Position {
 export enum BannerSize {
   Small = 'small',
   Medium = 'medium',
-  Fullscreen = 'fullscreen'
+  Large = 'large'
 }
 
 export interface SmartBannerViewData {

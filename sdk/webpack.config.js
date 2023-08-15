@@ -1,6 +1,7 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const webpack = require('webpack');
 const packageJson = require('./package.json');
 
@@ -25,7 +26,8 @@ module.exports = (env, args) => ({
     minimize: true,
     minimizer: [new TerserPlugin({
       include: /\.min\.js$/
-    })]
+    }),
+    new CssMinimizerPlugin()]
   },
   plugins: [
     new ESLintPlugin(),
@@ -40,6 +42,9 @@ module.exports = (env, args) => ({
     extensions: ['.ts', '.js', '.scss', '.svg'],
     alias: {
       '@layout': path.resolve(__dirname, '../layout/index.ts'),
+
+      // inform webpack where to find assets when it builds layout not as a package but as a part of the sdk
+      assets: path.resolve(__dirname, '../layout/assets')
     },
   },
   module: {

@@ -1,0 +1,57 @@
+@use 'assets/size-small.scss' as small;
+@use 'assets/size-medium.scss' as medium;
+@use 'assets/size-large.scss' as large;
+
+@import 'assets/colors.scss';
+@import 'assets/fonts.scss';
+
+.banner-text {
+  overflow: hidden;
+}
+
+h4.banner-text {
+  margin: 0 0 4px 0;
+  color: $titleColor;
+  font-family: $fontsFamily;
+  font-weight: 500;
+
+  :global(.small) & {
+    font-size: small.$headerFontSize;
+    line-height: small.$headerLineHeight;
+    white-space: nowrap;
+  }
+
+  :global(.medium) & {
+    font-size: medium.$headerFontSize;
+    line-height: medium.$headerLineHeight;
+    max-height: 2 * medium.$headerLineHeight; // 2-lines trim
+  }
+
+  :global(.large) & {
+    font-size: large.$headerFontSize;
+    line-height: large.$headerLineHeight;
+  }
+}
+
+p.banner-text {
+  margin: 0;
+  color: $descriptionColor;
+  font-family: $fontsFamily;
+
+  :global(.small) & {
+    font-size: small.$descriptionFontSize;
+    line-height: small.$descriptionLineHeight;
+    max-height: 2 * small.$descriptionLineHeight; // 2-lines trim
+  }
+
+  :global(.medium) & {
+    font-size: medium.$descriptionFontSize;
+    line-height: medium.$descriptionLineHeight;
+    max-height: 3 * medium.$descriptionLineHeight; // 3-lines trim
+  }
+
+  :global(.large) & {
+    font-size: large.$descriptionFontSize;
+    line-height: large.$descriptionLineHeight;
+  }
+}

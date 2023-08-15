@@ -1,4 +1,9 @@
-@import '../../assets/constants.scss';
+@use 'assets/size-small.scss' as small;
+@use 'assets/size-medium.scss' as medium;
+@use 'assets/size-large.scss' as large;
+
+@import 'assets/colors.scss';
+@import 'assets/fonts.scss';
 
 .app-icon {
   min-width: 56px;
@@ -6,6 +11,24 @@
   height: 56px;
   overflow: hidden;
   border-radius: 8px;
+
+  :global(.small) & {
+    min-width: small.$iconSize;
+    width: small.$iconSize;
+    height: small.$iconSize;
+  }
+
+  :global(.medium) & {
+    min-width: medium.$iconSize;
+    width: medium.$iconSize;
+    height: medium.$iconSize;
+  }
+
+  :global(.large) & {
+    min-width: large.$iconSize;
+    width: large.$iconSize;
+    height: large.$iconSize;
+  }
 
   & .placeholder {
     display: flex;
