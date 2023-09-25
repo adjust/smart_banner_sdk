@@ -38,8 +38,9 @@
     'show',
     'hide',
     'setLanguage',
-    'setAndroidAppSchema',
-    'setDeepLinkPath',
+    'setIosDeepLinkPath',
+    'setAndroidAppScheme',
+    'setAndroidDeepLinkPath',
     'setContext'
   ],
   function (context, queue, methodName) {
