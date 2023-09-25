@@ -1,5 +1,31 @@
 [
   {
+    "id": "123",
+    "title": "Small banner",
+    "description": "Generating a longer text with the words of different lenghts to check how it works because then the words have the same lenght it is not representative",
+    "button_text": "Download",
+    "dismissal_period": 86400,
+    "default_language": "en",
+    "icon_url": "https://static.vecteezy.com/system/resources/previews/001/203/858/non_2x/bee-png.png",
+    "position": "top",
+    "size": "small",
+    "display_rule": "(\\/?\\?|&)data_version=1.1(&|$)",
+    "localizations": {},
+    "tracker_url": {
+      "template": "https://{domain}/{tracker}?deep_link={deep_link}&campaign={campaign}&adgroup={adgroup}&engagement_type=fallback_click",
+      "context": {
+        "tracker": "g01qa9",
+        "campaign": "ton_evergreen_smartbanner",
+        "adgroup": "default",
+        "domain": "app.adjust.com",
+        "deep_link": "{androidAppScheme}://{androidDeepLinkPath}",
+        "android_app_scheme": "stylescred",
+        "android_deep_link_path": "some/path"
+      }
+    },
+    "app_name": "My App"
+  },
+  {
     "id": "7091c9c2-981d-4d40-9add-675e5fe4b827",
     "title": "Small banner can has a long name but it should be trimmed to just one line. Let's make it even longer just because I can! Muahaha!",
     "description": "Generating a longer text with the words of different lenghts to check how it works because then the words have the same lenght it looks not nice and not representative. Let's make it even longer just because I can! Muahaha!",
