@@ -88,7 +88,7 @@ export class SmartBanner {
     this.language = language;
 
     if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not created yet, the chosen language will be applied within creation');
+      Logger.log('Smart banner was not rendered yet, the chosen language will be applied within creation');
       return;
     }
 
@@ -105,7 +105,7 @@ export class SmartBanner {
     this.customDeeplinkData.iosDeepLinkPath = deeplinkPath;
 
     if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not created yet, the provided iOS deeplink path will be applied within creation');
+      Logger.log('Smart banner was not rendered yet, the provided iOS deeplink path will be applied within render');
       return;
     }
 
@@ -122,7 +122,7 @@ export class SmartBanner {
     this.customDeeplinkData.androidAppSchema = appSchema;
 
     if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not created yet, the provided Android app schema will be applied within creation');
+      Logger.log('Smart banner was not rendered yet, the provided Android app schema will be applied within render');
       return;
     }
 
@@ -139,7 +139,7 @@ export class SmartBanner {
     this.customDeeplinkData.androidDeepLinkPath = deeplinkPath;
 
     if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not created yet, the provided Android deeplink path will be applied within creation');
+      Logger.log('Smart banner was not rendered yet, the provided Android deeplink path will be applied within render');
       return;
     }
 
@@ -156,7 +156,7 @@ export class SmartBanner {
     this.customDeeplinkData.context = context;
 
     if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not created yet, the provided deeplink context will be applied within creation');
+      Logger.log('Smart banner was not rendered yet, the provided deeplink context will be applied within creation');
       return;
     }
 
