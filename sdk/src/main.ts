@@ -77,21 +77,30 @@ export default class AdjustSmartBanner {
     }
   }
 
-  static setAndroidAppSchema(androidAppSchema: string): void {
+  static setIosDeepLinkPath(deeplinkPath: string): void {
     // TODO: type check
     if (this.smartBanner) {
-      this.smartBanner.setAppSchema(androidAppSchema);
+      this.smartBanner.setIosDeepLinkPath(deeplinkPath);
     } else {
-      Logger.error('Can\'t set android app schema, you should initilise Smart Banner SDK first');
+      Logger.error('Can\'t set iOS deeplink path, you should initilise Smart Banner SDK first');
     }
   }
 
-  static setDeepLinkPath(deeplinkPath: string): void {
+  static setAndroidAppScheme(appSchema: string): void {
     // TODO: type check
     if (this.smartBanner) {
-      this.smartBanner.setDeepLinkPath(deeplinkPath);
+      this.smartBanner.setAndroidAppScheme(appSchema);
     } else {
-      Logger.error('Can\'t set deeplink, you should initilise Smart Banner SDK first');
+      Logger.error('Can\'t set Android app scheme, you should initilise Smart Banner SDK first');
+    }
+  }
+
+  static setAndroidDeepLinkPath(deeplinkPath: string): void {
+    // TODO: type check
+    if (this.smartBanner) {
+      this.smartBanner.setAndroidDeepLinkPath(deeplinkPath);
+    } else {
+      Logger.error('Can\'t set Android deeplink path, you should initilise Smart Banner SDK first');
     }
   }
 
