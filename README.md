@@ -96,7 +96,7 @@ AdjustSmartBanner.init({
 })
 ```
 
-#### <a id="init-schema">**androidAppSchema**</a> `string`
+#### <a id="init-schema">**androidAppScheme**</a> `string`
 #### <a id="init-deeplinkpath">**deepLinkPath**</a> `string`
 #### <a id="init-context">**context**</a> `object`
 
@@ -106,7 +106,7 @@ Example:
 ```js
 AdjustSmartBanner.init({
   // other initialisation parameters including mandatory ones
-  androidAppSchema: "myapp",
+  androidAppScheme: "myapp",
   deepLinkPath: "products/promotion",
 })
 ```
@@ -114,7 +114,7 @@ AdjustSmartBanner.init({
 ```js
 AdjustSmartBanner.init({
   // other initialisation parameters including mandatory ones
-  androidAppSchema: "myapp",
+  androidAppScheme: "myapp",
   deepLinkPath: "products/promo={promotion_id}",
   context: {
     promotion_id: "new_user"
@@ -200,7 +200,7 @@ Smart banner sdk supports plain string deeplinks and deeplink templates which co
 
 There are two ways to set a deeplink:
  - pass [deeplink path parameters](#init-schema) to `AdjustSmartBanner.init`
- - call `setDeepLinkPath` and `setAndroidAppSchema` setters as shown below
+ - call `setDeepLinkPath` and `setAndroidAppScheme` setters as shown below
 
 There are ways to provide context to interpolate deeplink template:
  - pass it as a [deeplink context parameter](#init-context) to `AdjustSmartBanner.init`
@@ -211,7 +211,7 @@ There are ways to provide context to interpolate deeplink template:
 
 There are several functions to set custom deeplink path and context.
 
-#### <a id="deeplinks-setters-schema">**setAndroidAppSchema**</a>
+#### <a id="deeplinks-setters-schema">**setAndroidAppScheme**</a>
 
 Accepts a string representing Android scheme name of your mobile app. Android scheme name is required to build a deeplink for Android.
 
@@ -219,14 +219,14 @@ Note that the sdk preserves the scheme name, so it is not needed to call this me
 
 Example:
 ```js
-AdjustSmartBanner.setAndroidAppSchema("adjustExample")
+AdjustSmartBanner.setAndroidAppScheme("adjustExample")
 ```
 
 #### <a id="deeplinks-setters-deeplinkpath">**setDeepLinkPath**</a>
 
 Accepts a deep link path which is an event or a screen in your mobile app.
 
-**Important**: On Android app scheme name is required, you can provide it with [`androidAppSchema`](#init-schema) parameter within initialisation or with [`setAndroidAppSchema`](#deeplinks-setters-schema) function.
+**Important**: On Android app scheme name is required, you can provide it with [`androidAppScheme`](#init-schema) parameter within initialisation or with [`setAndroidAppScheme`](#deeplinks-setters-schema) function.
 
 Example:
 ```js
