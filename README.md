@@ -96,28 +96,101 @@ AdjustSmartBanner.init({
 })
 ```
 
-#### <a id="init-schema">**androidAppScheme**</a> `string`
-#### <a id="init-deeplinkpath">**deepLinkPath**</a> `string`
-#### <a id="init-context">**context**</a> `object`
+#### <a id="init-deeplink">**Deeplink related parameters**</a>
 
-These parameters allow you to specify where your user land in your app when they click on banner. For further information see [Deeplinks](#deeplinks).
+These parameters allow you to specify where your user lands in your app when they click on banner. For further information see [Deeplinks](#deeplinks).
+
+##### <a id="init-schema">**androidAppSchema**</a> `string`
+
+> [!WARNING]
+> Parameter `androidAppSchema` is deprecated and will be removed, please use `androidAppScheme` instead.
+
+##### <a id="init-scheme">**androidAppScheme**</a> `string`
+
+Overrides Android app scheme. 
+
+Example:
+```js
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  androidAppScheme: "myapp"
+})
+```
+
+##### <a id="init-deeplinkpath">**deepLinkPath**</a> `string`
+
+> [!WARNING]
+> Parameter `deepLinkPath` is deprecated and will be removed, please use [`androidDeepLinkPath`](#init-androidDeeplinkpath) and `iosDeepLinkPath` respectivetely the platform where you want deeplink path to be changed.
+
+##### <a id="init-androidDeeplinkpath">**androidDeepLinkPath**</a> `string`
+
+Overrides Android deeplink path.
+
+Example:
+```js
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  androidDeepLinkPath: "android/path/to/screen"
+})
+```
+
+##### <a id="init-iosDeeplinkpath">**iosDeepLinkPath**</a> `string`
+Overrides iOS deeplink path.
+
+Example:
+```js
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  iosDeepLinkPath: "ios/path-to-screen"
+})
+```
+
+##### <a id="init-context">**context**</a> `object`
+Sets context for deeplink path. The context is an object where the SDK searches values to interpolate a deeplink path template. For further information see [Deeplinks](#deeplinks).
+
+Examples:
+```js
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  iosDeepLinkPath: "products/product={item_id}",
+  context: {
+    item_id: "cool_jeans_123"
+  }
+})
+
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  androidAppScheme: "myapp",
+  androidDeepLinkPath: "products/{item_id}",
+  context: {
+    item_id: "cool_jeans_123"
+  }
+})
+
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  androidAppScheme: "myapp",
+  androidDeepLinkPath: "products/{item_id}",
+  iosDeepLinkPath: "products/product={item_id}",
+  context: {
+    item_id: "cool_jeans_123"
+  }
+})
+```
+
+You can use different paths for iOS and Android and set different context variables:
 
 Example:
 ```js
 AdjustSmartBanner.init({
   // other initialisation parameters including mandatory ones
   androidAppScheme: "myapp",
-  deepLinkPath: "products/promotion",
-})
-```
-
-```js
-AdjustSmartBanner.init({
-  // other initialisation parameters including mandatory ones
-  androidAppScheme: "myapp",
-  deepLinkPath: "products/promo={promotion_id}",
+  androidDeepLinkPath: "promo/{android_promo}",
+  iosDeepLinkPath: "main/{ios_promo}",
   context: {
-    promotion_id: "new_user"
+    android_promo: "new_user",
+    ios_promo: "registrationFinished",
+    unused_variable: "this will be ignored"
   }
 })
 ```
