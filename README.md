@@ -96,7 +96,7 @@ AdjustSmartBanner.init({
 })
 ```
 
-#### <a id="init-deeplink">**Deeplink related parameters**</a>
+#### <a id="init-deeplink">**Deeplink path parameters**</a>
 
 These parameters allow you to specify where your user lands in your app when they click on banner. For further information see [Deeplinks](#deeplinks).
 
@@ -107,7 +107,7 @@ These parameters allow you to specify where your user lands in your app when the
 
 ##### <a id="init-scheme">**androidAppScheme**</a> `string`
 
-Overrides Android app scheme. 
+Overrides Android app scheme.
 
 Example:
 ```js
@@ -120,11 +120,11 @@ AdjustSmartBanner.init({
 ##### <a id="init-deeplinkpath">**deepLinkPath**</a> `string`
 
 > [!WARNING]
-> Parameter `deepLinkPath` is deprecated and will be removed, please use [`androidDeepLinkPath`](#init-androidDeeplinkpath) and `iosDeepLinkPath` respectivetely the platform where you want deeplink path to be changed.
+> Parameter `deepLinkPath` is deprecated and will be removed, please use [`androidDeepLinkPath`](#init-androiddeeplinkpath) and [`iosDeepLinkPath`](#init-iosdeeplinkpath) respectivetely the platform where you want deeplink path to be changed.
 
-##### <a id="init-androidDeeplinkpath">**androidDeepLinkPath**</a> `string`
+##### <a id="init-androiddeeplinkpath">**androidDeepLinkPath**</a> `string`
 
-Overrides Android deeplink path.
+Overrides Android deeplink path, which allows you to change user destination in your mobile app when they click on banner.
 
 Example:
 ```js
@@ -134,8 +134,10 @@ AdjustSmartBanner.init({
 })
 ```
 
-##### <a id="init-iosDeeplinkpath">**iosDeepLinkPath**</a> `string`
-Overrides iOS deeplink path.
+Please find [more examples below](#init-context-examples). For further templates and context explanation see [Deeplinks](#deeplinks) chapter.
+
+##### <a id="init-iosdeeplinkpath">**iosDeepLinkPath**</a> `string`
+Overrides iOS deeplink path, which allows you to change user destination in your mobile app when they click on banner.
 
 Example:
 ```js
@@ -145,10 +147,12 @@ AdjustSmartBanner.init({
 })
 ```
 
-##### <a id="init-context">**context**</a> `object`
-Sets context for deeplink path. The context is an object where the SDK searches values to interpolate a deeplink path template. For further information see [Deeplinks](#deeplinks).
+Please find [more examples below](#init-context-examples). For further templates and context explanation see [Deeplinks](#deeplinks) chapter.
 
-Examples:
+##### <a id="init-context">**context**</a> `object`
+Sets context for deeplink path template. The context is an object where the SDK searches values to interpolate a deeplink path template. For further information see [Deeplinks](#deeplinks).
+
+<a id="init-context-examples">Examples:</a>
 ```js
 AdjustSmartBanner.init({
   // other initialisation parameters including mandatory ones
