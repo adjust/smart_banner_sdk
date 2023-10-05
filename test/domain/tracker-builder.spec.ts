@@ -104,8 +104,8 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/my-product/jeans/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
 
-      expect(buildSmartBannerUrl(DeviceOS.Android, trackerData, emptyUrl, {
-        androidDeepLinkPath: customDeepLinkPath,
+      expect(buildSmartBannerUrl(DeviceOS.iOS, trackerData, emptyUrl, {
+        iosDeepLinkPath: customDeepLinkPath,
         context: { product: 'jeans' }
       })).toBe(expected);
     });
@@ -120,7 +120,7 @@ describe('Smart Banners tracker link building', () => {
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
       expect(buildSmartBannerUrl(DeviceOS.Android, trackerData, emptyUrl, {
-        androidAppSchema: 'app',
+        androidAppScheme: 'app',
         androidDeepLinkPath: 'products'
       })).toBe(expected);
     });
@@ -135,7 +135,7 @@ describe('Smart Banners tracker link building', () => {
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
       expect(buildSmartBannerUrl(DeviceOS.Android, trackerData, emptyUrl, {
-        androidAppSchema: 'app',
+        androidAppScheme: 'app',
         androidDeepLinkPath: 'products/{product}',
         context: { product: 'shoes' }
       })).toBe(expected);
@@ -151,7 +151,7 @@ describe('Smart Banners tracker link building', () => {
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
       const tracker = buildSmartBannerUrl(DeviceOS.Android, trackerData, emptyUrl, { androidDeepLinkPath: 'new-path' });
-      expect(Logger.warn).toBeCalledWith('Both androidAppSchema and androidDeepLinkPath needed for android platform');
+      expect(Logger.warn).toBeCalledWith('Both androidAppScheme and androidDeepLinkPath needed for android platform');
       expect(tracker).toBe(expected);
     });
 
@@ -164,8 +164,8 @@ describe('Smart Banners tracker link building', () => {
       const deeplink = encodeURIComponent('schema://some-path');
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-      const tracker = buildSmartBannerUrl(DeviceOS.Android, trackerData, emptyUrl, { androidAppSchema: 'app' });
-      expect(Logger.warn).toBeCalledWith('Both androidAppSchema and androidDeepLinkPath needed for android platform');
+      const tracker = buildSmartBannerUrl(DeviceOS.Android, trackerData, emptyUrl, { androidAppScheme: 'app' });
+      expect(Logger.warn).toBeCalledWith('Both androidAppScheme and androidDeepLinkPath needed for android platform');
       expect(tracker).toBe(expected);
     });
 
@@ -177,7 +177,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en';
 
-      const tracker = buildSmartBannerUrl(DeviceOS.Android, trackerData, emptyUrl, { androidAppSchema: 'schema' });
+      const tracker = buildSmartBannerUrl(DeviceOS.Android, trackerData, emptyUrl, { androidAppScheme: 'schema' });
       expect(Logger.warn).toBeCalledWith('Tracker template does not contain deep link placeholders, can not set custom deep link path');
       expect(tracker).toBe(expected);
     });
@@ -190,7 +190,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en';
 
-      const tracker = buildSmartBannerUrl(DeviceOS.iOS, trackerData, emptyUrl, { iosDeepLinkPath: 'some/path' });
+      const tracker = buildSmartBannerUrl(DeviceOS.Android, trackerData, emptyUrl, { androidDeepLinkPath: 'some/path' });
       expect(Logger.warn).toBeCalledWith('Tracker template does not contain deep link placeholders, can not set custom deep link path');
       expect(tracker).toBe(expected);
     });
@@ -203,7 +203,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/path/meow/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
 
-      const tracker = buildSmartBannerUrl(DeviceOS.WindowsPC, trackerData, 'https://some-path/?page=hello', { context: { page: 'meow' } });
+      const tracker = buildSmartBannerUrl(DeviceOS.iOS, trackerData, 'https://some-path/?page=hello', { context: { page: 'meow' } });
       expect(tracker).toBe(expected);
     });
   });
