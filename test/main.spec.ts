@@ -210,7 +210,7 @@ describe('Entry point tests', () => {
         AdjustSmartBanner.setLanguage('fr');
 
         expect(SmartBanner.setLanguage).not.toBeCalled();
-        expect(Logger.error).toBeCalledWith('Can\'t set locale, you should initilise Smart Banner SDK first');
+        expect(Logger.error).toBeCalledWith('Can\'t set language, you should initilise Smart Banner SDK first');
       });
     });
 

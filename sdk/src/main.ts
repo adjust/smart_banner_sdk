@@ -69,16 +69,24 @@ export default class AdjustSmartBanner {
   }
 
   static setLanguage(lang: string) {
-    // TODO: type check
+    if (!lang || typeof lang !== 'string') {
+      Logger.error('Can\'t set language, provided parameter should be a non-empty string');
+      return;
+    }
+
     if (this.smartBanner) {
       this.smartBanner.setLanguage(lang);
     } else {
-      Logger.error('Can\'t set locale, you should initilise Smart Banner SDK first');
+      Logger.error('Can\'t set language, you should initilise Smart Banner SDK first');
     }
   }
 
   static setIosDeepLinkPath(deeplinkPath: string): void {
-    // TODO: type check
+    if (!deeplinkPath || typeof deeplinkPath !== 'string') {
+      Logger.error('Can\'t set iOS deeplink path, provided parameter should be a non-empty string');
+      return;
+    }
+
     if (this.smartBanner) {
       this.smartBanner.setIosDeepLinkPath(deeplinkPath);
     } else {
@@ -106,7 +114,11 @@ export default class AdjustSmartBanner {
   }
 
   static setAndroidDeepLinkPath(deeplinkPath: string): void {
-    // TODO: type check
+    if (!deeplinkPath || typeof deeplinkPath !== 'string') {
+      Logger.error('Can\'t set Android deeplink path, provided parameter should be a non-empty string');
+      return;
+    }
+
     if (this.smartBanner) {
       this.smartBanner.setAndroidDeepLinkPath(deeplinkPath);
     } else {
