@@ -173,7 +173,7 @@ describe('Smart Banner tests', () => {
 
       describe('Android', () => {
         const emptyCustomContext = {
-          androidAppSchema: undefined,
+          androidAppScheme: undefined,
           androidDeepLinkPath: undefined,
           context: {},
         };
@@ -632,7 +632,7 @@ describe('Smart Banner tests', () => {
 
           const smartBanner = new SmartBanner(
             'some-token',
-            { appToken: 'some-token', androidAppSchema: 'app', androidDeepLinkPath: 'old/path' },
+            { appToken: 'some-token', androidAppScheme: 'app', androidDeepLinkPath: 'old/path' },
             DeviceOS.Android);
           await Utils.flushPromises();
 
@@ -640,7 +640,7 @@ describe('Smart Banner tests', () => {
             DeviceOS.Android,
             defaultTrackerData,
             mockHref,
-            { context: {}, androidAppSchema: 'app', androidDeepLinkPath: 'old/path' }
+            { context: {}, androidAppScheme: 'app', androidDeepLinkPath: 'old/path' }
           );
 
           smartBanner.setAndroidAppScheme('new');
@@ -650,7 +650,7 @@ describe('Smart Banner tests', () => {
             DeviceOS.Android,
             defaultTrackerData,
             mockHref,
-            { context: {}, androidAppSchema: 'new', androidDeepLinkPath: 'old/path' }
+            { context: {}, androidAppScheme: 'new', androidDeepLinkPath: 'old/path' }
           );
           expect(smartBannerViewMock.update).toBeCalled();
 
@@ -661,7 +661,7 @@ describe('Smart Banner tests', () => {
             DeviceOS.Android,
             defaultTrackerData,
             mockHref,
-            { context: {}, androidAppSchema: 'new', androidDeepLinkPath: 'new/path' }
+            { context: {}, androidAppScheme: 'new', androidDeepLinkPath: 'new/path' }
           );
           expect(smartBannerViewMock.update).toBeCalled();
         });
@@ -722,7 +722,7 @@ describe('Smart Banner tests', () => {
 
         const smartBanner = new SmartBanner(
           'some-token',
-          { appToken: 'some-token', androidAppSchema: 'app', androidDeepLinkPath: 'old/android/path', iosDeepLinkPath: 'old/ios/path' },
+          { appToken: 'some-token', androidAppScheme: 'app', androidDeepLinkPath: 'old/android/path', iosDeepLinkPath: 'old/ios/path' },
           DeviceOS.Android);
         await Utils.flushPromises();
 
@@ -762,7 +762,7 @@ describe('Smart Banner tests', () => {
           DeviceOS.Android,
           defaultTrackerData,
           mockHref,
-          { androidAppSchema: 'new', androidDeepLinkPath: 'new/android/path', iosDeepLinkPath: 'new/ios/path', context: { product: 'something' } }
+          { androidAppScheme: 'new', androidDeepLinkPath: 'new/android/path', iosDeepLinkPath: 'new/ios/path', context: { product: 'something' } }
         );
         expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
         expect(smartBannerViewMock.render).toBeCalled();
@@ -795,7 +795,7 @@ describe('Smart Banner tests', () => {
             DeviceOS.Android,
             defaultTrackerData,
             mockHref,
-            { androidAppSchema: 'new-schema', context: {}, androidDeepLinkPath: undefined }
+            { androidAppScheme: 'new-schema', context: {}, androidDeepLinkPath: undefined }
           );
           expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
           expect(smartBannerViewMock.render).toBeCalled();
@@ -824,7 +824,7 @@ describe('Smart Banner tests', () => {
             DeviceOS.Android,
             defaultTrackerData,
             mockHref,
-            { androidDeepLinkPath: 'new/path', androidAppSchema: undefined, context: {} }
+            { androidDeepLinkPath: 'new/path', androidAppScheme: undefined, context: {} }
           );
           expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
           expect(smartBannerViewMock.render).toBeCalled();
@@ -883,7 +883,7 @@ describe('Smart Banner tests', () => {
 
         expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
           DeviceOS.iOS, defaultTrackerData, mockHref,
-          { context: { product: 'something' }, iosDeepLinkPath: undefined, androidAppSchema: undefined }
+          { context: { product: 'something' }, iosDeepLinkPath: undefined, androidAppScheme: undefined }
         );
         expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
         expect(smartBannerViewMock.render).toBeCalled();

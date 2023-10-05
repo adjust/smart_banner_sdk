@@ -36,16 +36,16 @@ function warnIfDataInconsistent(os: DeviceOS, { template, context }: TrackerData
 
   const androidDeeplink = template.indexOf('{deep_link}') >= 0;
   if (androidDeeplink) {
-    const schema = customDeeplinkData.androidAppSchema;
+    const schema = customDeeplinkData.androidAppScheme;
     const path = customDeeplinkData.androidDeepLinkPath;
     if ((schema && !path) || (!schema && path)) {
-      Logger.warn('Both androidAppSchema and androidDeepLinkPath needed for android platform');
+      Logger.warn('Both androidAppScheme and androidDeepLinkPath needed for android platform');
     }
   }
 
   const hasDeeplinkPlaceholder = androidDeeplink || template.indexOf('{deep_link_path}') >= 0;
   if (!hasDeeplinkPlaceholder) {
-    const customPath = customDeeplinkData.androidAppSchema || customDeeplinkData.androidDeepLinkPath || customDeeplinkData.iosDeepLinkPath;
+    const customPath = customDeeplinkData.androidAppScheme || customDeeplinkData.androidDeepLinkPath || customDeeplinkData.iosDeepLinkPath;
     if (context.deepLink || context.deepLinkPath || customPath) {
       Logger.warn(`Tracker template does not contain deep link placeholders, can not set ${customPath ? 'custom ' : ''}deep link path`);
     }
@@ -53,7 +53,7 @@ function warnIfDataInconsistent(os: DeviceOS, { template, context }: TrackerData
 }
 
 function buildDeeplink(os: DeviceOS, data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData): Record<string, string> {
-  const appSchema = customDeeplinkData.androidAppSchema || null;
+  const appSchema = customDeeplinkData.androidAppScheme || null;
   let deepLinkPath = ''
   if (os === DeviceOS.Android) {
     deepLinkPath = customDeeplinkData.androidDeepLinkPath || data.context.deepLinkPath || '';
