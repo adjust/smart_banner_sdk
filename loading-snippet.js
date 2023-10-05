@@ -40,7 +40,6 @@
     'setLanguage',
     'setIosDeepLinkPath',
     'setAndroidAppSchema',
-    'setAndroidAppScheme',
     'setAndroidDeepLinkPath',
     'setContext'
   ],

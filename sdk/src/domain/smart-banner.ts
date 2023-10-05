@@ -32,12 +32,10 @@ export class SmartBanner {
 
     // TODO: remove in version 1.0.0
     if (Object.prototype.hasOwnProperty.call(options, 'androidAppSchema')) {
-      Logger.warn('Property `androidAppSchema` is deprecated and will be removed in SDK version 1.0.0, please update your code and use `androidAppScheme` instead');
-      const deprecatedSchema = (options as any)["androidAppSchema"];
-      options.androidAppScheme = (deprecatedSchema && !options.androidAppScheme) ? deprecatedSchema : options.androidAppScheme;
+      Logger.warn('Property `androidAppSchema` is deprecated and will not be applied');
     }
 
-    const { language, iosDeepLinkPath, androidDeepLinkPath, androidAppScheme, bannerParent, onCreated, onDismissed } = options;
+    const { language, iosDeepLinkPath, androidDeepLinkPath, bannerParent, onCreated, onDismissed } = options;
     let { context } = options;
 
     this.dismissHandler = new DismissHandler();
@@ -67,7 +65,7 @@ export class SmartBanner {
 
     context = context || {};
 
-    this.customDeeplinkData = { androidAppScheme, androidDeepLinkPath, iosDeepLinkPath, context };
+    this.customDeeplinkData = { androidDeepLinkPath, iosDeepLinkPath, context };
 
     this.init();
   }
@@ -119,23 +117,6 @@ export class SmartBanner {
 
     if (!this.bannerProvider.banner) {
       Logger.log('There is no suitable banner for current page, preserving the provided iOS deeplink path');
-      return;
-    }
-
-    const { banner, when } = this.bannerProvider.banner;
-    this.updateViewOrScheduleCreation(banner, when);
-  }
-
-  setAndroidAppScheme(appScheme: string): void {
-    this.customDeeplinkData.androidAppScheme = appScheme;
-
-    if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not rendered yet, the provided Android app schema will be applied within render');
-      return;
-    }
-
-    if (!this.bannerProvider.banner) {
-      Logger.log('There is no suitable banner for current page, preserving the provided Android app schema');
       return;
     }
 
