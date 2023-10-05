@@ -34,18 +34,9 @@ function warnIfDataInconsistent(os: DeviceOS, { template, context }: TrackerData
 
   /** FIXME: it's needed to update validation after deep link path templates changed */
 
-  const androidDeeplink = template.indexOf('{deep_link}') >= 0;
-  if (androidDeeplink) {
-    const schema = customDeeplinkData.androidAppScheme;
-    const path = customDeeplinkData.androidDeepLinkPath;
-    if ((schema && !path) || (!schema && path)) {
-      Logger.warn('Both androidAppScheme and androidDeepLinkPath needed for android platform');
-    }
-  }
-
-  const hasDeeplinkPlaceholder = androidDeeplink || template.indexOf('{deep_link_path}') >= 0;
+  const hasDeeplinkPlaceholder = template.indexOf('{deep_link}') >= 0 || template.indexOf('{deep_link_path}') >= 0;
   if (!hasDeeplinkPlaceholder) {
-    const customPath = customDeeplinkData.androidAppScheme || customDeeplinkData.androidDeepLinkPath || customDeeplinkData.iosDeepLinkPath;
+    const customPath = customDeeplinkData.androidDeepLinkPath || customDeeplinkData.iosDeepLinkPath;
     if (context.deepLink || context.deepLinkPath || customPath) {
       Logger.warn(`Tracker template does not contain deep link placeholders, can not set ${customPath ? 'custom ' : ''}deep link path`);
     }
@@ -53,7 +44,6 @@ function warnIfDataInconsistent(os: DeviceOS, { template, context }: TrackerData
 }
 
 function buildDeeplink(os: DeviceOS, data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData): Record<string, string> {
-  const appSchema = customDeeplinkData.androidAppScheme || null;
   let deepLinkPath = ''
   if (os === DeviceOS.Android) {
     deepLinkPath = customDeeplinkData.androidDeepLinkPath || data.context.deepLinkPath || '';
@@ -69,11 +59,9 @@ function buildDeeplink(os: DeviceOS, data: TrackerData, pageUrl: string, customD
 
   deepLinkPath = interpolate(deepLinkPath, context); // replace {templates} with values if deep_link_path
 
-  const deepLink = (appSchema && deepLinkPath) ? `${appSchema}://${deepLinkPath}` : null;
-
   return {
-    'deep_link_path': deepLinkPath, // for ios template
-    'deep_link': encodeURIComponent(deepLink || interpolate(data.context.deepLink || '', context)) // for android template
+    'deep_link_path': interpolate(deepLinkPath, context), // for ios template
+    'deep_link': encodeURIComponent(interpolate(data.context.deepLink || '', context)) // for android template
   };
 }
 

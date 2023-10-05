@@ -94,23 +94,9 @@ export default class AdjustSmartBanner {
     }
   }
 
-  static setAndroidAppSchema(appScheme: string): void {
+  static setAndroidAppSchema(_appScheme: string): void {
     // TODO: remove this function in version 1.0.0
-    Logger.warn('Method `setAndroidAppSchema` is deprecated and will be removed in SDK version 1.0.0, please update your code and use `setAndroidappScheme` instead');
-    this.setAndroidAppScheme(appScheme);
-  }
-
-  static setAndroidAppScheme(appScheme: string): void {
-    if (!appScheme || typeof appScheme !== 'string') {
-      Logger.error('Can\'t set Android app scheme, provided parameter should be a non-empty string');
-      return;
-    }
-
-    if (this.smartBanner) {
-      this.smartBanner.setAndroidAppScheme(appScheme);
-    } else {
-      Logger.error('Can\'t set Android app scheme, you should initilise Smart Banner SDK first');
-    }
+    Logger.warn('Method `setAndroidAppSchema` is deprecated and will not be applied');
   }
 
   static setAndroidDeepLinkPath(deeplinkPath: string): void {
