@@ -44,11 +44,11 @@ function warnIfDataInconsistent(os: DeviceOS, { template, context }: TrackerData
 }
 
 function buildDeeplink(os: DeviceOS, data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData): Record<string, string> {
-  let deepLinkPath = ''
+  let deeplinkTemplate = data.context.deepLinkPath || data.context.deepLink || '';
   if (os === DeviceOS.Android) {
-    deepLinkPath = customDeeplinkData.androidDeepLinkPath || data.context.deepLinkPath || '';
+    deeplinkTemplate = customDeeplinkData.androidDeepLinkPath || deeplinkTemplate;
   } else if (os === DeviceOS.iOS) {
-    deepLinkPath = customDeeplinkData.iosDeepLinkPath || data.context.deepLinkPath || '';
+    deeplinkTemplate = customDeeplinkData.iosDeepLinkPath || deeplinkTemplate;
   }
 
   const context: Record<string, string> = {
@@ -57,11 +57,11 @@ function buildDeeplink(os: DeviceOS, data: TrackerData, pageUrl: string, customD
     ...encodeContext(customDeeplinkData.context)
   };
 
-  deepLinkPath = interpolate(deepLinkPath, context); // replace {templates} with values if deep_link_path
+  deeplinkTemplate = interpolate(deeplinkTemplate, context);
 
   return {
-    'deep_link_path': interpolate(deepLinkPath, context), // for ios template
-    'deep_link': encodeURIComponent(interpolate(data.context.deepLink || '', context)) // for android template
+    'deep_link_path': interpolate(deeplinkTemplate, context), // for ios template
+    'deep_link': encodeURIComponent(interpolate(deeplinkTemplate || '', context)) // for android template
   };
 }
 
