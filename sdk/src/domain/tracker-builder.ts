@@ -10,8 +10,6 @@ export interface TrackerData {
 }
 
 export function buildSmartBannerUrl(os: DeviceOS, data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData) {
-  warnIfDataInconsistent(os, data, customDeeplinkData);
-
   const template = data.template;
   const customTrackerData = customDeeplinkData || {};
 
@@ -24,23 +22,6 @@ export function buildSmartBannerUrl(os: DeviceOS, data: TrackerData, pageUrl: st
   };
 
   return interpolate(template, context);
-}
-
-
-/**
- * Logs a warning message if data to create a deeplink is inconsistent
- */
-function warnIfDataInconsistent(os: DeviceOS, { template, context }: TrackerData, customDeeplinkData: DeeplinkData) {
-
-  /** FIXME: it's needed to update validation after deep link path templates changed */
-
-  const hasDeeplinkPlaceholder = template.indexOf('{deep_link}') >= 0 || template.indexOf('{deep_link_path}') >= 0;
-  if (!hasDeeplinkPlaceholder) {
-    const customPath = customDeeplinkData.androidDeepLinkPath || customDeeplinkData.iosDeepLinkPath;
-    if (context.deepLink || context.deepLinkPath || customPath) {
-      Logger.warn(`Tracker template does not contain deep link placeholders, can not set ${customPath ? 'custom ' : ''}deep link path`);
-    }
-  }
 }
 
 function buildDeeplink(os: DeviceOS, data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData): Record<string, string> {
