@@ -173,7 +173,6 @@ describe('Smart Banner tests', () => {
 
       describe('Android', () => {
         const emptyCustomContext = {
-          androidAppScheme: undefined,
           androidDeepLinkPath: undefined,
           context: {},
         };
@@ -186,7 +185,7 @@ describe('Smart Banner tests', () => {
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(DeviceOS.Android, expect.objectContaining({}), mockHref, emptyCustomContext);
+          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(expect.objectContaining({}), mockHref, emptyCustomContext);
           expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
@@ -202,7 +201,6 @@ describe('Smart Banner tests', () => {
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.Android,
             expect.objectContaining({}),
             mockHref,
             { ...emptyCustomContext, context: { param: 'pam-param' } });
@@ -221,7 +219,6 @@ describe('Smart Banner tests', () => {
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.Android,
             defaultTrackerData,
             mockHref,
             { ...emptyCustomContext, androidDeepLinkPath: 'some-deeplink' });
@@ -246,7 +243,6 @@ describe('Smart Banner tests', () => {
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.Android,
             defaultTrackerData,
             mockHref,
             {
@@ -274,7 +270,6 @@ describe('Smart Banner tests', () => {
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.Android,
             defaultTrackerData,
             'http://path?param=meow-meow',
             { ...emptyCustomContext, androidDeepLinkPath: 'some-deeplink/param={param}' });
@@ -299,7 +294,6 @@ describe('Smart Banner tests', () => {
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.iOS,
             expect.objectContaining({}),
             mockHref,
             emptyCustomContext
@@ -319,7 +313,6 @@ describe('Smart Banner tests', () => {
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.iOS,
             expect.objectContaining({}),
             mockHref,
             { ...emptyCustomContext, context: { param: 'pam-param' } });
@@ -338,7 +331,6 @@ describe('Smart Banner tests', () => {
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.iOS,
             defaultTrackerData,
             mockHref,
             { ...emptyCustomContext, iosDeepLinkPath: 'some-deeplink' });
@@ -363,7 +355,6 @@ describe('Smart Banner tests', () => {
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.iOS,
             defaultTrackerData,
             mockHref,
             {
@@ -391,7 +382,6 @@ describe('Smart Banner tests', () => {
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.iOS,
             defaultTrackerData,
             'http://path?param=meow-meow',
             { ...emptyCustomContext, iosDeepLinkPath: 'some-deeplink/param={param}' });
@@ -628,40 +618,28 @@ describe('Smart Banner tests', () => {
     describe('View exists', () => {
       describe('Android', () => {
         it('updates tracker using new custom deeplink data', async () => {
-          expect.assertions(5);
+          expect.assertions(3);
 
           const smartBanner = new SmartBanner(
             'some-token',
-            { appToken: 'some-token', androidAppScheme: 'app', androidDeepLinkPath: 'old/path' },
+            { appToken: 'some-token', androidDeepLinkPath: 'old/path' },
             DeviceOS.Android);
           await Utils.flushPromises();
 
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.Android,
             defaultTrackerData,
             mockHref,
-            { context: {}, androidAppScheme: 'app', androidDeepLinkPath: 'old/path' }
+            { context: {}, androidDeepLinkPath: 'old/path' }
           );
 
-          smartBanner.setAndroidAppScheme('new');
-          await Utils.flushPromises();
-
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.Android,
-            defaultTrackerData,
-            mockHref,
-            { context: {}, androidAppScheme: 'new', androidDeepLinkPath: 'old/path' }
-          );
-          expect(smartBannerViewMock.update).toBeCalled();
 
           smartBanner.setAndroidDeepLinkPath('new/path');
           await Utils.flushPromises();
 
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.Android,
             defaultTrackerData,
             mockHref,
-            { context: {}, androidAppScheme: 'new', androidDeepLinkPath: 'new/path' }
+            { context: {}, androidDeepLinkPath: 'new/path' }
           );
           expect(smartBannerViewMock.update).toBeCalled();
         });
@@ -678,7 +656,6 @@ describe('Smart Banner tests', () => {
           await Utils.flushPromises();
 
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.iOS,
             defaultTrackerData,
             mockHref,
             { context: {}, iosDeepLinkPath: 'old/path' }
@@ -688,7 +665,6 @@ describe('Smart Banner tests', () => {
           await Utils.flushPromises();
 
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.iOS,
             defaultTrackerData,
             mockHref,
             { context: {}, iosDeepLinkPath: 'new/path' }
@@ -718,22 +694,16 @@ describe('Smart Banner tests', () => {
       });
 
       it('schedules a new creation of banner with custom deep link data', async () => {
-        expect.assertions(17);
+        expect.assertions(14);
 
         const smartBanner = new SmartBanner(
           'some-token',
-          { appToken: 'some-token', androidAppScheme: 'app', androidDeepLinkPath: 'old/android/path', iosDeepLinkPath: 'old/ios/path' },
+          { appToken: 'some-token', androidDeepLinkPath: 'old/android/path', iosDeepLinkPath: 'old/ios/path' },
           DeviceOS.Android);
         await Utils.flushPromises();
 
         expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(startTime + dismissalPeriod)}`);
 
-        smartBanner.setAndroidAppScheme('new');
-        await Utils.flushPromises();
-
-        expect(smartBannerViewMock.update).not.toBeCalled();
-        expect(Logger.log).toBeCalledWith('Clearing previously scheduled creation of a Smart banner');
-        expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(startTime + dismissalPeriod)}`);
 
         smartBanner.setAndroidDeepLinkPath('new/android/path');
         await Utils.flushPromises();
@@ -759,10 +729,9 @@ describe('Smart Banner tests', () => {
         jest.runOnlyPendingTimers();
 
         expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-          DeviceOS.Android,
           defaultTrackerData,
           mockHref,
-          { androidAppScheme: 'new', androidDeepLinkPath: 'new/android/path', iosDeepLinkPath: 'new/ios/path', context: { product: 'something' } }
+          { androidDeepLinkPath: 'new/android/path', iosDeepLinkPath: 'new/ios/path', context: { product: 'something' } }
         );
         expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
         expect(smartBannerViewMock.render).toBeCalled();
@@ -772,35 +741,6 @@ describe('Smart Banner tests', () => {
 
     describe('Initialisation is not finished yet', () => {
       describe('Android', () => {
-        it('logs a message that app schema will be applied within initialisation', () => {
-          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.Android);
-          smartBanner.setAndroidAppScheme('app');
-
-          expect(Logger.log).toBeCalledWith('Smart banner was not rendered yet, the provided Android app schema will be applied within render');
-          expect(smartBannerViewMock.update).not.toBeCalled();
-        });
-
-        it('applies app schema within initialisation', async () => {
-          expect.assertions(5);
-
-          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.Android);
-          smartBanner.setAndroidAppScheme('new-schema');
-
-          expect(Logger.log).toBeCalledWith('Smart banner was not rendered yet, the provided Android app schema will be applied within render');
-          expect(smartBannerViewMock.update).not.toBeCalled();
-
-          await Utils.flushPromises();
-
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.Android,
-            defaultTrackerData,
-            mockHref,
-            { androidAppScheme: 'new-schema', context: {}, androidDeepLinkPath: undefined }
-          );
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
-          expect(smartBannerViewMock.render).toBeCalled();
-        });
-
         it('logs a message that deep link path will be applied within initialisation', () => {
           const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.Android);
           smartBanner.setAndroidDeepLinkPath('some/path');
@@ -821,10 +761,9 @@ describe('Smart Banner tests', () => {
           await Utils.flushPromises();
 
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.Android,
             defaultTrackerData,
             mockHref,
-            { androidDeepLinkPath: 'new/path', androidAppScheme: undefined, context: {} }
+            { androidDeepLinkPath: 'new/path', context: {} }
           );
           expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
           expect(smartBannerViewMock.render).toBeCalled();
@@ -852,7 +791,6 @@ describe('Smart Banner tests', () => {
           await Utils.flushPromises();
 
           expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-            DeviceOS.iOS,
             defaultTrackerData,
             mockHref,
             { iosDeepLinkPath: 'new/path', context: {} }
@@ -882,8 +820,8 @@ describe('Smart Banner tests', () => {
         await Utils.flushPromises();
 
         expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
-          DeviceOS.iOS, defaultTrackerData, mockHref,
-          { context: { product: 'something' }, iosDeepLinkPath: undefined, androidAppScheme: undefined }
+          defaultTrackerData, mockHref,
+          { context: { product: 'something' }, iosDeepLinkPath: undefined, }
         );
         expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
         expect(smartBannerViewMock.render).toBeCalled();
