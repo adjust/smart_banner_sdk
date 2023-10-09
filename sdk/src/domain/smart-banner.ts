@@ -264,7 +264,7 @@ export class SmartBanner {
     const renderData = convertSmartBannerDataForView(bannerData, this.language);
 
     const trackerData = convertSmartBannerToTracker(bannerData, this.language);
-    const trackerUrl = buildSmartBannerUrl(this.deviceOs, trackerData, this.url, this.customDeeplinkData);
+    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customDeeplinkData);
 
     return { renderData, trackerUrl };
   }
