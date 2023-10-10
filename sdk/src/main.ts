@@ -94,11 +94,6 @@ export default class AdjustSmartBanner {
     }
   }
 
-  static setAndroidAppSchema(_appScheme: string): void {
-    // TODO: remove this function in version 1.0.0
-    Logger.warn('Method `setAndroidAppSchema` is deprecated and will not be applied');
-  }
-
   static setAndroidDeepLinkPath(deeplinkPath: string): void {
     if (!deeplinkPath || typeof deeplinkPath !== 'string') {
       Logger.error('Can\'t set Android deeplink path, provided parameter should be a non-empty string');
@@ -110,6 +105,17 @@ export default class AdjustSmartBanner {
     } else {
       Logger.error('Can\'t set Android deeplink path, you should initilise Smart Banner SDK first');
     }
+  }
+
+  static setAndroidAppSchema(_appScheme: string): void {
+    // TODO: remove this function in version 1.0.0
+    Logger.warn('Method `setAndroidAppSchema` is deprecated and will not be applied');
+  }
+
+  static setDeepLinkPath(path: string): void {
+    // TODO: remove this function in version 1.0.0
+    Logger.warn('Method `setDeepLinkPath` is deprecated and will not be applied,\
+    please use `setIosDeepLinkPath` and `setAndroidDeepLinkPath` setters instead');
   }
 
   static setContext(context?: Record<string, string>): void {
