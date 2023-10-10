@@ -35,8 +35,15 @@ export class SmartBanner {
       Logger.warn('Property `androidAppSchema` is deprecated and will not be applied');
     }
 
-    const { language, iosDeepLinkPath, androidDeepLinkPath, bannerParent, onCreated, onDismissed } = options;
-    let { context } = options;
+    let deprecatedDeepLinkPath: string | undefined = undefined
+    if (Object.prototype.hasOwnProperty.call(options, 'deepLinkPath')) {
+      Logger.warn('Property `deepLinkPath` is deprecated, please use `iosDeepLinkPath` and `androidDeepLinkPath` instead');
+
+      deprecatedDeepLinkPath = (options as any)['deepLinkPath']
+    }
+
+    const { language, bannerParent, onCreated, onDismissed } = options;
+    let { iosDeepLinkPath, androidDeepLinkPath, context } = options;
 
     this.dismissHandler = new DismissHandler();
 
@@ -64,6 +71,17 @@ export class SmartBanner {
     this.language = language || getLanguage();
 
     context = context || {};
+
+    // TODO: remove in version 1.0.0
+    if (deprecatedDeepLinkPath) {
+      if (androidDeepLinkPath === undefined) {
+        androidDeepLinkPath = deprecatedDeepLinkPath;
+      }
+
+      if (iosDeepLinkPath === undefined) {
+        iosDeepLinkPath = deprecatedDeepLinkPath;
+      }
+    }
 
     this.customDeeplinkData = { androidDeepLinkPath, iosDeepLinkPath, context };
 
