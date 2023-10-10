@@ -28,7 +28,7 @@ The sdk is also available through CDN and then accessible through global `Adjust
 To <a id="loading-snippet">load Smart Banner SDK through CDN</a> paste the following snippet into the `<head>` tag:
 ```html
 <script type="application/javascript">
-!function(n,e,t,o,a,s,r,i,c){var d=a+"_q";n[a]=n[a]||{},n[d]=n[d]||[];for(var u=0;u<s.length;u++)r(n[a],n[d],s[u]);i=e.createElement(t),c=e.getElementsByTagName(t)[0],i.async=!0,i.src="https://cdn.adjust.com/adjust-smart-banner-latest.min.js",i.onload=function(){n[a]=n[a].default;for(var e=0;e<n[d].length;e++)n[a][n[d][e][0]]?n[a][n[d][e][0]].apply(n[a],n[d][e][1]):console.error("No such function found in "+a+": "+n[d][e][0]);n[d]=[]},c.parentNode.insertBefore(i,c)}(window,document,"script",0,"AdjustSmartBanner",["init","show","hide","setLanguage","setIosDeepLinkPath","setAndroidAppSchema","setAndroidDeepLinkPath","setContext"],(function(n,e,t){n[t]=function(){e.push([t,arguments])}}));
+!function(e,n,t,a,o,s,r,i,c){var d=o+"_q";e[o]=e[o]||{},e[d]=e[d]||[];for(var u=0;u<s.length;u++)r(e[o],e[d],s[u]);i=n.createElement(t),c=n.getElementsByTagName(t)[0],i.async=!0,i.src="https://cdn.adjust.com/adjust-smart-banner-latest.min.js",i.onload=function(){e[o]=e[o].default;for(var n=0;n<e[d].length;n++)e[o][e[d][n][0]]?e[o][e[d][n][0]].apply(e[o],e[d][n][1]):console.error("No such function found in "+o+": "+e[d][n][0]);e[d]=[]},c.parentNode.insertBefore(i,c)}(window,document,"script",0,"AdjustSmartBanner",["init","show","hide","setLanguage","setIosDeepLinkPath","setAndroidDeepLinkPath","setContext","setAndroidAppSchema","setDeepLinkPath"],(function(e,n,t){e[t]=function(){n.push([t,arguments])}}));
 </script>
 ```
 
