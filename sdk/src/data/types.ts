@@ -1,14 +1,25 @@
 import { Position, BannerSize } from '@layout';
 import { SnakeCaseKeysToCamelCase } from '../utils/snake-to-camel-case';
 
-interface ContextData {
-  domain?: string;
-  tracker?: string;
-  campaign?: string;
-  adgroup?: string;
-  deep_link?: string;
-  deep_link_path?: string;
+interface CommonContextData {
+  domain: string;
+  tracker: string;
+  campaign: string;
+  adgroup: string;
 }
+
+interface IosContextData extends CommonContextData {
+  deep_link_path: string;
+  ios_deep_link_path: string;
+}
+
+interface AndroidContextData extends CommonContextData {
+  deep_link: string;
+  android_app_scheme: string;
+  android_deep_link_path: string;
+}
+
+type ContextData = AndroidContextData & IosContextData;
 
 interface LocalizationData {
   title: string;
@@ -59,8 +70,8 @@ export type Context = SnakeCaseKeysToCamelCase<ContextData>
 export type SmartBannerData = Omit<SnakeCaseKeysToCamelCase<SmartBannerResponseData>, 'buttonLabel'> & { buttonText: string }
 
 export type DeeplinkData = {
-  deepLinkPath?: string;
-  androidAppSchema?: string;
+  androidDeepLinkPath?: string;
+  iosDeepLinkPath?: string;
   context?: Record<string, string>;
 }
 

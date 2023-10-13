@@ -69,30 +69,53 @@ export default class AdjustSmartBanner {
   }
 
   static setLanguage(lang: string) {
-    // TODO: type check
+    if (!lang || typeof lang !== 'string') {
+      Logger.error('Can\'t set language, provided parameter should be a non-empty string');
+      return;
+    }
+
     if (this.smartBanner) {
       this.smartBanner.setLanguage(lang);
     } else {
-      Logger.error('Can\'t set locale, you should initilise Smart Banner SDK first');
+      Logger.error('Can\'t set language, you should initilise Smart Banner SDK first');
     }
   }
 
-  static setAndroidAppSchema(androidAppSchema: string): void {
-    // TODO: type check
+  static setIosDeepLinkPath(deeplinkPath: string): void {
+    if (!deeplinkPath || typeof deeplinkPath !== 'string') {
+      Logger.error('Can\'t set iOS deeplink path, provided parameter should be a non-empty string');
+      return;
+    }
+
     if (this.smartBanner) {
-      this.smartBanner.setAppSchema(androidAppSchema);
+      this.smartBanner.setIosDeepLinkPath(deeplinkPath);
     } else {
-      Logger.error('Can\'t set android app schema, you should initilise Smart Banner SDK first');
+      Logger.error('Can\'t set iOS deeplink path, you should initilise Smart Banner SDK first');
     }
   }
 
-  static setDeepLinkPath(deeplinkPath: string): void {
-    // TODO: type check
-    if (this.smartBanner) {
-      this.smartBanner.setDeepLinkPath(deeplinkPath);
-    } else {
-      Logger.error('Can\'t set deeplink, you should initilise Smart Banner SDK first');
+  static setAndroidDeepLinkPath(deeplinkPath: string): void {
+    if (!deeplinkPath || typeof deeplinkPath !== 'string') {
+      Logger.error('Can\'t set Android deeplink path, provided parameter should be a non-empty string');
+      return;
     }
+
+    if (this.smartBanner) {
+      this.smartBanner.setAndroidDeepLinkPath(deeplinkPath);
+    } else {
+      Logger.error('Can\'t set Android deeplink path, you should initilise Smart Banner SDK first');
+    }
+  }
+
+  static setAndroidAppSchema(_appScheme: string): void {
+    // TODO: remove this function in version 1.0.0
+    Logger.warn('Method `setAndroidAppSchema` is deprecated and will not be applied');
+  }
+
+  static setDeepLinkPath(path: string): void {
+    // TODO: remove this function in version 1.0.0
+    Logger.warn('Method `setDeepLinkPath` is deprecated and will not be applied,\
+    please use `setIosDeepLinkPath` and `setAndroidDeepLinkPath` setters instead');
   }
 
   static setContext(context?: Record<string, string>): void {

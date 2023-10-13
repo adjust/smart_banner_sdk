@@ -1,5 +1,68 @@
 [
   {
+    "id": "77bbd589-b93e-45d3-839c-789fda105024",
+    "icon_url": "https://www.apptrace.com/api/app/318597939/artwork_url_small",
+    "position": "top",
+    "size": "small",
+    "dismissal_period": 86400,
+    "title": "Enjoy 10% off",
+    "description": "Save on your first app order with code APP10. T&Cs apply.",
+    "button_text": "Download now",
+    "button_label": "Download now",
+    "title_color": "#FFFFFF",
+    "button_color": "#F9FAFC",
+    "background_color": "#1E1E1E",
+    "button_text_color": "#000000",
+    "description_color": "#FFFFFF",
+    "dismissal_button_color": "#555555",
+    "app_name": "NET-A-PORTER",
+    "display_rule": null,
+    "tracker_url": {
+      "template": "https://{domain}/{deep_link_path}?adj_t={tracker}&adj_campaign={campaign}&adj_adgroup={adgroup}&adj_engagement_type=fallback_click",
+      "context": {
+        "tracker": "fake_fake",
+        "campaign": "nap_evergreen_smartbanner",
+        "adgroup": "default",
+        "domain": "5ed6.adj.st",
+        "deep_link_path": "{iosDeepLinkPath}",
+        "ios_deep_link_path": "."
+      }
+    },
+    "localizations": {}
+  },
+  {
+    "id": "77bbd589-b93e-45d3-839c-789fda105024",
+    "icon_url": "https://www.apptrace.com/api/app/318597939/artwork_url_small",
+    "position": "top",
+    "size": "small",
+    "dismissal_period": 86400,
+    "title": "Enjoy 10% off",
+    "description": "Save on your first app order with code APP10. T&Cs apply.",
+    "button_text": "Download now",
+    "button_label": "Download now",
+    "title_color": "#FFFFFF",
+    "button_color": "#F9FAFC",
+    "background_color": "#1E1E1E",
+    "button_text_color": "#000000",
+    "description_color": "#FFFFFF",
+    "dismissal_button_color": "#555555",
+    "app_name": "NET-A-PORTER",
+    "display_rule": null,
+    "tracker_url": {
+      "template": "https://{domain}/{tracker}?deep_link={deep_link}&campaign={campaign}&adgroup={adgroup}&engagement_type=fallback_click",
+      "context": {
+        "tracker": "fake_fake",
+        "campaign": "nap_evergreen_smartbanner",
+        "adgroup": "default",
+        "domain": "app.adjust.com",
+        "android_app_scheme": "nap",
+        "android_deep_link_path": "{hallo}",
+        "deep_link": "{androidAppScheme}://{androidDeepLinkPath}"
+      }
+    },
+    "localizations": {}
+  },
+  {
     "id": "7091c9c2-981d-4d40-9add-675e5fe4b827",
     "title": "Small banner can has a long name but it should be trimmed to just one line. Let's make it even longer just because I can! Muahaha!",
     "description": "Generating a longer text with the words of different lenghts to check how it works because then the words have the same lenght it looks not nice and not representative. Let's make it even longer just because I can! Muahaha!",

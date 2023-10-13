@@ -1,4 +1,4 @@
-import { Localization, SmartBannerData } from '@sdk/data/types';
+import { Context, Localization, SmartBannerData } from '@sdk/data/types';
 import { convertSmartBannerDataForView } from '@sdk/data/converters/smart-banner-for-view';
 import { BannerSize, Position } from '@layout';
 
@@ -37,7 +37,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   const localizedContext = {
     context: {
       adgroup: 'ru'
-    }
+    } as Context
   };
 
   const translations = {
@@ -46,9 +46,9 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
     buttonText: 'нажми',
   };
 
-  const localizations = { ru: { ...translations, ...localizedContext } as Localization };
+  const localizations = { ru: { ...translations, ...localizedContext } as any as Localization };
 
-  const banner = { ...rest, ...viewData, localizations } as SmartBannerData;
+  const banner = { ...rest, ...viewData, localizations } as any as SmartBannerData;
 
   it('converts data with a default locale', () => {
     const result = convertSmartBannerDataForView(banner);

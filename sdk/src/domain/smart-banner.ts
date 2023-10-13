@@ -29,8 +29,21 @@ export class SmartBanner {
   private url: string = window.location.href;
 
   constructor(appToken: string, options: SmartBannerOptions, private deviceOs: DeviceOS) {
-    const { language, deepLinkPath, androidAppSchema, bannerParent, onCreated, onDismissed } = options;
-    let { context } = options;
+
+    // TODO: remove in version 1.0.0
+    if (Object.prototype.hasOwnProperty.call(options, 'androidAppSchema')) {
+      Logger.warn('Property `androidAppSchema` is deprecated and will not be applied');
+    }
+
+    let deprecatedDeepLinkPath: string | undefined = undefined
+    if (Object.prototype.hasOwnProperty.call(options, 'deepLinkPath')) {
+      Logger.warn('Property `deepLinkPath` is deprecated, please use `iosDeepLinkPath` and `androidDeepLinkPath` instead');
+
+      deprecatedDeepLinkPath = (options as any)['deepLinkPath']
+    }
+
+    const { language, bannerParent, onCreated, onDismissed } = options;
+    let { iosDeepLinkPath, androidDeepLinkPath, context } = options;
 
     this.dismissHandler = new DismissHandler();
 
@@ -59,7 +72,18 @@ export class SmartBanner {
 
     context = context || {};
 
-    this.customDeeplinkData = { androidAppSchema, deepLinkPath, context };
+    // TODO: remove in version 1.0.0
+    if (deprecatedDeepLinkPath) {
+      if (androidDeepLinkPath === undefined) {
+        androidDeepLinkPath = deprecatedDeepLinkPath;
+      }
+
+      if (iosDeepLinkPath === undefined) {
+        iosDeepLinkPath = deprecatedDeepLinkPath;
+      }
+    }
+
+    this.customDeeplinkData = { androidDeepLinkPath, iosDeepLinkPath, context };
 
     this.init();
   }
@@ -88,7 +112,7 @@ export class SmartBanner {
     this.language = language;
 
     if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not created yet, the chosen language will be applied within creation');
+      Logger.log('Smart banner was not rendered yet, the chosen language will be applied within render');
       return;
     }
 
@@ -101,21 +125,16 @@ export class SmartBanner {
     this.updateViewOrScheduleCreation(banner, when);
   }
 
-  setAppSchema(androidAppSchema: string): void {
-    if (this.customDeeplinkData.androidAppSchema === androidAppSchema) {
-      Logger.log(`Android app scheme ${androidAppSchema} already set, ignoring the same value`);
-      return;
-    }
-
-    this.customDeeplinkData.androidAppSchema = androidAppSchema;
+  setIosDeepLinkPath(deeplinkPath: string): void {
+    this.customDeeplinkData.iosDeepLinkPath = deeplinkPath;
 
     if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not created yet, the provided app schema will be applied within creation');
+      Logger.log('Smart banner was not rendered yet, the provided iOS deeplink path will be applied within render');
       return;
     }
 
     if (!this.bannerProvider.banner) {
-      Logger.log('There is no suitable banner for current page, preserving the provided app schema');
+      Logger.log('There is no suitable banner for current page, preserving the provided iOS deeplink path');
       return;
     }
 
@@ -123,16 +142,16 @@ export class SmartBanner {
     this.updateViewOrScheduleCreation(banner, when);
   }
 
-  setDeepLinkPath(deeplinkPath: string): void {
-    this.customDeeplinkData.deepLinkPath = deeplinkPath;
+  setAndroidDeepLinkPath(deeplinkPath: string): void {
+    this.customDeeplinkData.androidDeepLinkPath = deeplinkPath;
 
     if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not created yet, the provided deeplink path will be applied within creation');
+      Logger.log('Smart banner was not rendered yet, the provided Android deeplink path will be applied within render');
       return;
     }
 
     if (!this.bannerProvider.banner) {
-      Logger.log('There is no suitable banner for current page, preserving the provided deeplink path');
+      Logger.log('There is no suitable banner for current page, preserving the provided Android deeplink path');
       return;
     }
 
@@ -144,7 +163,7 @@ export class SmartBanner {
     this.customDeeplinkData.context = context;
 
     if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not created yet, the provided deeplink context will be applied within creation');
+      Logger.log('Smart banner was not rendered yet, the provided deeplink context will be applied within render');
       return;
     }
 
