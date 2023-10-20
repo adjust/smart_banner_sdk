@@ -17,7 +17,7 @@ export class DismissHandler {
       return Date.now();
     }
 
-    return Math.max(dismissedDate + banner.dismissalPeriod * 1000, Date.now());
+    return Math.max(dismissedDate + banner.dismissal_period * 1000, Date.now());
   }
 
   public isDismissed(banner: SmartBannerData): boolean {
