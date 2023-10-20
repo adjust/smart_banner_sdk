@@ -8,19 +8,18 @@ export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): 
 
   const banners: Array<SmartBannerData> = [];
 
-  for (const item of data) {
-    const data = snakeToCamelCase<SmartBannerResponseData>(item);
-    const { buttonLabel, ...rest } = data;
+  for (const bannerData of data) {
+    const { button_label, ...rest } = bannerData;
 
     // TODO: Maybe it's needed to ignore this banner if all this fields are missing?
     const banner: SmartBannerData = {
       ...rest,
-      position: data.position || Position.Top,
-      size: data.size || BannerSize.Small,
-      appName: data.appName || '',
-      title: data.title || '',
-      buttonText: buttonLabel || data.buttonText || '',
-      dismissalPeriod: (data.dismissalPeriod !== null && data.dismissalPeriod !== undefined) ? data.dismissalPeriod : 86400
+      position: bannerData.position || Position.Top,
+      size: bannerData.size || BannerSize.Small,
+      app_name: bannerData.app_name || '',
+      title: bannerData.title || '',
+      button_text: button_label || bannerData.button_text || '',
+      dismissal_period: (bannerData.dismissal_period !== null && bannerData.dismissal_period !== undefined) ? bannerData.dismissal_period : 86400
     };
 
     banners.push(banner);

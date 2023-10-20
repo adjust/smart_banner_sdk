@@ -23,7 +23,7 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
 }
 
 function buildDeeplink(data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData): Record<string, string> {
-  let deeplinkTemplate = data.context.deepLinkPath || data.context.deepLink || '';
+  let deeplinkTemplate = data.context.deep_link_path || data.context.deep_link || '';
 
   const context: Record<string, string> = {
     ...data.context,
