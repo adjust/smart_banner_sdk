@@ -21,12 +21,12 @@ describe('Convertation of SmartBannerData to TrackerData', () => {
     ru: {
       title: 'мой заголовок',
       description: 'мое описание',
-      buttonText: 'нажми',
+      button_text: 'нажми',
       context: localizationContext
     } as Localization
   } as { [key: string]: Localization };
 
-  const bannerData = { trackerUrl: trackerData, localizations } as SmartBannerData;
+  const bannerData = { tracker_url: trackerData, localizations } as SmartBannerData;
 
   it('converts data with default locale', () => {
     expect(convertSmartBannerToTracker(bannerData)).toEqual(trackerData);
