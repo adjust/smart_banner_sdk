@@ -1,7 +1,5 @@
 import { Context } from '@sdk/data/types';
 import { buildSmartBannerUrl } from '@sdk/domain/tracker-builder';
-import { DeviceOS } from '@sdk/main';
-import { Logger } from '@sdk/utils/logger';
 
 jest.mock('@sdk/utils/logger');
 
@@ -19,15 +17,15 @@ describe('Smart Banners tracker link building', () => {
 
   const androidContext = {
     ...commonContext,
-    deepLink: "{androidAppScheme}://{androidDeepLinkPath}",
-    androidAppScheme: 'app',
-    androidDeepLinkPath: 'some-path'
+    deep_link: "{androidAppScheme}://{androidDeepLinkPath}",
+    android_app_scheme: 'app',
+    android_deep_link_path: 'some-path'
   }
 
   const iosContext = {
     ...commonContext,
-    deepLinkPath: "{iosDeepLinkPath}",
-    iosDeepLinkPath: 'some-path'
+    deep_link_path: "{iosDeepLinkPath}",
+    ios_deep_link_path: 'some-path'
   }
 
   const emptyUrl = '';
@@ -73,7 +71,7 @@ describe('Smart Banners tracker link building', () => {
     it('builds ios tracker with deeplink template', () => {
       const trackerData = {
         template: iosTracker,
-        context: { ...iosContext, iosDeepLinkPath: 'some-path/{page}' } as Context
+        context: { ...iosContext, ios_deep_link_path: 'some-path/{page}' } as Context
       };
 
       const expected = 'https://test.domain/some-path/hello/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
@@ -84,7 +82,7 @@ describe('Smart Banners tracker link building', () => {
     it('builds android tracker with deeplink template', () => {
       const trackerData = {
         template: androidTracker,
-        context: { ...androidContext, androidDeepLinkPath: 'some-path/{page}' } as Context
+        context: { ...androidContext, android_deep_link_path: 'some-path/{page}' } as Context
       };
 
       const deeplink = encodeURIComponent('app://some-path/hello');
@@ -100,7 +98,7 @@ describe('Smart Banners tracker link building', () => {
 
       const trackerData = {
         template: iosTracker,
-        context: { ...iosContext, iosDeepLinkPath: customDeepLinkPath } as Context
+        context: { ...iosContext, ios_deep_link_path: customDeepLinkPath } as Context
       };
 
       const expected = 'https://test.domain/my-product/t-shirt/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
@@ -113,7 +111,7 @@ describe('Smart Banners tracker link building', () => {
 
       const trackerData = {
         template: iosTracker,
-        context: { ...iosContext, iosDeepLinkPath: customDeepLinkPath } as Context
+        context: { ...iosContext, ios_deep_link_path: customDeepLinkPath } as Context
       };
 
       const expected = 'https://test.domain/my-product/jeans/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
@@ -139,7 +137,7 @@ describe('Smart Banners tracker link building', () => {
     it('builds android tracker with deeplink template', () => {
       const trackerData = {
         template: androidTracker,
-        context: { ...androidContext, androidDeepLinkPath: 'products/{product}' } as Context
+        context: { ...androidContext, android_deep_link_path: 'products/{product}' } as Context
       };
 
       const deeplink = encodeURIComponent('app://products/shoes');
@@ -154,7 +152,7 @@ describe('Smart Banners tracker link building', () => {
     it('prefers custom context than URL parameters', () => {
       const trackerData = {
         template: iosTracker,
-        context: { ...commonContext, deepLinkPath: 'path/{page}' } as Context
+        context: { ...commonContext, deep_link_path: 'path/{page}' } as Context
       };
 
       const expected = 'https://test.domain/path/meow/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';

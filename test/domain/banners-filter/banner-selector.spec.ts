@@ -11,7 +11,7 @@ describe('BannersSelector tests', () => {
   const dismissalPeriod = dismissalPeriodInSeconds * 1000;
 
   const createBannerData = (id: string, url: string | null = defaultUrl, dismissalPeriod: number = dismissalPeriodInSeconds) => (
-    { id, dismissalPeriod, displayRule: url } as SmartBannerData
+    { id, dismissal_period: dismissalPeriod, display_rule: url } as SmartBannerData
   );
 
   //#region Set of test 'banners'

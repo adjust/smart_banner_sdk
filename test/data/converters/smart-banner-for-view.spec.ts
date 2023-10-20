@@ -1,6 +1,7 @@
 import { Context, Localization, SmartBannerData } from '@sdk/data/types';
 import { convertSmartBannerDataForView } from '@sdk/data/converters/smart-banner-for-view';
 import { BannerSize, Position } from '@layout';
+import { snakeToCamelCase } from '@sdk/utils/snake-to-camel-case';
 
 import 'jest-extended';
 
@@ -9,30 +10,32 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   const rest = {
     id: 'id',
     name: 'name',
-    isPreviousAttributionPriority: false,
-    displayRule: null,
-    defaultLanguage: '',
-    trackerUrl: {
+    is_previous_attribution_priority: false,
+    display_rule: null,
+    default_language: '',
+    tracker_url: {
       template: '',
       context: {}
     },
-    dismissalPeriod: 1
+    dismissal_period: 1
   };
 
   const viewData = {
-    appName: 'App',
+    app_name: 'App',
     title: 'my title',
     description: 'my description',
-    buttonText: 'click',
+    button_text: 'click',
     position: Position.Top,
     size: BannerSize.Small,
-    buttonColor: '#000000',
-    backgroundColor: '#000000',
-    backgroundImageUrl: 'None',
-    titleColor: '#FFFF80',
-    descriptionColor: '#FF66FF',
-    iconUrl: 'https://www.apptrace.com/api/app/1386566985/artwork_url_small',
+    button_color: '#000000',
+    background_color: '#000000',
+    background_image_url: 'None',
+    title_color: '#FFFF80',
+    description_color: '#FF66FF',
+    icon_url: 'https://www.apptrace.com/api/app/1386566985/artwork_url_small'
   };
+
+  const expectedViewData = snakeToCamelCase(viewData)
 
   const localizedContext = {
     context: {
@@ -53,13 +56,13 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   it('converts data with a default locale', () => {
     const result = convertSmartBannerDataForView(banner);
 
-    expect(result).toEqual(viewData);
+    expect(result).toEqual(expectedViewData);
   });
 
   it('converts data with custom locale', () => {
     const result = convertSmartBannerDataForView(banner, 'ru');
 
-    const expected = { ...viewData, ...translations };
+    const expected = { ...expectedViewData, ...translations };
 
     expect(result).toEqual(expected);
   });
@@ -67,6 +70,6 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
   it('converts data with a default locale when desired one was not found', () => {
     const result = convertSmartBannerDataForView(banner, 'tr');
 
-    expect(result).toEqual(viewData);
+    expect(result).toEqual(expectedViewData);
   });
 });

@@ -8,17 +8,17 @@ describe('DismissHandler tests', () => {
 
   const dismissedBanner = {
     id: 'dismissed-banner',
-    dismissalPeriod: dismissalPeriodInSeconds
+    dismissal_period: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const readyToShowBanner = {
     id: 'ready-banner',
-    dismissalPeriod: dismissalPeriodInSeconds
+    dismissal_period: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const neverDismissedBanner = {
     id: 'another-banner',
-    dismissalPeriod: dismissalPeriodInSeconds
+    dismissal_period: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   let dismissHandler: DismissHandler;
@@ -76,7 +76,7 @@ describe('DismissHandler tests', () => {
     it('writes current date when dismissing a banner', () => {
       const banner = {
         id: 'some-id',
-        dismissalPeriod: 60
+        dismissal_period: 60
       } as SmartBannerData;
 
       dismissHandler.dismiss(banner);
@@ -109,7 +109,7 @@ describe('DismissHandler tests', () => {
 
     const banner = {
       id: 'some-id',
-      dismissalPeriod: 60
+      dismissal_period: 60
     } as SmartBannerData;
 
     it('schedules next banner creation', () => {
