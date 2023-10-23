@@ -7,18 +7,18 @@ interface CommonContextData {
   adgroup: string;
 }
 
-interface IosContextData extends CommonContextData {
+interface IosContextData {
   deep_link_path: string;
   ios_deep_link_path: string;
 }
 
-interface AndroidContextData extends CommonContextData {
+interface AndroidContextData {
   deep_link: string;
   android_app_scheme: string;
   android_deep_link_path: string;
 }
 
-export type Context = AndroidContextData & IosContextData;
+export type Context = CommonContextData & Partial<IosContextData> & Partial<AndroidContextData>;
 
 export interface Localization {
   title: string;
