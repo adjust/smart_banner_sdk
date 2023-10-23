@@ -38,7 +38,7 @@ function buildDeeplink(data: TrackerData, pageUrl: string, customContext: Record
   const context: Record<string, string> = {
     ...data.context,
     ...parseGetParams(pageUrl),
-    ...encodeContext(customDeeplinkData.context)
+    ...customContext
   };
 
   // The first iteration, interpolates a template received from the BE, i.e. 
@@ -57,17 +57,3 @@ function buildDeeplink(data: TrackerData, pageUrl: string, customContext: Record
   };
 }
 
-function encodeContext(context: Record<string, string> = {}): Record<string, string> {
-  return Object.keys(context)
-    .map((key: string) => {
-      const value = context[key];
-      if (!value) {
-        return { [key]: '' };
-      }
-
-      return { [key]: encodeURIComponent(value) };
-    })
-    .reduce((acc, current) => {
-      return { ...acc, ...current };
-    }, {});
-}
