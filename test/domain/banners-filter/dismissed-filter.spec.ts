@@ -9,22 +9,22 @@ describe('DismissedFilter tests', () => {
 
   const neverDismissedBanner = {
     id: 'never-dismissed-banner',
-    dismissalPeriod: dismissalPeriodInSeconds
+    dismissal_period: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const justDismissedBanner = {
     id: 'just-dismissed-banner',
-    dismissalPeriod: dismissalPeriodInSeconds
+    dismissal_period: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const someTimeAgoDismissedBanner = {
     id: 'some-time-ago-dismissed-banner',
-    dismissalPeriod: dismissalPeriodInSeconds
+    dismissal_period: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   const readyToBeShownBanner = {
     id: 'ready-banner',
-    dismissalPeriod: dismissalPeriodInSeconds
+    dismissal_period: dismissalPeriodInSeconds
   } as SmartBannerData;
 
   let dismissedFilter: DismissedFilter;

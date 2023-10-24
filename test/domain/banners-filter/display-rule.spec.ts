@@ -5,18 +5,18 @@ describe('DisplayRule tests', () => {
   const url = 'some-url';
 
   const defaultBanners = [
-    { id: 'default_1', displayRule: null },
-    { id: 'default_2', displayRule: null }
+    { id: 'default_1', display_rule: null },
+    { id: 'default_2', display_rule: null }
   ] as SmartBannerData[];
 
   const suitableBanners = [
-    { id: 'suitable_1', displayRule: 'some-url' },
-    { id: 'suitable_2', displayRule: 'some-url' }
+    { id: 'suitable_1', display_rule: 'some-url' },
+    { id: 'suitable_2', display_rule: 'some-url' }
   ] as SmartBannerData[];
 
   const nonSuitableBanners = [
-    { id: 'banner_1', displayRule: 'other-url' },
-    { id: 'banner_2', displayRule: 'another-url' }
+    { id: 'banner_1', display_rule: 'other-url' },
+    { id: 'banner_2', display_rule: 'another-url' }
   ] as SmartBannerData[];
 
   const displayRule = new DisplayRule();
