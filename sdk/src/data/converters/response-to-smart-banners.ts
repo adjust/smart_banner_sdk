@@ -1,5 +1,4 @@
 import { SmartBannerData, SmartBannerResponseData, Position, BannerSize } from '../types';
-import { snakeToCamelCase } from '../../utils/snake-to-camel-case';
 
 export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): SmartBannerData[] | null {
   if (!Array.isArray(data)) {
@@ -18,7 +17,7 @@ export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): 
       size: bannerData.size || BannerSize.Small,
       app_name: bannerData.app_name || '',
       title: bannerData.title || '',
-      button_text: button_label || bannerData.button_text || '',
+      button_text: bannerData.button_text || button_label || '',
       dismissal_period: (bannerData.dismissal_period !== null && bannerData.dismissal_period !== undefined) ? bannerData.dismissal_period : 86400
     };
 
