@@ -108,14 +108,17 @@ export default class AdjustSmartBanner {
   }
 
   static setAndroidAppSchema(_appScheme: string): void {
-    // TODO: remove this function in version 1.0.0
+    // TODO: remove this function in a next version
     Logger.warn('Method `setAndroidAppSchema` is deprecated and will not be applied');
   }
 
   static setDeepLinkPath(path: string): void {
-    // TODO: remove this function in version 1.0.0
-    Logger.warn('Method `setDeepLinkPath` is deprecated and will not be applied,\
-    please use `setIosDeepLinkPath` and `setAndroidDeepLinkPath` setters instead');
+    // TODO: remove this function in a next version
+    Logger.warn('Method `setDeepLinkPath` is deprecated, please use `setIosDeepLinkPath` and ' +
+      '`setAndroidDeepLinkPath` setters instead');
+
+    this.setAndroidDeepLinkPath(path);
+    this.setIosDeepLinkPath(path);
   }
 
   static setContext(context?: Record<string, string>): void {

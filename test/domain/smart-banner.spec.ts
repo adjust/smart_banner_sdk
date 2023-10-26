@@ -1,6 +1,6 @@
 import { Logger } from '@sdk/utils/logger';
 import { SmartBanner } from '@sdk/domain/smart-banner';
-import { DeviceOS } from '@sdk/main';
+import { DeviceOS, SmartBannerOptions } from '@sdk/main';
 import { NetworkFactory } from '@sdk/network/network-factory';
 import { StorageFactory } from '@sdk/data/storage/storage-factory';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
@@ -34,7 +34,7 @@ describe('Smart Banner tests', () => {
     update: jest.fn()
   } as SmartBannerLayout;
 
-  const defaultLang = serverResponseMock[0].default_language;
+  const defaultLang = 'en';
   const getLocalization = (locale?: string | null) => {
     const localisations = serverResponseMock[0].localizations as any;
     return locale && localisations[locale] || {};
@@ -277,7 +277,7 @@ describe('Smart Banner tests', () => {
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
-      })
+      });
 
       describe('iOS', () => {
         const emptyCustomContext = {
@@ -389,7 +389,7 @@ describe('Smart Banner tests', () => {
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
-      })
+      });
     });
 
     /*describe('Callbacks', () => {
@@ -643,7 +643,7 @@ describe('Smart Banner tests', () => {
           );
           expect(smartBannerViewMock.update).toBeCalled();
         });
-      })
+      });
 
       describe('iOS', () => {
         it('updates tracker using new custom deeplink data', async () => {
@@ -671,7 +671,7 @@ describe('Smart Banner tests', () => {
           );
           expect(smartBannerViewMock.update).toBeCalled();
         });
-      })
+      });
     });
 
     describe('View creation scheduled', () => {
@@ -826,7 +826,63 @@ describe('Smart Banner tests', () => {
         expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
         expect(smartBannerViewMock.render).toBeCalled();
       });
-    })
-  })
+    });
+  });
+
+  describe('Backward compatibility', () => {
+    describe('Deprecated deeplink properties passed to initialisation', () => {
+      describe('androidAppSchema', () => {
+        it('logs a deprecation warning', async () => {
+          new SmartBanner('token', { appToken: 'token', androidAppSchema: 'app' } as SmartBannerOptions, DeviceOS.Android);
+
+          await Utils.flushPromises();
+
+          expect(Logger.warn).toBeCalledWith('Property `androidAppSchema` is deprecated and will not be applied');
+        });
+      });
+
+      describe('deepLinkPath', () => {
+        it('logs a deprecation warning', async () => {
+          new SmartBanner('token', { appToken: 'token', deepLinkPath: 'path' } as SmartBannerOptions, DeviceOS.Android);
+
+          await Utils.flushPromises();
+
+          expect(Logger.warn).toBeCalledWith('Property `deepLinkPath` is deprecated, please use `iosDeepLinkPath` and `androidDeepLinkPath` instead');
+        });
+
+        it('applies passed path both as iOS and Android deeplink path', async () => {
+          const banner = new SmartBanner('token', { appToken: 'token', deepLinkPath: 'path' } as SmartBannerOptions, DeviceOS.Android);
+
+          await Utils.flushPromises();
+
+          expect(banner['customDeeplinkData']).toEqual({ androidDeepLinkPath: 'path', iosDeepLinkPath: 'path', context: {} });
+        });
+
+        it('does not override iosDeepLinkPath if it is defined', async () => {
+          const banner = new SmartBanner('token', {
+            appToken: 'token',
+            deepLinkPath: 'path',
+            iosDeepLinkPath: 'ios-path'
+          } as SmartBannerOptions, DeviceOS.Android);
+
+          await Utils.flushPromises();
+
+          expect(banner['customDeeplinkData']).toEqual({ androidDeepLinkPath: 'path', iosDeepLinkPath: 'ios-path', context: {} });
+        });
+
+        it('does not override androidDeeplinkPath if it is defined', async () => {
+          const banner = new SmartBanner('token', {
+            appToken: 'token',
+            deepLinkPath: 'path',
+            androidDeepLinkPath: 'android-path'
+          } as SmartBannerOptions, DeviceOS.Android);
+
+          await Utils.flushPromises();
+
+          expect(banner['customDeeplinkData']).toEqual({ androidDeepLinkPath: 'android-path', iosDeepLinkPath: 'path', context: {} });
+        });
+      });
+    });
+  });
 
 });

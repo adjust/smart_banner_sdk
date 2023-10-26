@@ -17,16 +17,16 @@ describe('Smart Banners tracker link building', () => {
 
   const androidContext: Context = {
     ...commonContext,
-    deep_link: "{androidAppScheme}://{androidDeepLinkPath}",
+    deep_link: '{androidAppScheme}://{androidDeepLinkPath}',
     android_app_scheme: 'app',
     android_deep_link_path: 'some-path'
-  }
+  };
 
   const iosContext: Context = {
     ...commonContext,
-    deep_link_path: "{iosDeepLinkPath}",
+    deep_link_path: '{iosDeepLinkPath}',
     ios_deep_link_path: 'some-path'
-  }
+  };
 
   const emptyUrl = '';
   const emptyCustomData = {};
@@ -91,7 +91,7 @@ describe('Smart Banners tracker link building', () => {
       const expected = 'https://test.domain/my-product/t-shirt/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
 
       expect(buildSmartBannerUrl(trackerData, emptyUrl, { context: { product: 't-shirt' } })).toBe(expected);
-    })
+    });
 
     it('builds ios tracker with custom deeplink template and context', () => {
       const customDeepLinkPath = 'my-product/{product}';
@@ -133,7 +133,7 @@ describe('Smart Banners tracker link building', () => {
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
       expect(buildSmartBannerUrl(trackerData, emptyUrl, { context: { product: 't-shirt' } })).toBe(expected);
-    })
+    });
 
     it('builds android tracker with custom deeplink template and context', () => {
       const customDeepLinkPath = 'my-product/{product}';
@@ -210,7 +210,7 @@ describe('Smart Banners tracker link building', () => {
 
       const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { context: { path: 'long/path' } });
       expect(tracker).toBe(expected);
-    })
+    });
 
     it('builds android tracker using both custom context and GET parameters', () => {
       const trackerData = {
@@ -223,7 +223,7 @@ describe('Smart Banners tracker link building', () => {
 
       const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { context: { path: 'long/path' } });
       expect(tracker).toBe(expected);
-    })
+    });
 
     it('builds ios tracker preferring custom context than URL parameters', () => {
       const trackerData = {

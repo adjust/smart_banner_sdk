@@ -11,17 +11,18 @@ export interface TrackerData {
 export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData) {
   const template = data.template;
 
-  const { context: customContext = {}, ...customDeeplinkPaths } = customDeeplinkData;
+  const { context: customContext = {}, ...restCustomData } = customDeeplinkData;
+  const customDeeplinkPaths = omitNotDefined(restCustomData);
 
   const backwardCompatibleVariables = omitNotDefined({
     'androidAppScheme': data.context.android_app_scheme,
     'androidDeepLinkPath': data.context.android_deep_link_path,
     'iosDeepLinkPath': data.context.ios_deep_link_path
-  })
+  });
 
-  data.context = { ...data.context, ...backwardCompatibleVariables, ...customDeeplinkPaths }
+  data.context = { ...data.context, ...backwardCompatibleVariables, ...customDeeplinkPaths };
 
-  const deeplink = buildDeeplink(data, pageUrl, customDeeplinkData.context || {});
+  const deeplink = buildDeeplink(data, pageUrl, customContext);
 
   const context: Record<string, string> = {
     ...data.context,
