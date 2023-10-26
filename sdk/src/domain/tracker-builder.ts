@@ -12,15 +12,15 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
   const template = data.template;
 
   const { context: customContext = {}, ...restCustomData } = customDeeplinkData;
-  const customDeeplinkPaths = omitNotDefined(restCustomData)
+  const customDeeplinkPaths = omitNotDefined(restCustomData);
 
   const backwardCompatibleVariables = omitNotDefined({
     'androidAppScheme': data.context.android_app_scheme,
     'androidDeepLinkPath': data.context.android_deep_link_path,
     'iosDeepLinkPath': data.context.ios_deep_link_path
-  })
+  });
 
-  data.context = { ...data.context, ...backwardCompatibleVariables, ...customDeeplinkPaths }
+  data.context = { ...data.context, ...backwardCompatibleVariables, ...customDeeplinkPaths };
 
   const deeplink = buildDeeplink(data, pageUrl, customContext);
 

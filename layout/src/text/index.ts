@@ -1,5 +1,3 @@
-import { SmartBannerViewData } from '../data-types';
-
 import styles from './styles.module.scss';
 
 export enum TextType {

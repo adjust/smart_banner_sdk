@@ -14,9 +14,9 @@ export function convertSmartBannerDataForView(banner: SmartBannerData, locale?: 
   const { id, is_previous_attribution_priority, name, dismissal_period, tracker_url, localizations, display_rule,
     ...rest } = banner;
 
-  const renderData: SmartBannerViewData = snakeToCamelCase(rest)
+  const renderData: SmartBannerViewData = snakeToCamelCase(rest);
 
-  let texts: LocalizedTexts = {} as LocalizedTexts
+  let texts: LocalizedTexts = {} as LocalizedTexts;
   if (locale && banner.localizations[locale]) {
     const { context: _context, ...localization } = localizations[locale];
     texts = snakeToCamelCase(localization);
