@@ -30,7 +30,7 @@ export class SmartBanner {
 
   constructor(appToken: string, options: SmartBannerOptions, private deviceOs: DeviceOS) {
 
-    // TODO: remove in version 1.0.0
+    // TODO: remove in a next version
     if (Object.prototype.hasOwnProperty.call(options, 'androidAppSchema')) {
       Logger.warn('Property `androidAppSchema` is deprecated and will not be applied');
     }
@@ -72,7 +72,7 @@ export class SmartBanner {
 
     context = context || {};
 
-    // TODO: remove in version 1.0.0
+    // TODO: remove in a next version
     if (deprecatedDeepLinkPath) {
       if (androidDeepLinkPath === undefined) {
         androidDeepLinkPath = deprecatedDeepLinkPath;
