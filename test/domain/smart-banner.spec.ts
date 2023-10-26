@@ -277,7 +277,7 @@ describe('Smart Banner tests', () => {
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
-      })
+      });
 
       describe('iOS', () => {
         const emptyCustomContext = {
@@ -389,7 +389,7 @@ describe('Smart Banner tests', () => {
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
-      })
+      });
     });
 
     /*describe('Callbacks', () => {
@@ -643,7 +643,7 @@ describe('Smart Banner tests', () => {
           );
           expect(smartBannerViewMock.update).toBeCalled();
         });
-      })
+      });
 
       describe('iOS', () => {
         it('updates tracker using new custom deeplink data', async () => {
@@ -671,7 +671,7 @@ describe('Smart Banner tests', () => {
           );
           expect(smartBannerViewMock.update).toBeCalled();
         });
-      })
+      });
     });
 
     describe('View creation scheduled', () => {
@@ -826,7 +826,7 @@ describe('Smart Banner tests', () => {
         expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalled();
         expect(smartBannerViewMock.render).toBeCalled();
       });
-    })
-  })
+    });
+  });
 
 });

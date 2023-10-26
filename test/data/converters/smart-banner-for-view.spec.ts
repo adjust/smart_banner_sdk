@@ -34,7 +34,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
     icon_url: 'https://www.apptrace.com/api/app/1386566985/artwork_url_small'
   };
 
-  const expectedViewData = snakeToCamelCase(viewData)
+  const expectedViewData = snakeToCamelCase(viewData);
 
   const localizedContext = {
     context: {

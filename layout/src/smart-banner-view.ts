@@ -48,10 +48,10 @@ export class SmartBannerView implements SmartBannerLayout {
       } else {
         parent.appendChild(child);
       }
-    }
+    };
 
     if (this.placeholder) {
-      attach(this.placeholder, parent, this.data.position)
+      attach(this.placeholder, parent, this.data.position);
     }
 
     if (this.wrapper) {
@@ -78,7 +78,7 @@ export class SmartBannerView implements SmartBannerLayout {
 
     this.bannerBody.render(this.root);
 
-    this.attachBannerToParent(this.parent)
+    this.attachBannerToParent(this.parent);
   }
 
   public update(banner: SmartBannerViewData, trackerUrl = '') {
