@@ -11,7 +11,7 @@ type LocalizedTexts = SnakeCaseKeysToCamelCase<Omit<Localization, 'context'>>
  */
 export function convertSmartBannerDataForView(banner: SmartBannerData, locale?: string | null): SmartBannerViewData {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id, is_previous_attribution_priority, name, dismissal_period, tracker_url, localizations, display_rule, default_language,
+  const { id, is_previous_attribution_priority, name, dismissal_period, tracker_url, localizations, display_rule,
     ...rest } = banner;
 
   const renderData: SmartBannerViewData = snakeToCamelCase(rest)

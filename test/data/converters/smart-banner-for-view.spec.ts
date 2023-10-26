@@ -12,7 +12,6 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
     name: 'name',
     is_previous_attribution_priority: false,
     display_rule: null,
-    default_language: '',
     tracker_url: {
       template: '',
       context: {}

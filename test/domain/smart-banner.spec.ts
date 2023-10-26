@@ -34,7 +34,7 @@ describe('Smart Banner tests', () => {
     update: jest.fn()
   } as SmartBannerLayout;
 
-  const defaultLang = serverResponseMock[0].default_language;
+  const defaultLang = 'en';
   const getLocalization = (locale?: string | null) => {
     const localisations = serverResponseMock[0].localizations as any;
     return locale && localisations[locale] || {};
