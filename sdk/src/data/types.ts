@@ -50,7 +50,6 @@ export interface SmartBannerResponseData {
   button_color?: string;
   background_color?: string;
   background_image_url?: string,
-  default_language?: string,
   tracker_url: {
     template: string;
     context: Context;
@@ -80,7 +79,6 @@ export interface SmartBannerData {
   button_color?: string;
   background_color?: string;
   background_image_url?: string,
-  default_language?: string,
   tracker_url: {
     template: string;
     context: Context;

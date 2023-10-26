@@ -11,7 +11,6 @@
     "icon_url": "https://icon/url",
     "button_text": "Button",
     "is_previous_attribution_priority": true,
-    "default_language": "en",
     "button_color": "#000000",
     "dismissal_period": 60,
     "title": "Title",
