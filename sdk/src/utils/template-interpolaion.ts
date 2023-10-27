@@ -22,11 +22,12 @@ export function interpolate(template: string, context: Record<string, Primitive>
 
   const re = /{(\w+)}/g;
   const replacer = (_: string, paramName: string): string => {
-    if (context[paramName] === undefined) {
+    if (context[paramName] === undefined || context[paramName] === null) {
       notReplacedPlaceholders.push(paramName);
       Logger.warn(`No value for placeholder: {${paramName}}`);
     }
-    return String(context[paramName] || '');
+
+    return String(context[paramName] || '')
   };
 
   return {
