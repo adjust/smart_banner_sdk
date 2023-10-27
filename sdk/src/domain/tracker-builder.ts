@@ -5,6 +5,7 @@ import { omitNotDefined } from '../utils/object';
 
 export interface TrackerData {
   template: string;
+  default_template: string;
   context: Context;
 }
 
