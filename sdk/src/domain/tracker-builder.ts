@@ -31,7 +31,9 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
     ...deeplink
   };
 
-  return interpolate(template, context);
+  const { result, notReplaced } = interpolate(template, context);
+
+  return result;
 }
 
 function buildDeeplink(data: TrackerData, pageUrl: string, customContext: Record<string, string>): Record<string, string> {
@@ -46,12 +48,12 @@ function buildDeeplink(data: TrackerData, pageUrl: string, customContext: Record
   // The first iteration, interpolates a template received from the BE, i.e. 
   // "{androidAppScheme}://{androidDeepLinkPath}" => "schema://some/path/{screen}" or
   // "{iosDeepLinkPath}" => "some/path/{screen}"
-  deeplinkTemplate = interpolate(deeplinkTemplate, context);
+  deeplinkTemplate = interpolate(deeplinkTemplate, context).result;
 
   // The second iteration, replaces placeholders in the deeplink path template i.e. 
   // "schema://some/path/{screen}" => "schema://some/path/promo" or 
   // "some/path/{screen}" => "some/path/promo"
-  const deeplink = interpolate(deeplinkTemplate, context);
+  const deeplink = interpolate(deeplinkTemplate, context).result;
 
   return {
     'deep_link_path': deeplink, // for ios
