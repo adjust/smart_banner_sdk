@@ -33,6 +33,10 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
 
   const { result, notReplaced } = interpolate(template, context);
 
+  if (notReplaced.length > 0) {
+    return interpolate(data.default_template, context).result;
+  }
+
   return result;
 }
 
