@@ -21,9 +21,15 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
     'iosDeepLinkPath': data.context.ios_deep_link_path
   });
 
-  data.context = { ...data.context, ...backwardCompatibleVariables, ...customDeeplinkPaths };
+  data.context = {
+    ...data.context,
+    ...backwardCompatibleVariables,
+    ...customDeeplinkPaths,
+    ...parseGetParams(pageUrl),
+    ...customContext
+  };
 
-  const deeplink = buildDeeplink(data, pageUrl, customContext);
+  const deeplink = buildDeeplink(data, customContext);
 
   const context: Record<string, string> = {
     ...data.context,
@@ -40,12 +46,11 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
   return result;
 }
 
-function buildDeeplink(data: TrackerData, pageUrl: string, customContext: Record<string, string>): Record<string, string> {
+function buildDeeplink(data: TrackerData, customContext: Record<string, string>): Record<string, string> {
   let deeplinkTemplate = data.context.deep_link_path || data.context.deep_link || '';
 
   const context: Record<string, string> = {
-    ...data.context,
-    ...parseGetParams(pageUrl),
+    ...data.context, // Already contains GET params of the URL
     ...customContext
   };
 
