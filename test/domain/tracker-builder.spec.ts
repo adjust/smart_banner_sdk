@@ -29,7 +29,7 @@ describe('Smart Banners tracker link building', () => {
   };
 
   const emptyUrl = '';
-  const emptyCustomData = {};
+  const emptyCustomData = { context: {} };
 
   describe('No custom data', () => {
     it('builds common tracker', () => {
@@ -267,4 +267,51 @@ describe('Smart Banners tracker link building', () => {
       expect(tracker).toBe(expected);
     });
   });
+
+  describe('Campaign parameters', () => {
+    it('builds custom tracker', () => {
+      const trackerData = {
+        template: 'https://{domain}/{tracker}?campaign={utm_source}-{campaign}&adgroup={localization_language}&utm_content={utm_content}',
+        default_template: commonTracker,
+        context: commonContext
+      };
+
+      const expected = 'https://test.domain/abc123?campaign=hello_utm-banner1&adgroup=en&utm_content=image';
+
+      const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?utm_source=hello_utm&utm_content=image', emptyCustomData);
+      expect(tracker).toBe(expected);
+    });
+
+    it('builds default tracker when campaign parameters unavailable', () => {
+      const trackerData = {
+        template: 'https://{domain}/{tracker}?campaign={utm_source}-{campaign}&adgroup={localization_language}&utm_content={utm_content}',
+        default_template: commonTracker,
+        context: commonContext
+      };
+
+      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en';
+
+      let tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?utm_source=hello', emptyCustomData);
+      expect(tracker).toBe(expected);
+
+      tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?utm_content=image', emptyCustomData);
+      expect(tracker).toBe(expected);
+
+      tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?params=none', emptyCustomData);
+      expect(tracker).toBe(expected);
+    });
+
+    it('builds custom tracker ignoring unavailable placeholders in deeplink path', () => {
+      const trackerData = {
+        template: 'https://{domain}/{deep_link_path}/adj_t={tracker}?adj_campaign={campaign}_{utm_source}&adj_adgroup={localization_language}',
+        default_template: 'no matter',
+        context: { ...iosContext, ios_deep_link_path: 'some/path-to-{nothing}' }
+      };
+
+      const expected = 'https://test.domain/some/path-to-/adj_t=abc123?adj_campaign=banner1_hello&adj_adgroup=en'
+
+      const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?utm_source=hello', emptyCustomData);
+      expect(tracker).toBe(expected);
+    })
+  })
 });

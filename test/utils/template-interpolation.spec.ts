@@ -17,4 +17,8 @@ describe('Template interpolation', () => {
     expect(interpolate(template, { username: 'Kate', action: null })).toEqual({ result: 'Hello Kate, you have .', notReplaced: ['action'] });
     expect(interpolate(template, { username: 'Kate', action: undefined })).toEqual({ result: 'Hello Kate, you have .', notReplaced: ['action'] });
   });
+
+  it('does not throw on empty template', () => {
+    expect(interpolate('', { username: 'Kate' })).toEqual({ result: '', notReplaced: [] });
+  })
 });
