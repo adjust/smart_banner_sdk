@@ -4,15 +4,15 @@ import { buildSmartBannerUrl } from '@sdk/domain/tracker-builder';
 jest.mock('@sdk/utils/logger');
 
 describe('Smart Banners tracker link building', () => {
-  const commonTracker = 'https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}';
-  const iosTracker = 'https://{domain}/{deep_link_path}/adj_t={tracker}?adj_campaign={campaign}&adj_adgroup={adgroup}';
-  const androidTracker = 'https://{domain}/{tracker}?deep_link={deep_link}&campaign={campaign}&adgroup={adgroup}';
+  const commonTracker = 'https://{domain}/{tracker}?campaign={campaign}&adgroup={localization_language}';
+  const iosTracker = 'https://{domain}/{deep_link_path}/adj_t={tracker}?adj_campaign={campaign}&adj_adgroup={localization_language}';
+  const androidTracker = 'https://{domain}/{tracker}?deep_link={deep_link}&campaign={campaign}&adgroup={localization_language}';
 
   const commonContext: Context = {
     domain: 'test.domain',
     tracker: 'abc123',
     campaign: 'banner1',
-    adgroup: 'en'
+    localization_language: 'en'
   };
 
   const androidContext: Context = {

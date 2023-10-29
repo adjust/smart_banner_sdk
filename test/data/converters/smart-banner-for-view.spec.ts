@@ -38,7 +38,7 @@ describe('Convertation of SmartBannerData to SmartBannerViewData', () => {
 
   const localizedContext = {
     context: {
-      adgroup: 'ru'
+      localization_language: 'ru'
     } as Context
   };
 
