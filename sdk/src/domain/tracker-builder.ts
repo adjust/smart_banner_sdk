@@ -21,7 +21,7 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
     'iosDeepLinkPath': data.context.ios_deep_link_path
   });
 
-  data.context = {
+  let combinedContext = {
     ...data.context,
     ...backwardCompatibleVariables,
     ...customDeeplinkPaths,
@@ -29,24 +29,23 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
     ...customContext
   };
 
-  const deeplink = buildDeeplink(data, customContext);
+  const deeplink = buildDeeplink({ template, context: combinedContext }, customContext);
 
-  const context: Record<string, string> = {
-    ...data.context,
-    ...customContext,
+  combinedContext = {
+    ...combinedContext,
     ...deeplink
   };
 
-  const { result, notReplaced } = interpolate(template, context);
+  const { result, notReplaced } = interpolate(template, combinedContext);
 
   if (notReplaced.length > 0) {
-    return interpolate(data.default_template, context).result;
+    return interpolate(data.default_template, combinedContext).result;
   }
 
   return result;
 }
 
-function buildDeeplink(data: TrackerData, customContext: Record<string, string>): Record<string, string> {
+function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContext: Record<string, string>): Record<string, string> {
   let deeplinkTemplate = data.context.deep_link_path || data.context.deep_link || '';
 
   const context: Record<string, string> = {
