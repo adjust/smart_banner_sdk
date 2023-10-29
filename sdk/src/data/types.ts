@@ -4,7 +4,7 @@ interface CommonContextData {
   domain: string;
   tracker: string;
   campaign: string;
-  adgroup: string;
+  localization_language: string;
 }
 
 interface IosContextData {
@@ -26,7 +26,7 @@ export interface Localization {
   /** @deprecated */ button_label?: string;
   button_text?: string;
   icon_url?: string;
-  context: { adgroup: string; };
+  context: { localization_language: string; };
 }
 
 export interface SmartBannerResponseData {

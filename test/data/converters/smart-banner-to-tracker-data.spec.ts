@@ -9,12 +9,12 @@ describe('Convertation of SmartBannerData to TrackerData', () => {
       domain: 'app.adjust.com',
       tracker: 'qtzy19',
       campaign: 'banner test 2',
-      adgroup: 'en'
+      localization_language: 'en'
     }
   };
 
   const localizationContext = {
-    adgroup: 'ru'
+    localization_language: 'ru'
   };
 
   const localizations = {

@@ -22,7 +22,7 @@
         "description": "Описание",
         "button_text": "Кнопка",
         "context": {
-          "adgroup": "ru"
+          "localization_language": "ru"
         }
       },
       "de": {
@@ -30,17 +30,17 @@
         "description": "Beschreibung",
         "button_text": "Knopf",
         "context": {
-          "adgroup": "de"
+          "localization_language": "de"
         }
       }
     },
     "tracker_url": {
-      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={adgroup}",
+      "template": "https://{domain}/{tracker}?campaign={campaign}&adgroup={localization_language}",
       "context": {
         "domain": "app.adjust.com",
         "tracker": "tracker",
         "campaign": "Banner",
-        "adgroup": "en"
+        "localization_language": "en"
       }
     }
   }
