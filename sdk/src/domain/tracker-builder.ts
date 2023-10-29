@@ -5,6 +5,7 @@ import { omitNotDefined } from '../utils/object';
 
 export interface TrackerData {
   template: string;
+  default_template: string;
   context: Context;
 }
 
@@ -20,37 +21,47 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
     'iosDeepLinkPath': data.context.ios_deep_link_path
   });
 
-  data.context = { ...data.context, ...backwardCompatibleVariables, ...customDeeplinkPaths };
-
-  const deeplink = buildDeeplink(data, pageUrl, customContext);
-
-  const context: Record<string, string> = {
+  let combinedContext = {
     ...data.context,
-    ...customContext,
+    ...backwardCompatibleVariables,
+    ...customDeeplinkPaths,
+    ...parseGetParams(pageUrl),
+    ...customContext
+  };
+
+  const deeplink = buildDeeplink({ template, context: combinedContext }, customContext);
+
+  combinedContext = {
+    ...combinedContext,
     ...deeplink
   };
 
-  return interpolate(template, context);
+  const { result, notReplaced } = interpolate(template, combinedContext);
+
+  if (notReplaced.length > 0) {
+    return interpolate(data.default_template, combinedContext).result;
+  }
+
+  return result;
 }
 
-function buildDeeplink(data: TrackerData, pageUrl: string, customContext: Record<string, string>): Record<string, string> {
+function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContext: Record<string, string>): Record<string, string> {
   let deeplinkTemplate = data.context.deep_link_path || data.context.deep_link || '';
 
   const context: Record<string, string> = {
-    ...data.context,
-    ...parseGetParams(pageUrl),
+    ...data.context, // Already contains GET params of the URL
     ...customContext
   };
 
   // The first iteration, interpolates a template received from the BE, i.e. 
   // "{androidAppScheme}://{androidDeepLinkPath}" => "schema://some/path/{screen}" or
   // "{iosDeepLinkPath}" => "some/path/{screen}"
-  deeplinkTemplate = interpolate(deeplinkTemplate, context);
+  deeplinkTemplate = interpolate(deeplinkTemplate, context).result;
 
   // The second iteration, replaces placeholders in the deeplink path template i.e. 
   // "schema://some/path/{screen}" => "schema://some/path/promo" or 
   // "some/path/{screen}" => "some/path/promo"
-  const deeplink = interpolate(deeplinkTemplate, context);
+  const deeplink = interpolate(deeplinkTemplate, context).result;
 
   return {
     'deep_link_path': deeplink, // for ios
