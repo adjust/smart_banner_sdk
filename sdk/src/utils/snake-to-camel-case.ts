@@ -23,6 +23,7 @@ export function stringToCamelCase(text: string): string {
  * @param obj an object to be transformed
  * @returns a new object with keys in camelCase
  */
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export function snakeToCamelCase<T extends Record<string, any>>(obj: T): SnakeCaseKeysToCamelCase<T> {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
     return obj;

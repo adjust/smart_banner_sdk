@@ -20,5 +20,5 @@ describe('Template interpolation', () => {
 
   it('does not throw on empty template', () => {
     expect(interpolate('', { username: 'Kate' })).toEqual({ result: '', notReplaced: [] });
-  })
+  });
 });

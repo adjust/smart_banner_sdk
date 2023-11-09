@@ -308,10 +308,10 @@ describe('Smart Banners tracker link building', () => {
         context: { ...iosContext, ios_deep_link_path: 'some/path-to-{nothing}' }
       };
 
-      const expected = 'https://test.domain/some/path-to-/adj_t=abc123?adj_campaign=banner1_hello&adj_adgroup=en'
+      const expected = 'https://test.domain/some/path-to-/adj_t=abc123?adj_campaign=banner1_hello&adj_adgroup=en';
 
       const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?utm_source=hello', emptyCustomData);
       expect(tracker).toBe(expected);
-    })
-  })
+    });
+  });
 });
