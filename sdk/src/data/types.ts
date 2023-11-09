@@ -1,26 +1,66 @@
 import { Position, BannerSize } from '@layout';
-import { SnakeCaseKeysToCamelCase } from '../utils/snake-to-camel-case';
 
-interface ContextData {
-  domain?: string;
-  tracker?: string;
-  campaign?: string;
-  adgroup?: string;
-  deep_link?: string;
-  deep_link_path?: string;
+interface CommonContextData {
+  domain: string;
+  tracker: string;
+  campaign: string;
+  localization_language: string;
 }
 
-interface LocalizationData {
+interface IosContextData {
+  deep_link_path: string;
+  ios_deep_link_path: string;
+}
+
+interface AndroidContextData {
+  deep_link: string;
+  android_app_scheme: string;
+  android_deep_link_path: string;
+}
+
+export type Context = CommonContextData & Partial<IosContextData> & Partial<AndroidContextData>;
+
+export interface Localization {
   title: string;
   description: string;
-  /** @deprecated */
-  button_label?: string;
+  /** @deprecated */ button_label?: string;
   button_text?: string;
-  icon_url: string;
-  context: { adgroup: string; };
+  icon_url?: string;
+  context: { localization_language: string; };
 }
 
 export interface SmartBannerResponseData {
+  id: string;
+  name: string;
+  app_name?: string;
+  display_rule: string | null;
+  is_previous_attribution_priority: boolean;
+  position: Position;
+  size: BannerSize;
+  dismissal_period: number;
+  dismissal_button_color?: string;
+  icon_url: string;
+  title: string;
+  title_color?: string;
+  description?: string;
+  description_color?: string;
+  /** @deprecated */ button_label?: string;
+  button_text?: string;
+  button_text_color?: string;
+  button_color?: string;
+  background_color?: string;
+  background_image_url?: string,
+  tracker_url: {
+    template: string;
+    default_template: string;
+    context: Context;
+  };
+  localizations: {
+    [key: string]: Localization;
+  };
+}
+
+export interface SmartBannerData {
   id: string;
   name: string;
   app_name: string;
@@ -35,32 +75,24 @@ export interface SmartBannerResponseData {
   title_color?: string;
   description?: string;
   description_color?: string;
-  /** @deprecated */
-  button_label?: string;
-  button_text?: string;
+  button_text: string;
   button_text_color?: string;
   button_color?: string;
   background_color?: string;
   background_image_url?: string,
-  default_language: string,
   tracker_url: {
     template: string;
-    context: ContextData;
+    default_template: string;
+    context: Context;
   };
   localizations: {
-    [key: string]: LocalizationData;
+    [key: string]: Localization;
   };
 }
 
-export type Localization = Omit<SnakeCaseKeysToCamelCase<LocalizationData>, 'buttonLabel'> & { buttonText: string }
-
-export type Context = SnakeCaseKeysToCamelCase<ContextData>
-
-export type SmartBannerData = Omit<SnakeCaseKeysToCamelCase<SmartBannerResponseData>, 'buttonLabel'> & { buttonText: string }
-
 export type DeeplinkData = {
-  deepLinkPath?: string;
-  androidAppSchema?: string;
+  androidDeepLinkPath?: string;
+  iosDeepLinkPath?: string;
   context?: Record<string, string>;
 }
 

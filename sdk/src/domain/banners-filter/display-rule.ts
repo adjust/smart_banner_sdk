@@ -8,11 +8,11 @@ export class DisplayRule {
    */
   public filter(array: SmartBannerData[], url: string): SmartBannerData[] {
     const matchingNonDefault = array.filter(it => {
-      if (!it.displayRule) {
+      if (!it.display_rule) {
         return false; // it's a default banner, ignoring it now
       }
 
-      const regex = new RegExp(it.displayRule, 'i');
+      const regex = new RegExp(it.display_rule, 'i');
       return regex.test(url);
     });
 
@@ -21,7 +21,7 @@ export class DisplayRule {
     }
 
     // Nothing found, return default banners
-    return array.filter(it => !it.displayRule);
+    return array.filter(it => !it.display_rule);
   }
 
   /**
@@ -30,11 +30,11 @@ export class DisplayRule {
   public sort(array: SmartBannerData[]): SmartBannerData[] {
     return array.sort((a, b) => {
 
-      if (!!a.displayRule && !b.displayRule) {
+      if (!!a.display_rule && !b.display_rule) {
         return -1;
       }
 
-      if (!a.displayRule && !!b.displayRule) {
+      if (!a.display_rule && !!b.display_rule) {
         return 1;
       }
 

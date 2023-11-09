@@ -2,7 +2,6 @@ import { convertResponseToSmartBanners } from '@sdk/data/converters/response-to-
 import { BannerSize, Position, SmartBannerData, SmartBannerResponseData } from '@sdk/data/types';
 
 import serverResponseMock from '../../../fake-data/smart_banners_mock.json';
-import { snakeToCamelCase } from '@sdk/utils/snake-to-camel-case';
 
 const dataMock = serverResponseMock as any as SmartBannerResponseData[];
 
@@ -12,13 +11,13 @@ describe('Convertation of server responce to SmartBannerData', () => {
 
     const expected = [];
     for (const item of dataMock) {
-      expected.push({ ...snakeToCamelCase(item), appName: '' });
+      expected.push({ ...item, app_name: '' });
     }
 
     expect(actual).toEqual(expected);
   });
 
-  it('replaces buttonLabel with buttonText', () => {
+  it('replaces button_label with button_text', () => {
     const text = 'Click me!';
     const [{ button_text: _button_text, ...rest }] = dataMock; // removing button_text from testing data
     const data = [{ ...rest, button_label: text }]; // adding button_label instead
@@ -27,11 +26,11 @@ describe('Convertation of server responce to SmartBannerData', () => {
 
     const expected = [];
     for (const item of dataMock) {
-      expected.push({ ...snakeToCamelCase(item), buttonText: text, appName: '' });
+      expected.push({ ...item, button_text: text, app_name: '' });
     }
 
+    expect(actual[0].button_text).toBe(text);
     expect(actual).toEqual(expected);
-    expect(actual[0].buttonText).toBe(text);
   });
 
   it('adds missing properties which are mandatory', () => {
@@ -44,19 +43,19 @@ describe('Convertation of server responce to SmartBannerData', () => {
       {
         position: Position.Top,
         size: BannerSize.Small,
-        appName: 'Hello Kitty',
+        app_name: 'Hello Kitty',
         title: '',
-        buttonText: '',
-        dismissalPeriod: 86400
+        button_text: '',
+        dismissal_period: 86400
       },
       {
         description: 'Meow-meow',
         position: Position.Top,
         size: BannerSize.Small,
-        appName: '',
+        app_name: '',
         title: '',
-        buttonText: '',
-        dismissalPeriod: 86400
+        button_text: '',
+        dismissal_period: 86400
       }
     ];
 

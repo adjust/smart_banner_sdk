@@ -1,5 +1,8 @@
-import { SmartBannerData } from '../types';
+import { Localization, SmartBannerData } from '../types';
+import { SnakeCaseKeysToCamelCase, snakeToCamelCase } from '../../utils/snake-to-camel-case';
 import { SmartBannerViewData } from '@layout';
+
+type LocalizedTexts = SnakeCaseKeysToCamelCase<Omit<Localization, 'context'>>
 
 /**
  * Converts SmartBannerData to SmartBannerViewData
@@ -8,13 +11,16 @@ import { SmartBannerViewData } from '@layout';
  */
 export function convertSmartBannerDataForView(banner: SmartBannerData, locale?: string | null): SmartBannerViewData {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id, isPreviousAttributionPriority, name, dismissalPeriod, trackerUrl, localizations, displayRule, defaultLanguage,
-    ...renderData } = banner;
+  const { id, is_previous_attribution_priority, name, dismissal_period, tracker_url, localizations, display_rule,
+    ...rest } = banner;
 
-  if (locale && localizations[locale]) {
+  const renderData: SmartBannerViewData = snakeToCamelCase(rest);
+
+  let texts: LocalizedTexts = {} as LocalizedTexts;
+  if (locale && banner.localizations[locale]) {
     const { context: _context, ...localization } = localizations[locale];
-    return { ...renderData, ...localization };
+    texts = snakeToCamelCase(localization);
   }
 
-  return renderData;
+  return { ...renderData, ...texts };
 }

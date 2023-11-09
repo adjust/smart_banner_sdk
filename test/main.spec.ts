@@ -16,8 +16,8 @@ describe('Entry point tests', () => {
     show: jest.fn(),
     hide: jest.fn(),
     setLanguage: jest.fn(),
-    setAppSchema: jest.fn(),
-    setDeepLinkPath: jest.fn(),
+    setIosDeepLinkPath: jest.fn(),
+    setAndroidDeepLinkPath: jest.fn(),
     setContext: jest.fn(),
   };
 
@@ -131,8 +131,9 @@ describe('Entry point tests', () => {
       it('Passes options to SmartBanner', () => {
         const options = {
           appToken: 'some-token',
-          deeplink: 'deeplink',
-          context: { deeplink: 'some:://path' },
+          iosDeepLinkPath: '{iosDeeplink}',
+          androidDeepLinkPath: '{android-path}',
+          context: { iosDeeplink: 'some-path', 'android-path': 'path/some' },
           language: 'fr',
           onCreated: jest.fn(),
           onDismissed: jest.fn(),
@@ -209,25 +210,25 @@ describe('Entry point tests', () => {
         AdjustSmartBanner.setLanguage('fr');
 
         expect(SmartBanner.setLanguage).not.toBeCalled();
-        expect(Logger.error).toBeCalledWith('Can\'t set locale, you should initilise Smart Banner SDK first');
+        expect(Logger.error).toBeCalledWith('Can\'t set language, you should initilise Smart Banner SDK first');
       });
     });
 
     describe('Set deeplink parameters', () => {
-      it('calls SmartBanner.setAndroidAppSchema() method', () => {
+      it('calls SmartBanner.setIosDeepLinkPath() method', () => {
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        AdjustSmartBanner.setAndroidAppSchema('someapp');
+        AdjustSmartBanner.setIosDeepLinkPath('some/{path}');
 
-        expect(SmartBanner.setAppSchema).toBeCalledWith('someapp');
+        expect(SmartBanner.setIosDeepLinkPath).toBeCalledWith('some/{path}');
       });
 
-      it('calls SmartBanner.setDeepLinkPath() method', () => {
+      it('calls SmartBanner.setAndroidDeepLinkPath() method', () => {
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        AdjustSmartBanner.setDeepLinkPath('someapp://{path}');
+        AdjustSmartBanner.setAndroidDeepLinkPath('someapp://{path}');
 
-        expect(SmartBanner.setDeepLinkPath).toBeCalledWith('someapp://{path}');
+        expect(SmartBanner.setAndroidDeepLinkPath).toBeCalledWith('someapp://{path}');
       });
 
       it('calls SmartBanner.setContext() method', () => {
@@ -238,18 +239,11 @@ describe('Entry point tests', () => {
         expect(SmartBanner.setContext).toBeCalledWith({ path: 'nowhere' });
       });
 
-      it('prevents SmartBanner.setDeepLinkPath() if SDK was not initialised', () => {
-        AdjustSmartBanner.setDeepLinkPath('someapp://{path}');
+      it('prevents SmartBanner.setIosDeepLinkPath() if SDK was not initialised', () => {
+        AdjustSmartBanner.setIosDeepLinkPath('someapp://{path}');
 
-        expect(SmartBanner.setDeepLinkPath).not.toBeCalled();
-        expect(Logger.error).toBeCalledWith('Can\'t set deeplink, you should initilise Smart Banner SDK first');
-      });
-
-      it('prevents SmartBanner.setAndroidAppSchema() if SDK was not initialised', () => {
-        AdjustSmartBanner.setAndroidAppSchema('someapp');
-
-        expect(SmartBanner.setAppSchema).not.toBeCalled();
-        expect(Logger.error).toBeCalledWith('Can\'t set android app schema, you should initilise Smart Banner SDK first');
+        expect(SmartBanner.setIosDeepLinkPath).not.toBeCalled();
+        expect(Logger.error).toBeCalledWith('Can\'t set iOS deeplink path, you should initilise Smart Banner SDK first');
       });
 
       it('prevents SmartBanner.setContext() if SDK was not initialised', () => {
@@ -257,6 +251,59 @@ describe('Entry point tests', () => {
 
         expect(SmartBanner.setContext).not.toBeCalled();
         expect(Logger.error).toBeCalledWith('Can\'t set deeplink context, you should initilise Smart Banner SDK first');
+      });
+    });
+  });
+
+  describe('Backward compatibility', () => {
+    describe('Deeplink path initialisation parameters', () => {
+      it('passes the parameters as they are', () => {
+        const options = {
+          appToken: 'some-token',
+          androidAppSchema: 'app', // deprecated
+          deeplinkPath: 'some/path', // deprecated
+          iosDeepLinkPath: 'another/path',
+          androidDeepLinkPath: 'third/path',
+          language: 'fr',
+          onCreated: jest.fn(),
+          onDismissed: jest.fn(),
+        };
+
+        AdjustSmartBanner.init(options);
+
+        expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', options, OsDetector.DeviceOS.Android);
+      });
+    });
+
+    describe('Deeplink path setters', () => {
+      describe('setAndroidAppSchema', () => {
+        it('prints a deprecation warning', () => {
+          AdjustSmartBanner.init({ appToken: 'some-token' });
+
+          AdjustSmartBanner.setAndroidAppSchema('schema');
+
+          expect(Logger.warn).toBeCalledWith('Method `setAndroidAppSchema` is deprecated and will not be applied');
+        });
+      });
+
+      describe('setDeepLinkPath', () => {
+        it('prints a deprecation warning', () => {
+          AdjustSmartBanner.init({ appToken: 'some-token' });
+
+          AdjustSmartBanner.setDeepLinkPath('deeplink_path');
+
+          const warning = 'Method `setDeepLinkPath` is deprecated, please use `setIosDeepLinkPath` and `setAndroidDeepLinkPath` setters instead';
+          expect(Logger.warn).toBeCalledWith(warning);
+        });
+
+        it('calls both platform setters', () => {
+          AdjustSmartBanner.init({ appToken: 'some-token' });
+
+          AdjustSmartBanner.setDeepLinkPath('deeplink_path');
+
+          expect(SmartBanner.setIosDeepLinkPath).toBeCalledWith('deeplink_path');
+          expect(SmartBanner.setAndroidDeepLinkPath).toBeCalledWith('deeplink_path');
+        });
       });
     });
   });

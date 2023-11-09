@@ -10,8 +10,8 @@ export type AppToken = { [k in DeviceOS]?: string } | string;
 export interface SmartBannerOptions {
   appToken: AppToken;
   language?: string;
-  androidAppSchema?: string;
-  deepLinkPath?: string;
+  androidDeepLinkPath?: string;
+  iosDeepLinkPath?: string;
   context?: Record<string, string>;
   bannerParent?: HTMLElement;
   onCreated?: Callback;

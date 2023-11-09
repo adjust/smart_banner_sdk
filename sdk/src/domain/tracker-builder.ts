@@ -1,84 +1,71 @@
 import { Context, DeeplinkData } from '../data/types';
-import { Logger } from '../utils/logger';
 import { parseGetParams } from '../utils/parse-get-params';
 import { interpolate } from '../utils/template-interpolaion';
+import { omitNotDefined } from '../utils/object';
 
 export interface TrackerData {
   template: string;
+  default_template: string;
   context: Context;
 }
 
 export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData) {
-  warnIfDataInconsistent(data, customDeeplinkData);
-
   const template = data.template;
-  const customTrackerData = customDeeplinkData || {};
 
-  const deeplink = buildDeeplink(data, pageUrl, customTrackerData);
+  const { context: customContext = {}, ...restCustomData } = customDeeplinkData;
+  const customDeeplinkPaths = omitNotDefined(restCustomData);
 
-  const context: Record<string, string> = {
+  const backwardCompatibleVariables = omitNotDefined({
+    'androidAppScheme': data.context.android_app_scheme,
+    'androidDeepLinkPath': data.context.android_deep_link_path,
+    'iosDeepLinkPath': data.context.ios_deep_link_path
+  });
+
+  let combinedContext = {
     ...data.context,
-    ...customTrackerData.context,
+    ...backwardCompatibleVariables,
+    ...customDeeplinkPaths,
+    ...parseGetParams(pageUrl),
+    ...customContext
+  };
+
+  const deeplink = buildDeeplink({ template, context: combinedContext }, customContext);
+
+  combinedContext = {
+    ...combinedContext,
     ...deeplink
   };
 
-  return interpolate(template, context);
-}
+  const { result, notReplaced } = interpolate(template, combinedContext);
 
-
-/**
- * Logs a warning message if data to create a deeplink is inconsistent
- */
-function warnIfDataInconsistent({ template, context }: TrackerData, customDeeplinkData: DeeplinkData) {
-  const androidDeeplink = template.indexOf('{deep_link}') >= 0;
-  if (androidDeeplink) {
-    const schema = customDeeplinkData.androidAppSchema;
-    const path = customDeeplinkData.deepLinkPath;
-    if ((schema && !path) || (!schema && path)) {
-      Logger.warn('Both androidAppSchema and deepLinkPath needed for android platform');
-    }
+  if (notReplaced.length > 0) {
+    return interpolate(data.default_template, combinedContext).result;
   }
 
-  const hasDeeplinkPlaceholder = androidDeeplink || template.indexOf('{deep_link_path}') >= 0;
-  if (!hasDeeplinkPlaceholder) {
-    const customPath = customDeeplinkData.androidAppSchema || customDeeplinkData.deepLinkPath;
-    if (context.deepLink || context.deepLinkPath || customPath) {
-      Logger.warn(`Tracker template does not contain deep link placeholders, can not set ${customPath ? 'custom ' : ''}deep link path`);
-    }
-  }
+  return result;
 }
 
-function buildDeeplink(data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData): Record<string, string> {
-  const appSchema = customDeeplinkData.androidAppSchema || null;
-  let deepLinkPath = customDeeplinkData.deepLinkPath || data.context.deepLinkPath || '';
+function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContext: Record<string, string>): Record<string, string> {
+  let deeplinkTemplate = data.context.deep_link_path || data.context.deep_link || '';
 
   const context: Record<string, string> = {
-    ...data.context,
-    ...parseGetParams(pageUrl),
-    ...encodeContext(customDeeplinkData.context)
+    ...data.context, // Already contains GET params of the URL
+    ...customContext
   };
 
-  deepLinkPath = interpolate(deepLinkPath, context); // replace {templates} with values if deep_link_path
+  // The first iteration, interpolates a template received from the BE, i.e. 
+  // "{androidAppScheme}://{androidDeepLinkPath}" => "schema://some/path/{screen}" or
+  // "{iosDeepLinkPath}" => "some/path/{screen}"
+  deeplinkTemplate = interpolate(deeplinkTemplate, context).result;
 
-  const deepLink = (appSchema && deepLinkPath) ? `${appSchema}://${deepLinkPath}` : null;
+  // The second iteration, replaces placeholders in the deeplink path template i.e. 
+  // "schema://some/path/{screen}" => "schema://some/path/promo" or 
+  // "some/path/{screen}" => "some/path/promo"
+  const deeplink = interpolate(deeplinkTemplate, context).result;
 
   return {
-    'deep_link_path': deepLinkPath, // for ios template
-    'deep_link': encodeURIComponent(deepLink || interpolate(data.context.deepLink || '', context)) // for android template
+    'deep_link_path': deeplink, // for ios
+    'deep_link': encodeURIComponent(deeplink) // for android
   };
 }
 
-function encodeContext(context: Record<string, string> = {}): Record<string, string> {
-  return Object.keys(context)
-    .map((key: string) => {
-      const value = context[key];
-      if (!value) {
-        return { [key]: '' };
-      }
-
-      return { [key]: encodeURIComponent(value) };
-    })
-    .reduce((acc, current) => {
-      return { ...acc, ...current };
-    }, {});
-}

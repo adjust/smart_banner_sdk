@@ -10,14 +10,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@adjustcom/smart-banner-sdk": "^0.0.6",
+    "@adjustcom/smart-banner-sdk": "^0.0.7",
     "lorem-ipsum": "^2.0.8"
   },
   "author": "Adjust GmbH",
   "license": "MIT",
   "devDependencies": {
     "html-loader": "^4.2.0",
-    "html-webpack-plugin": "^5.5.0",
+    "html-webpack-plugin": "^5.5.3",
     "svg-inline-loader": "^0.8.2"
   }
 }

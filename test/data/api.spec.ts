@@ -2,7 +2,6 @@ import { SmartBannerApi } from '@sdk/data/api';
 import { Logger } from '@sdk/utils/logger';
 import { Network } from '@sdk/network/network';
 import { DeviceOS } from '@sdk/utils/detect-os';
-import { snakeToCamelCase } from '@sdk/utils/snake-to-camel-case';
 
 import serverResponseMock from '../../fake-data/smart_banners_mock.json';
 
@@ -43,7 +42,7 @@ describe('Smart banner API tests', () => {
       smartBannerData = smartBannerData!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
       for (let i = 0; i < smartBannerData.length; i++) {
-        const expected = snakeToCamelCase(serverResponseMock[i]);
+        const expected = serverResponseMock[i];
         expect(smartBannerData[i]).toMatchObject(expected);
       }
     });

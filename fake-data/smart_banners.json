@@ -1,5 +1,111 @@
 [
   {
+    "id": "6bcbccc4-7929-47dd-ad39-a21b65c2ca20",
+    "title": "utm params",
+    "description": "Download now and enjoy! =)",
+    "button_text": "Click me",
+    "dismissal_period": 1209600,
+    "icon_url": "https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_1280.jpg",
+    "position": "top",
+    "size": "small",
+    "button_label": "Click me",
+    "title_color": "#191D2F",
+    "button_color": "#F4F6F9",
+    "background_color": "#FFFFFF",
+    "button_text_color": "#191D2F",
+    "description_color": "#565C78",
+    "background_image_url": null,
+    "dismissal_button_color": "#565C78",
+    "app_name": "0a0a0atestweb",
+    "display_rule": "(\\/?\\?|&)utm_source=.*&|$",
+    "display_rules": null,
+    "tracker_url": {
+      "template": "https://{domain}/{tracker}?campaign={utm_source}&engagement_type=fallback_click",
+      "default_template": "https://{domain}/{tracker}?campaign={banner_name}&adgroup={localization_language}",
+      "context": {
+        "tracker": "15p8qqfg",
+        "space_name": "SpaceTest3",
+        "banner_name": "qa-is-cool",
+        "localization_language": "default",
+        "domain": "app.adjust.com"
+      }
+    },
+    "localizations": {
+      "fr": {
+        "title": "French title",
+        "description": "French description",
+        "button_label": "Click",
+        "button_text": "Click",
+        "context": {
+          "localization_language": "fr"
+        }
+      }
+    }
+  },
+  {
+    "id": "77bbd589-b93e-45d3-839c-789fda105024",
+    "icon_url": "https://www.apptrace.com/api/app/318597939/artwork_url_small",
+    "position": "top",
+    "size": "small",
+    "dismissal_period": 86400,
+    "title": "Enjoy 10% off",
+    "description": "Save on your first app order with code APP10. T&Cs apply.",
+    "button_text": "Download now",
+    "button_label": "Download now",
+    "title_color": "#FFFFFF",
+    "button_color": "#F9FAFC",
+    "background_color": "#1E1E1E",
+    "button_text_color": "#000000",
+    "description_color": "#FFFFFF",
+    "dismissal_button_color": "#555555",
+    "app_name": "NET-A-PORTER",
+    "display_rule": null,
+    "tracker_url": {
+      "template": "https://{domain}/{deep_link_path}?adj_t={tracker}&adj_campaign={campaign}&adj_adgroup={adgroup}&adj_engagement_type=fallback_click",
+      "context": {
+        "tracker": "fake_fake",
+        "campaign": "nap_evergreen_smartbanner",
+        "adgroup": "default",
+        "domain": "5ed6.adj.st",
+        "deep_link_path": "{iosDeepLinkPath}",
+        "ios_deep_link_path": "."
+      }
+    },
+    "localizations": {}
+  },
+  {
+    "id": "77bbd589-b93e-45d3-839c-789fda105024",
+    "icon_url": "https://www.apptrace.com/api/app/318597939/artwork_url_small",
+    "position": "top",
+    "size": "small",
+    "dismissal_period": 86400,
+    "title": "Enjoy 10% off",
+    "description": "Save on your first app order with code APP10. T&Cs apply.",
+    "button_text": "Download now",
+    "button_label": "Download now",
+    "title_color": "#FFFFFF",
+    "button_color": "#F9FAFC",
+    "background_color": "#1E1E1E",
+    "button_text_color": "#000000",
+    "description_color": "#FFFFFF",
+    "dismissal_button_color": "#555555",
+    "app_name": "NET-A-PORTER",
+    "display_rule": null,
+    "tracker_url": {
+      "template": "https://{domain}/{tracker}?deep_link={deep_link}&campaign={campaign}&adgroup={adgroup}&engagement_type=fallback_click",
+      "context": {
+        "tracker": "fake_fake",
+        "campaign": "nap_evergreen_smartbanner",
+        "adgroup": "default",
+        "domain": "app.adjust.com",
+        "android_app_scheme": "nap",
+        "android_deep_link_path": "{hallo}",
+        "deep_link": "{androidAppScheme}://{androidDeepLinkPath}"
+      }
+    },
+    "localizations": {}
+  },
+  {
     "id": "7091c9c2-981d-4d40-9add-675e5fe4b827",
     "title": "Small banner can has a long name but it should be trimmed to just one line. Let's make it even longer just because I can! Muahaha!",
     "description": "Generating a longer text with the words of different lenghts to check how it works because then the words have the same lenght it looks not nice and not representative. Let's make it even longer just because I can! Muahaha!",

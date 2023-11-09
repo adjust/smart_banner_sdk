@@ -28,11 +28,11 @@ The sdk is also available through CDN and then accessible through global `Adjust
 To <a id="loading-snippet">load Smart Banner SDK through CDN</a> paste the following snippet into the `<head>` tag:
 ```html
 <script type="application/javascript">
-!function(n,t,e,a,o,s,r,c,i){var u=o+"_q";n[o]=n[o]||{},n[u]=n[u]||[];for(var d=0;d<s.length;d++)r(n[o],n[u],s[d]);c=t.createElement(e),i=t.getElementsByTagName(e)[0],c.async=!0,c.src="https://cdn.adjust.com/adjust-smart-banner-latest.min.js",c.onload=function(){n[o]=n[o].default;for(var t=0;t<n[u].length;t++)n[o][n[u][t][0]]?n[o][n[u][t][0]].apply(n[o],n[u][t][1]):console.error("No such function found in "+o+": "+n[u][t][0]);n[u]=[]},i.parentNode.insertBefore(c,i)}(window,document,"script",0,"AdjustSmartBanner",["init","show","hide","setLanguage","setAndroidAppSchema","setDeepLinkPath","setContext"],(function(n,t,e){n[e]=function(){t.push([e,arguments])}}));
+!function(e,n,t,a,o,s,r,i,c){var d=o+"_q";e[o]=e[o]||{},e[d]=e[d]||[];for(var u=0;u<s.length;u++)r(e[o],e[d],s[u]);i=n.createElement(t),c=n.getElementsByTagName(t)[0],i.async=!0,i.src="https://cdn.adjust.com/adjust-smart-banner-latest.min.js",i.onload=function(){e[o]=e[o].default;for(var n=0;n<e[d].length;n++)e[o][e[d][n][0]]?e[o][e[d][n][0]].apply(e[o],e[d][n][1]):console.error("No such function found in "+o+": "+e[d][n][0]);e[d]=[]},c.parentNode.insertBefore(i,c)}(window,document,"script",0,"AdjustSmartBanner",["init","show","hide","setLanguage","setIosDeepLinkPath","setAndroidDeepLinkPath","setContext","setAndroidAppSchema","setDeepLinkPath"],(function(e,n,t){e[t]=function(){n.push([t,arguments])}}));
 </script>
 ```
 
-When loading the sdk through CDN we suggest using minified version. You can target specific version like `https://cdn.adjust.com/adjust-smart-banner-0.0.6.min.js`, or you can target latest version `https://cdn.adjust.com/adjust-smart-banner-latest.min.js` if you want automatic updates without need to change the target file. The sdk files are cached so they are served as fast as possible, and the cache is refreshed every half an hour. If you want updates immediately make sure to target specific version.
+When loading the sdk through CDN we suggest using minified version. You can target specific version like `https://cdn.adjust.com/adjust-smart-banner-0.0.7.min.js`, or you can target latest version `https://cdn.adjust.com/adjust-smart-banner-latest.min.js` if you want automatic updates without need to change the target file. The sdk files are cached so they are served as fast as possible, and the cache is refreshed every half an hour. If you want updates immediately make sure to target specific version.
 
 
 ## <a id="initialization">Initialization</a>
@@ -96,28 +96,90 @@ AdjustSmartBanner.init({
 })
 ```
 
-#### <a id="init-schema">**androidAppSchema**</a> `string`
-#### <a id="init-deeplinkpath">**deepLinkPath**</a> `string`
-#### <a id="init-context">**context**</a> `object`
+#### <a id="init-deeplink">**Deeplink path parameters**</a>
 
-These parameters allow you to specify where your user land in your app when they click on banner. For further information see [Deeplinks](#deeplinks).
+These parameters allow you to specify where your user lands in your app when they click on banner. For further information see [Deeplinks](#deeplinks).
+
+##### <a id="init-schema">**androidAppSchema**</a> `string`
+
+> [!WARNING]
+> Parameter `androidAppSchema` is deprecated, please don't use it anymore.
+
+##### <a id="init-deeplinkpath">**deepLinkPath**</a> `string`
+
+> [!WARNING]
+> Parameter `deepLinkPath` is deprecated, please use [`androidDeepLinkPath`](#init-androiddeeplinkpath) and [`iosDeepLinkPath`](#init-iosdeeplinkpath) respectivetely the platform where you want deeplink path to be changed.
+
+##### <a id="init-androiddeeplinkpath">**androidDeepLinkPath**</a> `string`
+
+Overrides Android deeplink path, which allows you to change user destination in your mobile app when they click on banner.
 
 Example:
 ```js
 AdjustSmartBanner.init({
   // other initialisation parameters including mandatory ones
-  androidAppSchema: "myapp",
-  deepLinkPath: "products/promotion",
+  androidDeepLinkPath: "android/path/to/screen"
 })
 ```
 
+Please find [more examples below](#init-context-examples). For further templates and context explanation see [Deeplinks](#deeplinks) chapter.
+
+##### <a id="init-iosdeeplinkpath">**iosDeepLinkPath**</a> `string`
+Overrides iOS deeplink path, which allows you to change user destination in your mobile app when they click on banner.
+
+Example:
 ```js
 AdjustSmartBanner.init({
   // other initialisation parameters including mandatory ones
-  androidAppSchema: "myapp",
-  deepLinkPath: "products/promo={promotion_id}",
+  iosDeepLinkPath: "ios/path-to-screen"
+})
+```
+
+Please find [more examples below](#init-context-examples). For further templates and context explanation see [Deeplinks](#deeplinks) chapter.
+
+##### <a id="init-context">**context**</a> `object`
+Sets context for deeplink path template. The context is an object where the SDK searches values to interpolate a deeplink path template. For further information see [Deeplinks](#deeplinks).
+
+<a id="init-context-examples">Examples:</a>
+```js
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  iosDeepLinkPath: "products/product={item_id}",
   context: {
-    promotion_id: "new_user"
+    item_id: "cool_jeans_123"
+  }
+})
+
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  androidDeepLinkPath: "products/{item_id}",
+  context: {
+    item_id: "cool_jeans_123"
+  }
+})
+
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  androidDeepLinkPath: "products/{item_id}",
+  iosDeepLinkPath: "products/product={item_id}",
+  context: {
+    item_id: "cool_jeans_123"
+  }
+})
+```
+
+You can use different paths for iOS and Android and set different context variables:
+
+Example:
+```js
+AdjustSmartBanner.init({
+  // other initialisation parameters including mandatory ones
+  androidDeepLinkPath: "promo/{android_promo}",
+  iosDeepLinkPath: "main/{ios_promo}",
+  context: {
+    android_promo: "new_user",
+    ios_promo: "registrationFinished",
+    unused_variable: "this will be ignored"
   }
 })
 ```
@@ -195,88 +257,169 @@ The setter accepts a two-letters language code, i.e. `en`, `de`, etc.
 
 ## <a id="deeplinks">Deeplinks</a>
 
-Deeplink is a link which allows to direct user to a certain events or pages in your mobile application, offering a seamless user experience.
-Smart banner sdk supports plain string deeplinks and deeplink templates which contain placeholders to be filled out by the sdk using provided deeplink context or GET parameters of the web page URL.
+Deeplink is a link which allows to direct user to a certain events or pages in your mobile application, offering a seamless user experience. Smart banner sdk supports [**plain string deeplink paths**](#deeplinks-plain-path) and [**deeplink path templates**](#deeplinks-path-template).
 
-There are two ways to set a deeplink:
- - pass [deeplink path parameters](#init-schema) to `AdjustSmartBanner.init`
- - call `setDeepLinkPath` and `setAndroidAppSchema` setters as shown below
+There are two ways to set a deeplink path or deeplink path template:
+ - pass [deeplink path parameters](#init-deeplink) to `AdjustSmartBanner.init` method
+ - call [`setAndroidDeepLinkPath`](#deeplinks-setters-androidDeeplinkpath) and [`setIosDeepLinkPath`](#deeplinks-setters-iosDeeplinkpath) setters
 
-There are ways to provide context to interpolate deeplink template:
- - pass it as a [deeplink context parameter](#init-context) to `AdjustSmartBanner.init`
- - call `setContext` setter as shown below
- - [use GET parameters](#deeplink-context-urlparams)
+### <a id="deeplinks-plain-path">Plain string deeplink path</a>
 
- ### <a id="deeplink-setters">**Deeplink path and context setters**</a>
-
-There are several functions to set custom deeplink path and context.
-
-#### <a id="deeplinks-setters-schema">**setAndroidAppSchema**</a>
-
-Accepts a string representing Android scheme name of your mobile app. Android scheme name is required to build a deeplink for Android.
-
-Note that the sdk preserves the scheme name, so it is not needed to call this method every time you update a deeplink path.
+Plain string deeplink path is just a string to be used as a user destination in your mobile app.
 
 Example:
 ```js
-AdjustSmartBanner.setAndroidAppSchema("adjustExample")
+// Plain string deeplink path
+
+const deeplinkPath = "products/jeans/?product=cool_jeans_123"
 ```
+
+### <a id="deeplinks-path-template">Deeplink path template</a>
+
+Deeplink path template is a string which contains placeholders in curly bracets. The sdk replaces the placeholders by the [context values](#deeplinks-setting-context), i.e. interpolates the template. A result of the interpolation is a plain string, which is used as a user destination in your mobile app.
+
+Example:
+```js
+// Deeplink path template
+
+const template = "products/{category}/?product={product_id}"
+
+// Substrings {category} and {product_id} are the placeholders, which are replaced by values found in the context
+```
+
+**Important**: Placeholders in a deeplink template are filled out by the sdk using [provided context](#deeplinks-setting-context) or [GET parameters](#deeplink-context-urlparams) of the current web page URL.
+
+#### <a id="deeplinks-setting-context">Context for deeplink path template</a>
+
+Context is used to interpolate [deeplink path templates](deeplinks-path-template).
+
+There are two ways to provide context programmatically:
+ - pass context as a [deeplink context parameter](#init-context) to `AdjustSmartBanner.init`
+ - call [`setContext` setter](#deeplinks-setters-context)
+
+Another way to setup context is to use [GET parameters](#deeplink-context-urlparams).
+
+Before deeplink path template interpolation the sdk reads GET parameters of current URL address and combines them with the programmatically passed context. If there are a GET parameter and a context property with the same name, the sdk prefers and stores the value appeared in the context.
+
+Then the sdk looks through the deeplink path template and replaces the placeholders enclosed in curly brackets with the properties from the combined context. If there is no such property in the combined context, then an empty string inserted instead of a placeholder.
+
+#### <a id="deeplink-context-urlparams">**Using GET parameters as context**</a>
+
+To interpolate deeplink path templates, the sdk reads the GET parameters of the current URL address and combines them with the programmatically set context.
+
+Example:
+```js
+// Let's say the current URL is "https://my-shop.com/?product_id=111222&promo=spring_10"
+
+AdjustSmartBanner.setIosDeepLinkPath("products/{product_id}/?promo={promo}");
+
+// Then resulting deeplink path is "products/111222/?promo=spring_10"
+```
+
+You could combine the methods to setup the context:
+```js
+// Let's say the current URL is "https://my-shop.com/?product_id=111222&promo=spring_10"
+
+AdjustSmartBanner.setIosDeepLinkPath("products/{category}/{product_id}/?promo={promo}");
+
+// But wait, there is no value for {category} in the GET parameters
+
+AdjustSmartBanner.setContext({ category: "jeans" });
+
+// Then resulting deeplink path is "products/jeans/111222/?promo=spring_10"
+```
+
+**Important**: if your web app is a single page applications (SPA) you should call `AdjustSmartBanner.show()` when page address changes since the sdk on its own is unable to track navigation events and retrieve an updated URL.
+
+**Important**: the [context](#deeplinks-setting-context) passed programmatically to the sdk is a prior choice to fill in the placeholders, and GET parameters with the same keys are ignored in favor of the context.
+
+Example:
+```js
+// Let's say the current URL is "my-shop.com/?product_id=111222", so we have product_id parameter in the GET parameters
+
+AdjustSmartBanner.setIosDeepLinkPath("products/{product_id}/");
+
+// And then setContext function is called, which overrides a value of product_id
+AdjustSmartBanner.setContext({ product_id: "999888" });
+
+// Then resulting deeplink path is "products/999888/"
+```
+
+### <a id="deeplink-setters">**Deeplink path and context setters**</a>
+
+There are several functions to set custom deeplink path or deeplink path template and its context.
+
+#### <a id="deeplinks-setters-schema">**setAndroidAppScheme**</a>
+
+> [!WARNING]
+> Method `setAndroidAppSchema` is deprecated, please don't use it anymore.
 
 #### <a id="deeplinks-setters-deeplinkpath">**setDeepLinkPath**</a>
 
-Accepts a deep link path which is an event or a screen in your mobile app.
+> [!WARNING]
+> Method `setDeepLinkPath` is deprecated and will be removed, please use [`setAndroidDeepLinkPath`](#init-androiddeeplinkpath) and [`setIosDeepLinkPath`](#init-iosdeeplinkpath) respectivetely the platform where you want deeplink path to be changed.
 
-**Important**: On Android app scheme name is required, you can provide it with [`androidAppSchema`](#init-schema) parameter within initialisation or with [`setAndroidAppSchema`](#deeplinks-setters-schema) function.
+#### <a id="deeplinks-setters-androidDeeplinkpath">**setAndroidDeepLinkPath**</a>
+
+Accepts a string representing deep link path or deeplint path template.
 
 Example:
 ```js
-AdjustSmartBanner.setDeepLinkPath("products/jeans/?product=cool-jeans&promo=spring_10")
+AdjustSmartBanner.setAndroidDeepLinkPath("products/jeans/?product=111222&promo=spring_10")
 ```
 
-A deeplink template could contain any number of parameters enclosed in curly brackets.
+A deeplink path template could contain any number of placeholders enclosed in curly brackets.
 
 Example:
 ```js
-AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}&promo={promo}")
+AdjustSmartBanner.setAndroidDeepLinkPath("products/jeans/?product={product_id}&promo={promo_id}")
 ```
 
 The sdk will replace these parameters with values from [context](#init-context) provided within initialisation or with [setContext](#deeplinks-setters-context) function, or from [URL parameters](#deeplink-context-urlparams).
 
-#### <a id="deeplinks-setters-context">**setContext**</a>
+#### <a id="deeplinks-setters-iosDeeplinkpath">**setIosDeepLinkPath**</a>
 
-An object with data to fill placeholders in deeplink template.
+Accepts a string representing deep link path or deeplint path template.
 
 Example:
 ```js
-AdjustSmartBanner.setContext({
-  category: "jeans",
-  product_id: "cool-jeans",
-  promo: "spring_10"
-})
+AdjustSmartBanner.setIosDeepLinkPath("products/jeans/?product=111222&promo=spring_10")
 ```
 
-The sdk searches a placeholder among the keys of passed context and replaces the placeholder with according value.
+A deeplink path template could contain any number of placeholders enclosed in curly brackets.
 
 Example:
 ```js
-AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}&promo={promo}");
+AdjustSmartBanner.setIosDeepLinkPath("products/jeans/?product={product_id}&promo={promo_id}")
+```
+
+The sdk will replace these parameters with values from [context](#init-context) provided within initialisation or with [setContext](#deeplinks-setters-context) function, or from [URL parameters](#deeplink-context-urlparams).
+
+
+#### <a id="deeplinks-setters-context">**setContext**</a>
+
+An object with data to fill placeholders in deeplink template. The sdk searches a placeholder among the keys of passed context and replaces the placeholder with according value.
+
+Example:
+```js
+AdjustSmartBanner.setAndroidDeepLinkPath("products/{category}/{product_id}/?promo={promo}");
 AdjustSmartBanner.setContext({
   category: "jeans",
-  product_id: "cool-jeans",
+  product_id: "111222",
   promo: "spring_10"
 });
 
-// Resulting deeplink path is "products/jeans/?product=cool-jeans&promo=spring_10"
+// Resulting deeplink path is "products/jeans/111222/?promo=spring_10"
 ```
 
  **Important**: if there is no such key in `context` found the sdk will try to get value from GET parameters of current URL address. Then if it's unable to find a value to be filled in, placeholder is replaced with an empty string.
 
 Example:
 ```js
-AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}&promo={promo}");
+AdjustSmartBanner.setIosDeepLinkPath("products/{category}/{product_id}/?promo={promo}");
 AdjustSmartBanner.setContext({ category: "jeans" });
 
-// Resulting deeplink path is "products/jeans/?product=&promo="
+// Resulting deeplink path is "products/jeans//?promo="
 ```
 
  **Important**: Note that `setContext` overrides the last preserved context, instead of sequential calls you should combine all needed parameters in a single object and then call `setContext` with it.
@@ -284,49 +427,20 @@ AdjustSmartBanner.setContext({ category: "jeans" });
  Example:
 ```js
 // Wrong
-AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}");
+AdjustSmartBanner.setIosDeepLinkPath("products/{category}/{product_id}");
 AdjustSmartBanner.setContext({ category: "jeans" });
-AdjustSmartBanner.setContext({ product_id: "blue-jeans" }); // Previous context is lost
+AdjustSmartBanner.setContext({ product_id: "111222" }); // Previous context is lost
 
-// Resulting deeplink path is "products//?product=blue-jeans&promo="
+// Resulting deeplink path is "products//111222", {category} is replaced with an empty string
 
 // Correct
-AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}");
+AdjustSmartBanner.setIosDeepLinkPath("products/{category}/{product_id}");
 AdjustSmartBanner.setContext({
-  category: "shoes",
-  product_id: "red-sneakers"
+  category: "jeans",
+  product_id: "111222"
 });
 
-// Resulting deeplink path is "products/shoes/?product=red-sneakers"
-```
-
-### <a id="deeplink-context-urlparams">**Using GET parameters as context**</a>
-
-If some of the parameters present in the deeplink template are missing in the `context`, the sdk tries to find them among the GET parameters of the current URL.
-
-Example:
-```js
-AdjustSmartBanner.setDeepLinkPath("products/{category}/?product={product_id}&promo={promo}");
-AdjustSmartBanner.setContext({ category: "jeans" });
-
-// Let's say the current URL is "my-shop.com/spring-promo?product_id=cool-jeans&promo=spring_10"
-
-// Then resulting deeplink path is "products/jeans/?product=cool-jeans&promo=spring_10"
-```
-
-**Important**: if your web app is a single page applications (SPA) you should call `AdjustSmartBanner.show()` when page address changes since the sdk on its own is unable to track navigation events and retrieve an updated URL.
-
-**Important**: the `context` passed to the sdk is a prior choice to fill in placeholders, and GET parameters with the same keys are ignored in favor of the `context`.
-
-Example:
-```js
-AdjustSmartBanner.setDeepLinkPath("products/jeans/?product={product_id}&promo={promo}");
-AdjustSmartBanner.setContext({ product_id: "floral-jeans" });
-
-// Let's say the current URL is "my-shop.com/spring-promo?product_id=cool-jeans&promo=spring_10",
-// so we have product_id parameter in the URL and in the context
-
-// Then resulting deeplink path is "products/jeans/?product=floral-jeans&promo=spring_10"
+// Resulting deeplink path is "products/jeans/111222"
 ```
 
 ## <a id="license">License</a>

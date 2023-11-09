@@ -9,24 +9,24 @@ describe('Convertation of SmartBannerData to TrackerData', () => {
       domain: 'app.adjust.com',
       tracker: 'qtzy19',
       campaign: 'banner test 2',
-      adgroup: 'en'
+      localization_language: 'en'
     }
   };
 
   const localizationContext = {
-    adgroup: 'ru'
+    localization_language: 'ru'
   };
 
   const localizations = {
     ru: {
       title: 'мой заголовок',
       description: 'мое описание',
-      buttonText: 'нажми',
+      button_text: 'нажми',
       context: localizationContext
     } as Localization
   } as { [key: string]: Localization };
 
-  const bannerData = { trackerUrl: trackerData, localizations } as SmartBannerData;
+  const bannerData = { tracker_url: trackerData, localizations } as SmartBannerData;
 
   it('converts data with default locale', () => {
     expect(convertSmartBannerToTracker(bannerData)).toEqual(trackerData);
