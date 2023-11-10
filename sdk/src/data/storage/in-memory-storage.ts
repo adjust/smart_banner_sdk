@@ -1,13 +1,15 @@
 import { Storage } from './storage';
 
-export class InMemoryStorage implements Storage {
-  private items: Record<string, any> = {};
+type Anything = any; // eslint-disable-line  @typescript-eslint/no-explicit-any
 
-  public setItem(key: string, value: any): void {
+export class InMemoryStorage implements Storage {
+  private items: Record<string, Anything> = {};
+
+  public setItem(key: string, value: Anything): void {
     this.items[key] = value;
   }
 
-  public getItem(key: string): any | null {
+  public getItem(key: string): Anything | null {
     return Object.prototype.hasOwnProperty.call(this.items, key) ? this.items[key] : null;
   }
 

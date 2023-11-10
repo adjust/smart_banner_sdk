@@ -39,7 +39,7 @@ export class SmartBanner {
     if (Object.prototype.hasOwnProperty.call(options, 'deepLinkPath')) {
       Logger.warn('Property `deepLinkPath` is deprecated, please use `iosDeepLinkPath` and `androidDeepLinkPath` instead');
 
-      deprecatedDeepLinkPath = (options as any)['deepLinkPath'];
+      deprecatedDeepLinkPath = (options as any)['deepLinkPath']; // eslint-disable-line  @typescript-eslint/no-explicit-any
     }
 
     const { language, bannerParent, onCreated, onDismissed } = options;
