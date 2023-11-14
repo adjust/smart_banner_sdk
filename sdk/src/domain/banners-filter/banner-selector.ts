@@ -1,5 +1,5 @@
 import { SmartBannerData } from '../../data/types';
-import { DisplayRule } from './display-rule';
+import { DisplayRule } from './regex-display-rule';
 import { DismissedFilter } from './dismissed-filter';
 import { DismissHandler } from '../dismiss-handler';
 import { Logger } from '../../utils/logger';

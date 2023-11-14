@@ -1,5 +1,5 @@
 import { SmartBannerData } from '@sdk/data/types';
-import { DisplayRule } from '@sdk/domain/banners-filter/display-rule';
+import { DisplayRule } from '@sdk/domain/banners-filter/regex-display-rule';
 
 describe('DisplayRule tests', () => {
   const url = 'some-url';
