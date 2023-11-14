@@ -1,7 +1,7 @@
+import { parseGetParams } from '@utils/parse-get-params';
+import { interpolate } from '@utils/template-interpolaion';
+import { omitNotDefined } from '@utils/object';
 import { Context, DeeplinkData } from '../data/types';
-import { parseGetParams } from '../utils/parse-get-params';
-import { interpolate } from '../utils/template-interpolaion';
-import { omitNotDefined } from '../utils/object';
 
 export interface TrackerData {
   template: string;

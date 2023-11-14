@@ -1,8 +1,8 @@
+import { Logger } from '@utils/logger';
 import { SmartBannerData } from '../../data/types';
 import { DisplayRule } from './regex-display-rule';
 import { DismissedFilter } from './dismissed-filter';
 import { DismissHandler } from '../dismiss-handler';
-import { Logger } from '../../utils/logger';
 
 export const NO_DELAY = -1;
 

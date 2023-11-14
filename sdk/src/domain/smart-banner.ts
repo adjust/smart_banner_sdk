@@ -1,3 +1,6 @@
+import { Logger } from '@utils/logger';
+import { DeviceOS } from '@utils/detect-os';
+import { getLanguage } from '@utils/language';
 import { SmartBannerLayout, SmartBannerViewData, SmartBannerLayoutFactory } from '@layout';
 import { SmartBannerData, DeeplinkData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
@@ -7,9 +10,6 @@ import { convertSmartBannerToTracker } from '../data/converters/smart-banner-to-
 import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
 import { NetworkConfig, NetworkFactory } from '../network/network-factory';
-import { Logger } from '../utils/logger';
-import { DeviceOS } from '../utils/detect-os';
-import { getLanguage } from '../utils/language';
 import { Globals } from '../globals';
 import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';

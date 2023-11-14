@@ -11,6 +11,9 @@
       "@layout": [
         "../layout/index.ts"
       ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
     },
   }
 }
