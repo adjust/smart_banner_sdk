@@ -1,4 +1,5 @@
 import { Logger } from '@utils/logger';
+import { random } from '@utils/random';
 import { SmartBannerData } from '../../data/types';
 import { DisplayRule } from './regex-display-rule';
 import { DismissedFilter } from './dismissed-filter';
@@ -23,11 +24,6 @@ export class BannerSelector {
     return this.displayRule.sort(suitableBanners);
   }
 
-  private getRandomFromArray(banners: SmartBannerData[]): SmartBannerData {
-    const index = Math.floor(Math.random() * banners.length);
-    return banners[index];
-  }
-
   /**
    * Returns next suitable banner and a number of seconds to wait until show the banner
    */
@@ -39,7 +35,7 @@ export class BannerSelector {
       return null;
     }
 
-    // If one of banners was dismissed, we should wait till 'the oldest' dismissalPeriod passed
+    // If at least one of banners was dismissed, we should wait till 'the oldest' dismissalPeriod passed
     let dateToShow: number | null = null;
     const dismissed = this.dismissedFilter.getDismissed(suitableBanners);
     if (dismissed.length > 0) {
@@ -48,7 +44,7 @@ export class BannerSelector {
     }
 
     return {
-      banner: this.getRandomFromArray(suitableBanners), // Show any banner with equal probability
+      banner: suitableBanners[random(0, suitableBanners.length)], // Show any banner with equal probability
       when: dateToShow || NO_DELAY
     };
   }
