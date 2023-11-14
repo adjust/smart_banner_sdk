@@ -2,14 +2,18 @@ import { Logger } from '@sdk/utils/logger';
 
 describe('Logger tests', () => {
   beforeAll(() => {
-    jest.spyOn(console, 'log');
-    jest.spyOn(console, 'warn');
-    jest.spyOn(console, 'error');
+    jest.spyOn(console, 'log').mockImplementation(() => { });
+    jest.spyOn(console, 'warn').mockImplementation(() => { });
+    jest.spyOn(console, 'error').mockImplementation(() => { });
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  })
 
   it('logs a message', () => {
     Logger.setLogLevel('verbose'); // needed to allow messages of all the levels to be printed
