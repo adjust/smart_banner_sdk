@@ -8,27 +8,17 @@ import { DismissHandler } from '../dismiss-handler';
 export const NO_DELAY = -1;
 
 export class BannerSelector {
-  private displayRule: DisplayRule;
   private dismissedFilter: DismissedFilter;
 
   constructor(private dismissHandler: DismissHandler) {
-    this.displayRule = new DisplayRule();
     this.dismissedFilter = new DismissedFilter(dismissHandler);
-  }
-
-  /**
-   * Get an array of banners which match display_rule
-   */
-  private getSuitableBanners(banners: SmartBannerData[], url: string) {
-    const suitableBanners = this.displayRule.filter(banners, url);
-    return this.displayRule.sort(suitableBanners);
   }
 
   /**
    * Returns next suitable banner and a number of seconds to wait until show the banner
    */
   public next(banners: SmartBannerData[], url: string): { banner: SmartBannerData, when: number } | null {
-    const suitableBanners = this.getSuitableBanners(banners, url);
+    const suitableBanners = new DisplayRule(url).filter(banners);
 
     if (suitableBanners.length <= 0) {
       Logger.log(`No Smart Banners for ${url} page found`);
