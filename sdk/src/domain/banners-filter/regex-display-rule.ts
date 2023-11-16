@@ -1,7 +1,7 @@
 import { BannerFilter } from './types';
 import { SmartBannerData } from '../../data/types';
 
-export class DisplayRule implements BannerFilter {
+export class RegexDisplayRule implements BannerFilter {
   constructor(private url: string) { }
 
   /**

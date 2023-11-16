@@ -1,7 +1,7 @@
 import { SmartBannerData } from '@sdk/data/types';
-import { DisplayRule } from '@sdk/domain/banners-filter/regex-display-rule';
+import { RegexDisplayRule } from '@sdk/domain/banners-filter/regex-display-rule';
 
-describe('DisplayRule tests', () => {
+describe('RegexDisplayRule tests', () => {
   const url = 'some-url';
 
   const defaultBanners = [
@@ -21,19 +21,19 @@ describe('DisplayRule tests', () => {
   describe('Filtering', () => {
     it('returns array of matching banners', () => {
       const array = [...nonSuitableBanners, ...defaultBanners, ...suitableBanners];
-      expect((new DisplayRule(url)).filter(array)).toEqual(suitableBanners);
+      expect((new RegexDisplayRule(url)).filter(array)).toEqual(suitableBanners);
     });
 
     it('returns array of default banners if there is no matching ones', () => {
-      expect((new DisplayRule(url)).filter([...nonSuitableBanners, ...defaultBanners])).toEqual(defaultBanners);
+      expect((new RegexDisplayRule(url)).filter([...nonSuitableBanners, ...defaultBanners])).toEqual(defaultBanners);
     });
 
     it('returns empty array if there is no matching banners neither default ones', () => {
-      expect((new DisplayRule(url)).filter(nonSuitableBanners)).toEqual([]);
+      expect((new RegexDisplayRule(url)).filter(nonSuitableBanners)).toEqual([]);
     });
 
     it('does not throw if banners array is empty', () => {
-      expect((new DisplayRule(url)).filter([])).toEqual([]);
+      expect((new RegexDisplayRule(url)).filter([])).toEqual([]);
     });
   });
 });
