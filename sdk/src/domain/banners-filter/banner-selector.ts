@@ -1,8 +1,8 @@
 import { Logger } from '@utils/logger';
 import { random } from '@utils/random';
 import { SmartBannerData } from '../../data/types';
-import { RegexDisplayRule } from './regex-display-rule';
 import { DismissHandler } from '../dismiss-handler';
+import { DisplayRules } from './display-rules';
 
 export const NO_DELAY = -1;
 
@@ -14,7 +14,7 @@ export class BannerSelector {
    * Returns next suitable banner and a number of seconds to wait until show the banner
    */
   public next(banners: SmartBannerData[], url: string): { banner: SmartBannerData, when: number } | null {
-    const suitableBanners = new RegexDisplayRule(url).filter(banners);
+    const suitableBanners = new DisplayRules(url).filter(banners);
 
     if (suitableBanners.length <= 0) {
       Logger.log(`No Smart Banners for ${url} page found`);
