@@ -1,4 +1,4 @@
-import { parseJson } from '../../utils/json';
+import { parseJson } from '@utils/json';
 import { Storage } from './storage';
 
 type Anything = any; // eslint-disable-line  @typescript-eslint/no-explicit-any

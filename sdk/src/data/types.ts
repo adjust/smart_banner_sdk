@@ -34,6 +34,7 @@ export interface SmartBannerResponseData {
   name: string;
   app_name?: string;
   display_rule: string | null;
+  display_rules: PlacementCondition | null;
   is_previous_attribution_priority: boolean;
   position: Position;
   size: BannerSize;
@@ -60,11 +61,17 @@ export interface SmartBannerResponseData {
   };
 }
 
+export interface PlacementCondition {
+  operator: "or" | "and";
+  rules: Array<PlacementCondition | string>;
+}
+
 export interface SmartBannerData {
   id: string;
   name: string;
   app_name: string;
   display_rule: string | null;
+  display_rules: PlacementCondition | null;
   is_previous_attribution_priority: boolean;
   position: Position;
   size: BannerSize;

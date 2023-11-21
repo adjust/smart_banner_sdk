@@ -15,6 +15,9 @@
       "@layout": [
         "../layout/dist/adj-sb-layout.d.ts"
       ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
     },
   },
 }
