@@ -62,7 +62,7 @@ export interface SmartBannerResponseData {
 }
 
 export interface PlacementCondition {
-  operator: "or" | "and";
+  operator: 'or' | 'and';
   rules: Array<PlacementCondition | string>;
 }
 

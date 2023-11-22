@@ -14,13 +14,13 @@ describe('BannersSelector tests', () => {
     const displayRules = url === null ? null : {
       operator: 'or',
       rules: [url]
-    } as PlacementCondition
+    } as PlacementCondition;
 
     return {
       id,
       dismissal_period: dismissalPeriod,
       display_rules: displayRules
-    } as SmartBannerData
+    } as SmartBannerData;
   };
 
   //#region Set of test 'banners'

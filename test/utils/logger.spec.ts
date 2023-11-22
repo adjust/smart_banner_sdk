@@ -13,7 +13,7 @@ describe('Logger tests', () => {
 
   afterAll(() => {
     jest.restoreAllMocks();
-  })
+  });
 
   it('logs a message', () => {
     Logger.setLogLevel('verbose'); // needed to allow messages of all the levels to be printed

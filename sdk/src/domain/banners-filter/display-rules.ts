@@ -12,7 +12,7 @@ export class DisplayRules implements BannerFilter {
   constructor(private url: string) { }
 
   private and(rules: Array<PlacementCondition | string>): boolean {
-    for (let rule of rules) {
+    for (const rule of rules) {
       if (typeof rule === 'string') {
         if (!new RegExp(rule, 'i').test(this.url)) {
           return false;  // if at least one rule form rules array doesn't match then the entire condition doesn't match
@@ -28,7 +28,7 @@ export class DisplayRules implements BannerFilter {
   }
 
   private or(rules: Array<PlacementCondition | string>): boolean {
-    for (let rule of rules) {
+    for (const rule of rules) {
       if (typeof rule === 'string') {
         if (new RegExp(rule, 'i').test(this.url)) {
           return true; // if at least one rule form rules array does match then the entire condition does match
@@ -50,7 +50,7 @@ export class DisplayRules implements BannerFilter {
       return this.and(condition.rules);
     }
 
-    Logger.warn('Unknown operator ' + condition.operator + ', try to update the SDK.')
+    Logger.warn('Unknown operator ' + condition.operator + ', try to update the SDK.');
     return false;
   }
 
@@ -81,7 +81,7 @@ export class DisplayRules implements BannerFilter {
       } else if (match === MatchType.default) {
         defaultBanners.push(it);
       }
-    })
+    });
 
     if (matchingNonDefault.length > 0) {
       return matchingNonDefault;

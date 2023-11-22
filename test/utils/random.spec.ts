@@ -1,4 +1,4 @@
-import { random } from '@sdk/utils/random'
+import { random } from '@sdk/utils/random';
 
 describe('Random number', () => {
   const testSet = [
@@ -12,7 +12,7 @@ describe('Random number', () => {
     { min: -1, max: 0 },
     { min: 9, max: -1 },
     { min: 0, max: 0 },
-  ]
+  ];
 
   it.each(testSet)('returns a number within [min, max) range', ({ min, max }) => {
     const actualMin = Math.min(min, max);
@@ -26,5 +26,5 @@ describe('Random number', () => {
       expect(result).toBeGreaterThanOrEqual(actualMin);
       expect(result).toBeLessThan(actualMax);
     }
-  })
-})
+  });
+});
