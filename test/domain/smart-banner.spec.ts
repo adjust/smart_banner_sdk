@@ -1,6 +1,6 @@
 import { Logger } from '@sdk/utils/logger';
 import { SmartBanner } from '@sdk/domain/smart-banner';
-import { DeviceOS, SmartBannerOptions } from '@sdk/main';
+import { DeviceOS } from '@sdk/main';
 import { NetworkFactory } from '@sdk/network/network-factory';
 import { StorageFactory } from '@sdk/data/storage/storage-factory';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';

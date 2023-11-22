@@ -29,8 +29,8 @@ export class SmartBanner {
   private url: string = window.location.href;
 
   constructor(appToken: string, options: SmartBannerOptions, private deviceOs: DeviceOS) {
-    const { language, bannerParent, onCreated, onDismissed } = options;
-    let { iosDeepLinkPath, androidDeepLinkPath, context } = options;
+    const { language, bannerParent, iosDeepLinkPath, androidDeepLinkPath, onCreated, onDismissed } = options;
+    let { context } = options;
 
     this.dismissHandler = new DismissHandler();
 
