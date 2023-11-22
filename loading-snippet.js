@@ -40,11 +40,7 @@
     'setLanguage',
     'setIosDeepLinkPath',
     'setAndroidDeepLinkPath',
-    'setContext',
-
-    /* deprecated functions */
-    'setAndroidAppSchema',
-    'setDeepLinkPath'
+    'setContext'
   ],
   function (context, queue, methodName) {
     context[methodName] = function () {

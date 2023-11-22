@@ -28,7 +28,7 @@ The sdk is also available through CDN and then accessible through global `Adjust
 To <a id="loading-snippet">load Smart Banner SDK through CDN</a> paste the following snippet into the `<head>` tag:
 ```html
 <script type="application/javascript">
-!function(e,n,t,a,o,s,r,i,c){var d=o+"_q";e[o]=e[o]||{},e[d]=e[d]||[];for(var u=0;u<s.length;u++)r(e[o],e[d],s[u]);i=n.createElement(t),c=n.getElementsByTagName(t)[0],i.async=!0,i.src="https://cdn.adjust.com/adjust-smart-banner-latest.min.js",i.onload=function(){e[o]=e[o].default;for(var n=0;n<e[d].length;n++)e[o][e[d][n][0]]?e[o][e[d][n][0]].apply(e[o],e[d][n][1]):console.error("No such function found in "+o+": "+e[d][n][0]);e[d]=[]},c.parentNode.insertBefore(i,c)}(window,document,"script",0,"AdjustSmartBanner",["init","show","hide","setLanguage","setIosDeepLinkPath","setAndroidDeepLinkPath","setContext","setAndroidAppSchema","setDeepLinkPath"],(function(e,n,t){e[t]=function(){n.push([t,arguments])}}));
+!function(n,t,e,o,a,s,r,i,c){var u=a+"_q";n[a]=n[a]||{},n[u]=n[u]||[];for(var d=0;d<s.length;d++)r(n[a],n[u],s[d]);i=t.createElement(e),c=t.getElementsByTagName(e)[0],i.async=!0,i.src="https://cdn.adjust.com/adjust-smart-banner-latest.min.js",i.onload=function(){n[a]=n[a].default;for(var t=0;t<n[u].length;t++)n[a][n[u][t][0]]?n[a][n[u][t][0]].apply(n[a],n[u][t][1]):console.error("No such function found in "+a+": "+n[u][t][0]);n[u]=[]},c.parentNode.insertBefore(i,c)}(window,document,"script",0,"AdjustSmartBanner",["init","show","hide","setLanguage","setIosDeepLinkPath","setAndroidDeepLinkPath","setContext"],(function(n,t,e){n[e]=function(){t.push([e,arguments])}}));
 </script>
 ```
 
@@ -99,16 +99,6 @@ AdjustSmartBanner.init({
 #### <a id="init-deeplink">**Deeplink path parameters**</a>
 
 These parameters allow you to specify where your user lands in your app when they click on banner. For further information see [Deeplinks](#deeplinks).
-
-##### <a id="init-schema">**androidAppSchema**</a> `string`
-
-> [!WARNING]
-> Parameter `androidAppSchema` is deprecated, please don't use it anymore.
-
-##### <a id="init-deeplinkpath">**deepLinkPath**</a> `string`
-
-> [!WARNING]
-> Parameter `deepLinkPath` is deprecated, please use [`androidDeepLinkPath`](#init-androiddeeplinkpath) and [`iosDeepLinkPath`](#init-iosdeeplinkpath) respectivetely the platform where you want deeplink path to be changed.
 
 ##### <a id="init-androiddeeplinkpath">**androidDeepLinkPath**</a> `string`
 
@@ -348,16 +338,6 @@ AdjustSmartBanner.setContext({ product_id: "999888" });
 ### <a id="deeplink-setters">**Deeplink path and context setters**</a>
 
 There are several functions to set custom deeplink path or deeplink path template and its context.
-
-#### <a id="deeplinks-setters-schema">**setAndroidAppScheme**</a>
-
-> [!WARNING]
-> Method `setAndroidAppSchema` is deprecated, please don't use it anymore.
-
-#### <a id="deeplinks-setters-deeplinkpath">**setDeepLinkPath**</a>
-
-> [!WARNING]
-> Method `setDeepLinkPath` is deprecated and will be removed, please use [`setAndroidDeepLinkPath`](#init-androiddeeplinkpath) and [`setIosDeepLinkPath`](#init-iosdeeplinkpath) respectivetely the platform where you want deeplink path to be changed.
 
 #### <a id="deeplinks-setters-androidDeeplinkpath">**setAndroidDeepLinkPath**</a>
 
