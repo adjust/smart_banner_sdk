@@ -23,6 +23,7 @@ const config: JestConfigWithTsJest = {
   moduleNameMapper: {
     '.(css|scss)$': '<rootDir>/_mocks/style.ts',
     '@sdk/(.*)$': '<rootDir>/../sdk/src/$1',
+    '@utils/(.*)$': '<rootDir>/../sdk/src/utils/$1',
     '@layout': '<rootDir>/../layout/dist/adj-sb-layout.js',
   },
   preset: 'ts-jest',

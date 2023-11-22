@@ -1,6 +1,6 @@
+import { Logger } from '@utils/logger';
 import { SmartBannerData } from '../data/types';
 import { Storage, StorageFactory } from '../data/storage/storage-factory';
-import { Logger } from '../utils/logger';
 
 export class DismissHandler {
   private storage: Storage;

@@ -27,7 +27,7 @@ export function interpolate(template: string, context: Record<string, Primitive>
       Logger.warn(`No value for placeholder: {${paramName}}`);
     }
 
-    return String(context[paramName] || '')
+    return String(context[paramName] || '');
   };
 
   return {

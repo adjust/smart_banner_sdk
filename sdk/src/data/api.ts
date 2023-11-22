@@ -1,8 +1,8 @@
+import { DeviceOS } from '@utils/detect-os';
+import { Logger } from '@utils/logger';
 import { SmartBannerResponseData, SmartBannerData } from './types';
 import { AsyncDataSource } from './data-source';
 import { convertResponseToSmartBanners } from './converters/response-to-smart-banners';
-import { DeviceOS } from '../utils/detect-os';
-import { Logger } from '../utils/logger';
 import { Network } from '../network/network';
 
 /**

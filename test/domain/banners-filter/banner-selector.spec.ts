@@ -1,4 +1,4 @@
-import { SmartBannerData } from '@sdk/data/types';
+import { PlacementCondition, SmartBannerData } from '@sdk/data/types';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
 import { DismissHandler } from '@sdk/domain/dismiss-handler';
 import { BannerSelector, NO_DELAY } from '@sdk/domain/banners-filter/banner-selector';
@@ -10,9 +10,18 @@ describe('BannersSelector tests', () => {
   const dismissalPeriodInSeconds = 60;
   const dismissalPeriod = dismissalPeriodInSeconds * 1000;
 
-  const createBannerData = (id: string, url: string | null = defaultUrl, dismissalPeriod: number = dismissalPeriodInSeconds) => (
-    { id, dismissal_period: dismissalPeriod, display_rule: url } as SmartBannerData
-  );
+  const createBannerData = (id: string, url: string | null = defaultUrl, dismissalPeriod: number = dismissalPeriodInSeconds) => {
+    const displayRules = url === null ? null : {
+      operator: 'or',
+      rules: [url]
+    } as PlacementCondition;
+
+    return {
+      id,
+      dismissal_period: dismissalPeriod,
+      display_rules: displayRules
+    } as SmartBannerData;
+  };
 
   //#region Set of test 'banners'
 

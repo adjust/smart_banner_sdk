@@ -1,7 +1,7 @@
 import { DeviceOS } from './utils/detect-os';
 
 /** @public */
-export type Callback = () => any;
+export type Callback = () => any; // eslint-disable-line  @typescript-eslint/no-explicit-any
 
 /** @public */
 export type AppToken = { [k in DeviceOS]?: string } | string;

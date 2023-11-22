@@ -1,6 +1,6 @@
-import { Localization, SmartBannerData } from '../types';
-import { SnakeCaseKeysToCamelCase, snakeToCamelCase } from '../../utils/snake-to-camel-case';
 import { SmartBannerViewData } from '@layout';
+import { SnakeCaseKeysToCamelCase, snakeToCamelCase } from '@utils/snake-to-camel-case';
+import { Localization, SmartBannerData } from '../types';
 
 type LocalizedTexts = SnakeCaseKeysToCamelCase<Omit<Localization, 'context'>>
 
