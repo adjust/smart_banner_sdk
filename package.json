@@ -12,7 +12,7 @@
     "lint": "eslint ./sdk/src ./layout/src ./test ./demo/src --fix",
     "test": "TZ=UTC jest --config ./test/jest.config.ts",
     "prepublishOnly": "npm-run-all lint test",
-    "copy": "cp LICENSE README.md sdk"
+    "copy": "cp LICENSE README.md CHANGELOG.md sdk"
   },
   "main": "sdk/dist/adjust-smart-banner.js",
   "types": "sdk/dist/adjust-smart-banner.d.ts",
