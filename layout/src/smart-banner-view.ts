@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 
 export interface SmartBannerLayout {
   render: (parent?: HTMLElement) => void;
-  update: (banner: SmartBannerViewData, trackerUrl?: string) => void;
+  update: (banner: SmartBannerViewData, trackerUrl?: string, impressionUrl?: string) => void;
   show: () => void;
   hide: () => void;
   destroy: () => void;
@@ -19,7 +19,8 @@ export class SmartBannerView implements SmartBannerLayout {
 
   private parent?: HTMLElement;
 
-  constructor(private data: SmartBannerViewData, trackerUrl: string, onDismiss: () => void) {
+  // TODO: implement pixel with impression url
+  constructor(private data: SmartBannerViewData, trackerUrl: string, impressionUrl: string, onDismiss: () => void) {
     this.root = document.createElement('div');
     this.bannerBody = new BannerBody(data, onDismiss, trackerUrl);
   }
@@ -81,7 +82,8 @@ export class SmartBannerView implements SmartBannerLayout {
     this.attachBannerToParent(this.parent);
   }
 
-  public update(banner: SmartBannerViewData, trackerUrl = '') {
+  // TODO: implement pixel with impression url
+  public update(banner: SmartBannerViewData, trackerUrl = '', impressionUrl = '') {
     this.data = banner;
 
     this.applyRootStyles(this.parent !== document.body);

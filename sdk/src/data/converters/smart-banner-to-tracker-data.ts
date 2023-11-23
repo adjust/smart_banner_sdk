@@ -7,7 +7,7 @@ import { TrackerData } from '../../domain/tracker-builder';
  * @returns A new object containing only tracker template and localized Context
  */
 export function convertSmartBannerToTracker(data: SmartBannerData, locale?: string | null): TrackerData {
-  const { tracker_url: { template, default_template, context }, localizations } = data;
+  const { tracker_url: { template, default_template, impression_url, context }, localizations } = data;
 
   const localization = locale && localizations ? localizations[locale] : null;
   const localeContext = localization ? localization.context : {};
@@ -15,6 +15,7 @@ export function convertSmartBannerToTracker(data: SmartBannerData, locale?: stri
   return {
     template,
     default_template,
+    impression_url,
     context: { ...context, ...localeContext }
   };
 }

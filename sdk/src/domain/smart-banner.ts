@@ -15,6 +15,7 @@ import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
 import { buildSmartBannerUrl } from './tracker-builder';
 import { Callback, SmartBannerOptions } from '../types';
+import { buildImpressionLink } from './impression-link-builder';
 
 export class SmartBanner {
   private network: Network;
@@ -175,9 +176,9 @@ export class SmartBanner {
   private createView(bannerData: SmartBannerData) {
     Logger.info(`Render banner: ${bannerData.title}`);
 
-    const { renderData, trackerUrl } = this.prepareDataForRender(bannerData);
+    const { renderData, trackerUrl, impressionUrl } = this.prepareDataForRender(bannerData);
 
-    this.view = SmartBannerLayoutFactory.createViewForSdk(renderData, trackerUrl, () => this.dismiss(bannerData));
+    this.view = SmartBannerLayoutFactory.createViewForSdk(renderData, trackerUrl, impressionUrl, () => this.dismiss(bannerData));
     this.view.render(this.bannerParent);
 
     Logger.log('Smart banner rendered');
@@ -199,9 +200,9 @@ export class SmartBanner {
     if (this.view) {
       Logger.log('Updating Smart banner');
 
-      const { renderData, trackerUrl } = this.prepareDataForRender(banner);
+      const { renderData, trackerUrl, impressionUrl } = this.prepareDataForRender(banner);
 
-      this.view.update(renderData, trackerUrl);
+      this.view.update(renderData, trackerUrl, impressionUrl);
 
       Logger.log('Smart banner updated');
     } else {
@@ -254,12 +255,13 @@ export class SmartBanner {
   /**
    * Returns localized render data and tracker URL
    */
-  private prepareDataForRender(bannerData: SmartBannerData): { renderData: SmartBannerViewData, trackerUrl: string } {
+  private prepareDataForRender(bannerData: SmartBannerData): { renderData: SmartBannerViewData, trackerUrl: string, impressionUrl: string } {
     const renderData = convertSmartBannerDataForView(bannerData, this.language);
 
     const trackerData = convertSmartBannerToTracker(bannerData, this.language);
     const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customDeeplinkData);
+    const impressionUrl = buildImpressionLink({ impression_url: trackerData.impression_url, context: trackerData.context }, this.url);
 
-    return { renderData, trackerUrl };
+    return { renderData, trackerUrl, impressionUrl };
   }
 }

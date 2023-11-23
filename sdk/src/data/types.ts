@@ -90,6 +90,7 @@ export interface SmartBannerData {
   tracker_url: {
     template: string;
     default_template: string;
+    impression_url: string;
     context: Context;
   };
   localizations: {

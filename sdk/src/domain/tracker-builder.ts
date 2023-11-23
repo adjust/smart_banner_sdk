@@ -7,6 +7,7 @@ import { DeviceOS, getDeviceOS } from '@utils/detect-os';
 export interface TrackerData {
   template: string;
   default_template: string;
+  impression_url: string;
   context: Context;
 }
 
