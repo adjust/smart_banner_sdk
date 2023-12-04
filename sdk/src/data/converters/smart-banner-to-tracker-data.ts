@@ -15,7 +15,6 @@ export function convertSmartBannerToTracker(data: SmartBannerData, locale?: stri
   return {
     template,
     default_template,
-    impression_url,
     context: { ...context, ...localeContext }
   };
 }

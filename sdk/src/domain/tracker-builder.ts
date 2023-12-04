@@ -7,7 +7,6 @@ import { DeviceOS, getDeviceOS } from '@utils/detect-os';
 export interface TrackerData {
   template: string;
   default_template: string;
-  impression_url: string;
   context: Context;
 }
 
@@ -36,7 +35,11 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
     ...customContext
   };
 
+  console.log(template)
+
   const deeplink = buildDeeplink({ template, context: combinedContext }, customContext);
+
+  console.log(deeplink)
 
   combinedContext = {
     ...combinedContext,

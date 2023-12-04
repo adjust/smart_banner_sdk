@@ -260,7 +260,11 @@ export class SmartBanner {
 
     const trackerData = convertSmartBannerToTracker(bannerData, this.language);
     const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customDeeplinkData);
-    const impressionUrl = buildImpressionLink({ impression_url: trackerData.impression_url, context: trackerData.context }, this.url);
+
+    //bannerData.tracker_url.impression_url = "https://view.adjust.com/impression/16r8eyec?campaign={banner_name}_{utm_source}_{utm_campaign}&adgroup={banner_language}&creative={utm_term}&label=a=10&redirect=https%3A%2F%2Fexample-redirect.com"
+    const impressionUrl = bannerData.tracker_url.impression_url // TODO: make it more clear
+      ? buildImpressionLink({ impression_url: bannerData.tracker_url.impression_url, context: trackerData.context }, this.url)
+      : '';
 
     return { renderData, trackerUrl, impressionUrl };
   }
