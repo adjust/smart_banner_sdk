@@ -9,4 +9,5 @@ coverage/
 dist/
 
 sdk/README.md
+sdk/CHANGELOG.md
 sdk/LICENSE

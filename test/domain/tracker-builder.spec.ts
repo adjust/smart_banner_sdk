@@ -1,11 +1,12 @@
 import { Context } from '@sdk/data/types';
 import { buildSmartBannerUrl } from '@sdk/domain/tracker-builder';
+import * as DetectOs from '@sdk/utils/detect-os';
 
 jest.mock('@sdk/utils/logger');
 
 describe('Smart Banners tracker link building', () => {
   const commonTracker = 'https://{domain}/{tracker}?campaign={campaign}&adgroup={localization_language}';
-  const iosTracker = 'https://{domain}/{deep_link_path}/adj_t={tracker}?adj_campaign={campaign}&adj_adgroup={localization_language}';
+  const iosTracker = 'https://{domain}/{deep_link_path}?adj_t={tracker}&adj_campaign={campaign}&adj_adgroup={localization_language}';
   const androidTracker = 'https://{domain}/{tracker}?deep_link={deep_link}&campaign={campaign}&adgroup={localization_language}';
 
   const commonContext: Context = {
@@ -51,7 +52,7 @@ describe('Smart Banners tracker link building', () => {
         context: iosContext
       };
 
-      const expected = 'https://test.domain/some-path/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+      const expected = 'https://test.domain/some-path?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
       expect(buildSmartBannerUrl(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
     });
@@ -81,7 +82,7 @@ describe('Smart Banners tracker link building', () => {
         context: iosContext
       };
 
-      const expected = 'https://test.domain/my-product/t-shirt/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+      const expected = 'https://test.domain/my-product/t-shirt?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
       expect(buildSmartBannerUrl(trackerData, emptyUrl, { iosDeepLinkPath: customDeepLinkPath })).toBe(expected);
     });
@@ -93,7 +94,7 @@ describe('Smart Banners tracker link building', () => {
         context: { ...iosContext, ios_deep_link_path: 'my-product/{product}' }
       };
 
-      const expected = 'https://test.domain/my-product/t-shirt/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+      const expected = 'https://test.domain/my-product/t-shirt?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
       expect(buildSmartBannerUrl(trackerData, emptyUrl, { context: { product: 't-shirt' } })).toBe(expected);
     });
@@ -107,12 +108,33 @@ describe('Smart Banners tracker link building', () => {
         context: iosContext
       };
 
-      const expected = 'https://test.domain/my-product/jeans/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+      const expected = 'https://test.domain/my-product/jeans?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
       expect(buildSmartBannerUrl(trackerData, emptyUrl, {
         iosDeepLinkPath: customDeepLinkPath,
         context: { product: 'jeans' }
       })).toBe(expected);
+    });
+
+    it('builds a valid URL when a search query passed as iosDeepLinkPath', () => {
+      jest.spyOn(DetectOs, 'getDeviceOS').mockReturnValue(DetectOs.DeviceOS.iOS);
+
+      const customDeepLinkPath = 'search?product={product}';
+
+      const trackerData = {
+        template: iosTracker,
+        default_template: iosTracker,
+        context: iosContext
+      };
+
+      const expected = 'https://test.domain/search?product=jeans&adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
+
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+        iosDeepLinkPath: customDeepLinkPath,
+        context: { product: 'jeans' }
+      })).toBe(expected);
+
+      jest.spyOn(DetectOs, 'getDeviceOS').mockRestore();
     });
 
     it('builds android tracker with a plain custom deeplink', () => {
@@ -160,6 +182,23 @@ describe('Smart Banners tracker link building', () => {
         context: { product: 'shoes' }
       })).toBe(expected);
     });
+
+    it('builds a valid URL when a search query passed as androidDeepLinkPath', () => {
+      const customDeepLinkPath = 'search?product={product}';
+
+      const trackerData = {
+        template: androidTracker,
+        default_template: androidTracker,
+        context: androidContext
+      };
+
+      const expected = 'https://test.domain/abc123?deep_link=app%3A%2F%2Fsearch%3Fproduct%3Djeans&campaign=banner1&adgroup=en';
+
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+        androidDeepLinkPath: customDeepLinkPath,
+        context: { product: 'jeans' }
+      })).toBe(expected);
+    });
   });
 
   describe('Uses GET parameters for interpolation', () => {
@@ -170,7 +209,7 @@ describe('Smart Banners tracker link building', () => {
         context: { ...iosContext, ios_deep_link_path: 'some-path/{page}' }
       };
 
-      const expected = 'https://test.domain/some-path/hello/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+      const expected = 'https://test.domain/some-path/hello?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
       expect(buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', emptyCustomData)).toBe(expected);
     });
@@ -195,7 +234,7 @@ describe('Smart Banners tracker link building', () => {
         context: iosContext
       };
 
-      const expected = 'https://test.domain/some-path/hello/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+      const expected = 'https://test.domain/some-path/hello?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
       expect(buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { iosDeepLinkPath: 'some-path/{page}' })).toBe(expected);
     });
@@ -220,7 +259,7 @@ describe('Smart Banners tracker link building', () => {
         context: { ...iosContext, ios_deep_link_path: '{path}/{page}' }
       };
 
-      const expected = 'https://test.domain/long/path/hello/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+      const expected = 'https://test.domain/long/path/hello?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
       const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { context: { path: 'long/path' } });
       expect(tracker).toBe(expected);
@@ -247,7 +286,7 @@ describe('Smart Banners tracker link building', () => {
         context: { ...iosContext, ios_deep_link_path: 'path/{page}' }
       };
 
-      const expected = 'https://test.domain/path/meow/adj_t=abc123?adj_campaign=banner1&adj_adgroup=en';
+      const expected = 'https://test.domain/path/meow?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
       const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { context: { page: 'meow' } });
       expect(tracker).toBe(expected);
