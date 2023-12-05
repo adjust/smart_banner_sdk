@@ -1,7 +1,8 @@
+import { Context, DeeplinkData } from '../data/types';
 import { parseGetParams } from '@utils/parse-get-params';
 import { interpolate } from '@utils/template-interpolaion';
 import { omitNotDefined } from '@utils/object';
-import { Context, DeeplinkData } from '../data/types';
+import { DeviceOS, getDeviceOS } from '@utils/detect-os';
 
 export interface TrackerData {
   template: string;
@@ -9,8 +10,13 @@ export interface TrackerData {
   context: Context;
 }
 
+interface DeeplinkPaths {
+  deep_link_path: string;
+  deep_link: string;
+}
+
 export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData) {
-  const template = data.template;
+  let template = data.template;
 
   const { context: customContext = {}, ...restCustomData } = customDeeplinkData;
   const customDeeplinkPaths = omitNotDefined(restCustomData);
@@ -36,16 +42,16 @@ export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDe
     ...deeplink
   };
 
-  const { result, notReplaced } = interpolate(template, combinedContext);
+  const { result, notReplaced } = interpolate(adaptTemplate(template, deeplink), combinedContext);
 
   if (notReplaced.length > 0) {
-    return interpolate(data.default_template, combinedContext).result;
+    return interpolate(adaptTemplate(data.default_template, deeplink), combinedContext).result;
   }
 
   return result;
 }
 
-function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContext: Record<string, string>): Record<string, string> {
+function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContext: Record<string, string>): DeeplinkPaths {
   let deeplinkTemplate = data.context.deep_link_path || data.context.deep_link || '';
 
   const context: Record<string, string> = {
@@ -67,5 +73,15 @@ function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContex
     'deep_link_path': deeplink, // for ios
     'deep_link': encodeURIComponent(deeplink) // for android
   };
+}
+
+function adaptTemplate(template: string, context: DeeplinkPaths): string {
+  if (getDeviceOS() === DeviceOS.iOS && context.deep_link_path.indexOf('?') > -1) { // if ios deeplink path contains '?'
+    // then replace '?' in the template with '&' to avoid invalid URL creation
+    return template.replace('?', '&');
+  }
+
+  // otherwise do nothing with the template
+  return template;
 }
 
