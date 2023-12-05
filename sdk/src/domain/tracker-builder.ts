@@ -16,7 +16,7 @@ interface DeeplinkPaths {
 }
 
 export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData) {
-  let template = data.template;
+  const template = data.template;
 
   const { context: customContext = {}, ...restCustomData } = customDeeplinkData;
   const customDeeplinkPaths = omitNotDefined(restCustomData);
