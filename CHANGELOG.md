@@ -1,7 +1,7 @@
 ### Version 1.0.1 (5th December 2023)
 
 #### Fixed
-- Fixed issue when invalid URL was generated when search query containing question mark ('?') was passed as an iOS deeplink path.
+- Fixed issue with invalid URL generated when search query containing question mark ('?') was passed as an iOS deeplink path.
 
 ---
 
