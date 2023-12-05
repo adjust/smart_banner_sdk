@@ -115,6 +115,23 @@ describe('Smart Banners tracker link building', () => {
       })).toBe(expected);
     });
 
+    it('builds a valid URL when a search query passed as iosDeepLinkPath', () => {
+      const customDeepLinkPath = 'search?product={product}';
+
+      const trackerData = {
+        template: iosTracker,
+        default_template: iosTracker,
+        context: iosContext
+      };
+
+      const expected = 'https://test.domain/search?product=jeans&adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
+
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+        iosDeepLinkPath: customDeepLinkPath,
+        context: { product: 'jeans' }
+      })).toBe(expected);
+    });
+
     it('builds android tracker with a plain custom deeplink', () => {
       const customDeepLinkPath = 'my-product/t-shirt';
 
