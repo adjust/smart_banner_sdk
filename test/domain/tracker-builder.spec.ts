@@ -177,6 +177,23 @@ describe('Smart Banners tracker link building', () => {
         context: { product: 'shoes' }
       })).toBe(expected);
     });
+
+    it('builds a valid URL when a search query passed as androidDeepLinkPath', () => {
+      const customDeepLinkPath = 'search?product={product}';
+
+      const trackerData = {
+        template: androidTracker,
+        default_template: androidTracker,
+        context: androidContext
+      };
+
+      const expected = 'https://test.domain/abc123?deep_link=app%3A%2F%2Fsearch%3Fproduct%3Djeans&campaign=banner1&adgroup=en';
+
+      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+        androidDeepLinkPath: customDeepLinkPath,
+        context: { product: 'jeans' }
+      })).toBe(expected);
+    });
   });
 
   describe('Uses GET parameters for interpolation', () => {
