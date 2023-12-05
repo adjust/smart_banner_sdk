@@ -1,3 +1,10 @@
+### Version 1.0.1 (5th December 2023)
+
+#### Fixed
+- Fixed issue when invalid URL was generated when search query containing question mark ('?') was passed as an iOS deeplink path.
+
+---
+
 ### Version 1.0.0 (23rd November 2023)
 
 The first release of a new Adjust Smart Banner SDK!
