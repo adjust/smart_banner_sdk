@@ -42,7 +42,7 @@ export class SmartBannerView implements SmartBannerLayout {
   }
 
   private attachBannerToParent(parent: HTMLElement) {
-    const attach = (child: HTMLElement, parent: HTMLElement, position?: Position) => {
+    const attach = (child: HTMLElement, parent: HTMLElement, position: Position) => {
       if (position === Position.Top) {
         parent.insertBefore(child, parent.firstChild);
       } else {
@@ -55,10 +55,10 @@ export class SmartBannerView implements SmartBannerLayout {
     }
 
     if (this.wrapper) {
-      attach(this.root, this.wrapper);
-      attach(this.wrapper, parent);
+      attach(this.root, this.wrapper, this.data.position);
+      attach(this.wrapper, parent, this.data.position);
     } else {
-      attach(this.root, parent);
+      attach(this.root, parent, this.data.position);
     }
   }
 
