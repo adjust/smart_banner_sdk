@@ -4,8 +4,11 @@
 
 @import 'assets/colors.scss';
 @import 'assets/fonts.scss';
+@import 'assets/reset-styles.scss';
 
 .banner-body {
+  @include reset-styles;
+
   display: flex;
   box-sizing: border-box;
   height: 100%;
@@ -40,6 +43,8 @@
   }
 
   .container {
+    @include reset-styles;
+
     display: flex;
     flex: 1;
     height: 100%;
@@ -69,6 +74,8 @@
     }
 
     .text-container {
+      @include reset-styles;
+
       flex: 0 1 auto;
       min-height: 0;
       min-width: 0;
