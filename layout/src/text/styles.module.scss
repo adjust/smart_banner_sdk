@@ -4,8 +4,11 @@
 
 @import 'assets/colors.scss';
 @import 'assets/fonts.scss';
+@import 'assets/reset-styles.scss';
 
 .banner-text {
+  @include reset-styles;
+
   overflow: hidden;
 }
 

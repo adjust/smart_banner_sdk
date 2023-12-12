@@ -2,6 +2,8 @@
 @use 'assets/size-medium.scss' as medium;
 @use 'assets/size-large.scss' as large;
 
+@import 'assets/reset-styles.scss';
+
 .banner-placeholder {
   height: small.$bannerHeight;
 }
@@ -12,6 +14,8 @@
 }
 
 .banner {
+  @include reset-styles;
+
   pointer-events: none;
   position: fixed;
   left: 0;
