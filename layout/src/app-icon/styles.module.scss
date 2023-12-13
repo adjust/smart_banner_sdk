@@ -4,8 +4,11 @@
 
 @import 'assets/colors.scss';
 @import 'assets/fonts.scss';
+@import 'assets/reset-styles.scss';
 
 .app-icon {
+  @include reset-styles;
+
   min-width: 56px;
   width: 56px;
   height: 56px;

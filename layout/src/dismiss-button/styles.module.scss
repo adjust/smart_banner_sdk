@@ -3,8 +3,11 @@
 @use 'assets/size-large.scss' as large;
 
 @import 'assets/colors.scss';
+@import 'assets/reset-styles.scss';
 
 .dismiss {
+  @include reset-styles;
+
   flex-shrink: 0;
   padding: 0;
   border: none;
