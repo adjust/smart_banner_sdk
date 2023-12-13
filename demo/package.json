@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@adjustcom/smart-banner-sdk": "^1.0.1",
+    "@adjustcom/smart-banner-sdk": "^1.0.2",
     "lorem-ipsum": "^2.0.8"
   },
   "author": "Adjust GmbH",

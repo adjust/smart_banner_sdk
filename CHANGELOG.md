@@ -1,3 +1,11 @@
+### Version 1.0.2 (13th December 2023)
+
+#### Fixed
+- Fixed issue with wrong banner position among other sibling elements when attached to a custom `bannerParent`.
+- Fixed banner styles to avoid unintentional override by client styles.
+
+---
+
 ### Version 1.0.1 (5th December 2023)
 
 #### Fixed
