@@ -13,9 +13,9 @@ import { NetworkConfig, NetworkFactory } from '../network/network-factory';
 import { Globals } from '../globals';
 import { DismissHandler } from './dismiss-handler';
 import { BannerSelector } from './banners-filter/banner-selector';
-import { buildSmartBannerUrl } from './tracker-builder';
 import { Callback, SmartBannerOptions } from '../types';
-import { buildImpressionLink } from './impression-link-builder';
+import { TrackerBuilder } from './link-builder/tracker-builder';
+import { ImpressionLinkBuilder } from './link-builder/impression-link-builder';
 
 export class SmartBanner {
   private network: Network;
@@ -259,12 +259,10 @@ export class SmartBanner {
     const renderData = convertSmartBannerDataForView(bannerData, this.language);
 
     const trackerData = convertSmartBannerToTracker(bannerData, this.language);
-    const trackerUrl = buildSmartBannerUrl(trackerData, this.url, this.customDeeplinkData);
+    const trackerUrl = TrackerBuilder.build(trackerData, this.url, this.customDeeplinkData);
 
-    //bannerData.tracker_url.impression_url = "https://view.adjust.com/impression/16r8eyec?campaign={banner_name}_{utm_source}_{utm_campaign}&adgroup={banner_language}&creative={utm_term}&label=a=10&redirect=https%3A%2F%2Fexample-redirect.com"
-    const impressionUrl = bannerData.tracker_url.impression_url // TODO: make it more clear
-      ? buildImpressionLink({ impression_url: bannerData.tracker_url.impression_url, context: trackerData.context }, this.url)
-      : '';
+    const impressionData = convertSmartBannerToImpression(bannerData, this.language);
+    const impressionUrl = ImpressionLinkBuilder.build(impressionData, this.url)
 
     return { renderData, trackerUrl, impressionUrl };
   }

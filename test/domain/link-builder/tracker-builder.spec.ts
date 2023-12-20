@@ -1,5 +1,5 @@
 import { Context } from '@sdk/data/types';
-import { buildSmartBannerUrl } from '@sdk/domain/tracker-builder';
+import { TrackerBuilder } from '@sdk/domain/link-builder/tracker-builder';
 import * as DetectOs from '@sdk/utils/detect-os';
 
 jest.mock('@sdk/utils/logger');
@@ -42,7 +42,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
     });
 
     it('builds ios tracker with plain deeplink', () => {
@@ -54,7 +54,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/some-path?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
     });
 
     it('builds android tracker with plain deeplink', () => {
@@ -68,7 +68,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = `https://test.domain/abc123?deep_link=${encodeURIComponent(deepLink)}&campaign=banner1&adgroup=en`;
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, emptyUrl, emptyCustomData)).toBe(expected);
     });
   });
 
@@ -84,7 +84,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/my-product/t-shirt?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, { iosDeepLinkPath: customDeepLinkPath })).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, emptyUrl, { iosDeepLinkPath: customDeepLinkPath })).toBe(expected);
     });
 
     it('builds ios tracker with provided deeplink template and custom context', () => {
@@ -96,7 +96,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/my-product/t-shirt?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, { context: { product: 't-shirt' } })).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, emptyUrl, { context: { product: 't-shirt' } })).toBe(expected);
     });
 
     it('builds ios tracker with custom deeplink template and context', () => {
@@ -110,7 +110,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/my-product/jeans?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+      expect(TrackerBuilder.build(trackerData, emptyUrl, {
         iosDeepLinkPath: customDeepLinkPath,
         context: { product: 'jeans' }
       })).toBe(expected);
@@ -129,7 +129,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/search?product=jeans&adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+      expect(TrackerBuilder.build(trackerData, emptyUrl, {
         iosDeepLinkPath: customDeepLinkPath,
         context: { product: 'jeans' }
       })).toBe(expected);
@@ -149,7 +149,7 @@ describe('Smart Banners tracker link building', () => {
       const deeplink = encodeURIComponent(`app://${customDeepLinkPath}`);
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, { androidDeepLinkPath: customDeepLinkPath })).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, emptyUrl, { androidDeepLinkPath: customDeepLinkPath })).toBe(expected);
     });
 
     it('builds android tracker with provided deeplink template and custom context', () => {
@@ -162,7 +162,7 @@ describe('Smart Banners tracker link building', () => {
       const deeplink = encodeURIComponent('app://my-product/t-shirt');
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, { context: { product: 't-shirt' } })).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, emptyUrl, { context: { product: 't-shirt' } })).toBe(expected);
     });
 
     it('builds android tracker with custom deeplink template and context', () => {
@@ -177,7 +177,7 @@ describe('Smart Banners tracker link building', () => {
       const deeplink = encodeURIComponent('app://my-product/shoes');
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+      expect(TrackerBuilder.build(trackerData, emptyUrl, {
         androidDeepLinkPath: customDeepLinkPath,
         context: { product: 'shoes' }
       })).toBe(expected);
@@ -194,7 +194,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/abc123?deep_link=app%3A%2F%2Fsearch%3Fproduct%3Djeans&campaign=banner1&adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, emptyUrl, {
+      expect(TrackerBuilder.build(trackerData, emptyUrl, {
         androidDeepLinkPath: customDeepLinkPath,
         context: { product: 'jeans' }
       })).toBe(expected);
@@ -211,7 +211,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/some-path/hello?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', emptyCustomData)).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, 'https://some-path/?page=hello', emptyCustomData)).toBe(expected);
     });
 
     it('builds android tracker with deeplink template', () => {
@@ -224,7 +224,7 @@ describe('Smart Banners tracker link building', () => {
       const deeplink = encodeURIComponent('app://some-path/hello');
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-      expect(buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', emptyCustomData)).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, 'https://some-path/?page=hello', emptyCustomData)).toBe(expected);
     });
 
     it('builds ios tracker with custom deeplink template', () => {
@@ -236,7 +236,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/some-path/hello?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
-      expect(buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { iosDeepLinkPath: 'some-path/{page}' })).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, 'https://some-path/?page=hello', { iosDeepLinkPath: 'some-path/{page}' })).toBe(expected);
     });
 
     it('builds android tracker with custom deeplink template', () => {
@@ -249,7 +249,7 @@ describe('Smart Banners tracker link building', () => {
       const deeplink = encodeURIComponent('app://some-path/hello');
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-      expect(buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { androidDeepLinkPath: 'some-path/{page}' })).toBe(expected);
+      expect(TrackerBuilder.build(trackerData, 'https://some-path/?page=hello', { androidDeepLinkPath: 'some-path/{page}' })).toBe(expected);
     });
 
     it('builds ios tracker using both custom context and GET parameters', () => {
@@ -261,7 +261,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/long/path/hello?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
-      const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { context: { path: 'long/path' } });
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?page=hello', { context: { path: 'long/path' } });
       expect(tracker).toBe(expected);
     });
 
@@ -275,7 +275,7 @@ describe('Smart Banners tracker link building', () => {
       const deeplink = encodeURIComponent('app://long/path/hello');
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-      const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { context: { path: 'long/path' } });
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?page=hello', { context: { path: 'long/path' } });
       expect(tracker).toBe(expected);
     });
 
@@ -288,7 +288,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/path/meow?adj_t=abc123&adj_campaign=banner1&adj_adgroup=en';
 
-      const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { context: { page: 'meow' } });
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?page=hello', { context: { page: 'meow' } });
       expect(tracker).toBe(expected);
     });
 
@@ -302,7 +302,7 @@ describe('Smart Banners tracker link building', () => {
       const deeplink = encodeURIComponent('app://path/meow');
       const expected = `https://test.domain/abc123?deep_link=${deeplink}&campaign=banner1&adgroup=en`;
 
-      const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?page=hello', { context: { page: 'meow' } });
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?page=hello', { context: { page: 'meow' } });
       expect(tracker).toBe(expected);
     });
   });
@@ -317,7 +317,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/abc123?campaign=hello_utm-banner1&adgroup=en&utm_content=image';
 
-      const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?utm_source=hello_utm&utm_content=image', emptyCustomData);
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?utm_source=hello_utm&utm_content=image', emptyCustomData);
       expect(tracker).toBe(expected);
     });
 
@@ -330,13 +330,13 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en';
 
-      let tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?utm_source=hello', emptyCustomData);
+      let tracker = TrackerBuilder.build(trackerData, 'https://some-path/?utm_source=hello', emptyCustomData);
       expect(tracker).toBe(expected);
 
-      tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?utm_content=image', emptyCustomData);
+      tracker = TrackerBuilder.build(trackerData, 'https://some-path/?utm_content=image', emptyCustomData);
       expect(tracker).toBe(expected);
 
-      tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?params=none', emptyCustomData);
+      tracker = TrackerBuilder.build(trackerData, 'https://some-path/?params=none', emptyCustomData);
       expect(tracker).toBe(expected);
     });
 
@@ -349,7 +349,7 @@ describe('Smart Banners tracker link building', () => {
 
       const expected = 'https://test.domain/some/path-to-/adj_t=abc123?adj_campaign=banner1_hello&adj_adgroup=en';
 
-      const tracker = buildSmartBannerUrl(trackerData, 'https://some-path/?utm_source=hello', emptyCustomData);
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?utm_source=hello', emptyCustomData);
       expect(tracker).toBe(expected);
     });
   });

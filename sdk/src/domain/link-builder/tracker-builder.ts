@@ -1,4 +1,4 @@
-import { Context, DeeplinkData } from '../data/types';
+import { Context, DeeplinkData } from '../../data/types';
 import { parseGetParams } from '@utils/parse-get-params';
 import { interpolate } from '@utils/template-interpolaion';
 import { omitNotDefined } from '@utils/object';
@@ -15,44 +15,46 @@ interface DeeplinkPaths {
   deep_link: string;
 }
 
-export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData) {
-  const template = data.template;
+export const TrackerBuilder = {
+  build: (data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData): string => {
+    const template = data.template;
 
-  const { context: customContext = {}, ...restCustomData } = customDeeplinkData;
-  const customDeeplinkPaths = omitNotDefined(restCustomData);
+    const { context: customContext = {}, ...restCustomData } = customDeeplinkData;
+    const customDeeplinkPaths = omitNotDefined(restCustomData);
 
-  const backwardCompatibleVariables = omitNotDefined({
-    'androidAppScheme': data.context.android_app_scheme,
-    'androidDeepLinkPath': data.context.android_deep_link_path,
-    'iosDeepLinkPath': data.context.ios_deep_link_path
-  });
+    const backwardCompatibleVariables = omitNotDefined({
+      'androidAppScheme': data.context.android_app_scheme,
+      'androidDeepLinkPath': data.context.android_deep_link_path,
+      'iosDeepLinkPath': data.context.ios_deep_link_path
+    });
 
-  let combinedContext = {
-    ...data.context,
-    ...backwardCompatibleVariables,
-    ...customDeeplinkPaths,
-    ...parseGetParams(pageUrl),
-    ...customContext
-  };
+    let combinedContext = {
+      ...data.context,
+      ...backwardCompatibleVariables,
+      ...customDeeplinkPaths,
+      ...parseGetParams(pageUrl),
+      ...customContext
+    };
 
-  console.log(template)
+    const deeplink = buildDeeplink({ template, context: combinedContext }, customContext);
 
-  const deeplink = buildDeeplink({ template, context: combinedContext }, customContext);
+    combinedContext = {
+      ...combinedContext,
+      ...deeplink
+    };
 
-  console.log(deeplink)
+    const { result, notReplaced } = interpolate(adaptTemplate(template, deeplink), combinedContext);
 
-  combinedContext = {
-    ...combinedContext,
-    ...deeplink
-  };
+    if (notReplaced.length > 0) {
+      return interpolate(adaptTemplate(data.default_template, deeplink), combinedContext).result;
+    }
 
-  const { result, notReplaced } = interpolate(adaptTemplate(template, deeplink), combinedContext);
-
-  if (notReplaced.length > 0) {
-    return interpolate(adaptTemplate(data.default_template, deeplink), combinedContext).result;
+    return result;
   }
+}
 
-  return result;
+export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData) {
+
 }
 
 function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContext: Record<string, string>): DeeplinkPaths {
