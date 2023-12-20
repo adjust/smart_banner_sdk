@@ -6,7 +6,7 @@ import { SmartBannerData, DeeplinkData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
 import { BannerProvider } from './banner-provider';
 import { SmartBannerRepository } from '../data/repositories/smart-banner-repository';
-import { convertSmartBannerToTracker } from '../data/converters/smart-banner-to-tracker-data';
+import { convertSmartBannerToImpression, convertSmartBannerToTracker } from '../data/converters/smart-banner-to-link-data';
 import { convertSmartBannerDataForView } from '../data/converters/smart-banner-for-view';
 import { Network } from '../network/network';
 import { NetworkConfig, NetworkFactory } from '../network/network-factory';
