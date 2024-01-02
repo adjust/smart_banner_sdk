@@ -4,14 +4,14 @@ import { SmartBannerViewData } from './data-types';
 // eslint-disable-next-line
 const emptyHandler = () => { }
 
-const emptyTrackerUrl = '';
+const emptyLink = '';
 
 export class SmartBannerLayoutFactory {
   static createPreview(data: SmartBannerViewData): SmartBannerLayout {
-    return new SmartBannerView(data, emptyTrackerUrl, emptyHandler);
+    return new SmartBannerView(data, emptyLink, emptyLink, emptyHandler);
   }
 
-  static createViewForSdk(data: SmartBannerViewData, trackerUrl: string, onDismiss: () => void): SmartBannerLayout {
-    return new SmartBannerView(data, trackerUrl, onDismiss);
+  static createViewForSdk(data: SmartBannerViewData, trackerUrl: string, impressionUrl: string, onDismiss: () => void): SmartBannerLayout {
+    return new SmartBannerView(data, trackerUrl, impressionUrl, onDismiss);
   }
 }
