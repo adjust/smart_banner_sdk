@@ -262,7 +262,7 @@ export class SmartBanner {
     const trackerUrl = TrackerBuilder.build(trackerData, this.url, this.customDeeplinkData);
 
     const impressionData = convertSmartBannerToImpression(bannerData, this.language);
-    const impressionUrl = ImpressionLinkBuilder.build(impressionData, this.url)
+    const impressionUrl = ImpressionLinkBuilder.build(impressionData, this.url);
 
     return { renderData, trackerUrl, impressionUrl };
   }

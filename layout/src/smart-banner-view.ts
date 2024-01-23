@@ -83,7 +83,7 @@ export class SmartBannerView implements SmartBannerLayout {
   }
 
   // TODO: implement pixel with impression url
-  public update(banner: SmartBannerViewData, trackerUrl = '', impressionUrl = '') {
+  public update(banner: SmartBannerViewData, trackerUrl = '') {
     this.data = banner;
 
     this.applyRootStyles(this.parent !== document.body);

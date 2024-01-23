@@ -13,7 +13,7 @@ export const ImpressionLinkBuilder = {
   build: (impressionData: ImpressionData, pageUrl: string): string => {
     const { impression_url: template = '', default_impression_url = '', context } = impressionData;
 
-    let combinedContext = {
+    const combinedContext = {
       ...context,
       ...parseGetParams(pageUrl),
     };
