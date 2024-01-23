@@ -51,7 +51,7 @@ export const TrackerBuilder = {
 
     return result;
   }
-}
+};
 
 function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContext: Record<string, string>): DeeplinkPaths {
   let deeplinkTemplate = data.context.deep_link_path || data.context.deep_link || '';
