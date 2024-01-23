@@ -53,10 +53,6 @@ export const TrackerBuilder = {
   }
 }
 
-export function buildSmartBannerUrl(data: TrackerData, pageUrl: string, customDeeplinkData: DeeplinkData) {
-
-}
-
 function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContext: Record<string, string>): DeeplinkPaths {
   let deeplinkTemplate = data.context.deep_link_path || data.context.deep_link || '';
 
