@@ -1,5 +1,5 @@
 import { SmartBannerData, Localization } from '@sdk/data/types';
-import { convertSmartBannerToTracker } from '@sdk/data/converters/smart-banner-to-tracker-data';
+import { convertSmartBannerToTracker } from '@sdk/data/converters/smart-banner-to-link-data';
 
 describe('Convertation of SmartBannerData to TrackerData', () => {
 

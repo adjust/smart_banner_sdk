@@ -1,3 +1,14 @@
+### Version 1.1.0 (23rd December 2023)
+
+#### Added
+- Implemented impressions tracking.
+
+#### Fixed
+- Fixed CTA styles to limit its max-width.
+- Fixed CTA click behaviour when banner is implemented in iframe.
+
+---
+
 ### Version 1.0.2 (13th December 2023)
 
 #### Fixed

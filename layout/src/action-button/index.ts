@@ -7,6 +7,9 @@ export class ActionButton {
 
   constructor(private banner: SmartBannerViewData, private trackerUrl: string = '') {
     this.link = document.createElement('a');
+
+    // In a case when banner in an iframe rendered, open a link in current window instead of the iframe
+    this.link.target = '_top';
   }
 
   private applyColors() {

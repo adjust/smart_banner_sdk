@@ -2,6 +2,7 @@ import { ActionButton } from '../action-button';
 import { AppIcon } from '../app-icon';
 import { DismissButton } from '../dismiss-button';
 import { BannerText, TextType } from '../text';
+import { ImpressionPixel } from '../impression-pixel';
 import { SmartBannerViewData } from '../data-types';
 
 import styles from './styles.module.scss';
@@ -13,8 +14,9 @@ export class BannerBody {
   private bannerBody: HTMLElement;
   private title: BannerText;
   private description: BannerText;
+  private pixel: ImpressionPixel;
 
-  constructor(private banner: SmartBannerViewData, onDismiss: () => void, trackerUrl?: string) {
+  constructor(private banner: SmartBannerViewData, onDismiss: () => void, trackerUrl: string = '', impressionUrl: string = '') {
     this.bannerBody = document.createElement('div');
     this.bannerBody.className = styles['banner-body'];
 
@@ -23,6 +25,8 @@ export class BannerBody {
     this.actionButton = new ActionButton(banner, trackerUrl);
     this.title = new BannerText(TextType.Title, banner.title, banner.titleColor);
     this.description = new BannerText(TextType.Description, banner.description, banner.descriptionColor);
+
+    this.pixel = new ImpressionPixel(impressionUrl);
   }
 
   private renderBackground(backgroundColor?: string, backgroundImageUrl?: string) {
@@ -64,15 +68,19 @@ export class BannerBody {
 
     this.bannerBody.appendChild(this.renderInnerElements());
 
+    this.pixel.render(this.bannerBody);
+
     root.appendChild(this.bannerBody);
   }
 
-  public update(banner: SmartBannerViewData, trackerUrl: string) {
+  public update(banner: SmartBannerViewData, trackerUrl: string, impressionUrl?: string) {
     this.dismissButton.update(banner.dismissalButtonColor);
     this.appIcon.update(banner.iconUrl, banner.appName);
     this.actionButton.update(banner, trackerUrl);
     this.title.update(banner.title, banner.titleColor);
     this.description.update(banner.description, banner.descriptionColor);
+
+    this.pixel.update(impressionUrl);
 
     this.renderBackground(banner.backgroundColor, banner.backgroundImageUrl);
 
