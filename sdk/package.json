@@ -1,6 +1,6 @@
 {
   "name": "@adjustcom/smart-banner-sdk",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Adjust Smart Banner SDK",
   "scripts": {
     "build:sdk": "webpack --config ./webpack.config.js",
