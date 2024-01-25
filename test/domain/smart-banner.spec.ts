@@ -6,7 +6,7 @@ import { StorageFactory } from '@sdk/data/storage/storage-factory';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
 import { BannerProvider } from '@sdk/domain/banner-provider';
 import * as DataToViewConverter from '@sdk/data/converters/smart-banner-for-view';
-import * as TrackerBuilder from '@sdk/domain/tracker-builder';
+import { TrackerBuilder } from '@sdk/domain/link-builder/tracker-builder';
 import * as LanguageModule from '@sdk/utils/language';
 import { SmartBannerLayout, SmartBannerLayoutFactory } from '@layout';
 
@@ -46,14 +46,12 @@ describe('Smart Banner tests', () => {
     buttonText: getLocalization(locale).button_label || serverResponseMock[0].button_text
   } as any); // return the only field because this is just a mock
 
-  const trackerMock = jest.fn().mockReturnValue('deeplink');
-
   beforeAll(() => {
     jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock());
     jest.spyOn(StorageFactory, 'createStorage').mockReturnValue(new InMemoryStorage());
     jest.spyOn(NetworkFactory, 'create').mockImplementation(() => ({ request: requestMock }));
     jest.spyOn(DataToViewConverter, 'convertSmartBannerDataForView').mockImplementation((_, locale) => renderDataMock(locale));
-    jest.spyOn(TrackerBuilder, 'buildSmartBannerUrl').mockImplementation(trackerMock);
+    jest.spyOn(TrackerBuilder, 'build').mockImplementation(() => '');
     jest.spyOn(BannerProvider.prototype, 'fetchBanner');
     jest.spyOn(SmartBannerLayoutFactory, 'createViewForSdk').mockReturnValue(smartBannerViewMock);
   });
@@ -83,7 +81,7 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].title);
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock('ru'), trackerMock('ru'), expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock('ru'), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -99,7 +97,7 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].title);
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerMock(defaultLang), expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -115,7 +113,7 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].title);
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerMock(defaultLang), expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -131,7 +129,7 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).not.toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].title);
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock('ru'), trackerMock('ru'), expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock('ru'), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -145,7 +143,7 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).not.toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].title);
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerMock(defaultLang), expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -159,7 +157,7 @@ describe('Smart Banner tests', () => {
 
           expect(LanguageModule.getLanguage).not.toBeCalled();
           expect(Logger.info).toBeCalledWith('Render banner: ' + serverResponseMock[0].title);
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerMock(defaultLang), expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -185,8 +183,8 @@ describe('Smart Banner tests', () => {
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(expect.objectContaining({}), mockHref, emptyCustomContext);
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(Function));
+          expect(TrackerBuilder.build).toBeCalledWith(expect.objectContaining({}), mockHref, emptyCustomContext);
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -197,14 +195,12 @@ describe('Smart Banner tests', () => {
           new SmartBanner('some-token', { appToken: 'some-token', context: { param: 'pam-param' } }, DeviceOS.Android);
           await Utils.flushPromises();
 
-          const trackerUrl = trackerMock(defaultLang);
-
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             expect.objectContaining({}),
             mockHref,
             { ...emptyCustomContext, context: { param: 'pam-param' } });
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -215,14 +211,12 @@ describe('Smart Banner tests', () => {
           new SmartBanner('some-token', { appToken: 'some-token', androidDeepLinkPath: 'some-deeplink' }, DeviceOS.Android);
           await Utils.flushPromises();
 
-          const trackerUrl = trackerMock(defaultLang, 'some-deeplink');
-
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             { ...emptyCustomContext, androidDeepLinkPath: 'some-deeplink' });
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -239,10 +233,8 @@ describe('Smart Banner tests', () => {
             DeviceOS.Android);
           await Utils.flushPromises();
 
-          const trackerUrl = trackerMock(defaultLang, 'some-deeplink/pam-param');
-
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             {
@@ -250,7 +242,7 @@ describe('Smart Banner tests', () => {
               androidDeepLinkPath: 'some-deeplink/{param}',
               context: { param: 'pam-param' }
             });
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -269,7 +261,7 @@ describe('Smart Banner tests', () => {
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             'http://path?param=meow-meow',
             { ...emptyCustomContext, androidDeepLinkPath: 'some-deeplink/param={param}' });
@@ -293,12 +285,12 @@ describe('Smart Banner tests', () => {
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             expect.objectContaining({}),
             mockHref,
             emptyCustomContext
           );
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -309,14 +301,12 @@ describe('Smart Banner tests', () => {
           new SmartBanner('some-token', { appToken: 'some-token', context: { param: 'pam-param' } }, DeviceOS.iOS);
           await Utils.flushPromises();
 
-          const trackerUrl = trackerMock(defaultLang);
-
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             expect.objectContaining({}),
             mockHref,
             { ...emptyCustomContext, context: { param: 'pam-param' } });
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -327,14 +317,12 @@ describe('Smart Banner tests', () => {
           new SmartBanner('some-token', { appToken: 'some-token', iosDeepLinkPath: 'some-deeplink' }, DeviceOS.iOS);
           await Utils.flushPromises();
 
-          const trackerUrl = trackerMock(defaultLang, 'some-deeplink');
-
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             { ...emptyCustomContext, iosDeepLinkPath: 'some-deeplink' });
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -351,10 +339,8 @@ describe('Smart Banner tests', () => {
             DeviceOS.iOS);
           await Utils.flushPromises();
 
-          const trackerUrl = trackerMock(defaultLang, 'some-deeplink/pam-param');
-
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             {
@@ -362,7 +348,7 @@ describe('Smart Banner tests', () => {
               iosDeepLinkPath: 'some-deeplink/{param}',
               context: { param: 'pam-param' }
             });
-          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), trackerUrl, expect.any(Function));
+          expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(defaultLang), expect.any(String), expect.any(String), expect.any(Function));
           expect(smartBannerViewMock.render).toBeCalled();
           expect(Logger.log).toBeCalledWith('Smart banner rendered');
         });
@@ -381,7 +367,7 @@ describe('Smart Banner tests', () => {
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             'http://path?param=meow-meow',
             { ...emptyCustomContext, iosDeepLinkPath: 'some-deeplink/param={param}' });
@@ -528,7 +514,7 @@ describe('Smart Banner tests', () => {
         smartBanner.setLanguage(newLang);
         await Utils.flushPromises();
 
-        expect(smartBannerViewMock.update).toBeCalledWith(renderDataMock(newLang), trackerMock(newLang));
+        expect(smartBannerViewMock.update).toBeCalledWith(renderDataMock(newLang), '', '');
       });
 
       it('does not select a new banner to show', async () => {
@@ -581,7 +567,7 @@ describe('Smart Banner tests', () => {
 
         jest.runOnlyPendingTimers();
 
-        expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock('ru'), trackerMock('ru'), expect.any(Function));
+        expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock('ru'), expect.any(String), expect.any(String), expect.any(Function));
         expect(smartBannerViewMock.render).toBeCalled();
         expect(Logger.info).lastCalledWith('Render banner: ' + bannerName);
       });
@@ -609,7 +595,7 @@ describe('Smart Banner tests', () => {
 
         expect(Logger.log).toBeCalledWith('Smart banner was not rendered yet, the chosen language will be applied within render');
         expect(smartBannerViewMock.update).not.toBeCalled();
-        expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(newLang), trackerMock(newLang), expect.any(Function));
+        expect(SmartBannerLayoutFactory.createViewForSdk).toBeCalledWith(renderDataMock(newLang), expect.any(String), expect.any(String), expect.any(Function));
       });
     });
   });
@@ -626,7 +612,7 @@ describe('Smart Banner tests', () => {
             DeviceOS.Android);
           await Utils.flushPromises();
 
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             { context: {}, androidDeepLinkPath: 'old/path' }
@@ -636,7 +622,7 @@ describe('Smart Banner tests', () => {
           smartBanner.setAndroidDeepLinkPath('new/path');
           await Utils.flushPromises();
 
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             { context: {}, androidDeepLinkPath: 'new/path' }
@@ -655,7 +641,7 @@ describe('Smart Banner tests', () => {
             DeviceOS.iOS);
           await Utils.flushPromises();
 
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             { context: {}, iosDeepLinkPath: 'old/path' }
@@ -664,7 +650,7 @@ describe('Smart Banner tests', () => {
           smartBanner.setIosDeepLinkPath('new/path');
           await Utils.flushPromises();
 
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             { context: {}, iosDeepLinkPath: 'new/path' }
@@ -728,7 +714,7 @@ describe('Smart Banner tests', () => {
 
         jest.runOnlyPendingTimers();
 
-        expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+        expect(TrackerBuilder.build).toBeCalledWith(
           defaultTrackerData,
           mockHref,
           { androidDeepLinkPath: 'new/android/path', iosDeepLinkPath: 'new/ios/path', context: { product: 'something' } }
@@ -760,7 +746,7 @@ describe('Smart Banner tests', () => {
 
           await Utils.flushPromises();
 
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             { androidDeepLinkPath: 'new/path', context: {} }
@@ -790,7 +776,7 @@ describe('Smart Banner tests', () => {
 
           await Utils.flushPromises();
 
-          expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+          expect(TrackerBuilder.build).toBeCalledWith(
             defaultTrackerData,
             mockHref,
             { iosDeepLinkPath: 'new/path', context: {} }
@@ -819,7 +805,7 @@ describe('Smart Banner tests', () => {
 
         await Utils.flushPromises();
 
-        expect(TrackerBuilder.buildSmartBannerUrl).toBeCalledWith(
+        expect(TrackerBuilder.build).toBeCalledWith(
           defaultTrackerData, mockHref,
           { context: { product: 'something' }, iosDeepLinkPath: undefined, }
         );
@@ -828,4 +814,5 @@ describe('Smart Banner tests', () => {
       });
     });
   });
+
 });
