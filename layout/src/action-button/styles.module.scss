@@ -28,6 +28,7 @@
 
   :global(.small) & {
     max-width: 115px;
+    flex-shrink: 0;
   }
 
   :global(.medium) & {
