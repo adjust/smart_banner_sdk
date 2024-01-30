@@ -1,3 +1,10 @@
+### Version 1.1.1 (30th January 2024)
+
+#### Fixed
+- Fixed issue with CTA size when banner body contains long text.
+
+---
+
 ### Version 1.1.0 (25th January 2024)
 
 #### Added
