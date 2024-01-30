@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@adjustcom/smart-banner-sdk": "^1.1.0",
-    "@adjustcom/smart-banner-sdk-layout": "^3.0.6",
+    "@adjustcom/smart-banner-sdk-layout": "^3.0.7",
     "lorem-ipsum": "^2.0.8"
   },
   "author": "Adjust GmbH",
