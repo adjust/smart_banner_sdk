@@ -5,6 +5,7 @@
     "./../typings.d.ts"
   ],
   "compilerOptions": {
-    "allowJs": true
+    "allowJs": true,
+    "resolveJsonModule": true,
   }
 }
