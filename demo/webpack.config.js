@@ -21,7 +21,7 @@ module.exports = (env, args) => ({
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.scss', '.svg'],
+    extensions: ['.ts', '.js', '.scss', '.svg', '.json'],
     alias: {
       assets: path.resolve(__dirname, 'assets'),
     },
