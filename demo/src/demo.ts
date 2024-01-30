@@ -1,4 +1,5 @@
 import { App } from './view/app';
+import { VisualTest } from './view/components/visual-tests';
 import 'assets/styles.module.scss';
 
 let appRoot = document.getElementById('app_root');
@@ -9,4 +10,5 @@ if (!appRoot) {
   document.body.appendChild(appRoot);
 }
 
-App().render(appRoot);
+// App().render(appRoot);
+VisualTest().render(appRoot)
