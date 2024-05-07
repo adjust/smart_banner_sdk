@@ -12,14 +12,12 @@ export class ActionButton {
     this.link.target = '_top';
   }
 
-  private applyColors() {
-    if (this.banner.buttonTextColor) {
-      this.link.style.color = this.banner.buttonTextColor;
-    }
+  private applyStyle() {
+    this.link.style.backgroundColor = this.banner.buttonColor || '';
+    this.link.style.color = this.banner.buttonTextColor || '';
+    this.link.style.fontFamily = this.banner.buttonFont ? this.banner.buttonFont.family : '';
+    this.link.style.fontSize = this.banner.buttonFontSize ? (this.banner.buttonFontSize + 'px') : '';
 
-    if (this.banner.buttonColor) {
-      this.link.style.backgroundColor = this.banner.buttonColor;
-    }
   }
 
   private applyUrl() {
@@ -35,7 +33,7 @@ export class ActionButton {
     this.link.innerText = this.banner.buttonText;
 
     this.applyUrl();
-    this.applyColors();
+    this.applyStyle();
 
     root.appendChild(this.link);
   }
@@ -47,6 +45,6 @@ export class ActionButton {
     this.link.innerText = this.banner.buttonText;
 
     this.applyUrl();
-    this.applyColors();
+    this.applyStyle();
   }
 }
