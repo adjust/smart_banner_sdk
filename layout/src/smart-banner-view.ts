@@ -19,7 +19,6 @@ export class SmartBannerView implements SmartBannerLayout {
 
   private parent?: HTMLElement;
 
-  // TODO: implement pixel with impression url
   constructor(private data: SmartBannerViewData, trackerUrl: string, impressionUrl: string, onDismiss: () => void) {
     this.root = document.createElement('div');
     this.bannerBody = new BannerBody(data, onDismiss, trackerUrl, impressionUrl);
