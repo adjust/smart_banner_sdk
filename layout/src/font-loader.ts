@@ -1,4 +1,18 @@
-import { Font } from './data-types';
+import { SmartBannerViewData, Font } from './data-types';
+
+export function loadFontsFromViewData(data: SmartBannerViewData) {
+  if (data.titleFont) {
+    FontLoader.addFontStylesheet(data.titleFont)
+  }
+
+  if (data.descriptionFont) {
+    FontLoader.addFontStylesheet(data.descriptionFont)
+  }
+
+  if (data.buttonFont) {
+    FontLoader.addFontStylesheet(data.buttonFont)
+  }
+}
 
 export class FontLoader {
   private static cache: Set<string> = new Set;

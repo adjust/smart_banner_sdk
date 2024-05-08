@@ -1,3 +1,4 @@
+import { loadFontsFromViewData } from './font-loader';
 import { SmartBannerViewData, Position, BannerSize } from './data-types';
 import { BannerBody } from './banner-body';
 
@@ -81,9 +82,9 @@ export class SmartBannerView implements SmartBannerLayout {
     this.attachBannerToParent(this.parent);
   }
 
-  // TODO: implement pixel with impression url
   public update(banner: SmartBannerViewData, trackerUrl = '') {
     this.data = banner;
+    loadFontsFromViewData(this.data);
 
     this.applyRootStyles(this.parent !== document.body);
 
