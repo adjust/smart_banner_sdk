@@ -1,0 +1,75 @@
+[
+  {
+    "buttonText": "Download",
+    "title": "Title for a banner",
+    "description": "Description",
+    "id": "-1",
+    "position": "top",
+    "size": "small",
+    "appName": "Test",
+    "titleFont": {
+      "family": "Roboto",
+      "source": "https://fonts.googleapis.com/css?family=Roboto"
+    },
+    "descriptionFont": {
+      "family": "Karla",
+      "source": "https://fonts.googleapis.com/css?family=Karla"
+    },
+    "buttonFont": {
+      "family": "Source Serif",
+      "source": "https://fonts.googleapis.com/css?family=Source+Serif"
+    }
+  },
+  {
+    "buttonText": "Download",
+    "title": "Title for a banner",
+    "description": "Description",
+    "id": "-1",
+    "position": "top",
+    "size": "small",
+    "appName": "Test",
+    "titleFontSize": 20,
+    "titleFont": {
+      "family": "Karla",
+      "source": "https://fonts.googleapis.com/css?family=Karla"
+    },
+    "descriptionFontSize": 16,
+    "descriptionFont": {
+      "family": "Poppins",
+      "source": "https://fonts.googleapis.com/css?family=Poppins"
+    }
+  },
+  {
+    "buttonText": "Download",
+    "title": "Title for a banner",
+    "description": "Description",
+    "id": "-1",
+    "position": "top",
+    "size": "small",
+    "appName": "Test",
+    "titleFont": {
+      "family": "Space Grotesk",
+      "source": "https://fonts.googleapis.com/css?family=Space+Grotesk"
+    },
+    "descriptionFont": {
+      "family": "Montserrat",
+      "source": "https://fonts.googleapis.com/css?family=Montserrat"
+    }
+  },
+  {
+    "buttonText": "Download",
+    "title": "Title for a banner",
+    "description": "Description",
+    "id": "-1",
+    "position": "top",
+    "size": "small",
+    "appName": "Test",
+    "titleFontSize": 12,
+    "descriptionFontSize": 10,
+    "descriptionFont": {
+      "family": "Raleway",
+      "source": "https://fonts.googleapis.com/css?family=Raleway"
+    },
+    "buttonFontSize": 20
+  }
+]
