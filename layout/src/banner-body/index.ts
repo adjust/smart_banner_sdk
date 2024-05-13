@@ -30,7 +30,7 @@ export class BannerBody {
       {
         color: banner.titleColor,
         fontSize: banner.titleFontSize,
-        fontFamily: banner.titleFont ? banner.titleFont.family : undefined
+        fontFamily: banner.titleFont?.family
       }
     );
 
@@ -40,7 +40,7 @@ export class BannerBody {
       {
         color: banner.descriptionColor,
         fontSize: banner.descriptionFontSize,
-        fontFamily: banner.descriptionFont ? banner.descriptionFont.family : undefined
+        fontFamily: banner.descriptionFont?.family
       }
     );
 
@@ -101,7 +101,7 @@ export class BannerBody {
       {
         color: banner.titleColor,
         fontSize: banner.titleFontSize,
-        fontFamily: banner.titleFont ? banner.titleFont.family : undefined
+        fontFamily: banner.titleFont?.family
       }
     );
 
@@ -110,7 +110,7 @@ export class BannerBody {
       {
         color: banner.descriptionColor,
         fontSize: banner.descriptionFontSize,
-        fontFamily: banner.descriptionFont ? banner.descriptionFont.family : undefined
+        fontFamily: banner.descriptionFont?.family
       }
     );
 
