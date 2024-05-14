@@ -1,5 +1,5 @@
 import { App } from './view/app';
-import { VisualTest } from './view/components/visual-tests';
+import { CustomFonts_SmallBanner } from './view/components/visual-tests';
 import 'assets/styles.module.scss';
 
 let appRoot = document.getElementById('app_root');
@@ -11,4 +11,4 @@ if (!appRoot) {
 }
 
 // App().render(appRoot);
-VisualTest().render(appRoot)
+CustomFonts_SmallBanner().render(appRoot)
