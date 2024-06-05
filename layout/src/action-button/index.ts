@@ -17,7 +17,6 @@ export class ActionButton {
     this.link.style.color = this.banner.buttonTextColor || '';
     this.link.style.fontFamily = this.banner.buttonFont ? this.banner.buttonFont.family : '';
     this.link.style.fontSize = this.banner.buttonFontSize ? (this.banner.buttonFontSize + 'px') : '';
-
   }
 
   private applyUrl() {
