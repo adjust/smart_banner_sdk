@@ -10,6 +10,7 @@ export class AppIcon {
 
     this.image = document.createElement('img');
     this.image.className = styles.image;
+    this.image.alt = "Application icon";
   }
 
   public render(root: HTMLElement) {
