@@ -10,5 +10,5 @@ if (!appRoot) {
   document.body.appendChild(appRoot);
 }
 
-// App().render(appRoot);
-CustomFonts_SmallBanner().render(appRoot)
+App().render(appRoot);
+// CustomFonts_SmallBanner().render(appRoot)
