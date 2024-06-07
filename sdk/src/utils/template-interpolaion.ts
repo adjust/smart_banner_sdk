@@ -11,13 +11,22 @@ export interface InterpolationResult {
  * 
  * @param template a string containing parameter names in curly brackets
  * @param context an object containing parameters for interpolation
+ * @param emptyPlaceholder string to be inserted when no value for parameter found, default value is "none"
  * @returns an object containing interpolated template as a result and a list of placeholders which were not replaced
  * 
  * @example
- * const greet = interpolate("Hello, {username}!", { username: 'John Smith' });
- * console.log(greet); // prints "Hello John Smith!"
+ * const greet = interpolate("Hello, {title} {name}!", { title: 'Prof', name: 'Smith' });
+ * console.log(greet); // prints "Hello Prof Smith!"
+ * 
+ * @example
+ * const greet = interpolate("Hello, {title} {name}!", { title: 'Prof' });
+ * console.log(greet); // prints "Hello Prof none!"
+ * 
+ * @example
+ * const greet = interpolate("Hello, {title} {name}!", { title: 'Prof' }, 'unknown');
+ * console.log(greet); // prints "Hello Prof unknown!"
  */
-export function interpolate(template: string, context: Record<string, Primitive>): InterpolationResult {
+export function interpolate(template: string, context: Record<string, Primitive>, emptyPlaceholder: string = 'none'): InterpolationResult {
   const notReplacedPlaceholders: string[] = [];
 
   const re = /{(\w+)}/g;
@@ -27,7 +36,7 @@ export function interpolate(template: string, context: Record<string, Primitive>
       Logger.warn(`No value for placeholder: {${paramName}}`);
     }
 
-    return String(context[paramName] || '');
+    return String(context[paramName] || emptyPlaceholder);
   };
 
   return {
