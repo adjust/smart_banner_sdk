@@ -16,15 +16,15 @@ export interface InterpolationResult {
  * 
  * @example
  * const greet = interpolate("Hello, {title} {name}!", { title: 'Prof', name: 'Smith' });
- * console.log(greet); // prints "Hello Prof Smith!"
+ * console.log(greet); // prints "Hello, Prof Smith!"
  * 
  * @example
  * const greet = interpolate("Hello, {title} {name}!", { title: 'Prof' });
- * console.log(greet); // prints "Hello Prof none!"
+ * console.log(greet); // prints "Hello, Prof none!"
  * 
  * @example
  * const greet = interpolate("Hello, {title} {name}!", { title: 'Prof' }, 'unknown');
- * console.log(greet); // prints "Hello Prof unknown!"
+ * console.log(greet); // prints "Hello, Prof unknown!"
  */
 export function interpolate(template: string, context: Record<string, Primitive>, emptyPlaceholder: string = 'none'): InterpolationResult {
   const notReplacedPlaceholders: string[] = [];
