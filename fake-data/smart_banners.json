@@ -21,7 +21,6 @@
     "display_rules": null,
     "tracker_url": {
       "template": "https://{domain}/{tracker}?campaign={utm_source}&engagement_type=fallback_click",
-      "default_template": "https://{domain}/{tracker}?campaign={banner_name}&adgroup={localization_language}",
       "context": {
         "tracker": "15p8qqfg",
         "space_name": "SpaceTest3",
