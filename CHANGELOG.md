@@ -1,3 +1,13 @@
+### Version 1.2.0 (10th June 2024)
+
+#### Added
+- Supported custom fonts and sizes of title, description and CTA label configured in Suite.
+
+#### Fixed
+- Fixed usage of UTM parameters in link creation: in case not all required parameters were found the link doesn't fallback to default campaign structure.
+
+---
+
 ### Version 1.1.1 (30th January 2024)
 
 #### Fixed
