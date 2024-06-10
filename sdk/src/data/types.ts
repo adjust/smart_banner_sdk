@@ -53,9 +53,7 @@ export interface SmartBannerResponseData {
   background_image_url?: string,
   tracker_url: {
     template: string;
-    default_template: string;
     impression_url: string;
-    default_impression_url: string;
     context: Context;
   };
   localizations: {
@@ -91,9 +89,7 @@ export interface SmartBannerData {
   background_image_url?: string,
   tracker_url: {
     template: string;
-    default_template: string;
     impression_url: string;
-    default_impression_url: string;
     context: Context;
   };
   localizations: {

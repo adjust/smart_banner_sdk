@@ -21,7 +21,7 @@ export function convertSmartBannerToImpression(data: SmartBannerData, locale?: s
 }
 
 function convertSmartBannerToLinkData(type: 'tracker' | 'impression', data: SmartBannerData, locale?: string | null) {
-  const { tracker_url: { template, default_template, impression_url, default_impression_url, context }, localizations } = data;
+  const { tracker_url: { template, impression_url, context }, localizations } = data;
 
   const localization = locale && localizations ? localizations[locale] : null;
   const localeContext = localization ? localization.context : {};
@@ -29,13 +29,11 @@ function convertSmartBannerToLinkData(type: 'tracker' | 'impression', data: Smar
   if (type === 'tracker') {
     return {
       template,
-      default_template,
       context: { ...context, ...localeContext }
     };
   } else {
     return {
       impression_url,
-      default_impression_url,
       context: { ...context, ...localeContext }
     };
   }
