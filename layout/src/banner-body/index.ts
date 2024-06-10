@@ -23,8 +23,26 @@ export class BannerBody {
     this.dismissButton = new DismissButton(onDismiss, banner.dismissalButtonColor);
     this.appIcon = new AppIcon(banner.iconUrl, banner.appName);
     this.actionButton = new ActionButton(banner, trackerUrl);
-    this.title = new BannerText(TextType.Title, banner.title, banner.titleColor);
-    this.description = new BannerText(TextType.Description, banner.description, banner.descriptionColor);
+
+    this.title = new BannerText(
+      TextType.Title,
+      banner.title,
+      {
+        color: banner.titleColor,
+        fontSize: banner.titleFontSize,
+        fontFamily: banner.titleFont?.family
+      }
+    );
+
+    this.description = new BannerText(
+      TextType.Description,
+      banner.description,
+      {
+        color: banner.descriptionColor,
+        fontSize: banner.descriptionFontSize,
+        fontFamily: banner.descriptionFont?.family
+      }
+    );
 
     this.pixel = new ImpressionPixel(impressionUrl);
   }
@@ -77,8 +95,24 @@ export class BannerBody {
     this.dismissButton.update(banner.dismissalButtonColor);
     this.appIcon.update(banner.iconUrl, banner.appName);
     this.actionButton.update(banner, trackerUrl);
-    this.title.update(banner.title, banner.titleColor);
-    this.description.update(banner.description, banner.descriptionColor);
+
+    this.title.update(
+      banner.title,
+      {
+        color: banner.titleColor,
+        fontSize: banner.titleFontSize,
+        fontFamily: banner.titleFont?.family
+      }
+    );
+
+    this.description.update(
+      banner.description,
+      {
+        color: banner.descriptionColor,
+        fontSize: banner.descriptionFontSize,
+        fontFamily: banner.descriptionFont?.family
+      }
+    );
 
     this.pixel.update(impressionUrl);
 

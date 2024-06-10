@@ -36,7 +36,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds common tracker', () => {
       const trackerData = {
         template: commonTracker,
-        default_template: commonTracker,
         context: commonContext
       };
 
@@ -48,7 +47,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds ios tracker with plain deeplink', () => {
       const trackerData = {
         template: iosTracker,
-        default_template: commonTracker,
         context: iosContext
       };
 
@@ -62,7 +60,6 @@ describe('Smart Banners tracker link building', () => {
 
       const trackerData = {
         template: androidTracker,
-        default_template: androidTracker,
         context: androidContext
       };
 
@@ -78,7 +75,6 @@ describe('Smart Banners tracker link building', () => {
 
       const trackerData = {
         template: iosTracker,
-        default_template: iosTracker,
         context: iosContext
       };
 
@@ -90,7 +86,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds ios tracker with provided deeplink template and custom context', () => {
       const trackerData = {
         template: iosTracker,
-        default_template: iosTracker,
         context: { ...iosContext, ios_deep_link_path: 'my-product/{product}' }
       };
 
@@ -104,7 +99,6 @@ describe('Smart Banners tracker link building', () => {
 
       const trackerData = {
         template: iosTracker,
-        default_template: iosTracker,
         context: iosContext
       };
 
@@ -123,7 +117,6 @@ describe('Smart Banners tracker link building', () => {
 
       const trackerData = {
         template: iosTracker,
-        default_template: iosTracker,
         context: iosContext
       };
 
@@ -142,7 +135,6 @@ describe('Smart Banners tracker link building', () => {
 
       const trackerData = {
         template: androidTracker,
-        default_template: iosTracker,
         context: androidContext
       };
 
@@ -155,7 +147,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds android tracker with provided deeplink template and custom context', () => {
       const trackerData = {
         template: androidTracker,
-        default_template: androidTracker,
         context: { ...androidContext, android_deep_link_path: 'my-product/{product}' }
       };
 
@@ -170,7 +161,6 @@ describe('Smart Banners tracker link building', () => {
 
       const trackerData = {
         template: androidTracker,
-        default_template: androidTracker,
         context: androidContext
       };
 
@@ -188,7 +178,6 @@ describe('Smart Banners tracker link building', () => {
 
       const trackerData = {
         template: androidTracker,
-        default_template: androidTracker,
         context: androidContext
       };
 
@@ -205,7 +194,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds ios tracker with deeplink template', () => {
       const trackerData = {
         template: iosTracker,
-        default_template: iosTracker,
         context: { ...iosContext, ios_deep_link_path: 'some-path/{page}' }
       };
 
@@ -217,7 +205,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds android tracker with deeplink template', () => {
       const trackerData = {
         template: androidTracker,
-        default_template: androidTracker,
         context: { ...androidContext, android_deep_link_path: 'some-path/{page}' }
       };
 
@@ -230,7 +217,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds ios tracker with custom deeplink template', () => {
       const trackerData = {
         template: iosTracker,
-        default_template: iosTracker,
         context: iosContext
       };
 
@@ -242,7 +228,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds android tracker with custom deeplink template', () => {
       const trackerData = {
         template: androidTracker,
-        default_template: androidTracker,
         context: androidContext
       };
 
@@ -255,7 +240,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds ios tracker using both custom context and GET parameters', () => {
       const trackerData = {
         template: iosTracker,
-        default_template: iosTracker,
         context: { ...iosContext, ios_deep_link_path: '{path}/{page}' }
       };
 
@@ -268,7 +252,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds android tracker using both custom context and GET parameters', () => {
       const trackerData = {
         template: androidTracker,
-        default_template: androidTracker,
         context: { ...androidContext, android_deep_link_path: '{path}/{page}' }
       };
 
@@ -282,7 +265,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds ios tracker preferring custom context than URL parameters', () => {
       const trackerData = {
         template: iosTracker,
-        default_template: androidTracker,
         context: { ...iosContext, ios_deep_link_path: 'path/{page}' }
       };
 
@@ -295,7 +277,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds android tracker preferring custom context than URL parameters', () => {
       const trackerData = {
         template: androidTracker,
-        default_template: androidTracker,
         context: { ...androidContext, android_deep_link_path: 'path/{page}' }
       };
 
@@ -311,7 +292,6 @@ describe('Smart Banners tracker link building', () => {
     it('builds custom tracker', () => {
       const trackerData = {
         template: 'https://{domain}/{tracker}?campaign={utm_source}-{campaign}&adgroup={localization_language}&utm_content={utm_content}',
-        default_template: commonTracker,
         context: commonContext
       };
 
@@ -321,33 +301,25 @@ describe('Smart Banners tracker link building', () => {
       expect(tracker).toBe(expected);
     });
 
-    it('builds default tracker when campaign parameters unavailable', () => {
+    it('builds custom tracker replacing not found placeholders with "none"', () => {
       const trackerData = {
         template: 'https://{domain}/{tracker}?campaign={utm_source}-{campaign}&adgroup={localization_language}&utm_content={utm_content}',
-        default_template: commonTracker,
         context: commonContext
       };
 
-      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en';
+      const expected = 'https://test.domain/abc123?campaign=hello_utm-banner1&adgroup=en&utm_content=none';
 
-      let tracker = TrackerBuilder.build(trackerData, 'https://some-path/?utm_source=hello', emptyCustomData);
-      expect(tracker).toBe(expected);
-
-      tracker = TrackerBuilder.build(trackerData, 'https://some-path/?utm_content=image', emptyCustomData);
-      expect(tracker).toBe(expected);
-
-      tracker = TrackerBuilder.build(trackerData, 'https://some-path/?params=none', emptyCustomData);
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?utm_source=hello_utm', emptyCustomData);
       expect(tracker).toBe(expected);
     });
 
     it('builds custom tracker ignoring unavailable placeholders in deeplink path', () => {
       const trackerData = {
         template: 'https://{domain}/{deep_link_path}/adj_t={tracker}?adj_campaign={campaign}_{utm_source}&adj_adgroup={localization_language}',
-        default_template: 'no matter',
         context: { ...iosContext, ios_deep_link_path: 'some/path-to-{nothing}' }
       };
 
-      const expected = 'https://test.domain/some/path-to-/adj_t=abc123?adj_campaign=banner1_hello&adj_adgroup=en';
+      const expected = 'https://test.domain/some/path-to-none/adj_t=abc123?adj_campaign=banner1_hello&adj_adgroup=en';
 
       const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?utm_source=hello', emptyCustomData);
       expect(tracker).toBe(expected);

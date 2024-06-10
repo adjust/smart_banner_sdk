@@ -6,7 +6,6 @@ import { DeviceOS, getDeviceOS } from '@utils/detect-os';
 
 export interface TrackerData {
   template: string;
-  default_template: string;
   context: Context;
 }
 
@@ -43,17 +42,11 @@ export const TrackerBuilder = {
       ...deeplink
     };
 
-    const { result, notReplaced } = interpolate(adaptTemplate(template, deeplink), combinedContext);
-
-    if (notReplaced.length > 0) {
-      return interpolate(adaptTemplate(data.default_template, deeplink), combinedContext).result;
-    }
-
-    return result;
+    return interpolate(adaptTemplate(template, deeplink), combinedContext).result;
   }
 };
 
-function buildDeeplink(data: Omit<TrackerData, 'default_template'>, customContext: Record<string, string>): DeeplinkPaths {
+function buildDeeplink(data: TrackerData, customContext: Record<string, string>): DeeplinkPaths {
   let deeplinkTemplate = data.context.deep_link_path || data.context.deep_link || '';
 
   const context: Record<string, string> = {

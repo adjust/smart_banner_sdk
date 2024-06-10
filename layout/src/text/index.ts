@@ -1,5 +1,11 @@
 import styles from './styles.module.scss';
 
+interface TextStyle {
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+}
+
 export enum TextType {
   Title,
   Description
@@ -8,7 +14,7 @@ export enum TextType {
 export class BannerText {
   private element: HTMLElement;
 
-  constructor(type: TextType, private text?: string, private color?: string) {
+  constructor(type: TextType, private text?: string, private style?: TextStyle) {
     if (type === TextType.Title) {
       this.element = document.createElement('h4');
     } else {
@@ -18,7 +24,7 @@ export class BannerText {
     this.element.className = styles['banner-text'];
   }
 
-  private renderText(text?: string, color?: string) {
+  private renderText(text?: string, style?: TextStyle) {
     if (text) {
       this.element.hidden = false;
       this.element.innerText = text;
@@ -26,21 +32,33 @@ export class BannerText {
       this.element.hidden = true;
     }
 
-    if (color) {
+    if (style) {
+      const { color = '', fontSize, fontFamily = '' } = style;
+
       this.element.style.color = color;
+      this.element.style.fontFamily = fontFamily;
+      if (fontSize) {
+        this.element.style.fontSize = fontSize + 'px';
+      } else {
+        this.element.style.fontSize = '';
+      }
     }
 
     return this.element;
   }
 
   public render(root: HTMLElement) {
-    root.appendChild(this.renderText(this.text, this.color));
+    root.appendChild(this.renderText(this.text, this.style));
   }
 
-  public update(text?: string, color?: string) {
+  public update(text?: string, style?: TextStyle) {
     this.text = text;
-    this.color = color;
 
-    this.renderText(text, color);
+    this.style = {
+      ...this.style,
+      ...style
+    };
+
+    this.renderText(text, style);
   }
 }
