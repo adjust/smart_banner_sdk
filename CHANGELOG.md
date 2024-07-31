@@ -1,3 +1,11 @@
+### Version 1.2.1 (1st August 2024)
+
+#### Fixed
+- Fixed an issue where calling `show` immediately after `init` when a network error occurred resulted in an infinite loop.
+- Added aria-label for dismiss button.
+
+---
+
 ### Version 1.2.0 (10th June 2024)
 
 #### Added

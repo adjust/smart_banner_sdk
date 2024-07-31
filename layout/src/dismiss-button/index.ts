@@ -10,6 +10,7 @@ export class DismissButton {
     this.button = document.createElement('button');
     this.button.innerHTML = cross;
     this.button.className = styles.dismiss;
+    this.button.ariaLabel = 'Close banner';
 
     const svg = this.button.querySelector('svg');
     if (svg) {
