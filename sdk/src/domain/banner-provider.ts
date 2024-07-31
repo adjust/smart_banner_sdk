@@ -28,9 +28,11 @@ export class BannerProvider {
         }
 
         this.selectedBanner = this.selector.next(bannersList, url);
-        this.gettingBannerPromise = null;
 
         return this.selectedBanner;
+      })
+      .finally(() => {
+        this.gettingBannerPromise = null;
       });
 
     return this.gettingBannerPromise;
