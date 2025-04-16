@@ -5,36 +5,29 @@
 export enum DeviceOS {
   Android = 'android',
   iOS = 'ios',
-  WindowsPC = 'windows',
-  WindowsPhone = 'windows-phone',
 }
 
 /**
- * Returns one of android, ios, windows, windows-phone or undefined for another OS.
+ * Detects if current platform is Android or iOS using window.navigator data and relying on touch and pointing device availablity.
  */
 export function getDeviceOS(): DeviceOS | undefined {
-  const userAgent = navigator?.userAgent?.toLowerCase();
+  const platform = (navigator.userAgentData?.platform || navigator.userAgent || navigator.platform || '').toLowerCase();
 
-  if (!userAgent || userAgent.length < 1) {
-    return undefined;
+  const maxTouchPoints = navigator.maxTouchPoints || 0;
+  const isTouchDevice = matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+  if (
+    /iphone|ipad|ipod/.test(platform) ||
+    (platform === 'macintel' && maxTouchPoints > 1)
+  ) {
+    return DeviceOS.iOS
   }
 
-  if (/ipad|iphone|ipod/.test(userAgent)) {
-    return DeviceOS.iOS;
-  }
-
-  // Checking Windows first because Lumia devices could have for example
-  // "Mozilla/5.0 (Windows Mobile 10; Android 8.0.0; Microsoft; Lumia 950XL) ..." user agent
-  if (userAgent.includes('windows')) {
-    if (/phone|mobile/.test(userAgent)) {
-      return DeviceOS.WindowsPhone;
-    }
-
-    return DeviceOS.WindowsPC;
-  }
-
-  if (userAgent.includes('android')) {
-    return DeviceOS.Android;
+  if (
+    (platform.includes('android') || platform.includes('linux')) &&
+    isTouchDevice && maxTouchPoints > 1
+  ) {
+    return DeviceOS.Android
   }
 
   return undefined;
