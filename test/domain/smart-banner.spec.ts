@@ -1,6 +1,6 @@
 import { Logger } from '@sdk/utils/logger';
 import { SmartBanner } from '@sdk/domain/smart-banner';
-import { DeviceOS } from '@sdk/main';
+import { Platform } from '@sdk/main';
 import { NetworkFactory } from '@sdk/network/network-factory';
 import { StorageFactory } from '@sdk/data/storage/storage-factory';
 import { InMemoryStorage } from '@sdk/data/storage/in-memory-storage';
@@ -67,7 +67,7 @@ describe('Smart Banner tests', () => {
 
   describe('Initialisation and creation', () => {
     describe('Localisation', () => {
-      const defaultPlatform = DeviceOS.Android;
+      const defaultPlatform = Platform.Android;
 
       describe('Detection', () => {
         it('detects preferred language and uses it in view and for deeplink', async () => {
@@ -179,7 +179,7 @@ describe('Smart Banner tests', () => {
         it('creates tracker without deeplink when no deeplink and context passed', async () => {
           expect.assertions(5);
 
-          new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.Android);
+          new SmartBanner('some-token', { appToken: 'some-token' }, Platform.Android);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -192,7 +192,7 @@ describe('Smart Banner tests', () => {
         it('ignores context when no deeplink passed and creates tracker without deeplink', async () => {
           expect.assertions(5);
 
-          new SmartBanner('some-token', { appToken: 'some-token', context: { param: 'pam-param' } }, DeviceOS.Android);
+          new SmartBanner('some-token', { appToken: 'some-token', context: { param: 'pam-param' } }, Platform.Android);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -208,7 +208,7 @@ describe('Smart Banner tests', () => {
         it('accepts and uses custom deep link path to create a tracker for view', async () => {
           expect.assertions(5);
 
-          new SmartBanner('some-token', { appToken: 'some-token', androidDeepLinkPath: 'some-deeplink' }, DeviceOS.Android);
+          new SmartBanner('some-token', { appToken: 'some-token', androidDeepLinkPath: 'some-deeplink' }, Platform.Android);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -230,7 +230,7 @@ describe('Smart Banner tests', () => {
               androidDeepLinkPath: 'some-deeplink/{param}',
               context: { param: 'pam-param' }
             },
-            DeviceOS.Android);
+            Platform.Android);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -257,7 +257,7 @@ describe('Smart Banner tests', () => {
               appToken: 'some-token',
               androidDeepLinkPath: 'some-deeplink/param={param}'
             },
-            DeviceOS.Android);
+            Platform.Android);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -281,7 +281,7 @@ describe('Smart Banner tests', () => {
         it('creates tracker without deeplink when no deeplink and context passed', async () => {
           expect.assertions(5);
 
-          new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.iOS);
+          new SmartBanner('some-token', { appToken: 'some-token' }, Platform.iOS);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -298,7 +298,7 @@ describe('Smart Banner tests', () => {
         it('ignores context when no deeplink passed and creates tracker without deeplink', async () => {
           expect.assertions(5);
 
-          new SmartBanner('some-token', { appToken: 'some-token', context: { param: 'pam-param' } }, DeviceOS.iOS);
+          new SmartBanner('some-token', { appToken: 'some-token', context: { param: 'pam-param' } }, Platform.iOS);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -314,7 +314,7 @@ describe('Smart Banner tests', () => {
         it('accepts and uses custom deep link path to create a tracker for view', async () => {
           expect.assertions(5);
 
-          new SmartBanner('some-token', { appToken: 'some-token', iosDeepLinkPath: 'some-deeplink' }, DeviceOS.iOS);
+          new SmartBanner('some-token', { appToken: 'some-token', iosDeepLinkPath: 'some-deeplink' }, Platform.iOS);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -336,7 +336,7 @@ describe('Smart Banner tests', () => {
               iosDeepLinkPath: 'some-deeplink/{param}',
               context: { param: 'pam-param' }
             },
-            DeviceOS.iOS);
+            Platform.iOS);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -363,7 +363,7 @@ describe('Smart Banner tests', () => {
               appToken: 'some-token',
               iosDeepLinkPath: 'some-deeplink/param={param}'
             },
-            DeviceOS.iOS);
+            Platform.iOS);
           await Utils.flushPromises();
 
           expect(Logger.info).toBeCalledWith('Render banner: ' + bannerName);
@@ -405,7 +405,7 @@ describe('Smart Banner tests', () => {
     });
 
     describe('Fetching banners', () => {
-      const platforms = [DeviceOS.iOS, DeviceOS.Android, DeviceOS.WindowsPC, DeviceOS.WindowsPhone];
+      const platforms = [Platform.iOS, Platform.Android, Platform.WindowsPC, Platform.WindowsPhone];
 
       it.each([platforms])('fetches banners for a proper device OS using passed AppToken', () => {
         // expect called with proper platform and app token
@@ -414,7 +414,7 @@ describe('Smart Banner tests', () => {
   });
 
   describe('Change visibility', () => {
-    const defaultPlatform = DeviceOS.Android;
+    const defaultPlatform = Platform.Android;
 
     describe('Hide', () => {
       it('hides view', async () => {
@@ -498,7 +498,7 @@ describe('Smart Banner tests', () => {
   });
 
   describe('Language setting', () => {
-    const defaultPlatform = DeviceOS.Android;
+    const defaultPlatform = Platform.Android;
 
     describe('View exists', () => {
       it.each([
@@ -609,7 +609,7 @@ describe('Smart Banner tests', () => {
           const smartBanner = new SmartBanner(
             'some-token',
             { appToken: 'some-token', androidDeepLinkPath: 'old/path' },
-            DeviceOS.Android);
+            Platform.Android);
           await Utils.flushPromises();
 
           expect(TrackerBuilder.build).toBeCalledWith(
@@ -638,7 +638,7 @@ describe('Smart Banner tests', () => {
           const smartBanner = new SmartBanner(
             'some-token',
             { appToken: 'some-token', iosDeepLinkPath: 'old/path' },
-            DeviceOS.iOS);
+            Platform.iOS);
           await Utils.flushPromises();
 
           expect(TrackerBuilder.build).toBeCalledWith(
@@ -685,7 +685,7 @@ describe('Smart Banner tests', () => {
         const smartBanner = new SmartBanner(
           'some-token',
           { appToken: 'some-token', androidDeepLinkPath: 'old/android/path', iosDeepLinkPath: 'old/ios/path' },
-          DeviceOS.Android);
+          Platform.Android);
         await Utils.flushPromises();
 
         expect(Logger.info).toBeCalledWith(`Smart banner ${bannerName} creation scheduled on ${new Date(startTime + dismissalPeriod)}`);
@@ -728,7 +728,7 @@ describe('Smart Banner tests', () => {
     describe('Initialisation is not finished yet', () => {
       describe('Android', () => {
         it('logs a message that deep link path will be applied within initialisation', () => {
-          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.Android);
+          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, Platform.Android);
           smartBanner.setAndroidDeepLinkPath('some/path');
 
           expect(Logger.log).toBeCalledWith('Smart banner was not rendered yet, the provided Android deeplink path will be applied within render');
@@ -738,7 +738,7 @@ describe('Smart Banner tests', () => {
         it('applies deep link path within initialisation', async () => {
           expect.assertions(5);
 
-          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.Android);
+          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, Platform.Android);
           smartBanner.setAndroidDeepLinkPath('new/path');
 
           expect(Logger.log).toBeCalledWith('Smart banner was not rendered yet, the provided Android deeplink path will be applied within render');
@@ -758,7 +758,7 @@ describe('Smart Banner tests', () => {
 
       describe('iOS', () => {
         it('logs a message that deep link path will be applied within initialisation', () => {
-          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.iOS);
+          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, Platform.iOS);
           smartBanner.setIosDeepLinkPath('some/path');
 
           expect(Logger.log).toBeCalledWith('Smart banner was not rendered yet, the provided iOS deeplink path will be applied within render');
@@ -768,7 +768,7 @@ describe('Smart Banner tests', () => {
         it('applies deep link path within initialisation', async () => {
           expect.assertions(5);
 
-          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.iOS);
+          const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, Platform.iOS);
           smartBanner.setIosDeepLinkPath('new/path');
 
           expect(Logger.log).toBeCalledWith('Smart banner was not rendered yet, the provided iOS deeplink path will be applied within render');
@@ -787,7 +787,7 @@ describe('Smart Banner tests', () => {
       });
 
       it('logs a message that deeplink context will be applied within initialisation', () => {
-        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.iOS);
+        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, Platform.iOS);
         smartBanner.setContext({ product: 'something' });
 
         expect(Logger.log).toBeCalledWith('Smart banner was not rendered yet, the provided deeplink context will be applied within render');
@@ -797,7 +797,7 @@ describe('Smart Banner tests', () => {
       it('applies deeplink context within initialisation', async () => {
         expect.assertions(5);
 
-        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, DeviceOS.iOS);
+        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, Platform.iOS);
         smartBanner.setContext({ product: 'something' });
 
         expect(Logger.log).toBeCalledWith('Smart banner was not rendered yet, the provided deeplink context will be applied within render');

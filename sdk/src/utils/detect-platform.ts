@@ -2,7 +2,7 @@
  * Operation systems
  * @public
  */
-export enum DeviceOS {
+export enum Platform {
   Android = 'android',
   iOS = 'ios',
 }
@@ -10,7 +10,7 @@ export enum DeviceOS {
 /**
  * Detects if current platform is Android or iOS using window.navigator data and relying on touch and pointing device availablity.
  */
-export function getDeviceOS(): DeviceOS | undefined {
+export function getPlatform(): Platform | undefined {
   const platform = (navigator.userAgentData?.platform || navigator.userAgent || navigator.platform || '').toLowerCase();
 
   const maxTouchPoints = navigator.maxTouchPoints || 0;
@@ -20,14 +20,14 @@ export function getDeviceOS(): DeviceOS | undefined {
     /iphone|ipad|ipod/.test(platform) ||
     (platform === 'macintel' && maxTouchPoints > 1)
   ) {
-    return DeviceOS.iOS
+    return Platform.iOS
   }
 
   if (
     (platform.includes('android') || platform.includes('linux')) &&
     isTouchDevice && maxTouchPoints > 1
   ) {
-    return DeviceOS.Android
+    return Platform.Android
   }
 
   return undefined;

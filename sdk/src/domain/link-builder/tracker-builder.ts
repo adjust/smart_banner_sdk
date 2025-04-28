@@ -2,7 +2,7 @@ import { Context, DeeplinkData } from '../../data/types';
 import { parseGetParams } from '@utils/parse-get-params';
 import { interpolate } from '@utils/template-interpolaion';
 import { omitNotDefined } from '@utils/object';
-import { DeviceOS, getDeviceOS } from '@utils/detect-os';
+import { Platform, getPlatform } from '@utils/detect-platform';
 
 export interface TrackerData {
   template: string;
@@ -71,7 +71,7 @@ function buildDeeplink(data: TrackerData, customContext: Record<string, string>)
 }
 
 function adaptTemplate(template: string, context: DeeplinkPaths): string {
-  if (getDeviceOS() === DeviceOS.iOS && context.deep_link_path.indexOf('?') > -1) { // if ios deeplink path contains '?'
+  if (getPlatform() === Platform.iOS && context.deep_link_path.indexOf('?') > -1) { // if ios deeplink path contains '?'
     // then replace '?' in the template with '&' to avoid invalid URL creation
     return template.replace('?', '&');
   }

@@ -1,6 +1,6 @@
 import { Context } from '@sdk/data/types';
 import { TrackerBuilder } from '@sdk/domain/link-builder/tracker-builder';
-import * as DetectOs from '@sdk/utils/detect-os';
+import * as DetectPlatform from '@sdk/utils/detect-platform';
 
 jest.mock('@sdk/utils/logger');
 
@@ -111,7 +111,7 @@ describe('Smart Banners tracker link building', () => {
     });
 
     it('builds a valid URL when a search query passed as iosDeepLinkPath', () => {
-      jest.spyOn(DetectOs, 'getDeviceOS').mockReturnValue(DetectOs.DeviceOS.iOS);
+      jest.spyOn(DetectPlatform, 'getPlatform').mockReturnValue(DetectPlatform.Platform.iOS);
 
       const customDeepLinkPath = 'search?product={product}';
 
@@ -127,7 +127,7 @@ describe('Smart Banners tracker link building', () => {
         context: { product: 'jeans' }
       })).toBe(expected);
 
-      jest.spyOn(DetectOs, 'getDeviceOS').mockRestore();
+      jest.spyOn(DetectPlatform, 'getPlatform').mockRestore();
     });
 
     it('builds android tracker with a plain custom deeplink', () => {

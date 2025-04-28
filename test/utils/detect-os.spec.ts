@@ -1,26 +1,18 @@
-import { DeviceOS, getDeviceOS } from '@sdk/utils/detect-os';
+import { Platform, getPlatform } from '@sdk/utils/detect-platform';
 
-describe('Returns recognizable device OS', () => {
+describe('Returns device platform', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
 
-  const testSet: [string, DeviceOS | undefined][] = [
-    [
-      'Mozilla/5.0 (Windows Mobile 10; Android 8.0.0; Microsoft; Lumia 950XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.92 Mobile Safari/537.36 Edge/40.15254.369',
-      DeviceOS.WindowsPhone
-    ],
-    [
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
-      DeviceOS.WindowsPC
-    ],
+  const testSet: [string, Platform | undefined][] = [
     [
       'Mozilla/5.0 (Linux; Android 10; SAMSUNG SM-G975U) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/11.1 Chrome/75.0.3770.143 Mobile Safari/537.36',
-      DeviceOS.Android
+      Platform.Android
     ],
     [
       'Mozilla/5.0 (iPad; CPU OS 12_4_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1',
-      DeviceOS.iOS
+      Platform.iOS
     ],
     [
       'Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Thunderbird/45.8.0',
@@ -28,10 +20,9 @@ describe('Returns recognizable device OS', () => {
     ],
   ];
 
-
-  test.each(testSet)('getDeviceOS() for %s returns %s', (userAgent: string, expected: DeviceOS | undefined) => {
+  test.each(testSet)('getPlatform() for %s returns %s', (userAgent: string, expected: Platform | undefined) => {
     jest.spyOn(global.navigator, 'userAgent', 'get').mockReturnValue(userAgent);
-    expect(getDeviceOS()).toEqual(expected);
+    expect(getPlatform()).toEqual(expected);
   });
 
 });
