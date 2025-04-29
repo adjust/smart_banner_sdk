@@ -1,16 +1,29 @@
+import { BannerSize } from '../data-types';
 import styles from './styles.module.scss';
 
 export class AppIcon {
   private placeholder: HTMLElement;
   private image: HTMLImageElement;
 
-  constructor(private iconUrl: string, private appName: string) {
+  constructor(
+    private iconUrl: string,
+    private appName: string, 
+    bannerSize: BannerSize,
+  ) {
     this.placeholder = document.createElement('div');
     this.placeholder.className = styles.placeholder;
 
     this.image = document.createElement('img');
     this.image.className = styles.image;
-    this.image.alt = "Application icon";
+    this.image.alt = 'Application icon';
+
+    if (bannerSize === BannerSize.Large) {
+      this.image.width = 64;
+      this.image.height = 64;
+    } else {
+      this.image.width = 56;
+      this.image.height = 56;
+    }
   }
 
   public render(root: HTMLElement) {
