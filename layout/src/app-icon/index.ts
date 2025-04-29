@@ -15,8 +15,8 @@ export class AppIcon {
     this.image.className = styles.image;
     this.image.alt = 'Application icon';
 
-    this.image.width = 56;
-    this.image.height = 56;
+    this.image.width = 64;
+    this.image.height = 64;
   }
 
   public render(root: HTMLElement) {
