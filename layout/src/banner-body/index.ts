@@ -21,7 +21,7 @@ export class BannerBody {
     this.bannerBody.className = styles['banner-body'];
 
     this.dismissButton = new DismissButton(onDismiss, banner.dismissalButtonColor);
-    this.appIcon = new AppIcon(banner.iconUrl, banner.appName, banner.iconWidth, banner.iconHeight);
+    this.appIcon = new AppIcon(banner.iconUrl, banner.appName);
     this.actionButton = new ActionButton(banner, trackerUrl);
 
     this.title = new BannerText(

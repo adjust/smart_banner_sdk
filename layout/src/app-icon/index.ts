@@ -7,8 +7,6 @@ export class AppIcon {
   constructor(
     private iconUrl: string,
     private appName: string, 
-    iconWidth?: string, 
-    iconHeight?: string
   ) {
     this.placeholder = document.createElement('div');
     this.placeholder.className = styles.placeholder;
@@ -17,8 +15,8 @@ export class AppIcon {
     this.image.className = styles.image;
     this.image.alt = 'Application icon';
 
-    if (iconWidth) this.image.style.width = iconWidth;
-    if (iconHeight) this.image.style.height = iconHeight;
+    this.image.width = 56;
+    this.image.height = 56;
   }
 
   public render(root: HTMLElement) {
