@@ -4,13 +4,21 @@ export class AppIcon {
   private placeholder: HTMLElement;
   private image: HTMLImageElement;
 
-  constructor(private iconUrl: string, private appName: string) {
+  constructor(
+    private iconUrl: string,
+    private appName: string, 
+    iconWidth?: string, 
+    iconHeight?: string
+  ) {
     this.placeholder = document.createElement('div');
     this.placeholder.className = styles.placeholder;
 
     this.image = document.createElement('img');
     this.image.className = styles.image;
-    this.image.alt = "Application icon";
+    this.image.alt = 'Application icon';
+
+    if (iconWidth) this.image.style.width = iconWidth;
+    if (iconHeight) this.image.style.height = iconHeight;
   }
 
   public render(root: HTMLElement) {

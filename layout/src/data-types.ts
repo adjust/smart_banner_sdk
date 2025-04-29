@@ -18,6 +18,8 @@ export interface SmartBannerViewData {
   position: Position;
   size: BannerSize;
   iconUrl: string;
+  iconWidth?: string;
+  iconHeight?: string;
   appName: string;
   dismissalButtonColor?: string;
   title: string;
