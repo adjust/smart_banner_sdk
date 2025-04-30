@@ -42,7 +42,8 @@ const config: JestConfigWithTsJest = {
   },
   setupFiles: [
     'jest-localstorage-mock',
-    '<rootDir>/_setup/utils.ts'
+    '<rootDir>/_setup/utils.ts',
+    '<rootDir>/_mocks/matchMedia.ts'
   ],
   setupFilesAfterEnv: ['jest-extended/all'],
   testEnvironment: 'jsdom',
