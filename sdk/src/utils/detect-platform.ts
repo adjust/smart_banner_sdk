@@ -11,7 +11,7 @@ export enum Platform {
  * Detects if current platform is Android or iOS using window.navigator data and relying on touch and pointing device availablity.
  */
 export function getPlatform(): Platform | undefined {
-  const platform = (navigator.userAgentData?.platform || navigator.userAgent || navigator.platform || '').toLowerCase();
+  const platform = (navigator.userAgentData?.platform || navigator.userAgent || '').toLowerCase();
 
   // Sometimes navigator.maxTouchPoints equals 256 instead of 0 when touch actually isn't supported
   const isMultiTouch = navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256;
