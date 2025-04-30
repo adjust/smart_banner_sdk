@@ -13,20 +13,16 @@ export enum Platform {
 export function getPlatform(): Platform | undefined {
   const platform = (navigator.userAgentData?.platform || navigator.userAgent || navigator.platform || '').toLowerCase();
 
-  const maxTouchPoints = navigator.maxTouchPoints || 0;
+  // Sometimes navigator.maxTouchPoints equals 256 instead of 0 when touch actually isn't supported
+  const isMultiTouch = navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256;
   const isTouchDevice = matchMedia('(hover: none) and (pointer: coarse)').matches;
+  const supportsTouch = isMultiTouch || isTouchDevice;
 
-  if (
-    /iphone|ipad|ipod/.test(platform) ||
-    (platform === 'macintel' && maxTouchPoints > 1)
-  ) {
+  if (/iphone|ipad|ipod/.test(platform) || (platform.includes('macintel') && supportsTouch)) {
     return Platform.iOS
   }
 
-  if (
-    (platform.includes('android') || platform.includes('linux')) &&
-    isTouchDevice && maxTouchPoints > 1
-  ) {
+  if (platform.includes('android') || (platform.includes('linux') && supportsTouch)) {
     return Platform.Android
   }
 
