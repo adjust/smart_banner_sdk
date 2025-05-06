@@ -1,7 +1,7 @@
 import { Logger as _Logger, LogLevel } from '@sdk/utils/logger';
 import { AppToken, InitialisationOptions } from '@sdk/main';
 import * as _SmartBannerModule from '@sdk/domain/smart-banner';
-import * as OsDetector from '@sdk/utils/detect-os';
+import * as OsDetector from '@sdk/utils/detect-platform';
 import _AdjustSmartBanner from '@sdk/main';
 
 jest.doMock('@sdk/domain/smart-banner');
@@ -10,7 +10,7 @@ jest.mock('@sdk/utils/logger');
 describe('Entry point tests', () => {
   let AdjustSmartBanner: typeof _AdjustSmartBanner;
   let Logger: typeof _Logger;
-  let DetectOs: typeof OsDetector;
+  let DetectPlatform: typeof OsDetector;
   let SmartBannerModule: typeof _SmartBannerModule;
   const SmartBanner = {
     show: jest.fn(),
@@ -21,25 +21,23 @@ describe('Entry point tests', () => {
     setContext: jest.fn(),
   };
 
-  let getDeviceOSSpy: jest.SpyInstance<OsDetector.DeviceOS | undefined>;
+  let getPlatformSpy: jest.SpyInstance<OsDetector.Platform | undefined>;
 
-  const platforms = [OsDetector.DeviceOS.iOS, OsDetector.DeviceOS.Android, OsDetector.DeviceOS.WindowsPC, OsDetector.DeviceOS.WindowsPhone];
+  const platforms = [OsDetector.Platform.iOS, OsDetector.Platform.Android];
 
   const appToken: AppToken = {
     'android': 'android-token',
     'ios': 'ios-token',
-    'windows': 'win-token',
-    'windows-phone': 'wp-token'
   };
 
   beforeEach(() => {
     AdjustSmartBanner = require('@sdk/main').default;
-    DetectOs = require('@sdk/utils/detect-os');
+    DetectPlatform = require('@sdk/utils/detect-platform');
     SmartBannerModule = require('@sdk/domain/smart-banner');
     Logger = require('@sdk/utils/logger').Logger;
 
-    getDeviceOSSpy = jest.spyOn(DetectOs, 'getDeviceOS');
-    getDeviceOSSpy.mockReturnValue(OsDetector.DeviceOS.Android);
+    getPlatformSpy = jest.spyOn(DetectPlatform, 'getPlatform');
+    getPlatformSpy.mockReturnValue(OsDetector.Platform.Android);
 
     jest.spyOn(SmartBannerModule, 'SmartBanner').mockImplementation(() => SmartBanner as any as _SmartBannerModule.SmartBanner);
     jest.spyOn(Logger, 'setLogLevel');
@@ -74,7 +72,7 @@ describe('Entry point tests', () => {
 
     describe('Detecting device platform', () => {
       it('prevents initialisation on non-mobile platforms', () => {
-        getDeviceOSSpy.mockReturnValueOnce(undefined);
+        getPlatformSpy.mockReturnValueOnce(undefined);
 
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
@@ -82,40 +80,40 @@ describe('Entry point tests', () => {
         expect(SmartBannerModule.SmartBanner).not.toBeCalled();
       });
 
-      it.each(platforms)('continues initialisation on %s platform', (deviceOs: OsDetector.DeviceOS) => {
-        getDeviceOSSpy.mockReturnValueOnce(deviceOs);
+      it.each(platforms)('continues initialisation on %s platform', (Platform: OsDetector.Platform) => {
+        getPlatformSpy.mockReturnValueOnce(Platform);
 
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        expect(Logger.log).toBeCalledWith('Detected platform: ' + deviceOs);
-        expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', { appToken: 'some-token' }, deviceOs);
+        expect(Logger.log).toBeCalledWith('Detected platform: ' + Platform);
+        expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', { appToken: 'some-token' }, Platform);
       });
     });
 
     describe('AppToken picking', () => {
       it('picks a string appToken and passes it to SmartBanner', () => {
-        const definedPlatform = OsDetector.DeviceOS.Android;
-        getDeviceOSSpy.mockReturnValueOnce(definedPlatform);
+        const definedPlatform = OsDetector.Platform.Android;
+        getPlatformSpy.mockReturnValueOnce(definedPlatform);
 
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
         expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', { appToken: 'some-token' }, definedPlatform);
       });
 
-      it.each(platforms)('picks an appToken according to detected DeviceOs and passes it to SmartBanner', (deviceOs: OsDetector.DeviceOS) => {
-        getDeviceOSSpy.mockReturnValueOnce(deviceOs);
+      it.each(platforms)('picks an appToken according to detected Platform and passes it to SmartBanner', (Platform: OsDetector.Platform) => {
+        getPlatformSpy.mockReturnValueOnce(Platform);
 
         AdjustSmartBanner.init({ appToken });
 
-        expect(SmartBannerModule.SmartBanner).toBeCalledWith(appToken[deviceOs], { appToken }, deviceOs);
+        expect(SmartBannerModule.SmartBanner).toBeCalledWith(appToken[Platform], { appToken }, Platform);
       });
 
-      it.each(platforms)('logs a message and prevents initialisation if no appToken for current platform', (deviceOs: OsDetector.DeviceOS) => {
-        getDeviceOSSpy.mockReturnValueOnce(deviceOs);
+      it.each(platforms)('logs a message and prevents initialisation if no appToken for current platform', (Platform: OsDetector.Platform) => {
+        getPlatformSpy.mockReturnValueOnce(Platform);
 
         AdjustSmartBanner.init({ appToken: {} });
 
-        expect(Logger.info).toBeCalledWith(`No app token found for platform: ${deviceOs}, Smart banner will not be shown`);
+        expect(Logger.info).toBeCalledWith(`No app token found for platform: ${Platform}, Smart banner will not be shown`);
         expect(SmartBannerModule.SmartBanner).not.toBeCalled();
       });
 
@@ -141,7 +139,7 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.init(options);
 
-        expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', options, OsDetector.DeviceOS.Android);
+        expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', options, OsDetector.Platform.Android);
       });
     });
 

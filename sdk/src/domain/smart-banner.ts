@@ -1,5 +1,5 @@
 import { Logger } from '@utils/logger';
-import { DeviceOS } from '@utils/detect-os';
+import { Platform } from '@utils/detect-platform';
 import { getLanguage } from '@utils/language';
 import { SmartBannerLayout, SmartBannerViewData, SmartBannerLayoutFactory } from '@layout';
 import { SmartBannerData, DeeplinkData } from '../data/types';
@@ -29,7 +29,7 @@ export class SmartBanner {
   private view: SmartBannerLayout | null = null;
   private url: string = window.location.href;
 
-  constructor(appToken: string, options: SmartBannerOptions, private deviceOs: DeviceOS) {
+  constructor(appToken: string, options: SmartBannerOptions, private platform: Platform) {
     const { language, bannerParent, iosDeepLinkPath, androidDeepLinkPath, onCreated, onDismissed } = options;
     let { context } = options;
 
@@ -40,7 +40,7 @@ export class SmartBanner {
     };
 
     this.network = NetworkFactory.create(networkConfig);
-    const networkApi = new SmartBannerApi(this.deviceOs, this.network);
+    const networkApi = new SmartBannerApi(this.platform, this.network);
 
     this.bannerProvider = new BannerProvider(
       appToken,

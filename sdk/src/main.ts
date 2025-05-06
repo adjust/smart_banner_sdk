@@ -1,20 +1,20 @@
 import { AppToken, SmartBannerOptions, Callback } from './types';
 import { Logger, LogLevel } from './utils/logger';
-import { DeviceOS, getDeviceOS } from './utils/detect-os';
+import { Platform, getPlatform } from './utils/detect-platform';
 import { SmartBanner } from './domain/smart-banner';
 
 // For api-extractor
-export { AppToken, DeviceOS, LogLevel, SmartBannerOptions, Callback };
+export { AppToken, Platform, LogLevel, SmartBannerOptions, Callback };
 
 /** @public */
 export type InitialisationOptions = SmartBannerOptions & { logLevel?: LogLevel };
 
-function flattenAppToken(appToken: AppToken, deviceOs: DeviceOS): string | undefined {
+function flattenAppToken(appToken: AppToken, platform: Platform): string | undefined {
   if (typeof appToken === 'string') {
     return appToken;
   }
 
-  return appToken[deviceOs];
+  return appToken[platform];
 }
 
 /**
@@ -32,21 +32,21 @@ export default class AdjustSmartBanner {
       return;
     }
 
-    const deviceOs = getDeviceOS();
-    if (!deviceOs) {
+    const platform = getPlatform();
+    if (!platform) {
       Logger.info('This platform is not one of the targeting ones, Smart banner will not be shown');
       return;
     }
-    Logger.log('Detected platform: ' + deviceOs);
+    Logger.log('Detected platform: ' + platform);
 
-    const appToken = flattenAppToken(restOptions.appToken, deviceOs);
+    const appToken = flattenAppToken(restOptions.appToken, platform);
     if (!appToken) {
-      Logger.info(`No app token found for platform: ${deviceOs}, Smart banner will not be shown`);
+      Logger.info(`No app token found for platform: ${platform}, Smart banner will not be shown`);
       return;
     }
 
     if (!this.smartBanner) {
-      this.smartBanner = new SmartBanner(appToken, restOptions, deviceOs);
+      this.smartBanner = new SmartBanner(appToken, restOptions, platform);
     } else {
       Logger.error('Smart Banner SDK is initialised already');
     }
