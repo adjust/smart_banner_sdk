@@ -1,5 +1,5 @@
 /**
- * Operation systems
+ * Device platforms
  * @public
  */
 export enum Platform {

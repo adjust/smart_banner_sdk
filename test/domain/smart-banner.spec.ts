@@ -377,40 +377,6 @@ describe('Smart Banner tests', () => {
         });
       });
     });
-
-    /*describe('Callbacks', () => {
-      describe('onCreated', () => {
-        it('is being called after banner renderred for first time', () => {
-
-        });
-
-        it('is being called after banner re-renderred after URL changes', () => {
-
-        });
-
-        it('does not throw if callback throws', () => {
-
-        });
-      });
-
-      describe('onDismissed', () => {
-        it('is being called when banner dismissed', () => {
-
-        });
-
-        it('does not throw if callback throws', () => {
-
-        });
-      });
-    });
-
-    describe('Fetching banners', () => {
-      const platforms = [Platform.iOS, Platform.Android, Platform.WindowsPC, Platform.WindowsPhone];
-
-      it.each([platforms])('fetches banners for a proper device OS using passed AppToken', () => {
-        // expect called with proper platform and app token
-      });
-    });*/
   });
 
   describe('Change visibility', () => {
