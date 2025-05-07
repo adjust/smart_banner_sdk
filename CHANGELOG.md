@@ -1,3 +1,11 @@
+### Version 1.2.2 (7st May 2025)
+
+#### Fixed
+- Updated platform detection for tablets.
+- Added width and height attributes for app icon.
+
+---
+
 ### Version 1.2.1 (1st August 2024)
 
 #### Fixed

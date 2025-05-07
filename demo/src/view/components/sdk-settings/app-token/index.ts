@@ -8,15 +8,13 @@ export interface AppTokenProps {
 }
 
 // it's not exported properly, let's just duplicate it :\
-enum DeviceOS {
+enum Platform {
   Android = 'android',
   iOS = 'ios',
-  WindowsPC = 'windows',
-  WindowsPhone = 'windows-phone'
 }
 
 export function AppToken(props: AppTokenProps) {
-  const platforms = [DeviceOS.Android, DeviceOS.iOS, DeviceOS.WindowsPhone, DeviceOS.WindowsPC];
+  const platforms = [Platform.Android, Platform.iOS];
 
   const render = () => {
     const wrapper = document.createElement('div');

@@ -1,7 +1,7 @@
 import { SmartBannerApi } from '@sdk/data/api';
 import { Logger } from '@sdk/utils/logger';
 import { Network } from '@sdk/network/network';
-import { DeviceOS } from '@sdk/utils/detect-os';
+import { Platform } from '@sdk/utils/detect-platform';
 
 import serverResponseMock from '../../fake-data/smart_banners_mock.json';
 
@@ -11,7 +11,7 @@ describe('Smart banner API tests', () => {
 
   describe('fetchSmartBannerData', () => {
     const appToken = 'some-token';
-    const platform = DeviceOS.iOS;
+    const platform = Platform.iOS;
 
     const testNetwork: Network = {
       request: jest.fn()

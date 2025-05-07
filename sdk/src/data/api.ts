@@ -1,4 +1,4 @@
-import { DeviceOS } from '@utils/detect-os';
+import { Platform } from '@utils/detect-platform';
 import { Logger } from '@utils/logger';
 import { SmartBannerResponseData, SmartBannerData } from './types';
 import { AsyncDataSource } from './data-source';
@@ -9,7 +9,7 @@ import { Network } from '../network/network';
  * Fetches smart banners for the certain platform from the backend using provided network.
  */
 export class SmartBannerApi implements AsyncDataSource<string, SmartBannerData[]> {
-  constructor(private platform: DeviceOS, private network: Network) { }
+  constructor(private platform: Platform, private network: Network) { }
 
   public retrieve(token: string): Promise<SmartBannerData[] | null> {
     Logger.log('Fetching Smart banners');
