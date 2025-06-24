@@ -1,8 +1,7 @@
 import { Localization } from "src/data/types";
 
-// Initial implementation didn't distinguish these languages, we had only one 'zh'.
-// In theory we can get all 3 'zh, 'zh-hant' and 'zh-hans' from the backend. 
-const chineseLanguages = ['zh-hans', 'zh-hant'];
+const zhSimplified = ['zh-hans', 'zh-cn'];
+const zhTraditional = ['zh-hant', 'zh-tw'];
 
 export function getLanguage(): string | null {
   let languageTag = null;
@@ -11,9 +10,11 @@ export function getLanguage(): string | null {
     let language = ((Array.isArray(navigator.languages) && navigator.languages.length > 0) ? navigator.languages[0] : navigator.language) || '';
     language = language.toLowerCase();
 
-    if (chineseLanguages.includes(language)) {
-      // return 'zh-hant' or 'zh-hans' as is
-      return language;
+    if (zhSimplified.includes(language)) {
+      return 'zh-hans';
+    }
+    if (zhTraditional.includes(language)) {
+      return 'zh-hant';
     }
 
     languageTag = language.split('-')[0];
@@ -30,6 +31,8 @@ export function getLanguage(): string | null {
  * Check if data contains detected Chinese language, otherwise try to fallback.
  */
 export function getCompatibleZhLanguage(localizations: { [key: string]: Localization }, lang: string | null): string | null {
+  const chineseLanguages = ['zh-hans', 'zh-hant'];
+  
   if (!lang || !['zh', ...chineseLanguages].includes(lang)) {
     return lang; // It's not Chinese at all
   }

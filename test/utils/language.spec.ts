@@ -35,6 +35,23 @@ describe('Detecting browser language', () => {
 
     expect(getLanguage()).toBe(null);
   });
+
+  test.each([
+    // Simplified Chinese
+    { language: 'zh-Hans', expected: 'zh-hans' },
+    { language: 'zh-CN', expected: 'zh-hans' },
+    // Traditional Chinese
+    { language: 'zh-Hant', expected: 'zh-hant' },
+    { language: 'zh-TW', expected: 'zh-hant' },
+    // No specific handler
+    { language: 'zh', expected: 'zh' },
+    { language: 'zh-HK', expected: 'zh' },
+  ])('converts Chinese language tag to known value', ({ language, expected }) => {
+    jest.spyOn(global.navigator, 'languages', 'get').mockReturnValue([]);
+    jest.spyOn(global.navigator, 'language', 'get').mockReturnValue(language);
+
+    expect(getLanguage()).toBe(expected);
+  })
 });
 
 describe('Using proper zh language from data', () => {
