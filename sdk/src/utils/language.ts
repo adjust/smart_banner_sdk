@@ -1,7 +1,9 @@
 import { Localization } from "src/data/types";
 
-const zhSimplified = ['zh-hans', 'zh-cn'];
-const zhTraditional = ['zh-hant', 'zh-tw'];
+const chineseSimplified = 'zh-hans';
+const chineseTraditional = 'zh-hant';
+const chineseSimplifiedVariations = [chineseSimplified, 'zh-cn'];
+const zhTraditionalVariations = [chineseTraditional, 'zh-tw'];
 
 export function getLanguage(): string | null {
   let languageTag = null;
@@ -10,11 +12,11 @@ export function getLanguage(): string | null {
     let language = ((Array.isArray(navigator.languages) && navigator.languages.length > 0) ? navigator.languages[0] : navigator.language) || '';
     language = language.toLowerCase();
 
-    if (zhSimplified.includes(language)) {
-      return 'zh-hans';
+    if (chineseSimplifiedVariations.includes(language)) {
+      return chineseSimplified;
     }
-    if (zhTraditional.includes(language)) {
-      return 'zh-hant';
+    if (zhTraditionalVariations.includes(language)) {
+      return chineseTraditional;
     }
 
     languageTag = language.split('-')[0];
@@ -31,7 +33,7 @@ export function getLanguage(): string | null {
  * Check if data contains detected Chinese language, otherwise try to fallback.
  */
 export function getCompatibleZhLanguage(localizations: { [key: string]: Localization }, lang: string | null): string | null {
-  const chineseLanguages = ['zh-hans', 'zh-hant'];
+  const chineseLanguages = [chineseSimplified, chineseTraditional];
   
   if (!lang || !['zh', ...chineseLanguages].includes(lang)) {
     return lang; // It's not Chinese at all
@@ -48,11 +50,14 @@ export function getCompatibleZhLanguage(localizations: { [key: string]: Localiza
 
   if (lang === 'zh') {
     // We detect zh locale, and localizations data does not contain it
-    return localizations[chineseLanguages[0]] ?
-      chineseLanguages[0] : // return 'zh-hans' if it's present
-      localizations[chineseLanguages[1]]
-        ? chineseLanguages[1]  // return 'zh-hant' otherwise
-        : null
+    
+    if(localizations[chineseSimplified]) {
+      return chineseSimplified;
+    }
+
+    if(localizations[chineseTraditional]) {
+      return chineseTraditional;
+    }
   }
 
   return null;
