@@ -1,4 +1,11 @@
-### Version 1.2.2 (7st May 2025)
+### Version 1.2.3 (26th June 2025)
+
+#### Added
+- Added support for Chinese (simplified) and Chinese (Traditional) languages.
+
+---
+
+### Version 1.2.2 (7th May 2025)
 
 #### Fixed
 - Updated platform detection for tablets.
