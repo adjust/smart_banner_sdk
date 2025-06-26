@@ -1,8 +1,7 @@
 ### Version 1.2.3 (26th June 2025)
 
-#### Fixed
-- Updated platform detection for tablets.
-- Added width and height attributes for app icon.
+#### Added
+- Added support for Chinese (simplified) and Chinese (Traditional) languages.
 
 ---
 
