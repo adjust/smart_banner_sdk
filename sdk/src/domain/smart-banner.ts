@@ -1,6 +1,6 @@
 import { Logger } from '@utils/logger';
 import { Platform } from '@utils/detect-platform';
-import { getLanguage } from '@utils/language';
+import { getCompatibleZhLanguage, getLanguage } from '@utils/language';
 import { SmartBannerLayout, SmartBannerViewData, SmartBannerLayoutFactory } from '@layout';
 import { SmartBannerData, DeeplinkData } from '../data/types';
 import { SmartBannerApi } from '../data/api';
@@ -256,6 +256,8 @@ export class SmartBanner {
    * Returns localized render data and tracker URL
    */
   private prepareDataForRender(bannerData: SmartBannerData): { renderData: SmartBannerViewData, trackerUrl: string, impressionUrl: string } {
+    this.language = getCompatibleZhLanguage(bannerData.localizations, this.language);
+
     const renderData = convertSmartBannerDataForView(bannerData, this.language);
 
     const trackerData = convertSmartBannerToTracker(bannerData, this.language);
