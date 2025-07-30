@@ -1,6 +1,6 @@
 import { AppToken } from '@adjustcom/smart-banner-sdk';
 import html from './app-token.html';
-import styles from './app-token.module.scss';
+import * as styles from './app-token.module.scss';
 
 export interface AppTokenProps {
   value?: AppToken,

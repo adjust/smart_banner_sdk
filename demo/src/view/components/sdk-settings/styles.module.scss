@@ -1,4 +1,4 @@
-@import 'assets/colors.scss';
+@use 'assets/colors.scss' as *;
 
 .sdk-settings {
   margin: 16px;

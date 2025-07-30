@@ -18,7 +18,7 @@ function flattenAppToken(appToken: AppToken, platform: Platform): string | undef
 }
 
 /**
- * A main SDK class to access public methods
+ * Main SDK class to access public methods
  * @public
  */
 export default class AdjustSmartBanner {

@@ -1,7 +1,7 @@
 import { Button, ButtonProps } from './button';
 import cross from 'assets/cross.svg';
 import hamburger from 'assets/hamburger.svg';
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export interface IconButtonProps extends ButtonProps {
   iconSrc: string;

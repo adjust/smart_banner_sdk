@@ -1,7 +1,7 @@
-@import 'assets/colors.scss';
-@import 'assets/fonts.scss';
+@use 'assets/colors.scss' as *;
+@use 'assets/fonts.scss' as *;
 
-@import 'assets/reset-styles.scss';
+@use 'assets/reset-styles.scss' as *;
 
 .action {
   @include reset-styles;

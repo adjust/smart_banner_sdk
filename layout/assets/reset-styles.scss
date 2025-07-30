@@ -1,4 +1,4 @@
-@import 'assets/fonts.scss';
+@use 'assets/fonts.scss' as *;
 
 @mixin reset-styles($backgroundColor: transparent) {
   min-width: auto;

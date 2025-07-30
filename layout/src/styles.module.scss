@@ -2,7 +2,7 @@
 @use 'assets/size-medium.scss' as medium;
 @use 'assets/size-large.scss' as large;
 
-@import 'assets/reset-styles.scss';
+@use 'assets/reset-styles.scss' as *;
 
 .banner-placeholder {
   height: small.$bannerHeight;

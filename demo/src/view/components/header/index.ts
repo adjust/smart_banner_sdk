@@ -1,6 +1,6 @@
 import { MenuIconButton } from '../button';
 import { MainMenu, MenuItem } from '../main-menu';
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export interface HeaderProps {
   fixed: boolean;

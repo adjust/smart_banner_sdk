@@ -39,7 +39,7 @@ describe('Smart banner API tests', () => {
 
       expect(smartBannerData).not.toBeNull();
 
-      smartBannerData = smartBannerData!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      smartBannerData = smartBannerData!;  
 
       for (let i = 0; i < smartBannerData.length; i++) {
         const expected = serverResponseMock[i];

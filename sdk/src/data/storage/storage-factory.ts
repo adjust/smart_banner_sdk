@@ -15,7 +15,7 @@ class StorageFactory {
 
       return support;
 
-    } catch (e) {
+    } catch {
       return false;
     }
   }

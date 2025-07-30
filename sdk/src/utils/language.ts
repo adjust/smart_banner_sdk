@@ -1,4 +1,4 @@
-import { Localization } from "src/data/types";
+import { Localization } from 'src/data/types';
 
 const chineseSimplified = 'zh-hans';
 const chineseTraditional = 'zh-hant';

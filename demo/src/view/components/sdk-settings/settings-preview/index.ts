@@ -1,5 +1,5 @@
 import { Component } from 'demo/src/view/base-component';
-import styles from './settings-preview.module.scss';
+import * as styles from './settings-preview.module.scss';
 
 export interface SettingsPreviewProps {
   innerCode: string;

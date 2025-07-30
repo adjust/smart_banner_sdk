@@ -1,5 +1,5 @@
 import { StaticComponent } from '../../base-component';
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export interface MenuItemProps {
   label?: string;

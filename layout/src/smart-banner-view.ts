@@ -2,7 +2,7 @@ import { loadFontsFromViewData } from './font-loader';
 import { SmartBannerViewData, Position, BannerSize } from './data-types';
 import { BannerBody } from './banner-body';
 
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export interface SmartBannerLayout {
   render: (parent?: HTMLElement) => void;

@@ -2,15 +2,15 @@ import { SmartBannerViewData, Font } from './data-types';
 
 export function loadFontsFromViewData(data: SmartBannerViewData) {
   if (data.titleFont) {
-    FontLoader.addFontStylesheet(data.titleFont)
+    FontLoader.addFontStylesheet(data.titleFont);
   }
 
   if (data.descriptionFont) {
-    FontLoader.addFontStylesheet(data.descriptionFont)
+    FontLoader.addFontStylesheet(data.descriptionFont);
   }
 
   if (data.buttonFont) {
-    FontLoader.addFontStylesheet(data.buttonFont)
+    FontLoader.addFontStylesheet(data.buttonFont);
   }
 }
 

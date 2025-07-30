@@ -5,7 +5,7 @@ import { BannerText, TextType } from '../text';
 import { ImpressionPixel } from '../impression-pixel';
 import { SmartBannerViewData } from '../data-types';
 
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export class BannerBody {
   private dismissButton: DismissButton;

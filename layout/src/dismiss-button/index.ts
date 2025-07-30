@@ -1,5 +1,5 @@
 import cross from 'assets/cross.svg';
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export class DismissButton {
   private button: HTMLButtonElement;

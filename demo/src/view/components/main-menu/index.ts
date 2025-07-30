@@ -1,6 +1,6 @@
 import { MenuItem, MenuItemComponent, MenuItemProps } from './menu-item';
 import { CloseIconButton } from '../button';
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export interface MenuProps {
   menuItems: MenuItemComponent[];

@@ -1,5 +1,5 @@
 import { BannerSize } from '../data-types';
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export class AppIcon {
   private placeholder: HTMLElement;

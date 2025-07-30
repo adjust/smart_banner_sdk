@@ -1,3 +1,10 @@
+### Version 1.2.4 (30th July 2025)
+
+#### Fixed
+- Fixed styles to avoid unintentional override by website global styles.
+
+---
+
 ### Version 1.2.3 (26th June 2025)
 
 #### Added
