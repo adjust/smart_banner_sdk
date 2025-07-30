@@ -60,13 +60,13 @@ describe('Entry point tests', () => {
       it.each(['none', 'verbose', 'info', 'warning', 'error'] as LogLevel[])('picks and applies logLevel: %s', (logLevel) => {
         AdjustSmartBanner.init({ appToken: 'some-token', logLevel: logLevel });
 
-        expect(Logger.setLogLevel).toBeCalledWith(logLevel);
+        expect(Logger.setLogLevel).toHaveBeenCalledWith(logLevel);
       });
 
       it('uses default logLevel if no such option', () => {
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        expect(Logger.setLogLevel).toBeCalledWith('error');
+        expect(Logger.setLogLevel).toHaveBeenCalledWith('error');
       });
     });
 
@@ -76,8 +76,8 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        expect(Logger.info).toBeCalledWith('This platform is not one of the targeting ones, Smart banner will not be shown');
-        expect(SmartBannerModule.SmartBanner).not.toBeCalled();
+        expect(Logger.info).toHaveBeenCalledWith('This platform is not one of the targeting ones, Smart banner will not be shown');
+        expect(SmartBannerModule.SmartBanner).not.toHaveBeenCalled();
       });
 
       it.each(platforms)('continues initialisation on %s platform', (Platform: OsDetector.Platform) => {
@@ -85,8 +85,8 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        expect(Logger.log).toBeCalledWith('Detected platform: ' + Platform);
-        expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', { appToken: 'some-token' }, Platform);
+        expect(Logger.log).toHaveBeenCalledWith('Detected platform: ' + Platform);
+        expect(SmartBannerModule.SmartBanner).toHaveBeenCalledWith('some-token', { appToken: 'some-token' }, Platform);
       });
     });
 
@@ -97,7 +97,7 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', { appToken: 'some-token' }, definedPlatform);
+        expect(SmartBannerModule.SmartBanner).toHaveBeenCalledWith('some-token', { appToken: 'some-token' }, definedPlatform);
       });
 
       it.each(platforms)('picks an appToken according to detected Platform and passes it to SmartBanner', (Platform: OsDetector.Platform) => {
@@ -105,7 +105,7 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.init({ appToken });
 
-        expect(SmartBannerModule.SmartBanner).toBeCalledWith(appToken[Platform], { appToken }, Platform);
+        expect(SmartBannerModule.SmartBanner).toHaveBeenCalledWith(appToken[Platform], { appToken }, Platform);
       });
 
       it.each(platforms)('logs a message and prevents initialisation if no appToken for current platform', (Platform: OsDetector.Platform) => {
@@ -113,15 +113,15 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.init({ appToken: {} });
 
-        expect(Logger.info).toBeCalledWith(`No app token found for platform: ${Platform}, Smart banner will not be shown`);
-        expect(SmartBannerModule.SmartBanner).not.toBeCalled();
+        expect(Logger.info).toHaveBeenCalledWith(`No app token found for platform: ${Platform}, Smart banner will not be shown`);
+        expect(SmartBannerModule.SmartBanner).not.toHaveBeenCalled();
       });
 
       it('logs an error message and prevents initialisation when no appToken in parameters', () => {
         AdjustSmartBanner.init({} as InitialisationOptions);
 
-        expect(Logger.error).toBeCalledWith('Can not initialise Smart Banner SDK, you should provide appToken');
-        expect(SmartBannerModule.SmartBanner).not.toBeCalled();
+        expect(Logger.error).toHaveBeenCalledWith('Can not initialise Smart Banner SDK, you should provide appToken');
+        expect(SmartBannerModule.SmartBanner).not.toHaveBeenCalled();
       });
     });
 
@@ -139,7 +139,7 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.init(options);
 
-        expect(SmartBannerModule.SmartBanner).toBeCalledWith('some-token', options, OsDetector.Platform.Android);
+        expect(SmartBannerModule.SmartBanner).toHaveBeenCalledWith('some-token', options, OsDetector.Platform.Android);
       });
     });
 
@@ -147,13 +147,13 @@ describe('Entry point tests', () => {
       it('prevents repeated initialisations and logs an error', () => {
         AdjustSmartBanner.init({ appToken: 'some-token' });
 
-        expect(SmartBannerModule.SmartBanner).toBeCalledTimes(1);
-        expect(Logger.error).not.toBeCalled();
+        expect(SmartBannerModule.SmartBanner).toHaveBeenCalledTimes(1);
+        expect(Logger.error).not.toHaveBeenCalled();
 
         AdjustSmartBanner.init({ appToken: 'another-token' });
 
-        expect(SmartBannerModule.SmartBanner).toBeCalledTimes(1);
-        expect(Logger.error).toBeCalledWith('Smart Banner SDK is initialised already');
+        expect(SmartBannerModule.SmartBanner).toHaveBeenCalledTimes(1);
+        expect(Logger.error).toHaveBeenCalledWith('Smart Banner SDK is initialised already');
       });
     });
   });
@@ -166,14 +166,14 @@ describe('Entry point tests', () => {
 
           AdjustSmartBanner.show();
 
-          expect(SmartBanner.show).toBeCalled();
+          expect(SmartBanner.show).toHaveBeenCalled();
         });
 
         it('prevents if SDK was not initialised', () => {
           AdjustSmartBanner.show();
 
-          expect(SmartBanner.show).not.toBeCalled();
-          expect(Logger.error).toBeCalledWith('Can\'t show banner, you should initialise Smart Banner SDK first');
+          expect(SmartBanner.show).not.toHaveBeenCalled();
+          expect(Logger.error).toHaveBeenCalledWith('Can\'t show banner, you should initialise Smart Banner SDK first');
         });
       });
 
@@ -183,14 +183,14 @@ describe('Entry point tests', () => {
 
           AdjustSmartBanner.hide();
 
-          expect(SmartBanner.hide).toBeCalled();
+          expect(SmartBanner.hide).toHaveBeenCalled();
         });
 
         it('prevents if SDK was not initialised', () => {
           AdjustSmartBanner.hide();
 
-          expect(SmartBanner.hide).not.toBeCalled();
-          expect(Logger.error).toBeCalledWith('Can\'t hide banner, you should initialise Smart Banner SDK first');
+          expect(SmartBanner.hide).not.toHaveBeenCalled();
+          expect(Logger.error).toHaveBeenCalledWith('Can\'t hide banner, you should initialise Smart Banner SDK first');
         });
       });
     });
@@ -201,14 +201,14 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.setLanguage('fr');
 
-        expect(SmartBanner.setLanguage).toBeCalledWith('fr');
+        expect(SmartBanner.setLanguage).toHaveBeenCalledWith('fr');
       });
 
       it('prevents if SDK was not initialised', () => {
         AdjustSmartBanner.setLanguage('fr');
 
-        expect(SmartBanner.setLanguage).not.toBeCalled();
-        expect(Logger.error).toBeCalledWith('Can\'t set language, you should initilise Smart Banner SDK first');
+        expect(SmartBanner.setLanguage).not.toHaveBeenCalled();
+        expect(Logger.error).toHaveBeenCalledWith('Can\'t set language, you should initilise Smart Banner SDK first');
       });
     });
 
@@ -218,7 +218,7 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.setIosDeepLinkPath('some/{path}');
 
-        expect(SmartBanner.setIosDeepLinkPath).toBeCalledWith('some/{path}');
+        expect(SmartBanner.setIosDeepLinkPath).toHaveBeenCalledWith('some/{path}');
       });
 
       it('calls SmartBanner.setAndroidDeepLinkPath() method', () => {
@@ -226,7 +226,7 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.setAndroidDeepLinkPath('someapp://{path}');
 
-        expect(SmartBanner.setAndroidDeepLinkPath).toBeCalledWith('someapp://{path}');
+        expect(SmartBanner.setAndroidDeepLinkPath).toHaveBeenCalledWith('someapp://{path}');
       });
 
       it('calls SmartBanner.setContext() method', () => {
@@ -234,21 +234,21 @@ describe('Entry point tests', () => {
 
         AdjustSmartBanner.setContext({ path: 'nowhere' });
 
-        expect(SmartBanner.setContext).toBeCalledWith({ path: 'nowhere' });
+        expect(SmartBanner.setContext).toHaveBeenCalledWith({ path: 'nowhere' });
       });
 
       it('prevents SmartBanner.setIosDeepLinkPath() if SDK was not initialised', () => {
         AdjustSmartBanner.setIosDeepLinkPath('someapp://{path}');
 
-        expect(SmartBanner.setIosDeepLinkPath).not.toBeCalled();
-        expect(Logger.error).toBeCalledWith('Can\'t set iOS deeplink path, you should initilise Smart Banner SDK first');
+        expect(SmartBanner.setIosDeepLinkPath).not.toHaveBeenCalled();
+        expect(Logger.error).toHaveBeenCalledWith('Can\'t set iOS deeplink path, you should initilise Smart Banner SDK first');
       });
 
       it('prevents SmartBanner.setContext() if SDK was not initialised', () => {
         AdjustSmartBanner.setContext({ path: 'nowhere' });
 
-        expect(SmartBanner.setContext).not.toBeCalled();
-        expect(Logger.error).toBeCalledWith('Can\'t set deeplink context, you should initilise Smart Banner SDK first');
+        expect(SmartBanner.setContext).not.toHaveBeenCalled();
+        expect(Logger.error).toHaveBeenCalledWith('Can\'t set deeplink context, you should initilise Smart Banner SDK first');
       });
     });
   });

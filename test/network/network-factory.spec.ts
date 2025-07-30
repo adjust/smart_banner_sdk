@@ -14,6 +14,6 @@ describe('NetworkFactory', () => {
   it('creates XhrNetwork', () => {
     NetworkFactory.create({ dataEndpoint: 'endpoint.test' });
 
-    expect(xhrNetworkModule.XhrNetwork).toBeCalledWith('endpoint.test');
+    expect(xhrNetworkModule.XhrNetwork).toHaveBeenCalledWith('endpoint.test');
   });
 });

@@ -1,4 +1,4 @@
-@import 'assets/colors.scss';
+@use 'assets/colors.scss' as *;
 
 .button {
   padding: 6px 20px;

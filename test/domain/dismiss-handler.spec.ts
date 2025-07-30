@@ -135,13 +135,13 @@ describe('DismissHandler tests', () => {
       dismissHandler.schedule(banner, fn1, Date.now() + dismissalPeriod);
       dismissHandler.schedule(banner, fn2, Date.now() + dismissalPeriod);
 
-      expect(setTimeout).toBeCalledTimes(2);
-      expect(clearTimeout).toBeCalled();
+      expect(setTimeout).toHaveBeenCalledTimes(2);
+      expect(clearTimeout).toHaveBeenCalled();
 
       jest.advanceTimersByTime(dismissalPeriod);
 
-      expect(fn1).not.toBeCalled();
-      expect(fn2).toBeCalled();
+      expect(fn1).not.toHaveBeenCalled();
+      expect(fn2).toHaveBeenCalled();
     });
   });
 

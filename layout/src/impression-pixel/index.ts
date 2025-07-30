@@ -1,4 +1,4 @@
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export class ImpressionPixel {
   private image: HTMLImageElement;
@@ -8,7 +8,7 @@ export class ImpressionPixel {
     this.image.className = styles.pixel;
     this.image.width = 0;
     this.image.height = 0;
-    this.image.alt = "invisible pixel";
+    this.image.alt = 'invisible pixel';
 
     this.applyUrl();
   }

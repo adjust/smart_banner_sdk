@@ -40,22 +40,22 @@ describe('SmartBannerRepository', () => {
     const fetchedData = await repository.fetch('app-token-1');
 
     expect(fetchedData).toEqual(data);
-    expect(testApi.retrieve).toBeCalled();
-    expect(testCache.setItem).toBeCalledWith('app-token-1', data);
+    expect(testApi.retrieve).toHaveBeenCalled();
+    expect(testCache.setItem).toHaveBeenCalledWith('app-token-1', data);
   });
 
   it('returns data from cache', async () => {
     expect.assertions(5);
 
     const fetchedData = await repository.fetch('app-token-1');
-    expect(testApi.retrieve).toBeCalledTimes(1);
-    expect(testCache.getItem).toBeCalledTimes(1); // one call for an attempt to get from the cache when the cache is still empty
+    expect(testApi.retrieve).toHaveBeenCalledTimes(1);
+    expect(testCache.getItem).toHaveBeenCalledTimes(1); // one call for an attempt to get from the cache when the cache is still empty
 
     const cachedData = await repository.fetch('app-token-1');
 
     expect(cachedData).toEqual(fetchedData);
-    expect(testApi.retrieve).toBeCalledTimes(1);
-    expect(testCache.getItem).toBeCalledTimes(2);
+    expect(testApi.retrieve).toHaveBeenCalledTimes(1);
+    expect(testCache.getItem).toHaveBeenCalledTimes(2);
   });
 
   it('retrieves data from network when there is no record in the cache', async () => {
@@ -70,8 +70,8 @@ describe('SmartBannerRepository', () => {
     const dataForNewToken = await repository.fetch('new-token');
 
     expect(dataForNewToken).toEqual(['new-data']);
-    expect(testCache.getItem).toBeCalledTimes(2);
+    expect(testCache.getItem).toHaveBeenCalledTimes(2);
     expect(testCache.getItem).toHaveBeenNthCalledWith(2, 'new-token');
-    expect(testApi.retrieve).toBeCalledTimes(2);
+    expect(testApi.retrieve).toHaveBeenCalledTimes(2);
   });
 }); 

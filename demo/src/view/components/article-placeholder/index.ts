@@ -1,5 +1,5 @@
 import { loremIpsum } from 'lorem-ipsum';
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export function ArticlePlaceholder() {
   const random = (min: number, max: number) => min + Math.floor(Math.random() * (max - min));

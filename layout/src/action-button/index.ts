@@ -1,6 +1,6 @@
 import { SmartBannerViewData } from '../data-types';
 
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export class ActionButton {
   private link: HTMLAnchorElement;

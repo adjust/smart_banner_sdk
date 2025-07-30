@@ -9,7 +9,7 @@ export function parseJson(str?: string | null): any { // eslint-disable-line  @t
 
   try {
     return JSON.parse(str);
-  } catch (error) {
+  } catch {
     return null;
   }
 }

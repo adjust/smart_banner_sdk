@@ -1,5 +1,5 @@
 import { Button } from '../../button';
-import styles from './sdk-methods.module.scss';
+import * as styles from './sdk-methods.module.scss';
 
 export interface SdkMethodsProps {
   onInit: () => void;

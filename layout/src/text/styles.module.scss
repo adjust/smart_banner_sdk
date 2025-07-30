@@ -2,9 +2,9 @@
 @use 'assets/size-medium.scss' as medium;
 @use 'assets/size-large.scss' as large;
 
-@import 'assets/colors.scss';
-@import 'assets/fonts.scss';
-@import 'assets/reset-styles.scss';
+@use 'assets/colors.scss' as *;
+@use 'assets/fonts.scss' as *;
+@use 'assets/reset-styles.scss' as *;
 
 .banner-text {
   @include reset-styles;

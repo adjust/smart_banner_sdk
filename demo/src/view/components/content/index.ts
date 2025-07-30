@@ -1,6 +1,6 @@
 import { ArticlePlaceholder } from '../article-placeholder';
 import { SdkSettings } from '../sdk-settings';
-import styles from './styles.module.scss';
+import * as styles from './styles.module.scss';
 
 export interface ContentProps {
   fixedHeader: boolean
