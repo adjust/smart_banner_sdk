@@ -1,4 +1,4 @@
-import { interpolate } from '@sdk/utils/template-interpolaion';
+import { interpolate } from '@sdk/utils/template-interpolation';
 
 describe('Template interpolation', () => {
   it('changes all placeholders occurences to values from context', () => {
