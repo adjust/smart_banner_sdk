@@ -7,7 +7,7 @@ const dataMock = serverResponseMock as any as SmartBannerResponseData[];
 
 describe('Convertation of server responce to SmartBannerData', () => {
   it('converts', () => {
-    const actual = convertResponseToSmartBanners(dataMock);
+    const actual = convertResponseToSmartBanners(dataMock)?.banners;
 
     const expected = [];
     for (const item of dataMock) {
@@ -22,7 +22,7 @@ describe('Convertation of server responce to SmartBannerData', () => {
     const [{ button_text: _button_text, ...rest }] = dataMock; // removing button_text from testing data
     const data = [{ ...rest, button_label: text }]; // adding button_label instead
 
-    const actual = convertResponseToSmartBanners(data) as SmartBannerData[];
+    const actual = convertResponseToSmartBanners(data)?.banners as SmartBannerData[];
 
     const expected = [];
     for (const item of dataMock) {
@@ -59,7 +59,7 @@ describe('Convertation of server responce to SmartBannerData', () => {
       }
     ];
 
-    expect(convertResponseToSmartBanners(data)).toEqual(expected);
+    expect(convertResponseToSmartBanners(data)?.banners).toEqual(expected);
   });
 
   it('returns null if empty array passed', () => {

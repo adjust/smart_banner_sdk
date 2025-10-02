@@ -59,6 +59,7 @@ export interface SmartBannerResponseData {
   localizations: {
     [key: string]: Localization;
   };
+  data_version: { current: string, latest: string };
 }
 
 export interface PlacementCondition {
