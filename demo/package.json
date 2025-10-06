@@ -18,7 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "html-loader": "^5.1.0",
-    "html-webpack-plugin": "^5.6.3",
+    "html-webpack-plugin": "^5.6.4",
     "svg-inline-loader": "^0.8.2"
   }
 }

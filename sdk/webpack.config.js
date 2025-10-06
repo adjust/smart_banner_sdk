@@ -22,6 +22,7 @@ module.exports = (env, args) => ({
       type: 'umd',
     },
   },
+  target: ['web', 'es6'],
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin({

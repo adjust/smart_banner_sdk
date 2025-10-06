@@ -1,3 +1,11 @@
+### Version 1.2.5 (6th October 2025)
+
+#### Added
+- Added support for SAN click ids. Now the SDK passes automatically into the Smart banner link. 
+- Added data versioning.
+
+---
+
 ### Version 1.2.4 (30th July 2025)
 
 #### Fixed
