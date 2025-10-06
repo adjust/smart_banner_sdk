@@ -23,6 +23,7 @@ describe('Smart banner API tests', () => {
 
     beforeAll(() => {
       jest.spyOn(Logger, 'error');
+      jest.spyOn(Logger, 'warn');
 
       requestSpy = jest.spyOn(testNetwork, 'request');
       requestSpy.mockResolvedValue(serverResponseMock);
@@ -39,7 +40,7 @@ describe('Smart banner API tests', () => {
 
       expect(smartBannerData).not.toBeNull();
 
-      smartBannerData = smartBannerData!;  
+      smartBannerData = smartBannerData!;
 
       for (let i = 0; i < smartBannerData.length; i++) {
         const expected = serverResponseMock[i];
@@ -67,5 +68,25 @@ describe('Smart banner API tests', () => {
       expect(smartBannerData).toBeNull();
       expect(Logger.error).toHaveBeenCalledWith('Network error occurred during loading Smart Banner: ' + JSON.stringify(error));
     });
+
+    it('attaches data_version parameter to request', async () => {
+      expect.assertions(1);
+
+      await api.retrieve(appToken);
+
+      expect(requestSpy).toHaveBeenCalledWith('/smart_banner', {
+        'app_token': appToken,
+        'platform': platform,
+        'data_version': 'v1'
+      })
+    })
+
+    it('logs a message if data_version in response does not match', async () => {
+      expect.assertions(1);
+
+      await api.retrieve(appToken);
+
+      expect(Logger.warn).toHaveBeenCalledWith('Data version does not match, consider to update the SDK');
+    })
   });
 });

@@ -18,6 +18,6 @@ export function parseGetParams(pageUrl: string): Record<string, string | true> {
       return acc;
     }
 
-    return { ...acc, [key]: value || true };
+    return { ...acc, [key]: value ?? true };
   }, {});
 }

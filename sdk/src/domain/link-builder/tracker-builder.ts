@@ -1,6 +1,6 @@
 import { Context, DeeplinkData } from '../../data/types';
 import { parseGetParams } from '@utils/parse-get-params';
-import { interpolate } from '@utils/template-interpolaion';
+import { interpolate } from '@utils/template-interpolation';
 import { omitNotDefined } from '@utils/object';
 import { Platform, getPlatform } from '@utils/detect-platform';
 
@@ -35,14 +35,16 @@ export const TrackerBuilder = {
       ...customContext
     };
 
-    const deeplink = buildDeeplink({ template, context: combinedContext }, customContext);
+    const deeplinkPaths = buildDeeplink({ template, context: combinedContext }, customContext);
 
     combinedContext = {
       ...combinedContext,
-      ...deeplink
+      ...deeplinkPaths
     };
 
-    return interpolate(adaptTemplate(template, deeplink), combinedContext).result;
+    const fixedTemplate = adaptTemplate(template, deeplinkPaths);
+    const tracker = interpolate(fixedTemplate, combinedContext).result;
+    return addNetworkClickIds(tracker, combinedContext);
   }
 };
 
@@ -71,12 +73,48 @@ function buildDeeplink(data: TrackerData, customContext: Record<string, string>)
 }
 
 function adaptTemplate(template: string, context: DeeplinkPaths): string {
-  if (getPlatform() === Platform.iOS && context.deep_link_path.indexOf('?') > -1) { // if ios deeplink path contains '?'
+  if (getPlatform() === Platform.iOS && context.deep_link_path.includes('?')) { // if ios deeplink path contains '?'
     // then replace '?' in the template with '&' to avoid invalid URL creation
     return template.replace('?', '&');
   }
 
   // otherwise do nothing with the template
   return template;
+}
+
+const NETWORK_CLICK_IDS = [
+  // Note: fbpid isn't present in GET params, only in cookies, but client could add it manually via contex
+  'fbclid', 'fbpid', // meta,
+  'gclid', 'gbraid', 'wbraid', // google_ads
+  'ttclid', 'ttp', // tiktok_web
+  'mytarget_click_id', // vk_ads
+  'ScCid', // snapchat_web
+  'twclid' // x_web
+];
+
+/**
+ * Writes SAN click ids to tracker link
+ * @param tracker 
+ * @param context object containing click ids read from GET parameters of current page URL
+ * @returns 
+ */
+function addNetworkClickIds(tracker: string, context: Record<string, string | true>): string {
+  const lowerCasedContext = Object.entries(context).reduce((acc, [key, value]) => {
+    return {
+      ...acc,
+      [key.toLowerCase()]: value
+    };
+  }, {}) as Record<string, string | true>;
+
+  let foundClickIds = '';
+
+  for (const clickId of NETWORK_CLICK_IDS) {
+    const key = clickId.toLowerCase();
+    if (lowerCasedContext[key]) {
+      foundClickIds = `${foundClickIds}&${clickId}=${lowerCasedContext[key]}`;
+    }
+  }
+
+  return `${tracker}${foundClickIds}`;
 }
 

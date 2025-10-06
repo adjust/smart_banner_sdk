@@ -87,70 +87,22 @@ export class SmartBanner {
 
   setLanguage(language: string): void {
     this.language = language;
-
-    if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not rendered yet, the chosen language will be applied within render');
-      return;
-    }
-
-    if (!this.bannerProvider.banner) {
-      Logger.log('There is no suitable banner for current page, preserving the choosen language');
-      return;
-    }
-
-    const { banner, when } = this.bannerProvider.banner;
-    this.updateViewOrScheduleCreation(banner, when);
+    this.applyConfigUpdate('the chosen language');
   }
 
   setIosDeepLinkPath(deeplinkPath: string): void {
     this.customDeeplinkData.iosDeepLinkPath = deeplinkPath;
-
-    if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not rendered yet, the provided iOS deeplink path will be applied within render');
-      return;
-    }
-
-    if (!this.bannerProvider.banner) {
-      Logger.log('There is no suitable banner for current page, preserving the provided iOS deeplink path');
-      return;
-    }
-
-    const { banner, when } = this.bannerProvider.banner;
-    this.updateViewOrScheduleCreation(banner, when);
+    this.applyConfigUpdate('the provided iOS deeplink path');
   }
 
   setAndroidDeepLinkPath(deeplinkPath: string): void {
     this.customDeeplinkData.androidDeepLinkPath = deeplinkPath;
-
-    if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not rendered yet, the provided Android deeplink path will be applied within render');
-      return;
-    }
-
-    if (!this.bannerProvider.banner) {
-      Logger.log('There is no suitable banner for current page, preserving the provided Android deeplink path');
-      return;
-    }
-
-    const { banner, when } = this.bannerProvider.banner;
-    this.updateViewOrScheduleCreation(banner, when);
+    this.applyConfigUpdate('the provided Android deeplink path');
   }
 
   setContext(context: Record<string, string> = {}): void {
     this.customDeeplinkData.context = context;
-
-    if (this.bannerProvider.isLoading) {
-      Logger.log('Smart banner was not rendered yet, the provided deeplink context will be applied within render');
-      return;
-    }
-
-    if (!this.bannerProvider.banner) {
-      Logger.log('There is no suitable banner for current page, preserving the provided deeplink context');
-      return;
-    }
-
-    const { banner, when } = this.bannerProvider.banner;
-    this.updateViewOrScheduleCreation(banner, when);
+    this.applyConfigUpdate('the provided deeplink context');
   }
 
   private init() {
@@ -250,6 +202,21 @@ export class SmartBanner {
 
       return;
     }
+  }
+
+  private applyConfigUpdate(action: string){
+    if (this.bannerProvider.isLoading) {
+      Logger.log(`Smart banner was not rendered yet, ${action} will be applied within render`);
+      return;
+    }
+
+    if (!this.bannerProvider.banner) {
+      Logger.log(`There is no suitable banner for current page, preserving ${action}`);
+      return;
+    }
+
+    const { banner, when } = this.bannerProvider.banner;
+    this.updateViewOrScheduleCreation(banner, when);
   }
 
   /**

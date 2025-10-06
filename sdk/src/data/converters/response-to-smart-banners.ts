@@ -1,6 +1,11 @@
 import { SmartBannerData, SmartBannerResponseData, Position, BannerSize } from '../types';
 
-export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): SmartBannerData[] | null {
+interface SmartBannersWithDataVersion {
+  banners: SmartBannerData[];
+  dataVersion: { current: string, latest: string }
+}
+
+export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): SmartBannersWithDataVersion | null {
   if (!Array.isArray(data)) {
     return null;
   }
@@ -28,5 +33,5 @@ export function convertResponseToSmartBanners(data: SmartBannerResponseData[]): 
     return null;
   }
 
-  return banners;
+  return { banners, dataVersion: data[0].data_version };
 }

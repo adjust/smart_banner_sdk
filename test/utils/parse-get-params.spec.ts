@@ -5,6 +5,19 @@ describe('GET params parsing', () => {
     expect(parseGetParams('https://example.com?name=Liz&surname=Lemon')).toEqual({ name: 'Liz', surname: 'Lemon' });
   });
 
+  it.each([
+    ['https://example.com?name=Liz&surname=Lemon&age=', { age: '' }],
+    ['https://example.com?name=Liz&surname=Lemon&age=&job=', { age: '', job: '' }],
+    ['https://example.com?name=Liz&surname=Lemon&age=0', { age: '0' }], // not falsy actually because it's a non-empty string
+    ['https://example.com?name=Liz&surname=Lemon&age=0&job=null', { age: '0', job: 'null' }],
+  ])('returns empty and falsy values propelry', (url, expected) => {
+    expect(parseGetParams(url)).toEqual({
+      name: 'Liz',
+      surname: 'Lemon',
+      ...expected
+    });
+  });
+
   it('returns true as value if parameter contains only name', () => {
     expect(parseGetParams('https://example.com?new_user')).toEqual({ new_user: true });
 

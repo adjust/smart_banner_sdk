@@ -325,4 +325,42 @@ describe('Smart Banners tracker link building', () => {
       expect(tracker).toBe(expected);
     });
   });
+
+  describe('Partner click ids', () => {
+    it('passes partner click id', () => {
+      const trackerData = {
+        template: commonTracker,
+        context: commonContext
+      };
+
+      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en&fbclid=12345';
+
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?fbclid=12345', emptyCustomData);
+      expect(tracker).toBe(expected);
+    });
+
+    it('passes partner click id ignoring case', () => {
+      const trackerData = {
+        template: commonTracker,
+        context: commonContext
+      };
+
+      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en&fbclid=ABCabc';
+
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/?FBclID=ABCabc', emptyCustomData);
+      expect(tracker).toBe(expected);
+    });
+
+    it('uses partner click id from custom context', () => {
+      const trackerData = {
+        template: commonTracker,
+        context: {...commonContext, fbpid: '12345'}
+      };
+
+      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en&fbpid=12345';
+
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/', emptyCustomData);
+      expect(tracker).toBe(expected);
+    });
+  });
 });

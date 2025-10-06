@@ -42,6 +42,10 @@
         "campaign": "Banner",
         "localization_language": "en"
       }
+    },
+    "data_version": {
+      "current": "v0",
+      "latest": "v1"
     }
   }
 ]

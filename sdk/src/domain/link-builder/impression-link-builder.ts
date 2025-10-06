@@ -1,5 +1,5 @@
 import { parseGetParams } from '@utils/parse-get-params';
-import { interpolate } from '@utils/template-interpolaion';
+import { interpolate } from '@utils/template-interpolation';
 import { Context } from '../../data/types';
 import { LinkBuilder } from './types';
 

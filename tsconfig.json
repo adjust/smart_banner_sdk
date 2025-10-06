@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "target": "ES5",
     "module": "commonjs",
     "esModuleInterop": true,
     "moduleResolution": "node",
