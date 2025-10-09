@@ -34,9 +34,10 @@ export function interpolate(template: string, context: Record<string, Primitive>
     if (context[paramName] === undefined || context[paramName] === null) {
       notReplacedPlaceholders.push(paramName);
       Logger.warn(`No value for placeholder: {${paramName}}`);
+      return emptyPlaceholder;
     }
 
-    return String(context[paramName] || emptyPlaceholder);
+    return String(context[paramName]);
   };
 
   return {

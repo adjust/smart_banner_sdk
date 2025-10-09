@@ -1,3 +1,10 @@
+### Version 1.2.6 (9th October 2025)
+
+#### Fixed
+- Fixed a bug where the SDK would insert "none" instead of an empty iOS deep link path in a banner link.
+
+---
+
 ### Version 1.2.5 (6th October 2025)
 
 #### Added

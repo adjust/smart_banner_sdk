@@ -15,7 +15,7 @@ describe('Object utilities', () => {
     const testSet: [AnyObject, ExpectedObject][] = [
       [{ foo: null, bar: 42 }, { bar: 42 }],
       [{ foo: 'bar', bar: undefined }, { foo: 'bar' }],
-      [{ foo: '', bar: 42 }, { bar: 42 }],
+      [{ foo: '', bar: 42 }, { foo: '', bar: 42 }],
       [{ foo: 'bar', bar: [] }, { foo: 'bar', bar: [] }],
       [{ foo: 'bar', bar: {} }, { foo: 'bar', bar: {} }],
       [{ foo: undefined, bar: undefined }, {}],
