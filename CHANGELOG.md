@@ -1,3 +1,10 @@
+### Version 1.2.7 (28th October 2025)
+
+#### Fixed
+- Impression pixel uses an empty `alt` attribute to improve accessibility and prevent screen readers from announcing it.
+
+---
+
 ### Version 1.2.6 (9th October 2025)
 
 #### Fixed
