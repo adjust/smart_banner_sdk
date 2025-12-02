@@ -6,8 +6,11 @@
 node_modules/
 coverage/
 
-dist/
+layout/dist/
 
+sdk/dist/types/
+sdk/dist/smart-banner-sdk.d.ts
+sdk/dist/adjust-smart-banner.min.js.*
 sdk/README.md
 sdk/CHANGELOG.md
 sdk/LICENSE
