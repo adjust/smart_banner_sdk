@@ -1359,7 +1359,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Globals = void 0;
 exports.Globals = {
-    'version': "1.2.7",
+    'version': "1.2.8",
     'namespace': "adjust_smart_banner",
     dataVersion: 'v1',
     _DEV_MODE_: false,
