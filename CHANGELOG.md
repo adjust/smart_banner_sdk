@@ -1,3 +1,8 @@
+### Version 1.2.8 (2nd December 2025)
+
+#### Fixed
+- Updated npm dependencies to resolve reported security warnings.
+
 ### Version 1.2.7 (28th October 2025)
 
 #### Fixed

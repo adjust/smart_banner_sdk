@@ -15,8 +15,10 @@ export class ImpressionPixel {
 
   private applyUrl() {
     if (this.impressionUrl && this.impressionUrl !== '') {
+      this.image.hidden = false;
       this.image.src = this.impressionUrl;
     } else {
+      this.image.hidden = true;
       this.image.removeAttribute('src');
     }
   }
