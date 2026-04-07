@@ -5,14 +5,19 @@
   "scripts": {
     "build": "npm run build --workspace=layout && npm run build --workspace=sdk && npm run build:snippet && npm run copy",
     "build:snippet": "terser ./loading-snippet.js -o ./sdk/dist/loading-snippet.min.js -c -m",
+    "build:layout": "npm run build --workspace=layout",
     "clean": "rm -rf ./layout/dist/ ./sdk/dist/ ./demo/dist/",
     "start": "run-p build-sdk-dev run-demo",
     "build-sdk-dev": "npm run build --workspace=layout && npm run build-dev --workspace=sdk -- --env devPort=8787 --watch",
     "run-demo": "npm run start --workspace=demo -- --env devPort=8787",
-    "lint": "eslint ./sdk/src ./layout/src ./test ./demo/src --fix",
+    "lint": "eslint ./sdk/src ./layout/src ./test ./demo/src",
+    "lint:fix": "eslint ./sdk/src ./layout/src ./test ./demo/src --fix",
+    "copy": "cp LICENSE README.md CHANGELOG.md sdk",
     "test": "TZ=UTC jest --config ./test/jest.config.ts",
-    "prepublishOnly": "npm-run-all lint test",
-    "copy": "cp LICENSE README.md CHANGELOG.md sdk"
+    "test:ci": "TZ=UTC jest --config ./test/jest.config.ts",
+    "test:all": "npm-run-all test:ci lint types:validate",
+    "types:validate": "tsc --project ./sdk/tsconfig.json --noEmit",
+    "publish:sync-repos": "git fetch --all && git push public origin/main:refs/heads/v$npm_package_version"
   },
   "main": "sdk/dist/adjust-smart-banner.js",
   "types": "sdk/dist/adjust-smart-banner.d.ts",

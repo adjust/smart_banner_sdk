@@ -78,8 +78,8 @@ describe('Smart banner API tests', () => {
         'app_token': appToken,
         'platform': platform,
         'data_version': 'v1'
-      })
-    })
+      });
+    });
 
     it('logs a message if data_version in response does not match', async () => {
       expect.assertions(1);
@@ -87,6 +87,6 @@ describe('Smart banner API tests', () => {
       await api.retrieve(appToken);
 
       expect(Logger.warn).toHaveBeenCalledWith('Data version does not match, consider to update the SDK');
-    })
+    });
   });
 });

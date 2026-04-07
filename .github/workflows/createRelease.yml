@@ -1,0 +1,91 @@
+name: Create Github release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'VERSION'
+
+permissions:
+  contents: write
+
+jobs:
+  variables:
+    name: Read VERSION and changelog
+    if: github.repository == 'adjust/smart_banner_sdk'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.read-file.outputs.version }}
+      changelog: ${{ steps.prepare-changelog.outputs.changelog }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read VERSION file
+        id: read-file
+        shell: bash
+        run: |
+          # Enable strict bash mode:
+          # -e - exit immediately if any command fails
+          # -u - treat unset variables as an error
+          # -o pipefail - fail the script if any command in a pipeline fails
+          set -euo pipefail
+          version="$(tr -d ' \t\r\n' < VERSION)"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare changelog
+        id: prepare-changelog
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          VERSION="${{ steps.read-file.outputs.version }}"
+          changes="$(
+            awk -v version="$VERSION" '
+              $0 ~ "^### Version " version "(\\>|[[:space:](])" {
+                capture = 1
+                next
+              }
+              capture && $0 ~ "^### Version " {
+                exit
+              }
+              capture && $0 == "---" {
+                exit
+              }
+              capture {
+                print
+              }
+            ' CHANGELOG.md
+          )"
+
+          if [[ -z "${changes//[[:space:]]/}" ]]; then
+            echo "Failed to find changelog entry for version $VERSION" >&2
+            exit 1
+          fi
+
+          {
+            echo "changelog<<EOF"
+            echo "$changes"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  prepare-release:
+    name: Publish Github release
+    if: github.repository == 'adjust/smart_banner_sdk'
+    runs-on: ubuntu-latest
+    needs: [variables]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ needs.variables.outputs.version }}
+          commit: ${{ github.sha }}
+          allowUpdates: true
+          draft: true
+          name: Version ${{ needs.variables.outputs.version }}
+          body: ${{ needs.variables.outputs.changelog }}
+          artifacts: |
+            sdk/dist/*
