@@ -14,6 +14,7 @@
   },
   "dtsRollup": {
     "enabled": true,
+    "untrimmedFilePath": "",
     "publicTrimmedFilePath": "<projectFolder>/dist/adjust-smart-banner.d.ts"
   },
   "tsdocMetadata": {
