@@ -15,12 +15,11 @@ import serverResponseMock from '../../fake-data/smart_banners_mock.json';
 jest.mock('@sdk/utils/logger');
 
 describe('Smart Banner tests', () => {
-  const mockHref = 'http://mock/path';
-  const originalLocation = window.location;
-  const locationMock = (href: string = mockHref) => ({
-    ...originalLocation,
-    href
-  });
+  const mockHref = new URL('/path', window.location.origin).href;
+  const originalHref = window.location.href;
+  const setLocation = (href: string = mockHref) => {
+    window.history.replaceState({}, '', href);
+  };
 
   const defaultTrackerData = serverResponseMock[0].tracker_url;
 
@@ -47,7 +46,7 @@ describe('Smart Banner tests', () => {
   } as any); // return the only field because this is just a mock
 
   beforeAll(() => {
-    jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock());
+    setLocation();
     jest.spyOn(StorageFactory, 'createStorage').mockReturnValue(new InMemoryStorage());
     jest.spyOn(NetworkFactory, 'create').mockImplementation(() => ({ request: requestMock }));
     jest.spyOn(DataToViewConverter, 'convertSmartBannerDataForView').mockImplementation((_, locale) => renderDataMock(locale));
@@ -57,10 +56,12 @@ describe('Smart Banner tests', () => {
   });
 
   afterEach(() => {
+    setLocation();
     jest.clearAllMocks();
   });
 
   afterAll(() => {
+    setLocation(originalHref);
     jest.resetAllMocks();
     jest.resetModules();
   });
@@ -166,7 +167,7 @@ describe('Smart Banner tests', () => {
 
     describe('Custom deeplink', () => {
       afterEach(() => {
-        jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock());
+        setLocation();
       });
 
       describe('Android', () => {
@@ -250,7 +251,7 @@ describe('Smart Banner tests', () => {
         it('accepts and uses custom deeplink and URL params as a context to create a tracker for view', async () => {
           expect.assertions(5);
 
-          jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock('http://path?param=meow-meow'));
+          setLocation(new URL('/path?param=meow-meow', window.location.origin).href);
 
           new SmartBanner('some-token',
             {
@@ -263,7 +264,7 @@ describe('Smart Banner tests', () => {
           expect(Logger.info).toHaveBeenCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.build).toHaveBeenCalledWith(
             defaultTrackerData,
-            'http://path?param=meow-meow',
+            new URL('/path?param=meow-meow', window.location.origin).href,
             { ...emptyCustomContext, androidDeepLinkPath: 'some-deeplink/param={param}' });
           expect(SmartBannerLayoutFactory.createViewForSdk).toHaveBeenCalled();
           expect(smartBannerViewMock.render).toHaveBeenCalled();
@@ -356,7 +357,7 @@ describe('Smart Banner tests', () => {
         it('accepts and uses custom deeplink and URL params as a context to create a tracker for view', async () => {
           expect.assertions(5);
 
-          jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock('http://path?param=meow-meow'));
+          setLocation(new URL('/path?param=meow-meow', window.location.origin).href);
 
           new SmartBanner('some-token',
             {
@@ -369,7 +370,7 @@ describe('Smart Banner tests', () => {
           expect(Logger.info).toHaveBeenCalledWith('Render banner: ' + bannerName);
           expect(TrackerBuilder.build).toHaveBeenCalledWith(
             defaultTrackerData,
-            'http://path?param=meow-meow',
+            new URL('/path?param=meow-meow', window.location.origin).href,
             { ...emptyCustomContext, iosDeepLinkPath: 'some-deeplink/param={param}' });
           expect(SmartBannerLayoutFactory.createViewForSdk).toHaveBeenCalled();
           expect(smartBannerViewMock.render).toHaveBeenCalled();
@@ -445,7 +446,7 @@ describe('Smart Banner tests', () => {
         const smartbanner = new SmartBanner('some-token', { appToken: 'some-token', androidDeepLinkPath: '{location}-location' }, defaultPlatform);
         await Utils.flushPromises();
 
-        jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock('http://path?location=new'));
+        setLocation(new URL('/path?location=new', window.location.origin).href);
 
         smartbanner.show();
         await Utils.flushPromises();
@@ -457,7 +458,7 @@ describe('Smart Banner tests', () => {
       });
 
       afterAll(() => {
-        jest.spyOn(window, 'location', 'get').mockImplementation(() => locationMock());
+        setLocation();
       });
     });
 
