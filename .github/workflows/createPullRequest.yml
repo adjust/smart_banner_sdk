@@ -1,0 +1,106 @@
+name: Create new version pull request
+
+on:
+  push:
+    branches:
+      - 'v*'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-branch-name:
+    name: Check branch name
+    if: github.repository == 'adjust/smart_banner_sdk'
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.gate.outputs.skip }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Branch must match VERSION
+        id: gate
+        shell: bash
+        run: |
+          # Enable strict bash mode:
+          # -e - exit immediately if any command fails
+          # -u - treat unset variables as an error
+          # -o pipefail - fail the script if any command in a pipeline fails
+          set -euo pipefail
+
+          BRANCH="${{ github.ref_name }}"
+          VERSION="$(tr -d ' \t\r\n' < VERSION)"
+          EXPECTED="v$VERSION"
+
+          if [[ "$BRANCH" != "$EXPECTED" ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Skipping: branch '$BRANCH' != '$EXPECTED' (from VERSION)."
+            exit 0
+          fi
+
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "OK: branch matches VERSION ($BRANCH)."
+
+  create-pull-request:
+    name: Create pull request
+    needs: [check-branch-name]
+    if: needs.check-branch-name.outputs.skip != 'true' && github.repository == 'adjust/smart_banner_sdk'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create PR (idempotent)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BRANCH="${{ github.ref_name }}"
+          BASE="main"
+          TITLE="Bump version to $BRANCH"
+
+          # If PR already exists for this head/base, do nothing.
+          count=$(gh pr list -B "$BASE" -H "$BRANCH" --json number --jq 'length')
+          if (( count > 0 )); then
+            echo "Pull request already exists. Skipping without failing."
+            exit 0
+          fi
+
+          gh pr create -B "$BASE" -H "$BRANCH" --title "$TITLE" --body ""
+          echo "Pull request successfully created."
+
+  check-dist-is-up-to-date:
+    name: Check dist is up to date
+    needs: [check-branch-name, create-pull-request]
+    if: always() && needs.check-branch-name.outputs.skip != 'true' && github.repository == 'adjust/smart_banner_sdk'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          check-latest: true
+          cache: "npm"
+
+      - name: Verify dist is up to date
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          npm ci
+          npm run build
+
+          if git status --porcelain -- sdk/dist/ | grep -q .; then
+            echo "ERROR: npm run build produced changes in sdk/dist:"
+            git status --porcelain -- sdk/dist/
+            exit 1
+          fi
+
+          echo "OK: generated artifacts are up to date."

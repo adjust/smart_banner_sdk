@@ -1,7 +1,19 @@
+### Version 1.3.0 (27th July 2026)
+
+#### Added
+ - Added support for Web URL based deep link routing.
+
+#### Fixed
+- Fixed an issue where custom context values were not included in the impression URL.
+
+---
+
 ### Version 1.2.8 (2nd December 2025)
 
 #### Fixed
 - Updated npm dependencies to resolve reported security warnings.
+
+---
 
 ### Version 1.2.7 (28th October 2025)
 

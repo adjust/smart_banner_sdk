@@ -1,7 +1,6 @@
 import { parseGetParams } from '@utils/parse-get-params';
 import { interpolate } from '@utils/template-interpolation';
 import { Context } from '../../data/types';
-import { LinkBuilder } from './types';
 
 export interface ImpressionData {
   impression_url: string;
@@ -9,14 +8,15 @@ export interface ImpressionData {
 }
 
 export const ImpressionLinkBuilder = {
-  build: (impressionData: ImpressionData, pageUrl: string): string => {
-    const { impression_url: template = '', context } = impressionData;
+  build: (data: ImpressionData, pageUrl: string, { context: customContext = {} }: { context?: Record<string, string> }): string => {
+    const { impression_url: template = '' } = data;
 
     const combinedContext = {
-      ...context,
+      ...data.context,
       ...parseGetParams(pageUrl),
+      ...customContext
     };
 
     return interpolate(template, combinedContext).result;
   }
-} as LinkBuilder<ImpressionData>;
+};

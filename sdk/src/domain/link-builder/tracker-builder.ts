@@ -3,6 +3,7 @@ import { parseGetParams } from '@utils/parse-get-params';
 import { interpolate } from '@utils/template-interpolation';
 import { omitNotDefined } from '@utils/object';
 import { Platform, getPlatform } from '@utils/detect-platform';
+import { getUrlPathAndParams } from '@utils/get-url-path-and-params';
 
 export interface TrackerData {
   template: string;
@@ -27,12 +28,17 @@ export const TrackerBuilder = {
       'iosDeepLinkPath': data.context.ios_deep_link_path
     });
 
+    const webUrlPath = getUrlPathAndParams(pageUrl);
+
     let combinedContext = {
       ...data.context,
       ...backwardCompatibleVariables,
       ...customDeeplinkPaths,
       ...parseGetParams(pageUrl),
-      ...customContext
+      ...customContext,
+      adj_link: encodeURIComponent(pageUrl),
+      web_url_path: webUrlPath,
+      separator: webUrlPath.includes('?') ? '&' : '?',
     };
 
     const deeplinkPaths = buildDeeplink({ template, context: combinedContext }, customContext);

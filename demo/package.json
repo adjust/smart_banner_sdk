@@ -12,7 +12,7 @@
   "dependencies": {
     "@adjustcom/smart-banner-sdk": "^1.2.6",
     "@adjustcom/smart-banner-sdk-layout": "^3.1.4",
-    "lorem-ipsum": "^2.0.8"
+    "lorem-ipsum": "^3.0.0"
   },
   "author": "Adjust GmbH",
   "license": "MIT",
