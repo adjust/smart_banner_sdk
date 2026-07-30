@@ -1,3 +1,10 @@
+### Version 1.3.1 (30th July 2026)
+
+#### Fixed
+- Fixed an issue with iOS platform detection.
+
+---
+
 ### Version 1.3.0 (27th July 2026)
 
 #### Added
