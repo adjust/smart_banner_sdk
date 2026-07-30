@@ -2786,7 +2786,7 @@ exports.SmartBanner = SmartBanner;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Globals = void 0;
 exports.Globals = {
-    'version': "1.3.0",
+    'version': "1.3.1",
     'namespace': "adjust_smart_banner",
     dataVersion: 'v1',
     _DEV_MODE_: false,
@@ -3054,16 +3054,27 @@ var Platform;
  */
 function getPlatform() {
     var _a;
-    var platform = (((_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.platform) || navigator.userAgent || '').toLowerCase();
+    var platform = (((_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.platform) || '').toLowerCase();
+    var userAgent = (navigator.userAgent || '').toLowerCase();
     // Sometimes navigator.maxTouchPoints equals 256 instead of 0 when touch actually isn't supported
     var maxTouchPoints = navigator.maxTouchPoints & 0xFF;
     var isMultiTouch = maxTouchPoints > 0;
-    var isTouchDevice = matchMedia('(hover: none) and (pointer: coarse)').matches;
+    var isTouchDevice = typeof matchMedia === 'function'
+        ? matchMedia('(hover: none) and (pointer: coarse)').matches
+        : false;
     var supportsTouch = isMultiTouch || isTouchDevice;
-    if (/iphone|ipad|ipod/.test(platform) || (platform.includes('macintosh') && supportsTouch)) {
+    // It's not expected to get navigator.userAgentData?.platform on iOS/iPadOS device, but
+    // some third-party libraries override this value
+    var isIosPlatform = (['iphone', 'ipad', 'ipod', 'ios', 'ipados']).includes(platform);
+    var isIosUA = /iphone|ipad|ipod/.test(userAgent);
+    var isIpad = userAgent.includes('macintosh') && supportsTouch;
+    if (isIosPlatform || isIosUA || isIpad) {
         return Platform.iOS;
     }
-    if (platform.includes('android') || (platform.includes('linux') && supportsTouch)) {
+    var isAndroidPlatform = platform.includes('android');
+    var isAndroidUA = userAgent.includes('android');
+    var isLinuxTablet = (platform.includes('linux') || userAgent.includes('linux')) && supportsTouch;
+    if (isAndroidPlatform || isAndroidUA || isLinuxTablet) {
         return Platform.Android;
     }
     return undefined;
