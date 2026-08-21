@@ -4,6 +4,8 @@
   "description": "Adjust Smart Banner SDK",
   "scripts": {
     "build": "npm run build --workspace=layout && npm run build --workspace=sdk && npm run build:snippet && npm run copy",
+    "build:ci": "npm-run-all build build:ci:artifacts",
+    "build:ci:artifacts": "rm -rf ./sdk/dist/artifacts && mkdir -p ./sdk/dist/artifacts && cp ./sdk/dist/adjust-smart-banner.js ./sdk/dist/artifacts/adjust-smart-banner-latest.js && cp ./sdk/dist/adjust-smart-banner.min.js ./sdk/dist/artifacts/adjust-smart-banner-latest.min.js && cp ./sdk/dist/adjust-smart-banner.js \"./sdk/dist/artifacts/adjust-smart-banner-$npm_package_version.js\" && cp ./sdk/dist/adjust-smart-banner.min.js \"./sdk/dist/artifacts/adjust-smart-banner-$npm_package_version.min.js\"",
     "build:snippet": "terser ./loading-snippet.js -o ./sdk/dist/loading-snippet.min.js -c -m",
     "build:layout": "npm run build --workspace=layout",
     "clean": "rm -rf ./layout/dist/ ./sdk/dist/ ./demo/dist/",
