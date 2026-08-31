@@ -29,5 +29,10 @@ jobs:
       - name: Build package
         run: npm run build
 
+      - name: Create npm package artifact
+        run: |
+          mkdir -p ./npm-artifacts
+          npm pack --workspace=sdk --pack-destination ./npm-artifacts
+
       - name: Publish
-        run: npm publish --workspace=sdk --access public
+        run: npm publish ./npm-artifacts/*.tgz --access public
