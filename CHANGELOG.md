@@ -1,3 +1,10 @@
+### Version 1.3.2 (7th October 2026)
+
+#### Fixed
+- Fixed an attribution-hijacking vulnerability where URL query parameters could override backend context while building banner links.
+
+---
+
 ### Version 1.3.1 (30th July 2026)
 
 #### Fixed

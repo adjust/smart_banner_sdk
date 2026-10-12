@@ -79,6 +79,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          check-latest: true
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build release artifacts
+        run: npm run build
+
       - uses: ncipollo/release-action@v1
         with:
           tag: v${{ needs.variables.outputs.version }}
@@ -87,5 +100,4 @@ jobs:
           draft: true
           name: Version ${{ needs.variables.outputs.version }}
           body: ${{ needs.variables.outputs.changelog }}
-          artifacts: |
-            sdk/dist/*
+          artifacts:  "sdk/dist/adjust-smart-banner.js,sdk/dist/adjust-smart-banner.min.js,sdk/dist/adjust-smart-banner.d.ts"

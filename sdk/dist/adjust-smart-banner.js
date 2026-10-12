@@ -33,7 +33,7 @@ var action = `adjust-sb_action__sHg6Z`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -66,7 +66,7 @@ var image = `adjust-sb_image__Fux1Q`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "Ay", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "Ay", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -100,7 +100,7 @@ var _2 = `adjust-sb_text-container__XfKON`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "Ay", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "Ay", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -128,7 +128,7 @@ var dismiss = `adjust-sb_dismiss__g3JCL`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -156,7 +156,7 @@ var pixel = `adjust-sb_pixel__yXLhF`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -196,7 +196,7 @@ var stickyToBottom = `adjust-sb_stickyToBottom__m3590`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "Ay", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "Ay", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -225,7 +225,7 @@ var _1 = `adjust-sb_banner-text__P_JgX`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "A", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "A", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -383,7 +383,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals : undefined);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "default", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "default", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -439,7 +439,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Ay && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Ay.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Ay.locals : undefined);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "default", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "default", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -495,7 +495,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Ay && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Ay.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Ay.locals : undefined);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "default", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "default", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -549,7 +549,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals : undefined);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "default", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "default", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -603,7 +603,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals : undefined);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "default", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "default", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -662,7 +662,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Ay && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Ay.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Ay.locals : undefined);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "default", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "default", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -716,7 +716,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_node_modules_sass_loader_dist_cjs_index_js_styles_module_scss__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals : undefined);
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, [
-/* harmony export */   "default", 0, /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "default", 0, __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ ]);
 
 
@@ -2458,7 +2458,7 @@ exports.ImpressionLinkBuilder = {
     build: function (data, pageUrl, _a) {
         var _b = _a.context, customContext = _b === void 0 ? {} : _b;
         var _c = data.impression_url, template = _c === void 0 ? '' : _c;
-        var combinedContext = __assign(__assign(__assign({}, data.context), (0, parse_get_params_1.parseGetParams)(pageUrl)), customContext);
+        var combinedContext = __assign(__assign(__assign({}, (0, parse_get_params_1.parseGetParams)(pageUrl)), data.context), customContext);
         return (0, template_interpolation_1.interpolate)(template, combinedContext).result;
     }
 };
@@ -2511,12 +2511,19 @@ exports.TrackerBuilder = {
             'iosDeepLinkPath': data.context.ios_deep_link_path
         });
         var webUrlPath = (0, get_url_path_and_params_1.getUrlPathAndParams)(pageUrl);
-        var combinedContext = __assign(__assign(__assign(__assign(__assign(__assign({}, data.context), backwardCompatibleVariables), customDeeplinkPaths), (0, parse_get_params_1.parseGetParams)(pageUrl)), customContext), { adj_link: encodeURIComponent(pageUrl), web_url_path: webUrlPath, separator: webUrlPath.includes('?') ? '&' : '?' });
+        var pageContext = (0, parse_get_params_1.parseGetParams)(pageUrl);
+        var combinedContext = __assign(__assign(__assign(__assign(__assign(__assign({}, pageContext), data.context), backwardCompatibleVariables), customDeeplinkPaths), customContext), { adj_link: encodeURIComponent(pageUrl), web_url_path: webUrlPath, separator: webUrlPath.includes('?') ? '&' : '?' });
         var deeplinkPaths = buildDeeplink({ template: template, context: combinedContext }, customContext);
         combinedContext = __assign(__assign({}, combinedContext), deeplinkPaths);
         var fixedTemplate = adaptTemplate(template, deeplinkPaths);
         var tracker = (0, template_interpolation_1.interpolate)(fixedTemplate, combinedContext).result;
-        return addNetworkClickIds(tracker, combinedContext);
+        return addNetworkClickIds(tracker, [
+            pageContext,
+            data.context,
+            backwardCompatibleVariables,
+            customDeeplinkPaths,
+            customContext
+        ]);
     }
 };
 function buildDeeplink(data, customContext) {
@@ -2555,14 +2562,16 @@ var NETWORK_CLICK_IDS = [
 /**
  * Writes SAN click ids to tracker link
  * @param tracker
- * @param context object containing click ids read from GET parameters of current page URL
+ * @param contexts Context sources ordered from lowest to highest priority
  * @returns
  */
-function addNetworkClickIds(tracker, context) {
-    var lowerCasedContext = Object.entries(context).reduce(function (acc, _a) {
-        var _b;
-        var key = _a[0], value = _a[1];
-        return __assign(__assign({}, acc), (_b = {}, _b[key.toLowerCase()] = value, _b));
+function addNetworkClickIds(tracker, contexts) {
+    var lowerCasedContext = contexts.reduce(function (acc, context) {
+        for (var _i = 0, _a = Object.entries(context); _i < _a.length; _i++) {
+            var _b = _a[_i], key = _b[0], value = _b[1];
+            acc[key.toLowerCase()] = value;
+        }
+        return acc;
     }, {});
     var foundClickIds = '';
     for (var _i = 0, NETWORK_CLICK_IDS_1 = NETWORK_CLICK_IDS; _i < NETWORK_CLICK_IDS_1.length; _i++) {
@@ -2786,7 +2795,7 @@ exports.SmartBanner = SmartBanner;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Globals = void 0;
 exports.Globals = {
-    'version': "1.3.1",
+    'version': "1.3.2",
     'namespace': "adjust_smart_banner",
     dataVersion: 'v1',
     _DEV_MODE_: false,
@@ -3487,64 +3496,47 @@ function interpolate(template, context, emptyPlaceholder) {
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			const getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = (module) => {
+/******/ 		const getter = module && module.__esModule ?
+/******/ 			() => (module['default']) :
+/******/ 			() => (module);
+/******/ 		__webpack_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter/value functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			if(Array.isArray(definition)) {
-/******/ 				var i = 0;
-/******/ 				while(i < definition.length) {
-/******/ 					var key = definition[i++];
-/******/ 					var binding = definition[i++];
-/******/ 					if(!__webpack_require__.o(exports, key)) {
-/******/ 						if(binding === 0) {
-/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
-/******/ 						} else {
-/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
-/******/ 						}
-/******/ 					} else if(binding === 0) { i++; }
-/******/ 				}
-/******/ 			} else {
-/******/ 				for(var key in definition) {
-/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 					}
+/******/ 	// define getter/value functions for harmony exports
+/******/ 	__webpack_require__.d = (exports, definition) => {
+/******/ 		if(Array.isArray(definition)) {
+/******/ 			var i = 0;
+/******/ 			while(i < definition.length) {
+/******/ 				var key = definition[i++];
+/******/ 				var binding = definition[i++];
+/******/ 				var descriptor = binding === 0 ? { enumerable: true, value: definition[i++] } : { enumerable: true, get: binding };
+/******/ 				if(!__webpack_require__.o(exports, key)) Object.defineProperty(exports, key, descriptor);
+/******/ 			}
+/******/ 		} else {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
-/******/ 		};
-/******/ 	})();
+/******/ 		}
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = (exports) => {
+/******/ 		Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
 /******/ 	
 /******/ 	/* webpack/runtime/nonce */
-/******/ 	(() => {
-/******/ 		__webpack_require__.nc = undefined;
-/******/ 	})();
+/******/ 	__webpack_require__.nc = undefined;
 /******/ 	
 /************************************************************************/
 /******/ 	

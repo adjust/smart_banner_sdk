@@ -1,5 +1,4 @@
 const path = require('path');
-const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = () => ({
   mode: 'production',
@@ -10,9 +9,6 @@ module.exports = () => ({
     library: 'AdjustSBLayout',
     libraryTarget: 'umd',
   },
-  plugins: [
-    new ESLintPlugin(),
-  ],
   resolve: {
     extensions: ['.ts', '.js', '.scss', '.svg'],
     alias: {
