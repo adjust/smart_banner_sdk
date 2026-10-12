@@ -12,8 +12,9 @@ export const ImpressionLinkBuilder = {
     const { impression_url: template = '' } = data;
 
     const combinedContext = {
-      ...data.context,
+      // Query parameters have the lowest priority, preventing them from overriding backend context
       ...parseGetParams(pageUrl),
+      ...data.context,
       ...customContext
     };
 

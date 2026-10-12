@@ -29,12 +29,14 @@ export const TrackerBuilder = {
     });
 
     const webUrlPath = getUrlPathAndParams(pageUrl);
+    const pageContext = parseGetParams(pageUrl);
 
     let combinedContext = {
+      // Query parameters have the lowest priority, preventing them from overriding backend context
+      ...pageContext,
       ...data.context,
       ...backwardCompatibleVariables,
       ...customDeeplinkPaths,
-      ...parseGetParams(pageUrl),
       ...customContext,
       adj_link: encodeURIComponent(pageUrl),
       web_url_path: webUrlPath,
@@ -50,7 +52,13 @@ export const TrackerBuilder = {
 
     const fixedTemplate = adaptTemplate(template, deeplinkPaths);
     const tracker = interpolate(fixedTemplate, combinedContext).result;
-    return addNetworkClickIds(tracker, combinedContext);
+    return addNetworkClickIds(tracker, [
+      pageContext,
+      data.context,
+      backwardCompatibleVariables,
+      customDeeplinkPaths,
+      customContext
+    ]);
   }
 };
 
@@ -98,19 +106,22 @@ const NETWORK_CLICK_IDS = [
   'twclid' // x_web
 ];
 
+type Contexts = Array<Context | Record<string, string | true>>;
+
 /**
  * Writes SAN click ids to tracker link
  * @param tracker 
- * @param context object containing click ids read from GET parameters of current page URL
+ * @param contexts Context sources ordered from lowest to highest priority
  * @returns 
  */
-function addNetworkClickIds(tracker: string, context: Record<string, string | true>): string {
-  const lowerCasedContext = Object.entries(context).reduce((acc, [key, value]) => {
-    return {
-      ...acc,
-      [key.toLowerCase()]: value
-    };
-  }, {}) as Record<string, string | true>;
+function addNetworkClickIds(tracker: string, contexts: Contexts): string {
+  const lowerCasedContext = contexts.reduce<Record<string, string | true>>((acc, context) => {
+    for (const [key, value] of Object.entries(context)) {
+      acc[key.toLowerCase()] = value;
+    }
+
+    return acc;
+  }, {});
 
   let foundClickIds = '';
 
@@ -123,4 +134,3 @@ function addNetworkClickIds(tracker: string, context: Record<string, string | tr
 
   return `${tracker}${foundClickIds}`;
 }
-

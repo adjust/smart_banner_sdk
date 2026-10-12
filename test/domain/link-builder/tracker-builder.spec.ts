@@ -301,6 +301,26 @@ describe('Smart Banners tracker link building', () => {
       expect(tracker).toBe(expected);
     });
 
+    it('prefers backend context over potentially malicious URL parameters', () => {
+      const trackerData = {
+        template: 'https://{domain}/{tracker}?campaign={utm_source}-{campaign}',
+        context: {
+          ...commonContext,
+          utm_source: 'trusted_backend_source'
+        }
+      };
+
+      const expected = 'https://test.domain/abc123?campaign=trusted_backend_source-banner1';
+
+      const tracker = TrackerBuilder.build(
+        trackerData,
+        'https://some-path/?utm_source=malicious&campaign=malicious',
+        emptyCustomData
+      );
+
+      expect(tracker).toBe(expected);
+    });
+
     it('builds custom tracker replacing not found placeholders with "none"', () => {
       const trackerData = {
         template: 'https://{domain}/{tracker}?campaign={utm_source}-{campaign}&adgroup={localization_language}&utm_content={utm_content}',
@@ -354,12 +374,46 @@ describe('Smart Banners tracker link building', () => {
     it('uses partner click id from custom context', () => {
       const trackerData = {
         template: commonTracker,
-        context: {...commonContext, fbpid: '12345'}
+        context: commonContext
       };
 
       const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en&fbpid=12345';
 
-      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/', emptyCustomData);
+      const tracker = TrackerBuilder.build(trackerData, 'https://some-path/', { context: { fbpid: '12345' } });
+      expect(tracker).toBe(expected);
+    });
+
+    it('prefers custom click id over URL parameters', () => {
+      const trackerData = {
+        template: commonTracker,
+        context: commonContext
+      };
+
+      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en&fbclid=trusted';
+
+      const tracker = TrackerBuilder.build(
+        trackerData,
+        'https://some-path/?fbclid=url_value',
+        { context: { fbclid: 'trusted' } }
+      );
+
+      expect(tracker).toBe(expected);
+    });
+
+    it('prefers custom click id over differently cased URL parameters', () => {
+      const trackerData = {
+        template: commonTracker,
+        context: commonContext
+      };
+
+      const expected = 'https://test.domain/abc123?campaign=banner1&adgroup=en&fbclid=trusted';
+
+      const tracker = TrackerBuilder.build(
+        trackerData,
+        'https://some-path/?FBCLID=malicious',
+        { context: { fbclid: 'trusted' } }
+      );
+
       expect(tracker).toBe(expected);
     });
   });

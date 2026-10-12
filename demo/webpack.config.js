@@ -1,5 +1,4 @@
 const path = require('path');
-const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const devPort = 8080;
@@ -15,7 +14,6 @@ module.exports = (env, args) => ({
     minimize: false,
   },
   plugins: [
-    new ESLintPlugin(),
     new HtmlWebpackPlugin({
       template: './assets/index.html'
     }),
