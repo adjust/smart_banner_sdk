@@ -690,6 +690,25 @@ describe('Smart Banner tests', () => {
         expect(smartBannerViewMock.render).toHaveBeenCalled();
         expect(Logger.info).toHaveBeenLastCalledWith('Render banner: ' + bannerName);
       });
+
+      it('updates the view created by the schedule instead of creating another one', async () => {
+        expect.assertions(4);
+
+        const smartBanner = new SmartBanner('some-token', { appToken: 'some-token' }, Platform.Android);
+        await Utils.flushPromises();
+
+        jest.runOnlyPendingTimers(); // dismissal period is over, the scheduled creation runs
+
+        expect(SmartBannerLayoutFactory.createViewForSdk).toHaveBeenCalledTimes(1);
+
+        smartBanner.setContext({ product: 'something' });
+        await Utils.flushPromises();
+        jest.runOnlyPendingTimers();
+
+        expect(SmartBannerLayoutFactory.createViewForSdk).toHaveBeenCalledTimes(1);
+        expect(smartBannerViewMock.render).toHaveBeenCalledTimes(1);
+        expect(smartBannerViewMock.update).toHaveBeenCalled();
+      });
     });
 
     describe('Initialisation is not finished yet', () => {
