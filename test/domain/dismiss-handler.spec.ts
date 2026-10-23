@@ -86,6 +86,8 @@ describe('DismissHandler tests', () => {
   });
 
   describe('Schedule functionality', () => {
+    const maxTimeoutDelay = 2_147_483_647;
+
     beforeAll(() => {
       jest.useFakeTimers();
       jest.spyOn(Date, 'now').mockReturnValue(now);
@@ -126,6 +128,23 @@ describe('DismissHandler tests', () => {
 
       expect(bannerCreationCallback).toHaveBeenCalled();
       expect(storage.removeItem).toHaveBeenCalledWith(banner.id);
+    });
+
+    it('reschedules a creation that is beyond the maximum timeout delay', () => {
+      const bannerCreationCallback = jest.fn();
+      const when = now + maxTimeoutDelay + 100;
+
+      dismissHandler.schedule(banner, bannerCreationCallback, when);
+
+      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), maxTimeoutDelay);
+
+      (Date.now as jest.Mock).mockReturnValue(now + maxTimeoutDelay);
+      const firstTimerCallback = jest.mocked(setTimeout).mock.calls[0][0];
+      firstTimerCallback();
+
+      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 100);
+      expect(bannerCreationCallback).not.toHaveBeenCalled();
+      expect(storage.removeItem).not.toHaveBeenCalled();
     });
 
     it('clears previously scheduled banner when scheduling another one', () => {

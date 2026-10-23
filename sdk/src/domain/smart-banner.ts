@@ -141,7 +141,8 @@ export class SmartBanner {
   }
 
   private updateViewOrScheduleCreation(banner: SmartBannerData, when: number) {
-    if (when <= 0) {
+    // `when` is a timestamp kept from the last fetch, it may have already passed if the scheduled creation ran
+    if (when <= Date.now()) {
       this.updateView(banner);
     } else {
       this.dismissHandler.schedule(banner, () => this.createView(banner), when);
