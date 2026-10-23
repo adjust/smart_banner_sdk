@@ -2395,6 +2395,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DismissHandler = void 0;
 var logger_1 = __webpack_require__(1744);
 var storage_factory_1 = __webpack_require__(5037);
+var MAX_TIMEOUT_DELAY = 2147483647;
 var DismissHandler = /** @class */ (function () {
     function DismissHandler(storage) {
         this.timer = null;
@@ -2414,18 +2415,27 @@ var DismissHandler = /** @class */ (function () {
         this.storage.setItem(banner.id, Date.now());
     };
     DismissHandler.prototype.schedule = function (banner, showBannerCallback, when) {
-        var _this = this;
         if (this.timer) {
             logger_1.Logger.log('Clearing previously scheduled creation of a Smart banner');
             clearTimeout(this.timer);
             this.timer = null;
         }
+        this.scheduleCreation(banner, showBannerCallback, when);
+        logger_1.Logger.info("Smart banner ".concat(banner.title, " creation scheduled on ").concat(new Date(when)));
+    };
+    DismissHandler.prototype.scheduleCreation = function (banner, showBannerCallback, when) {
+        var _this = this;
+        var remainingDelay = when - Date.now();
+        var delay = Math.min(Math.max(remainingDelay, 0), MAX_TIMEOUT_DELAY);
         this.timer = setTimeout(function () {
+            if (remainingDelay > MAX_TIMEOUT_DELAY) {
+                _this.scheduleCreation(banner, showBannerCallback, when);
+                return;
+            }
             _this.timer = null;
             _this.storage.removeItem(banner.id);
             showBannerCallback();
-        }, when - Date.now());
-        logger_1.Logger.info("Smart banner ".concat(banner.title, " creation scheduled on ").concat(new Date(when)));
+        }, delay);
     };
     return DismissHandler;
 }());
@@ -2700,7 +2710,8 @@ var SmartBanner = /** @class */ (function () {
     };
     SmartBanner.prototype.updateViewOrScheduleCreation = function (banner, when) {
         var _this = this;
-        if (when <= 0) {
+        // `when` is a timestamp kept from the last fetch, it may have already passed if the scheduled creation ran
+        if (when <= Date.now()) {
             this.updateView(banner);
         }
         else {
@@ -2795,7 +2806,7 @@ exports.SmartBanner = SmartBanner;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Globals = void 0;
 exports.Globals = {
-    'version': "1.3.2",
+    'version': "1.3.3",
     'namespace': "adjust_smart_banner",
     dataVersion: 'v1',
     _DEV_MODE_: false,

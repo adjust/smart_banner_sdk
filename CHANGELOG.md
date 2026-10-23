@@ -1,3 +1,11 @@
+### Version 1.3.3 (23rd October 2026)
+
+#### Fixed
+- Fixed duplicate banner creation and impressions after updating banner configuration once a scheduled banner has been rendered. Thanks to @zecar and @capraruioan.
+- Prevented timeout overflow from causing delayed banner creation to run immediately.
+
+---
+
 ### Version 1.3.2 (7th October 2026)
 
 #### Fixed
