@@ -2,6 +2,8 @@ import { Logger } from '@utils/logger';
 import { SmartBannerData } from '../data/types';
 import { Storage, StorageFactory } from '../data/storage/storage-factory';
 
+const MAX_TIMEOUT_DELAY = 2_147_483_647;
+
 export class DismissHandler {
   private storage: Storage;
   private timer: NodeJS.Timeout | null = null;
@@ -35,15 +37,25 @@ export class DismissHandler {
       this.timer = null;
     }
 
-    this.timer = setTimeout(
-      () => {
-        this.timer = null;
-        this.storage.removeItem(banner.id);
-        showBannerCallback();
-      },
-      when - Date.now());
+    this.scheduleCreation(banner, showBannerCallback, when);
 
     Logger.info(`Smart banner ${banner.title} creation scheduled on ${new Date(when)}`);
+  }
+
+  private scheduleCreation(banner: SmartBannerData, showBannerCallback: () => void, when: number) {
+    const remainingDelay = when - Date.now();
+    const delay = Math.min(Math.max(remainingDelay, 0), MAX_TIMEOUT_DELAY);
+
+    this.timer = setTimeout(() => {
+      if (remainingDelay > MAX_TIMEOUT_DELAY) {
+        this.scheduleCreation(banner, showBannerCallback, when);
+        return;
+      }
+
+      this.timer = null;
+      this.storage.removeItem(banner.id);
+      showBannerCallback();
+    }, delay);
   }
 
 }
